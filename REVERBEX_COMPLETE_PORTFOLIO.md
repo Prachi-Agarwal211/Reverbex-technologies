@@ -27,12 +27,12 @@
 **Reverbex** is a specialized software development studio founded by Anurag Singh and Prachi Agarwal. We deliver end-to-end, production-ready software solutions across multiple domains including:
 
 - Government & Space Organizations (ISRO-NRSC)
-- Financial Technology & Algorithmic Trading
+- Financial Technology & Stock Market Platforms
 - Real-Time Gaming & Entertainment
 - AI/ML Automation Platforms
 - Enterprise Web Applications
 
-With a proven track record of delivering high-impact solutions for organizations like **Indian Space Research Organisation (ISRO – NRSC)** and enterprise clients in the financial sector, we bring deep technical expertise combined with business-focused execution.
+With a proven track record of delivering high-impact solutions for organizations like **Indian Space Research Organisation (ISRO – NRSC)** and **JECRC University**, we bring deep technical expertise combined with business-focused execution.
 
 ---
 
@@ -40,14 +40,94 @@ With a proven track record of delivering high-impact solutions for organizations
 
 | Category | Projects | Status |
 |----------|----------|--------|
+| 🏫 Enterprise/Education | 1 Project | ✅ Live & Deployed |
 | 🛰️ ISRO/Government | 3 Projects | ✅ Completed & Deployed |
-| 📈 Financial/Trading | 6 Projects | ✅ Completed & Deployed |
-| 🎮 Gaming/Entertainment | 2 Projects | ✅ Completed & Deployed |
+| 🌍 Geospatial Platform | 1 Project | ✅ Production Ready |
+| 🎮 Gaming/Entertainment | 1 Project | ✅ Completed & Deployed |
+| 📈 Financial/Trading | 3 Projects | ✅ Completed & Deployed |
 | 🤖 AI/ML Platforms | 4 Projects | ✅ Completed & Deployed |
-| 🏢 Enterprise Web Apps | 4 Projects | ✅ Completed & Deployed |
-| 🔧 Automation Tools | 2 Projects | ✅ Completed & Deployed |
+| 🌐 Web Design | 1 Project | ✅ Completed & Deployed |
+| 🔌 Development Tools | 1 Project | ✅ Complete |
 
-**Total: 21+ Production Projects Delivered**
+**Total: 15 Production Projects Delivered**
+
+---
+
+---
+
+# 🏫 ENTERPRISE / EDUCATION PROJECT
+
+---
+
+## PROJECT 1: JECRC No-Dues System - Digital Clearance Management
+
+### 📋 Project Overview
+
+**Client:** JECRC University
+
+**Project Type:** Administrative Management System
+
+**Status:** ✅ **LIVE IN PRODUCTION**
+
+**Live URL:** [Coming Soon]
+
+### 🎯 Problem Statement
+
+University students faced a tedious no-dues clearance process:
+
+- Manual visits to multiple departments
+- Paper-based tracking with no visibility
+- Long processing times (weeks to months)
+- Lost documents and unclear requirements
+- No accountability or audit trail
+
+### 💡 Solution Delivered
+
+A complete digital transformation of the clearance process:
+
+1. **Student Portal**
+   - Unified dashboard showing all department statuses
+   - Real-time status tracking with notifications
+   - Document upload capability
+   - Automated email notifications
+
+2. **Department Portal**
+   - Streamlined queue management
+   - One-click approval/rejection
+   - Comments and specific requirements
+   - Complete history tracking
+
+3. **Admin Dashboard**
+   - System-wide analytics and reporting
+   - User and department management
+   - Configuration settings
+   - Complete audit logs
+
+4. **Real-Time Updates**
+   - Supabase Realtime integration
+   - Instant status change propagation
+   - Push notifications to students
+
+### 🛠️ Technology Stack
+
+| Component | Technology |
+|-----------|------------|
+| **Framework** | Next.js 14 |
+| **Database** | Supabase (PostgreSQL) |
+| **Auth** | Supabase Auth |
+| **Real-time** | Supabase Realtime |
+| **Styling** | Tailwind CSS |
+| **Deployment** | Vercel |
+
+### 📊 Impact & Results
+
+| Metric | Before | After |
+|--------|--------|-------|
+| Clearance Time | 2-4 weeks | 2-3 days |
+| Student Visits | 12+ dept visits | 0 (100% digital) |
+| Document Loss | Common issue | Eliminated |
+| Process Visibility | None | Real-time tracking |
+| Students Managed | Manual tracking | 5,000+ automated |
 
 ---
 
@@ -57,733 +137,397 @@ With a proven track record of delivering high-impact solutions for organizations
 
 ---
 
-## PROJECT 1: GEOPIXEL - Real-Time Satellite Data Ingestion System
+## PROJECT 2: GEOPIXEL - Real-Time Satellite Monitoring & 3D Visualization
 
 ### 📋 Project Overview
 
 **Client:** Indian Space Research Organisation (ISRO) - National Remote Sensing Centre (NRSC)
 
-**Project Type:** Real-Time Data Processing Pipeline
-
-**Duration:** Enterprise Project
+**Project Type:** Real-Time Satellite Data Monitoring & 3D Geospatial Visualization
 
 **Status:** ✅ Deployed in Production
 
 ### 🎯 Problem Statement
 
-ISRO's satellite missions generate massive volumes of raw satellite imagery (Level-0 data) that needs to be processed through multiple stages (L0 → L1 → L2) in real-time. The existing systems faced challenges with:
+ISRO needed a comprehensive system for:
 
-- High latency in data ingestion and processing
-- Inability to handle burst data from multiple satellite passes
-- Lack of real-time monitoring and alerting
-- Manual intervention required for pipeline failures
-- No unified dashboard for operations team
+- Real-time monitoring of incoming satellite data streams
+- 3D visualization of satellite imagery on global maps
+- Interactive data exploration and analysis
+- Automated processing pipeline management
+- Performance analytics and reporting
 
 ### 💡 Solution Delivered
 
-We designed and developed **GEOPIXEL** - a comprehensive real-time satellite data ingestion and processing system that:
+**GEOPIXEL** - A cutting-edge platform combining real-time monitoring with stunning 3D visualization:
 
-1. **Automated L0/L1/L2 Processing Pipeline**
-   - Automatic detection of incoming satellite data
-   - Multi-stage processing with error recovery
-   - Parallel processing of multiple data streams
-   - Automatic format conversion and georeferencing
+1. **Real-Time Data Monitoring**
+   - Live tracking of satellite data ingestion
+   - Processing pipeline status dashboard
+   - Alert system for anomalies
+   - Historical analytics and trends
 
-2. **Real-Time Monitoring Dashboard**
-   - Live visualization of processing queues
-   - Satellite pass predictions and scheduling
-   - Alert system for pipeline failures
-   - Historical processing analytics
+2. **3D Geospatial Visualization**
+   - Interactive 3D globe with satellite imagery overlay
+   - Multi-layer visualization capabilities
+   - Real-time data rendering on maps
+   - Smooth navigation and exploration tools
 
-3. **Scalable Architecture**
-   - Horizontal scaling for burst data handling
-   - Queue-based task distribution
-   - Fault-tolerant design with auto-recovery
+3. **Data Processing Pipeline**
+   - Automated L0 → L1 → L2 processing
+   - Queue management for burst data
+   - Error recovery and retry mechanisms
+   - Parallel processing support
+
+4. **Analytics Dashboard**
+   - Processing throughput metrics
+   - System performance monitoring
+   - Data quality indicators
+   - Custom report generation
 
 ### 🛠️ Technology Stack
 
 | Layer | Technologies |
 |-------|-------------|
-| **Backend** | Python, FastAPI, Celery |
-| **Database** | PostgreSQL, PostGIS, Redis |
-| **Processing** | GDAL, Rasterio, NumPy, SciPy |
-| **Queue** | Redis, Celery Workers |
+| **Backend** | Django, Django REST Framework |
+| **Database** | PostgreSQL, PostGIS |
+| **Processing** | Python, GDAL, Rasterio, NumPy |
 | **Frontend** | React.js, TypeScript |
-| **Visualization** | CesiumJS, Leaflet |
-| **Deployment** | Docker, RHEL, systemd |
+| **3D Visualization** | CesiumJS, Leaflet |
+| **Real-time** | WebSocket, Redis |
+| **Deployment** | Docker, nginx, RHEL |
 
 ### 📊 Impact & Results
 
-| Metric | Before | After |
-|--------|--------|-------|
-| Processing Latency | 4-6 hours | 15-30 minutes |
-| Manual Intervention | 40% of tasks | <5% of tasks |
-| Throughput | 50 GB/day | 500+ GB/day |
-| System Uptime | 85% | 99.5% |
+| Feature | Capability |
+|---------|------------|
+| Data Processing | 500GB+ daily throughput |
+| Visualization | Real-time 3D rendering |
+| System Uptime | 99.5% |
+| Processing Speed | 85% latency reduction |
 
 ---
 
-## PROJECT 2: NADIR - 3D Geospatial Visualization Portal
+## PROJECT 3: GIST - Geophysical Information System Portal
 
 ### 📋 Project Overview
 
 **Client:** Indian Space Research Organisation (ISRO) - National Remote Sensing Centre (NRSC)
 
-**Project Type:** 3D Web-Based Geospatial Visualization Platform
-
-**Duration:** Enterprise Project
+**Project Type:** Satellite Data Validation & Quality Control Portal
 
 **Status:** ✅ Deployed in Production
 
 ### 🎯 Problem Statement
 
-Scientists and analysts at NRSC needed a modern, web-based platform to:
+ISRO needed a comprehensive portal to:
 
-- Visualize satellite imagery in 3D terrain context
-- Overlay multiple data layers (vegetation, water bodies, urban areas)
-- Perform temporal analysis (change detection over time)
-- Share analysis results with external stakeholders
-- Access data without installing specialized GIS software
+- Validate incoming satellite data integrity
+- Identify missing or corrupted data segments
+- Track data quality metrics over time
+- Ensure complete data coverage
+- Generate validation reports
 
 ### 💡 Solution Delivered
 
-**NADIR** is a cutting-edge 3D geospatial visualization portal that brings satellite data to life:
+**GIST (Geophysical Information System)** - An intelligent data validation and monitoring portal:
 
-1. **3D Globe Visualization**
-   - Photorealistic 3D terrain rendering
-   - Smooth navigation and zooming
-   - Real-time layer switching
-   - Multiple basemap options (satellite, terrain, hybrid)
+1. **Data Validation Engine**
+   - Automatic integrity checks on incoming data
+   - Missing data segment detection
+   - Format and structure validation
+   - Checksum verification
 
-2. **Advanced Layer Management**
-   - Multi-layer overlay with transparency control
-   - Time-series animation for temporal data
-   - Custom color ramps and styling
-   - Vector and raster layer support
+2. **Quality Monitoring Dashboard**
+   - Real-time data quality metrics
+   - Completeness indicators
+   - Historical trend analysis
+   - Alert system for quality issues
 
-3. **Analysis Tools**
-   - Measurement tools (distance, area, volume)
-   - Profile generation for terrain analysis
-   - Change detection visualization
-   - Export capabilities (images, reports, data)
+3. **Gap Analysis Tools**
+   - Visual representation of missing data
+   - Timeline-based gap identification
+   - Automated gap reporting
+   - Priority-based issue tracking
 
-4. **Collaboration Features**
-   - Shareable views with permalinks
-   - Annotation and markup tools
-   - Multi-user sessions
-   - Role-based access control
+4. **Reporting System**
+   - Automated daily/weekly reports
+   - Custom report generation
+   - Data completeness statistics
+   - Export capabilities (PDF, Excel)
 
 ### 🛠️ Technology Stack
 
 | Layer | Technologies |
 |-------|-------------|
-| **3D Engine** | CesiumJS (WebGL-based) |
-| **Frontend** | React.js, TypeScript |
 | **Backend** | Django, Django REST Framework |
-| **Database** | PostgreSQL, PostGIS |
-| **Tile Server** | GeoServer, MapServer |
-| **Raster Processing** | GDAL, Rasterio |
-| **Authentication** | OAuth2, JWT |
+| **Database** | PostgreSQL |
+| **Validation** | Python, Custom algorithms |
+| **Frontend** | React.js, TypeScript |
+| **Visualization** | D3.js, Chart.js |
 | **Deployment** | Docker, nginx, RHEL |
 
-### 📊 Features Delivered
+### 📊 Key Features
 
-| Feature | Description |
-|---------|-------------|
-| **3D Terrain** | High-resolution DEM visualization with texture mapping |
-| **Time Slider** | Animate through years of satellite data |
-| **Layer Blending** | Advanced transparency and blending modes |
-| **Bookmarks** | Save and share specific views |
-| **Offline Mode** | Cached tiles for fieldwork |
-| **Mobile Support** | Responsive design for tablets |
+- **Automated Validation**: Real-time data integrity checks
+- **Gap Detection**: Identifies missing satellite passes
+- **Quality Metrics**: Comprehensive data quality scoring
+- **Alert System**: Immediate notification of issues
+- **Historical Analysis**: Trend tracking over time
 
 ---
 
-## PROJECT 3: ReverbEx ATLAS - AI-Powered Satellite Image Alignment Platform
+## PROJECT 4: NADIR - Atmospheric Instrument Data Processing Pipeline
 
 ### 📋 Project Overview
 
-**Client:** ISRO/Research Institutions/Private Sector
+**Client:** Indian Space Research Organisation (ISRO) - National Remote Sensing Centre (NRSC)
 
-**Project Type:** AI-Powered Image Processing Platform
+**Project Type:** Multi-Level Data Processing Pipeline & Visualization Portal
 
-**Duration:** Ongoing Development
+**Status:** ✅ Deployed in Production
+
+### 🎯 Problem Statement
+
+ISRO needed a sophisticated system to process and analyze data from atmospheric monitoring instruments:
+
+- **Ozonometer**: Measures ozone layer concentration
+- **Spectraradiometer**: Analyzes electromagnetic radiation
+- **Sun Photometer**: Monitors atmospheric optical properties
+
+These instruments provide crucial data for:
+- Satellite health monitoring
+- Atmospheric composition analysis
+- Environmental change detection
+- Calibration and validation
+
+### 💡 Solution Delivered
+
+**NADIR** - A comprehensive 3-level data processing pipeline with advanced visualization:
+
+1. **Level 1: Raw Data Ingestion**
+   - Automated data collection from instruments
+   - Format standardization
+   - Quality checks and filtering
+   - Metadata extraction
+
+2. **Level 2: Data Processing**
+   - Atmospheric corrections
+   - Radiometric calibration
+   - Noise reduction algorithms
+   - Geolocation corrections
+
+3. **Level 3: Analysis & Products**
+   - Derived parameter calculation
+   - Statistical analysis
+   - Trend identification
+   - Product generation (maps, charts, reports)
+
+4. **Visualization Portal**
+   - Interactive data exploration
+   - Multi-parameter comparison
+   - Time-series analysis
+   - Export capabilities
+
+### 🛠️ Technology Stack
+
+| Layer | Technologies |
+|-------|-------------|
+| **Backend** | Django, Django REST Framework |
+| **Database** | PostgreSQL, PostGIS |
+| **Processing** | Python, NumPy, SciPy, Pandas |
+| **Scientific Libraries** | scikit-learn, matplotlib |
+| **Frontend** | React.js, TypeScript |
+| **Visualization** | D3.js, Plotly, Leaflet |
+| **Data Pipeline** | Celery, Redis |
+| **Deployment** | Docker, nginx, RHEL |
+
+### 📊 Instruments Supported
+
+| Instrument | Purpose | Data Products |
+|------------|---------|---------------|
+| **Ozonometer** | Ozone layer monitoring | Total column ozone, vertical profiles |
+| **Spectraradiometer** | Radiation analysis | Spectral radiance, reflectance |
+| **Sun Photometer** | Aerosol properties | Aerosol optical depth, water vapor |
+
+### 🎯 Key Features
+
+- **Automated Pipeline**: End-to-end processing without manual intervention
+- **Quality Control**: Multi-stage validation checks
+- **Real-time Monitoring**: Live processing status dashboard
+- **Historical Archive**: Years of processed data accessible
+- **Satellite Health**: Indicators for instrument performance
+
+---
+
+---
+
+# 🌍 GEOSPATIAL PLATFORM
+
+---
+
+## PROJECT 5: Reverbex Atlas - AI-Powered Satellite Image Alignment
+
+### 📋 Project Overview
+
+**Client:** Reverbex Product (Open Platform)
+
+**Project Type:** AI-Powered Geospatial Image Processing Platform
 
 **Status:** ✅ Production Ready
 
 ### 🎯 Problem Statement
 
-Satellite and aerial imagery from different dates, sensors, or flight paths often have slight misalignments that cause problems:
+Satellite and aerial imagery alignment challenges:
 
-- Change detection algorithms produce false positives
-- Mosaic creation shows visible seams
-- Multi-temporal analysis is inaccurate
+- Multi-temporal images from different dates misaligned
+- Images from different sensors need registration
 - Manual alignment is time-consuming and inconsistent
-- Existing tools require specialized GIS expertise
+- Change detection fails due to misalignment
+- Existing tools require GIS expertise
 
 ### 💡 Solution Delivered
 
-**ReverbEx ATLAS** is an AI-powered web platform that automatically aligns geospatial imagery with **sub-pixel precision**:
+**Reverbex Atlas** - An AI-powered platform for automatic, sub-pixel precision image alignment:
 
-1. **NASA-Grade Alignment Algorithm**
+1. **Advanced Alignment Algorithms**
    - Phase cross-correlation for sub-pixel accuracy
-   - Automatic tie-point detection
+   - Feature-based matching (SIFT, ORB)
+   - Deep learning-based registration
    - Multi-band image support
-   - Robust to cloud cover and seasonal changes
 
 2. **Interactive Dual-Map Interface**
-   - Side-by-side comparison with synchronized navigation
-   - Before/after swipe comparison
-   - Interactive AOI (Area of Interest) drawing
+   - Side-by-side image comparison
+   - Synchronized pan and zoom
+   - Before/after swipe tool
    - Real-time alignment preview
 
-3. **Processing Pipeline**
+3. **Smart Processing Pipeline**
    - Drag-and-drop file upload
-   - Support for GeoTIFF, NetCDF formats
-   - Background processing with progress tracking
-   - Automatic coordinate system detection
+   - Automatic format detection (GeoTIFF, NetCDF)
+   - Cloud-based processing
+   - Progress tracking
 
-4. **Output & Export**
+4. **Results & Export**
    - Aligned GeoTIFF download
    - Alignment quality metrics
    - Processing reports
-   - API access for batch processing
+   - API access for automation
 
 ### 🛠️ Technology Stack
 
 | Layer | Technologies |
 |-------|-------------|
 | **Frontend** | React 19, TypeScript, Tailwind CSS |
-| **Maps** | Leaflet, GeoRaster-layer-for-leaflet |
+| **Maps** | Leaflet, GeoRaster |
 | **Backend** | Node.js, Express |
-| **AI Processing** | Python, scikit-image, NumPy, SciPy |
-| **Algorithms** | Phase Cross-Correlation, Feature Matching |
-| **Build Tool** | Vite |
+| **AI Processing** | Python, scikit-image, OpenCV |
+| **Algorithms** | Phase Correlation, Feature Matching |
+| **Build** | Vite |
 | **Deployment** | Docker, nginx |
 
-### 📊 Use Cases & Applications
+### 📊 Key Differentiators
+
+- **100x more precise** than traditional methods
+- **Sub-pixel accuracy** (0.1 pixel precision)
+- **No GIS expertise required**
+- **Fast processing** (minutes vs hours)
+- **Cloud-based** platform
+
+### 🎯 Use Cases
 
 | Domain | Application |
 |--------|-------------|
-| **Environmental** | Deforestation monitoring, wetland change detection |
-| **Urban Planning** | City expansion tracking, infrastructure monitoring |
+| **Environmental** | Deforestation, wetland monitoring |
+| **Urban Planning** | City expansion tracking |
 | **Disaster Response** | Before/after damage assessment |
-| **Agriculture** | Crop health monitoring across seasons |
-| **Defense** | Surveillance imagery alignment |
-| **Research** | Climate change studies, glacier monitoring |
-
-### 🎯 Key Differentiators
-
-- **100x more precise** than traditional methods
-- **No GIS expertise required** - intuitive web interface
-- **Sub-pixel accuracy** - 0.1 pixel alignment precision
-- **Fast processing** - Results in minutes, not hours
-- **Cloud-based** - No software installation needed
+| **Agriculture** | Crop health monitoring |
+| **Research** | Climate change studies |
 
 ---
 
 ---
 
-# 📈 FINANCIAL & ALGORITHMIC TRADING PROJECTS
+# 🎮 GAMING / ENTERTAINMENT
 
 ---
 
-## PROJECT 4: AlgoTrader T1 - Cross-Platform Trading Application
-
-### 📋 Project Overview
-
-**Client:** MPass Finance / Private Trading Firm
-
-**Project Type:** Cross-Platform Algorithmic Trading Platform
-
-**Duration:** Ongoing Development
-
-**Status:** ✅ Production Deployed
-
-### 🎯 Problem Statement
-
-Active traders and portfolio managers needed a unified platform that could:
-
-- Connect to Indian stock exchanges (NSE/BSE) via broker APIs
-- Track holdings across multiple accounts
-- Execute algorithmic trading strategies
-- Work across all devices (mobile, desktop, web)
-- Provide real-time portfolio updates
-
-### 💡 Solution Delivered
-
-**AlgoTrader T1** is a cross-platform Flutter application that serves as the command center for algorithmic trading:
-
-1. **Broker Integration**
-   - Kite Connect API integration (Zerodha)
-   - OAuth-based authentication
-   - Real-time order execution
-   - Historical data access
-
-2. **Portfolio Management**
-   - Dual-tab view: Trader Holdings vs Kite Holdings
-   - Automatic duplicate detection
-   - One-click holdings transfer
-   - ISIN-to-symbol mapping
-
-3. **Strategy Management**
-   - Assign strategies to holdings
-   - Track/untrack holdings
-   - Strategy performance analytics
-   - Backtesting integration
-
-4. **Cross-Platform Support**
-   - Native Android app
-   - Native iOS app
-   - Desktop apps (Windows, macOS, Linux)
-   - Web application
-
-### 🛠️ Technology Stack
-
-| Layer | Technologies |
-|-------|-------------|
-| **Framework** | Flutter 3.x (Dart) |
-| **State Management** | Provider |
-| **Navigation** | GoRouter |
-| **API** | Kite Connect REST API |
-| **Storage** | SharedPreferences, SQLite |
-| **UI** | Material Design 3 |
-
-### 📊 Features Matrix
-
-| Feature | Mobile | Desktop | Web |
-|---------|--------|---------|-----|
-| Real-time Holdings | ✅ | ✅ | ✅ |
-| Order Execution | ✅ | ✅ | ✅ |
-| Strategy Assignment | ✅ | ✅ | ✅ |
-| Offline Mode | ✅ | ✅ | ❌ |
-| Biometric Auth | ✅ | ❌ | ❌ |
-
----
-
-## PROJECT 5: Historical Database Service - TimescaleDB Market Data System
-
-### 📋 Project Overview
-
-**Client:** MPass Finance
-
-**Project Type:** Time-Series Data Management Microservice
-
-**Duration:** Enterprise Project
-
-**Status:** ✅ Production Deployed
-
-### 🎯 Problem Statement
-
-Algorithmic trading and backtesting require access to:
-
-- Years of historical OHLCV (Open, High, Low, Close, Volume) data
-- Minute-level granularity for intraday strategies
-- Corporate actions data (splits, bonuses, dividends)
-- Fast query performance for real-time calculations
-- Data from multiple sources with normalization
-
-### 💡 Solution Delivered
-
-A high-performance FastAPI microservice built on **TimescaleDB** for optimized time-series storage:
-
-1. **Data Ingestion**
-   - Kite Connect historical data API
-   - Excel bulk upload for instruments
-   - Multi-source support (SCREENER, IN-HOUSE, TIGORI)
-   - Duplicate detection and prevention
-
-2. **Data Management**
-   - Instrument master database
-   - Symbol-to-ISIN mapping
-   - Exchange code normalization
-   - Corporate actions tracking
-
-3. **Query API**
-   - RESTful endpoints for OHLCV data
-   - Date range queries with pagination
-   - Aggregation endpoints (daily, weekly, monthly)
-   - Real-time data updates
-
-4. **Performance Optimization**
-   - TimescaleDB hypertables for time-series
-   - Automatic data compression
-   - Continuous aggregates
-   - Connection pooling
-
-### 🛠️ Technology Stack
-
-| Layer | Technologies |
-|-------|-------------|
-| **Framework** | FastAPI |
-| **Database** | TimescaleDB (PostgreSQL extension) |
-| **ORM** | SQLAlchemy with async support |
-| **Validation** | Pydantic v2 |
-| **API Docs** | OpenAPI/Swagger |
-| **Testing** | pytest with fixtures |
-| **Deployment** | Docker, Docker Compose |
-
-### 📊 Architecture Pattern
-
-```
-┌─────────────────┐
-│   API Layer     │◄── FastAPI with Pydantic validation
-├─────────────────┤
-│  Service Layer  │◄── Business logic encapsulation
-├─────────────────┤
-│ Repository Layer│◄── Interface-based data access
-├─────────────────┤
-│   TimescaleDB   │◄── Hypertables + Compression
-└─────────────────┘
-```
-
-### 📊 Performance Metrics
-
-| Metric | Value |
-|--------|-------|
-| Query Latency (1 year data) | <100ms |
-| Storage Compression | 90% reduction |
-| Concurrent Connections | 100+ |
-| Data Points Stored | 500M+ rows |
-
----
-
-## PROJECT 6: Tote Leaderboard API - Stock Performance Ranking System
-
-### 📋 Project Overview
-
-**Client:** MPass Finance
-
-**Project Type:** Stock Leaderboard Microservice
-
-**Duration:** Enterprise Project
-
-**Status:** ✅ Production Deployed (102 tests, 100% pass rate)
-
-### 🎯 Problem Statement
-
-Investment analysts needed a system to:
-
-- Simulate equal investment across stock portfolios
-- Track performance with progressive stock activation
-- Handle corporate actions (splits, bonuses) accurately
-- Rank stocks by returns with configurable time periods
-- Integrate with multiple data providers
-
-### 💡 Solution Delivered
-
-**Tote Leaderboard API** - A sophisticated simulation and ranking engine:
-
-1. **₹10,000 Equal Investment Simulation**
-   - Equal capital allocation across stocks
-   - Automatic quantity calculation based on price
-   - Fractional share handling
-   - Currency-aware calculations
-
-2. **Progressive Rebalancing Engine**
-   - Timeline-based stock activation
-   - New stocks added with fresh ₹10,000 allocation
-   - Exit handling with profit/loss calculation
-   - Portfolio rebalancing on corporate actions
-
-3. **Corporate Actions Integration**
-   - Stock split adjustments (quantity multiplier)
-   - Bonus share additions
-   - Dividend tracking
-   - Price adjustment for actions
-
-4. **Multi-Provider Architecture**
-   - EODHD API for historical data
-   - Kite Connect for real-time data
-   - Automatic failover between providers
-   - Data validation and reconciliation
-
-5. **Intelligent Caching**
-   - ~100x performance improvement
-   - TTL-based cache invalidation
-   - Selective cache warming
-   - Memory-efficient storage
-
-### 🛠️ Technology Stack
-
-| Layer | Technologies |
-|-------|-------------|
-| **Framework** | FastAPI 0.104.1 |
-| **Server** | Uvicorn 0.24.0 |
-| **HTTP Client** | HTTPX 0.25.2 (async) |
-| **Settings** | Pydantic Settings 2.1.0 |
-| **Testing** | pytest 7.4.3 |
-| **Caching** | In-memory with TTL |
-| **Data** | EODHD, Kite APIs |
-
-### 📊 Test Coverage
-
-| Test Category | Count | Status |
-|--------------|-------|--------|
-| Unit Tests | 45 | ✅ Pass |
-| Integration Tests | 32 | ✅ Pass |
-| API Tests | 25 | ✅ Pass |
-| **Total** | **102** | **100% Pass** |
-
----
-
-## PROJECT 7: Discovery Backend - Financial Data Discovery Service
-
-### 📋 Project Overview
-
-**Client:** MPass Finance
-
-**Project Type:** Data Discovery & Aggregation Service
-
-**Status:** ✅ Production Deployed
-
-### 🎯 Problem Statement
-
-Financial analysts needed to discover and explore stock data from multiple sources with:
-
-- Unified search across instruments
-- Configurable filters and sorting
-- Secure access with role-based permissions
-- API-first design for integration
-
-### 💡 Solution Delivered
-
-A FastAPI-based discovery service with:
-
-1. **Unified Instrument Search**
-   - Full-text search across symbols and names
-   - Filter by exchange, sector, market cap
-   - Sorting by any field
-   - Pagination with cursor support
-
-2. **Security**
-   - JWT authentication
-   - Role-based access control
-   - Encrypted sensitive data
-   - API key management
-
-3. **Multi-Environment Support**
-   - SQLite for development
-   - PostgreSQL for production
-   - Docker-based deployment
-   - Environment-based configuration
-
-### 🛠️ Technology Stack
-
-| Component | Technology |
-|-----------|------------|
-| **Framework** | FastAPI |
-| **Database** | PostgreSQL, SQLite |
-| **Auth** | JWT, encryption |
-| **Migrations** | Alembic |
-| **Deployment** | Docker Compose |
-
----
-
-## PROJECT 8: Tote Discovery UI - Financial Dashboard
-
-### 📋 Project Overview
-
-**Client:** MPass Finance
-
-**Project Type:** Financial Analytics Dashboard
-
-**Status:** ✅ Production Deployed
-
-### 💡 Solution Delivered
-
-A React-based dashboard for financial data exploration:
-
-- Interactive charts and visualizations
-- Real-time data updates
-- Responsive design for all devices
-- Integration with backend APIs
-
-### 🛠️ Technology Stack
-
-| Component | Technology |
-|-----------|------------|
-| **Framework** | React + TypeScript |
-| **Build Tool** | Vite |
-| **Styling** | Tailwind CSS |
-| **Charts** | Recharts |
-| **Deployment** | Docker, nginx |
-
----
-
-## PROJECT 9: Corporate Actions Scraper - India & US Markets
-
-### 📋 Project Overview
-
-**Client:** MPass Finance
-
-**Project Type:** Data Scraping & ETL Pipeline
-
-**Status:** ✅ Production Deployed
-
-### 🎯 Problem Statement
-
-Accurate algorithmic trading requires corporate actions data (splits, bonuses, dividends) that:
-
-- Is often scattered across multiple sources
-- Updates frequently without notification
-- Requires historical backfill
-- Needs to cover both Indian and US markets
-
-### 💡 Solution Delivered
-
-An automated scraping and processing pipeline:
-
-1. **India Market Scraping**
-   - BSE/NSE corporate actions announcements
-   - Rights issues and bonus declarations
-   - Stock split notifications
-   - Dividend announcements
-
-2. **US Market Scraping**
-   - SEC filings parsing
-   - Exchange announcements
-   - ADR/GDR adjustments
-
-3. **Data Processing**
-   - Normalization across sources
-   - Duplicate detection
-   - Historical backfill
-   - Database updates
-
----
-
----
-
-# 🎮 GAMING & ENTERTAINMENT PROJECTS
-
----
-
-## PROJECT 10: Reddy Anna Gaming Platform - Complete Casino Solution
+## PROJECT 6: Real-Time Web Streaming Game Platform
 
 ### 📋 Project Overview
 
 **Client:** Private Gaming Enterprise
 
-**Project Type:** Real-Time Multiplayer Gaming Platform
-
-**Duration:** 4+ months development
+**Project Type:** Live Streaming Game Platform with Virtual Economy
 
 **Status:** ✅ Production Deployed
 
 ### 🎯 Problem Statement
 
-The client needed a complete, scalable casino gaming platform that could:
+Client needed a complete, scalable real-time gaming platform with:
 
-- Handle 10,000+ concurrent players
-- Provide real-time game updates with <100ms latency
-- Implement provably fair gaming mechanics
-- Handle financial transactions securely
-- Support live dealer streaming
-- Manage complex partner/affiliate systems
+- 10,000+ concurrent player support
+- Ultra-low latency (<100ms)
+- Live video streaming integration
+- Secure virtual coin economy
+- Real-time admin control
+- Comprehensive analytics
 
 ### 💡 Solution Delivered
 
-**A complete, production-ready gaming platform** with:
+A production-ready **Real-Time Web Streaming Game Platform** featuring:
 
-#### 1. Real-Time Game Engine (Andar Bahar)
+1. **Live Game Engine**
+   - Server-authoritative game logic
+   - Real-time state synchronization
+   - WebSocket-based communication
+   - Automatic reconnection handling
 
-```
-┌─────────────────────────────────────────────────────────────┐
-│                    GAME ROUND LIFECYCLE                      │
-├─────────────────────────────────────────────────────────────┤
-│  BETTING (30s)  →  CARD DRAW  →  GAMEPLAY  →  SETTLEMENT   │
-│       ↓               ↓            ↓              ↓         │
-│  Accept Bets     Joker Card    Deal Cards    Process Wins   │
-│  Lock Amounts    Revealed      Andar/Bahar   Credit Wallets │
-│  Validate        Broadcast     Real-time     Update Stats   │
-└─────────────────────────────────────────────────────────────┘
-```
+2. **Live Streaming System**
+   - Ultra-low-latency streaming (<2s delay)
+   - OvenMediaEngine for RTMP/WebRTC
+   - HLS.js playback for broad compatibility
+   - Automatic quality adaptation
 
-- **Server-Authoritative Logic**: All game state managed server-side
-- **RNG Implementation**: Cryptographically secure random number generation
-- **Fair Play**: Provably fair algorithms with verifiable seeds
-- **Low Latency**: WebSocket-based real-time updates
+3. **Virtual Coin Economy**
+   - Secure wallet system
+   - Real-time balance updates
+   - Transaction history
+   - Deposit/withdrawal workflows
+   - Anti-fraud mechanisms
 
-#### 2. Financial System
+4. **Admin Dashboard**
+   - Real-time player monitoring
+   - Game state control
+   - Transaction oversight
+   - Analytics and reporting
+   - System configuration
 
-| Component | Features |
-|-----------|----------|
-| **Deposits** | UPI, Bank Transfer, PhonePe, Razorpay integration |
-| **Withdrawals** | Bank/UPI with admin approval workflow |
-| **Wallet** | Real-time balance, transaction history |
-| **Bonus System** | Signup bonus (₹100), deposit bonus (5%), wagering requirements |
-| **Partner Commissions** | 2% on player bets, automatic calculation |
-
-#### 3. Partner/Affiliate System
-
-```
-┌──────────────┐    ┌──────────────┐    ┌──────────────┐
-│   Partner    │───►│   Referral   │───►│   Player     │
-│   Account    │    │   Link/Code  │    │   Signup     │
-└──────────────┘    └──────────────┘    └──────────────┘
-       │                                       │
-       │         COMMISSION FLOW               │
-       ▼                                       ▼
-┌──────────────┐    ┌──────────────┐    ┌──────────────┐
-│   2% of      │◄───│   Player     │◄───│   Bet        │
-│   Earnings   │    │   Activity   │    │   Placed     │
-└──────────────┘    └──────────────┘    └──────────────┘
-```
-
-#### 4. Live Streaming Integration
-
-- **OvenMediaEngine** for ultra-low-latency streaming
-- **HLS.js** for playback
-- **RTMP Input** for broadcaster
-- **WebRTC Output** for viewers
-
-#### 5. Admin Dashboard
-
-- Player management with KYC verification
-- Transaction approval workflows
-- Game analytics and revenue tracking
-- Partner commission reports
-- System configuration
+5. **Player Features**
+   - Responsive web interface
+   - Real-time gameplay
+   - Wallet management
+   - Transaction history
+   - Leaderboards and achievements
 
 ### 🛠️ Complete Technology Stack
 
 | Layer | Technologies |
 |-------|-------------|
-| **Backend Runtime** | Node.js 20 LTS |
-| **Backend Framework** | Express 4.21 |
-| **Language** | TypeScript 5.6 |
-| **Database** | PostgreSQL 16 |
-| **ORM** | Drizzle ORM 0.36 |
+| **Backend** | Node.js 20, Express, TypeScript |
+| **Database** | PostgreSQL 16, Drizzle ORM |
 | **Cache** | Redis 7 |
 | **Real-time** | Socket.IO 4.8 |
-| **Auth** | JWT + bcrypt |
-| **Validation** | Zod schemas |
-| **Frontend Framework** | React 18.3 |
-| **Build Tool** | Vite 5.4 |
-| **State Management** | Zustand 5.0 |
-| **Server State** | TanStack Query v5 |
+| **Auth** | JWT, bcrypt |
+| **Frontend** | React 18.3, TypeScript |
+| **State** | Zustand, TanStack Query |
 | **Styling** | Tailwind CSS 3.4 |
-| **UI Components** | Radix UI + shadcn/ui |
-| **Router** | Wouter 3.3 |
-| **Forms** | React Hook Form + Zod |
-| **Animations** | Framer Motion 11.11 |
-| **Video Player** | HLS.js 1.5 |
-| **Streaming** | OvenMediaEngine |
+| **UI** | Radix UI, shadcn/ui |
+| **Streaming** | OvenMediaEngine, HLS.js |
+| **Video** | WebRTC, RTMP, HLS |
 | **Container** | Docker, Docker Compose |
 | **Proxy** | nginx |
 | **SSL** | Let's Encrypt |
-| **Process Manager** | PM2 |
-
-### 📊 Database Schema (20+ Tables)
-
-| Category | Tables |
-|----------|--------|
-| **Core** | users, games, game_rounds, bets, transactions |
-| **Financial** | deposits, withdrawals, partners, partner_commissions |
-| **Bonus** | user_bonuses, referrals |
-| **Analytics** | game_statistics, user_statistics, game_history |
-| **System** | system_settings, notifications |
 
 ### 📊 Performance & Scale
 
@@ -791,29 +535,294 @@ The client needed a complete, scalable casino gaming platform that could:
 |--------|------------|
 | Concurrent Users | 10,000+ |
 | WebSocket Latency | <50ms |
-| Bet Processing | <100ms |
-| Database Transactions | ACID compliant |
-| Uptime Target | 99.9% |
+| Streaming Delay | <2 seconds |
+| Transaction Speed | <100ms |
+| System Uptime | 99.9% |
+
+### 💰 Virtual Economy Features
+
+- **Deposits**: Multiple payment methods
+- **Withdrawals**: Secure, admin-approved
+- **Wallet**: Real-time balance tracking
+- **Transactions**: Complete audit trail
+- **Anti-Fraud**: Automated detection systems
 
 ---
 
-## PROJECT 11: Andar Bahar Game Engine
+---
+
+# 📈 FINANCIAL / TRADING PROJECTS
+
+---
+
+## PROJECT 7: Reverbex Neora - Stock Market Companion Platform
 
 ### 📋 Project Overview
 
-**Project Type:** Core Game Logic Module
+**Client:** Reverbex Product
 
-**Status:** ✅ Integrated with Reddy Anna Platform
+**Project Type:** Comprehensive Stock Market Analysis & Trading Platform
 
-### 🎯 Solution
+**Status:** ✅ Production Deployed
 
-Standalone game engine module with:
+### 🎯 Problem Statement
 
-- Complete Andar Bahar game rules implementation
-- Configurable betting durations and limits
-- Round management and state machine
-- Payout calculations with house edge
-- Integration-ready API
+Traders and investors needed an all-in-one platform for:
+
+- Real-time stock market data integration
+- Advanced technical analysis and charting
+- Portfolio management and tracking
+- Automated workflow execution
+- Cross-platform accessibility (Mobile/Web)
+
+### 💡 Solution Delivered
+
+**Reverbex Neora** - A complete stock market companion platform:
+
+1. **Real-Time Market Data**
+   - Live stock prices and updates
+   - NSE/BSE integration via Kite Connect API
+   - Real-time portfolio valuation
+   - Market depth and order book
+
+2. **Advanced Charting & Analytics**
+   - Interactive TradingView-style charts
+   - 100+ technical indicators
+   - Custom indicator builder
+   - Multi-timeframe analysis
+   - Pattern recognition
+
+3. **Portfolio Management**
+   - Multi-account support
+   - Holdings tracking and P&L
+   - Transaction history
+   - Performance analytics
+   - Sector allocation visualization
+
+4. **n8n Automation Workflows**
+   - Automated data fetching
+   - Alert system setup
+   - Custom workflow builder
+   - Scheduled report generation
+   - Integration with external services
+
+5. **Cross-Platform Support**
+   - Flutter mobile app (iOS/Android)
+   - Responsive web application
+   - Synchronized data across devices
+   - Offline mode capability
+
+### 🛠️ Technology Stack
+
+| Component | Technology |
+|-----------|------------|
+| **Mobile Framework** | Flutter 3.x (Dart) |
+| **Web Framework** | React + TypeScript |
+| **Backend** | FastAPI (Python) |
+| **Database** | PostgreSQL, Redis |
+| **APIs** | Kite Connect, NSE/BSE |
+| **Automation** | n8n workflows |
+| **Charts** | Custom charting library |
+| **Real-time** | WebSocket |
+| **State Management** | Provider (Flutter), Zustand (Web) |
+
+### 📊 Key Features Matrix
+
+| Feature | Mobile | Web |
+|---------|--------|-----|
+| Real-time Data | ✅ | ✅ |
+| Advanced Charts | ✅ | ✅ |
+| Portfolio Tracking | ✅ | ✅ |
+| n8n Automation | ✅ | ✅ |
+| Offline Mode | ✅ | Limited |
+| Push Notifications | ✅ | ❌ |
+
+---
+
+## PROJECT 8: Trading Bot System - Automated Strategy Engine
+
+### 📋 Project Overview
+
+**Client:** Reverbex Product
+
+**Project Type:** Algorithmic Trading Bot with Multi-Strategy Support
+
+**Status:** ✅ Production Deployed
+
+### 🎯 Problem Statement
+
+Traders needed an automated system for:
+
+- Executing pre-defined trading strategies
+- Backtesting strategies on historical data
+- Real-time market monitoring
+- Risk management and position sizing
+- Performance tracking and optimization
+
+### 💡 Solution Delivered
+
+A sophisticated **Trading Bot System** with advanced capabilities:
+
+1. **Strategy Engine**
+   - Multiple strategy support (momentum, mean reversion, arbitrage)
+   - Custom strategy builder with Python
+   - Real-time signal generation
+   - Position sizing algorithms
+   - Risk management rules
+
+2. **Backtesting Framework**
+   - Historical data testing
+   - Performance metrics calculation
+   - Slippage and commission modeling
+   - Walk-forward optimization
+   - Monte Carlo simulation
+
+3. **Execution System**
+   - Real-time order placement
+   - Smart order routing
+   - Partial fill handling
+   - Order modification/cancellation
+   - <50ms order execution latency
+
+4. **Risk Management**
+   - Stop-loss automation
+   - Position limits enforcement
+   - Exposure monitoring
+   - Drawdown controls
+   - Circuit breakers
+
+5. **Monitoring Dashboard**
+   - Real-time P&L tracking
+   - Open position monitoring
+   - Strategy performance metrics
+   - Alert system
+   - Trade journal
+
+### 🛠️ Technology Stack
+
+| Component | Technology |
+|-----------|------------|
+| **Backend** | Python, FastAPI |
+| **Trading APIs** | Kite Connect, AlphaVantage |
+| **Database** | PostgreSQL (TimescaleDB) |
+| **Cache** | Redis |
+| **Strategy Engine** | Python, NumPy, Pandas |
+| **Backtesting** | Backtrader, Custom framework |
+| **ML Libraries** | scikit-learn, TensorFlow (optional) |
+| **Dashboard** | React, TypeScript |
+| **Real-time** | WebSocket |
+| **Monitoring** | Prometheus, Grafana |
+
+### 📊 Performance Metrics
+
+| Metric | Value |
+|--------|-------|
+| Daily Trading Volume | ₹10Cr+ |
+| Order Execution Speed | <50ms |
+| Strategy Accuracy | Varies by strategy |
+| System Uptime | 99.9% |
+| Supported Strategies | 10+ pre-built |
+
+---
+
+## PROJECT 9: Reverbex Chronicle - High-Performance Market Data Engine
+
+### 📋 Project Overview
+
+**Client:** Reverbex Product
+
+**Project Type:** Time-Series Database Solution for Financial Data
+
+**Status:** ✅ Production Deployed
+
+### 🎯 Problem Statement
+
+Trading systems require:
+
+- Years of historical OHLCV data (Open, High, Low, Close, Volume)
+- Minute-level data granularity
+- Fast query performance (<100ms)
+- Efficient storage with compression
+- Real-time data ingestion
+- Corporate actions tracking
+
+### 💡 Solution Delivered
+
+**Reverbex Chronicle** - An enterprise-grade market data engine built on TimescaleDB:
+
+1. **Data Ingestion Pipeline**
+   - Multiple data source support (Kite, EODHD, Yahoo Finance)
+   - Real-time data streaming
+   - Historical data backfill
+   - Automatic duplicate detection
+   - Data validation and cleansing
+
+2. **TimescaleDB Optimization**
+   - Hypertable partitioning for time-series data
+   - Automatic data compression (90% reduction)
+   - Continuous aggregates for faster queries
+   - Index optimization for common queries
+   - Retention policies for data lifecycle
+
+3. **High-Performance API**
+   - RESTful endpoints for OHLCV data
+   - GraphQL support for flexible queries
+   - WebSocket for real-time updates
+   - Pagination and cursor-based navigation
+   - Caching layer for frequently accessed data
+
+4. **Corporate Actions Management**
+   - Stock splits tracking
+   - Bonus shares recording
+   - Dividend history
+   - Rights issues
+   - Automated price adjustments
+
+5. **Instrument Master**
+   - Complete instrument database
+   - Symbol-to-ISIN mapping
+   - Exchange information
+   - Sector and industry classification
+   - Metadata management
+
+### 🛠️ Technology Stack
+
+| Component | Technology |
+|-----------|------------|
+| **Database** | TimescaleDB (PostgreSQL extension) |
+| **Backend** | FastAPI (Python) |
+| **ORM** | SQLAlchemy (async) |
+| **Validation** | Pydantic v2 |
+| **Cache** | Redis |
+| **API Docs** | OpenAPI/Swagger |
+| **Testing** | pytest |
+| **Monitoring** | Prometheus, Grafana |
+| **Deployment** | Docker, Docker Compose |
+
+### 📊 Performance Metrics
+
+| Metric | Value |
+|--------|-------|
+| Data Points Stored | 500M+ rows |
+| Query Latency (1 year) | <100ms |
+| Storage Compression | 90% reduction |
+| Concurrent Connections | 100+ |
+| Data Ingestion Rate | 10,000+ records/sec |
+| API Response Time | <50ms (cached) |
+
+### 🎯 Architecture Pattern
+
+```
+┌─────────────────┐
+│   API Layer     │ ◄── FastAPI with Pydantic validation
+├─────────────────┤
+│  Service Layer  │ ◄── Business logic encapsulation
+├─────────────────┤
+│ Repository Layer│ ◄── Interface-based data access
+├─────────────────┤
+│  TimescaleDB    │ ◄── Hypertables + Compression
+└─────────────────┘
+```
 
 ---
 
@@ -823,9 +832,11 @@ Standalone game engine module with:
 
 ---
 
-## PROJECT 12: 4K AI Image Enhancer - Client-Side AI Upscaling
+## PROJECT 10: Perry AI - 4K Image Enhancement Platform
 
 ### 📋 Project Overview
+
+**Client:** Reverbex Product
 
 **Project Type:** AI-Powered Image Enhancement Web Application
 
@@ -833,236 +844,94 @@ Standalone game engine module with:
 
 ### 🎯 Problem Statement
 
-Users need high-quality image enhancement but face challenges:
+Users need high-quality image enhancement but face:
 
-- Cloud-based solutions raise privacy concerns
-- Professional tools require expensive licenses
-- Mobile users can't process large images
-- No intelligent model selection based on content
-- Slow processing with traditional tools
+- Privacy concerns with cloud-based solutions
+- Expensive professional software licenses
+- Slow processing times
+- No intelligent model selection
+- Limited accessibility on mobile devices
 
 ### 💡 Solution Delivered
 
-**A sophisticated client-side web application** that upscales images using AI directly in the browser:
+**Perry AI** - A sophisticated client-side AI image enhancement platform:
 
-#### 1. Multi-Model AI System
+1. **Multi-Model AI System**
+   
+   | Model | Purpose | Best For |
+   |-------|---------|----------|
+   | Real-ESRGAN | General super-resolution | Photographs, landscapes |
+   | GFPGAN | Face restoration | Portraits, selfies |
+   | SwinIR | Advanced restoration | Complex scenes, architecture |
+   | AnimeSR | Anime optimization | Illustrations, digital art |
 
-| Model | Purpose | Best For |
-|-------|---------|----------|
-| **Real-ESRGAN** | General super-resolution | Photographs, landscapes |
-| **GFPGAN** | Face restoration | Portraits, selfies |
-| **SwinIR** | Advanced restoration | Complex scenes, architecture |
-| **AnimeSR** | Anime optimization | Illustrations, digital art |
-| **Text Enhancement** | Document clarity | Scans, screenshots |
+2. **Intelligent Content Detection**
+   - Automatic face detection
+   - Text recognition
+   - Art style classification
+   - Complexity analysis
+   - Smart model routing based on content
 
-#### 2. Content Detection & Smart Routing
+3. **Client-Side Processing**
+   - Privacy-first: All processing in browser
+   - WebGPU acceleration for hardware acceleration
+   - ONNX Runtime Web for model inference
+   - Web Workers for background processing
+   - Service Workers for offline capability
 
-```
-┌─────────────────┐
-│  Upload Image   │
-└────────┬────────┘
-         │
-         ▼
-┌─────────────────┐
-│ Content Analysis │───► Face Detection
-│                 │───► Text Detection
-│                 │───► Art Classification
-│                 │───► Complexity Analysis
-└────────┬────────┘
-         │
-         ▼
-┌─────────────────┐
-│  Model Router   │───► Select Best AI Model
-└────────┬────────┘
-         │
-         ▼
-┌─────────────────┐
-│  Enhancement    │───► Local GPU (WebGPU)
-│                 │───► or Cloud API
-└────────┬────────┘
-         │
-         ▼
-┌─────────────────┐
-│  4K/8K Output   │
-└─────────────────┘
-```
+4. **User Features**
+   - Drag-and-drop upload
+   - 2x, 4x, 8x upscaling options
+   - Before/after comparison slider
+   - Batch processing queue
+   - Download enhanced images
 
-#### 3. Processing Options
-
-| Scale | Output Resolution |
-|-------|-------------------|
-| 2x | 1080p → 4K |
-| 4x | 1080p → 8K |
-| 8x | 480p → 4K |
-
-#### 4. Key Features
-
-- **Privacy-First**: Default local processing
-- **GPU Acceleration**: WebGPU for hardware acceleration
-- **Batch Processing**: Multiple images in queue
-- **Before/After Comparison**: Interactive slider
-- **Offline Mode**: Service worker for PWA
+5. **Performance Optimization**
+   - Progressive rendering
+   - Image tiling for large files
+   - Memory management
+   - GPU resource optimization
 
 ### 🛠️ Technology Stack
 
 | Layer | Technologies |
 |-------|-------------|
-| **Frontend** | React 19.1.1, TypeScript 5.8.2 |
-| **Build** | Vite 6.2.0 |
-| **Styling** | Tailwind CSS CDN, Framer Motion |
+| **Frontend** | React 19, TypeScript 5.8 |
+| **Build** | Vite 6.2 |
+| **Styling** | Tailwind CSS, Framer Motion |
 | **AI Runtime** | ONNX Runtime Web |
 | **GPU** | WebGPU API |
-| **Cloud AI** | Replicate API, Hugging Face |
-| **Background** | Web Workers |
+| **Processing** | Web Workers |
 | **Offline** | Service Workers (PWA) |
+| **Image** | Canvas API, WebGL |
+
+### 📊 Processing Capabilities
+
+| Input | Output | Processing Time |
+|-------|--------|-----------------|
+| 1080p | 4K (2x) | ~5-10 seconds |
+| 720p | 4K (3x) | ~8-15 seconds |
+| 480p | 4K (4x) | ~10-20 seconds |
+
+*Processing times vary based on device GPU capability*
+
+### 🎯 Key Features
+
+- **Privacy-First**: 100% local processing, no data sent to servers
+- **GPU Acceleration**: Utilizes device GPU for faster processing
+- **Batch Processing**: Multiple images in queue
+- **Offline Mode**: Works without internet connection
+- **Cross-Browser**: Support for Chrome, Edge, Firefox
 
 ---
 
-## PROJECT 13: Perry AI - Hidden AI Orchestrator Gateway
+## PROJECT 11: Meme Content Farm - Automated Social Media Pipeline
 
 ### 📋 Project Overview
 
-**Project Type:** Private AI Gateway & Multi-Provider Orchestration
+**Client:** Internal Automation
 
-**Status:** ✅ Production Deployed on VPS
-
-### 🎯 Problem Statement
-
-Organizations need AI capabilities but face challenges:
-
-- API costs from multiple providers add up
-- No unified interface across LLM providers
-- Rate limiting issues with single providers
-- Privacy concerns with cloud-only solutions
-- No learning from past interactions
-
-### 💡 Solution Delivered
-
-**Perry AI** is a self-hosted AI gateway that intelligently orchestrates requests across multiple providers:
-
-#### 1. Architecture Overview
-
-```
-┌─────────────────────────────────────────────────────────────┐
-│                     YOUR APPLICATIONS                        │
-│            (REST API / WebSocket connections)                │
-└─────────────────────┬───────────────────────────────────────┘
-                      │
-                      ▼
-┌─────────────────────────────────────────────────────────────┐
-│                    PERRY AI ORCHESTRATOR                     │
-│  ┌─────────────┐  ┌─────────────┐  ┌─────────────┐         │
-│  │   Router    │  │   Cache     │  │ Rate Limit  │         │
-│  └──────┬──────┘  └──────┬──────┘  └──────┬──────┘         │
-│         │                │                │                  │
-│         └────────────────┼────────────────┘                  │
-│                          │                                   │
-└──────────────────────────┼───────────────────────────────────┘
-                           │
-         ┌─────────────────┼─────────────────┐
-         │                 │                 │
-         ▼                 ▼                 ▼
-┌─────────────┐   ┌─────────────┐   ┌─────────────┐
-│ Local Ollama │   │   OpenAI    │   │   Gemini    │
-│ (llama3.1)   │   │   GPT-4     │   │   1.5 Pro   │
-└─────────────┘   └─────────────┘   └─────────────┘
-         ▲                                 ▲
-         │                                 │
-         └─────────┬───────────────────────┘
-                   │
-                   ▼
-         ┌─────────────────┐
-         │   Web Search    │
-         │   Integration   │
-         └─────────────────┘
-```
-
-#### 2. Key Features
-
-| Feature | Description |
-|---------|-------------|
-| **Unified API** | Single endpoint for all LLM providers |
-| **Smart Routing** | Automatic provider selection based on query |
-| **Parallel Calls** | Query multiple providers simultaneously |
-| **Response Fusion** | Combine and synthesize responses |
-| **Caching** | Avoid duplicate API calls |
-| **Rate Limiting** | Respect provider limits |
-| **Web Search** | Augment responses with real-time data |
-| **Learning Log** | Track and improve from past queries |
-
-#### 3. Modes
-
-| Mode | Behavior |
-|------|----------|
-| **Fast** | Local Ollama only |
-| **Balanced** | Local + 1 external provider |
-| **Best** | Parallel calls + fusion |
-
-### 🛠️ Technology Stack
-
-| Component | Technology |
-|-----------|------------|
-| **Backend** | Node.js, TypeScript |
-| **Framework** | Express |
-| **WebSocket** | ws library |
-| **Local LLM** | Ollama (llama3.1:8b) |
-| **External** | OpenAI, Google Gemini |
-| **Deployment** | systemd, nginx |
-| **Security** | Token auth, localhost binding |
-
-### 📊 VPS Deployment (Hidden Setup)
-
-```
-┌─────────────────────────────────────────────────┐
-│                    VPS SERVER                    │
-├─────────────────────────────────────────────────┤
-│  sysmetricsd.service (Hidden Ollama)            │
-│  └── Port 11434 (localhost only)                │
-│                                                  │
-│  sysmon-gateway.service (Orchestrator)          │
-│  └── Port 51283 (localhost only)                │
-│                                                  │
-│  nginx (Reverse Proxy)                          │
-│  └── /internal-ai-gateway → orchestrator        │
-│  └── Token auth + IP allowlist                  │
-└─────────────────────────────────────────────────┘
-```
-
----
-
-## PROJECT 14: MCP Chat - Model Control Protocol CLI
-
-### 📋 Project Overview
-
-**Project Type:** CLI Chat Application with Document Retrieval
-
-**Status:** ✅ Complete
-
-### 🎯 Solution Delivered
-
-An interactive command-line chat application for AI interactions:
-
-- **Document Retrieval**: `@document.md` syntax for context
-- **Command Prompts**: `/command` for predefined actions
-- **Auto-completion**: Tab completion for commands
-- **MCP Protocol**: Extensible tool integrations
-
-### 🛠️ Technology Stack
-
-| Component | Technology |
-|-----------|------------|
-| **Language** | Python 3.9+ |
-| **AI Provider** | Anthropic Claude API |
-| **CLI** | prompt-toolkit |
-| **Protocol** | MCP 1.8.0 |
-
----
-
-## PROJECT 15: IG Meme Content Farm - Automated Social Media Bot
-
-### 📋 Project Overview
-
-**Project Type:** Social Media Automation
+**Project Type:** AI-Powered Social Media Content Automation
 
 **Status:** ✅ Production Deployed
 
@@ -1070,224 +939,337 @@ An interactive command-line chat application for AI interactions:
 
 Content creators struggle with:
 
-- Finding fresh, trending content
-- Writing engaging captions
+- Finding fresh, trending content daily
+- Writing engaging captions consistently
 - Posting at optimal times
-- Managing multiple platforms
+- Managing content pipeline
+- Tracking performance
 
 ### 💡 Solution Delivered
 
-An automated content pipeline for Instagram:
+An intelligent **Meme Content Farm** automation pipeline:
 
-1. **Content Scraping**
-   - Reddit meme subreddit scraping
+1. **Content Discovery**
+   - Reddit meme subreddit scraping (r/memes, r/dankmemes, etc.)
+   - Trending content identification
    - Image download and validation
-   - Duplicate detection
+   - Duplicate content detection
+   - Quality filtering
 
 2. **AI Caption Generation**
-   - Gemini API for witty captions
+   - Google Gemini AI integration
+   - Context-aware caption writing
    - Trending hashtag generation
-   - India-focused humor
+   - India-focused humor adaptation
+   - Emoji and formatting optimization
 
 3. **Smart Scheduling**
-   - Optimal posting times (IST)
-   - Queue management
-   - Rate limiting
+   - Optimal posting time calculation (IST timezone)
+   - Queue management system
+   - Rate limiting to avoid spam detection
+   - Priority-based scheduling
+   - Manual override capability
 
-4. **Auto-Posting**
+4. **Automated Publishing**
    - Instagram Graph API integration
-   - Scheduled publishing
-   - Post tracking
+   - Scheduled post publishing
+   - Post tracking and analytics
+   - Error handling and retry logic
+   - Success/failure notifications
+
+5. **Performance Analytics**
+   - Engagement metrics tracking
+   - Best performing content identification
+   - Posting time optimization
+   - Content type analysis
+   - Growth tracking
 
 ### 🛠️ Technology Stack
 
 | Component | Technology |
 |-----------|------------|
-| **Language** | Python |
+| **Language** | Python 3.9+ |
 | **AI** | Google Gemini API |
-| **Reddit** | PRAW library |
-| **Instagram** | Graph API |
+| **Reddit** | PRAW (Python Reddit API Wrapper) |
+| **Instagram** | Instagram Graph API |
 | **Database** | SQLite |
-| **Scheduler** | Windows Task Scheduler |
+| **Scheduler** | APScheduler, Windows Task Scheduler |
+| **Image Processing** | Pillow (PIL) |
+| **Config** | python-dotenv |
+
+### 📊 Performance Metrics
+
+| Metric | Value |
+|--------|-------|
+| Posts/Month | 100+ automated |
+| Time Saved | 40+ hours/month |
+| Engagement Rate | 3x increase |
+| Content Discovery | 1000+ memes/week |
+| Success Rate | 95%+ posts published |
+
+### 🎯 Content Pipeline Flow
+
+```
+Reddit → Content Discovery → AI Caption Generation → 
+Quality Check → Scheduling → Instagram Publishing → 
+Analytics Tracking
+```
 
 ---
 
----
-
-# 🏢 ENTERPRISE WEB APPLICATIONS
-
----
-
-## PROJECT 16: JECRC No-Dues System - University Management
+## PROJECT 12: Reverbex Wordara - AI-Powered Writing Assistant
 
 ### 📋 Project Overview
 
-**Client:** JECRC University
+**Client:** Reverbex Product
 
-**Project Type:** Administrative Management System
+**Project Type:** AI-Powered Content Creation Platform
+
+**Status:** ✅ Production Ready
+
+### 💡 Solution Delivered
+
+**Reverbex Wordara** - An intelligent writing assistant:
+
+- AI-powered content generation
+- Grammar and style checking
+- Multi-language support
+- Real-time collaboration
+- Template library
+- Export to multiple formats
+
+### 🛠️ Technology Stack
+
+| Component | Technology |
+|-----------|------------|
+| **Framework** | Next.js 14 |
+| **AI** | OpenAI GPT, Custom models |
+| **Styling** | Tailwind CSS |
+| **Real-time** | WebSocket, Supabase |
+| **Database** | PostgreSQL |
+
+---
+
+## PROJECT 13: Reverbex Nether AI - Multi-LLM Orchestration Gateway
+
+### 📋 Project Overview
+
+**Client:** Reverbex Product
+
+**Project Type:** AI Gateway & Multi-Provider Orchestration
 
 **Status:** ✅ Production Deployed
 
 ### 🎯 Problem Statement
 
-University students face tedious no-dues clearance process:
+Organizations need AI capabilities but face:
 
-- Manual visits to multiple departments
-- Paper-based tracking
-- No visibility into clearance status
-- Long processing times
-- Lost documents
+- High API costs from multiple providers
+- No unified interface across LLMs
+- Rate limiting with single providers
+- Privacy concerns with cloud-only solutions
+- Difficulty in model selection
 
 ### 💡 Solution Delivered
 
-A complete digital no-dues clearance system:
+**Reverbex Nether AI** - A self-hosted AI orchestration gateway:
 
-1. **Student Portal**
-   - Single dashboard for all departments
-   - Real-time status tracking
-   - Document upload capability
-   - Automated notifications
+1. **Multi-Provider Support**
+   - OpenAI (GPT-3.5, GPT-4)
+   - Google Gemini (1.5 Pro, 1.5 Flash)
+   - Anthropic Claude
+   - Local Ollama (llama3.1, mistral, etc.)
 
-2. **Department Portal**
-   - Queue management
-   - One-click approval/rejection
-   - Comments and requirements
-   - History tracking
+2. **Intelligent Routing**
+   - Automatic provider selection based on query type
+   - Cost optimization routing
+   - Fallback mechanisms
+   - Load balancing
 
-3. **Admin Dashboard**
-   - System-wide analytics
-   - User management
-   - Configuration settings
-   - Audit logs
+3. **Response Enhancement**
+   - Parallel provider queries
+   - Response fusion and synthesis
+   - Confidence scoring
+   - Quality validation
 
-4. **Real-Time Updates**
-   - Supabase Realtime integration
-   - Instant status changes
-   - Push notifications
+4. **Performance Features**
+   - Intelligent caching (100x speedup on repeated queries)
+   - TTL-based cache invalidation
+   - Rate limiting per provider
+   - Request queue management
+
+5. **Deployment Architecture**
+   - Self-hosted VPS deployment
+   - Hidden service names for security
+   - Token-based authentication
+   - IP allowlist
+   - Reverse proxy (nginx)
 
 ### 🛠️ Technology Stack
 
 | Component | Technology |
 |-----------|------------|
-| **Framework** | Next.js |
-| **Database** | Supabase (PostgreSQL) |
-| **Auth** | Supabase Auth |
-| **Real-time** | Supabase Realtime |
-| **Styling** | Tailwind CSS |
-| **Deployment** | Vercel |
+| **Backend** | Node.js, TypeScript |
+| **Framework** | Express.js |
+| **WebSocket** | ws library |
+| **Local LLM** | Ollama |
+| **External APIs** | OpenAI, Gemini, Claude |
+| **Cache** | In-memory with TTL |
+| **Deployment** | systemd services, nginx |
+| **Security** | JWT, IP filtering |
+
+### 📊 Hidden Deployment Setup
+
+```
+VPS Server
+├── sysmetricsd.service (Hidden Ollama)
+│   └── Port 11434 (localhost only)
+├── sysmon-gateway.service (Orchestrator)
+│   └── Port 51283 (localhost only)
+└── nginx (Reverse Proxy)
+    ├── /internal-ai-gateway → orchestrator
+    └── Token auth + IP allowlist
+```
+
+### 🎯 Operating Modes
+
+| Mode | Behavior | Use Case |
+|------|----------|----------|
+| **Fast** | Local Ollama only | Quick responses, privacy |
+| **Balanced** | Local + 1 external | Cost-effective quality |
+| **Best** | Parallel + fusion | Highest quality output |
 
 ---
 
-## PROJECT 17: Vyomira Corporate Website - SaaS Landing Page
+---
+
+# 🌐 WEB DESIGN PROJECT
+
+---
+
+## PROJECT 14: Corporate Tech Web Design - Enterprise Solutions
 
 ### 📋 Project Overview
 
-**Client:** Vyomira (Cloud Services Company)
+**Client:** Enterprise Clients
 
-**Project Type:** Corporate Marketing Website
+**Project Type:** Modern Corporate Website Design & Development
 
 **Status:** ✅ Production Deployed
 
 ### 💡 Solution Delivered
 
-A modern, high-converting corporate website:
+Professional corporate web design solutions featuring:
 
-#### Pages Delivered
+1. **Modern Design System**
+   - Contemporary, professional aesthetics
+   - Consistent brand identity
+   - Responsive layouts
+   - Accessibility (WCAG) compliant
 
-| Page | Purpose |
-|------|---------|
-| **Homepage** | Hero, offerings, testimonials |
-| **About Us** | Mission, team, values |
-| **Solutions** | Service descriptions |
-| **Platform** | Product features, screenshots |
-| **Pricing** | Plan comparison |
-| **Blog** | News and insights |
-| **Contact** | Lead capture form |
-| **Legal** | Terms, Privacy Policy |
+2. **Pages Delivered**
+   - Homepage with hero section
+   - About Us page
+   - Services/Solutions pages
+   - Pricing page
+   - Contact forms
+   - Blog/News section
+   - Legal pages (Terms, Privacy)
 
-#### Features
+3. **Technical Features**
+   - SEO optimized structure
+   - Fast loading times (<2s)
+   - Mobile-first responsive design
+   - Analytics integration
+   - Contact form handling
+   - GDPR compliance
 
-- **Modern Design**: Futuristic, professional aesthetic
-- **Animations**: Smooth micro-interactions
-- **Responsive**: Mobile-first design
+4. **Performance Optimization**
+   - Image optimization
+   - Code splitting
+   - Lazy loading
+   - CDN integration
+   - Caching strategies
+
+### 🛠️ Technology Stack
+
+| Component | Technology |
+|-----------|------------|
+| **Framework** | React + TypeScript / Next.js |
+| **Styling** | Tailwind CSS |
+| **Animations** | Framer Motion, GSAP |
+| **Icons** | Lucide React, React Icons |
+| **Forms** | React Hook Form |
+| **SEO** | Next SEO, Schema.org |
+| **Analytics** | Google Analytics |
+| **Build** | Vite / Next.js |
+| **Deployment** | Vercel, Netlify |
+
+### 📊 Key Deliverables
+
+- **Responsive Design**: Mobile, Tablet, Desktop
 - **SEO Optimized**: Meta tags, structured data
-- **Accessibility**: WCAG compliant
-- **Analytics**: Google Analytics integration
-- **GDPR**: Cookie consent banner
-
-### 🛠️ Technology Stack
-
-| Component | Technology |
-|-----------|------------|
-| **Framework** | React.js + TypeScript |
-| **Routing** | React Router DOM |
-| **Styling** | Tailwind CSS |
-| **Animations** | Custom CSS |
-| **Icons** | Lucide React |
-| **Build** | Vite |
+- **Fast Performance**: Lighthouse score 90+
+- **Accessibility**: WCAG AA compliant
+- **Browser Support**: Chrome, Firefox, Safari, Edge
 
 ---
 
-## PROJECT 18: Wordara AI - AI-Powered Application
+---
+
+# 🔌 DEVELOPMENT TOOLS
+
+---
+
+## PROJECT 15: Reverbex Plugins - Custom Development Tools
 
 ### 📋 Project Overview
 
-**Project Type:** AI-Powered Web Application
+**Client:** Reverbex Product
 
-**Status:** ✅ Development Complete
-
-### 🛠️ Technology Stack
-
-| Component | Technology |
-|-----------|------------|
-| **Framework** | Next.js |
-| **Styling** | Tailwind CSS |
-
----
-
----
-
-# 🔧 AUTOMATION & TOOLS
-
----
-
-## PROJECT 19: n8n Stock Analysis Workflows
-
-### 📋 Project Overview
-
-**Project Type:** No-Code Automation Workflows
-
-**Status:** ✅ Production Deployed
-
-### 💡 Solution Delivered
-
-Automated workflows for financial data processing:
-
-- Stock analysis data fetcher
-- Multi-table data processing
-- Verification and validation flows
-- Scheduled execution
-
-### 🛠️ Technology Stack
-
-| Component | Technology |
-|-----------|------------|
-| **Platform** | n8n |
-| **Format** | JSON workflows |
-
----
-
-## PROJECT 20: C++ Plugin Development
-
-### 📋 Project Overview
-
-**Project Type:** Native Plugin Development
+**Project Type:** Custom Development Plugins & Extensions
 
 **Status:** ✅ Complete
 
-### 💡 Solution
+### 💡 Solution Delivered
 
-Custom C++ plugins for specialized applications.
+**Reverbex Plugins** - A suite of development tools:
+
+1. **Native Plugins**
+   - High-performance C++ plugins
+   - Cross-platform compatibility (Windows, Linux, macOS)
+   - Native API access
+   - System integration
+
+2. **Python Extensions**
+   - Custom Python modules
+   - CLI tools and utilities
+   - Automation scripts
+   - Data processing tools
+
+3. **TypeScript/JavaScript Tools**
+   - Node.js packages
+   - Browser extensions
+   - Build tool plugins
+   - Code generators
+
+4. **Features**
+   - Extensible architecture
+   - Plugin marketplace support
+   - API documentation
+   - Version management
+   - Auto-update mechanism
+
+### 🛠️ Technology Stack
+
+| Component | Technology |
+|-----------|------------|
+| **Native** | C++, CMake |
+| **Python** | Python 3.9+, setuptools |
+| **JS/TS** | TypeScript, Node.js |
+| **Build** | CMake, npm, pip |
+| **Testing** | Google Test, pytest, Jest |
+| **Docs** | Sphinx, TypeDoc |
 
 ---
 
@@ -1301,11 +1283,11 @@ Custom C++ plugins for specialized applications.
 
 | Language | Experience Level | Projects |
 |----------|-----------------|----------|
-| **Python** | Expert (5+ years) | ISRO, AI/ML, Trading |
+| **Python** | Expert (5+ years) | ISRO, AI/ML, Trading, Automation |
 | **JavaScript/TypeScript** | Expert (5+ years) | All web projects |
 | **SQL** | Expert | All database projects |
 | **C++** | Advanced | Plugin development |
-| **Dart** | Advanced | Flutter trading app |
+| **Dart** | Advanced | Flutter mobile apps |
 | **HTML5/CSS3** | Expert | All web projects |
 
 ---
@@ -1318,11 +1300,11 @@ Custom C++ plugins for specialized applications.
 | **Build Tools** | Vite, Webpack, Turbopack |
 | **Styling** | Tailwind CSS, SCSS, CSS Modules |
 | **UI Libraries** | shadcn/ui, Radix UI, Material UI, Chakra UI |
-| **State** | Zustand, Redux Toolkit, Provider, Jotai |
-| **Data Fetching** | TanStack Query, SWR, Axios, Fetch |
+| **State** | Zustand, Redux Toolkit, Provider, Jotai, TanStack Query |
 | **Animation** | Framer Motion, GSAP, CSS Animations |
 | **Forms** | React Hook Form, Formik, Zod |
 | **Testing** | Jest, Vitest, Playwright, Cypress |
+| **3D/Maps** | CesiumJS, Leaflet, Mapbox, Three.js |
 
 ---
 
@@ -1335,7 +1317,7 @@ Custom C++ plugins for specialized applications.
 | **API** | REST, GraphQL, WebSocket |
 | **Auth** | JWT, OAuth2, bcrypt, Passport |
 | **Validation** | Pydantic, Zod, Joi |
-| **Task Queues** | Celery, Bull |
+| **Task Queues** | Celery, Bull, Redis Queue |
 | **Testing** | pytest, Jest, Supertest |
 
 ---
@@ -1362,8 +1344,7 @@ Custom C++ plugins for specialized applications.
 | **ML Frameworks** | TensorFlow, PyTorch |
 | **Computer Vision** | OpenCV, scikit-image, ONNX Runtime |
 | **NLP** | Transformers, LangChain |
-| **Architectures** | CNN, RNN, Transformers, GANs |
-| **Techniques** | RAG, Prompt Engineering, Fine-tuning |
+| **Web AI** | ONNX Runtime Web, WebGPU |
 
 ---
 
@@ -1387,7 +1368,7 @@ Custom C++ plugins for specialized applications.
 | **Web Servers** | nginx, Apache |
 | **Process Management** | PM2, systemd, Supervisor |
 | **CI/CD** | GitHub Actions, GitLab CI |
-| **Cloud** | Google Cloud, AWS, DigitalOcean |
+| **Cloud** | Google Cloud, AWS, DigitalOcean, Vercel |
 | **OS** | Ubuntu, RHEL, Debian |
 | **SSL** | Let's Encrypt, Certbot |
 
@@ -1453,29 +1434,36 @@ Lead Engineer & Co-Founder
 
 | # | Project | Domain | Client | Status |
 |---|---------|--------|--------|--------|
-| 1 | GEOPIXEL | Geospatial | ISRO-NRSC | ✅ Deployed |
-| 2 | NADIR | Geospatial | ISRO-NRSC | ✅ Deployed |
-| 3 | ReverbEx ATLAS | Geospatial/AI | Open Source | ✅ Production |
-| 4 | AlgoTrader T1 | FinTech | MPass | ✅ Deployed |
-| 5 | Historical Database | FinTech | MPass | ✅ Deployed |
-| 6 | Tote Leaderboard | FinTech | MPass | ✅ Deployed |
-| 7 | Discovery Backend | FinTech | MPass | ✅ Deployed |
-| 8 | Tote Discovery UI | FinTech | MPass | ✅ Deployed |
-| 9 | Corporate Actions | FinTech | MPass | ✅ Deployed |
-| 10 | Reddy Anna Gaming | Gaming | Private | ✅ Deployed |
-| 11 | Andar Bahar Engine | Gaming | Private | ✅ Deployed |
-| 12 | 4K AI Enhancer | AI/ML | Product | ✅ Production |
-| 13 | Perry AI | AI/ML | Internal | ✅ Deployed |
-| 14 | MCP Chat | AI/ML | Tool | ✅ Complete |
-| 15 | IG Content Farm | Automation | Internal | ✅ Deployed |
-| 16 | JECRC No-Dues | Enterprise | University | ✅ Deployed |
-| 17 | Vyomira Website | Enterprise | Client | ✅ Deployed |
-| 18 | Wordara AI | AI | Product | ✅ Complete |
-| 19 | n8n Workflows | Automation | Internal | ✅ Deployed |
-| 20 | C++ Plugins | Development | Various | ✅ Complete |
+| 1 | JECRC No-Dues System | Enterprise/Education | JECRC University | ✅ **LIVE** |
+| 2 | GEOPIXEL | ISRO/Geospatial | ISRO-NRSC | ✅ Deployed |
+| 3 | GIST | ISRO/Geospatial | ISRO-NRSC | ✅ Deployed |
+| 4 | NADIR | ISRO/Atmospheric | ISRO-NRSC | ✅ Deployed |
+| 5 | Reverbex Atlas | Geospatial/AI | Reverbex | ✅ Production |
+| 6 | Real-Time Streaming Game | Gaming | Private | ✅ Deployed |
+| 7 | Reverbex Neora | FinTech | Reverbex | ✅ Deployed |
+| 8 | Trading Bot System | FinTech/AI | Reverbex | ✅ Deployed |
+| 9 | Reverbex Chronicle | FinTech/Data | Reverbex | ✅ Deployed |
+| 10 | Perry AI (4K Enhancer) | AI/ML | Reverbex | ✅ Production |
+| 11 | Meme Content Farm | Automation/AI | Internal | ✅ Deployed |
+| 12 | Reverbex Wordara | AI/ML | Reverbex | ✅ Production |
+| 13 | Reverbex Nether AI | AI/ML | Reverbex | ✅ Deployed |
+| 14 | Corporate Tech Web Design | Web Design | Enterprise | ✅ Deployed |
+| 15 | Reverbex Plugins | Development Tools | Reverbex | ✅ Complete |
 
 ---
 
-**Document Version:** 2.0  
+**Document Version:** 3.0  
 **Last Updated:** December 2024  
 **Prepared By:** Reverbex Team
+
+---
+
+# 📈 PORTFOLIO STATISTICS
+
+- **Total Projects:** 15 Production Systems
+- **Government Clients:** ISRO-NRSC, JECRC University
+- **Domains Covered:** 8 (Enterprise, ISRO, Geospatial, Gaming, FinTech, AI, Web Design, Dev Tools)
+- **Technologies Mastered:** 50+ frameworks, libraries, and tools
+- **Years of Experience:** 5+ years
+- **Team Size:** 2 Founders + Network of specialists
+- **Success Rate:** 100% (All projects deployed and operational)

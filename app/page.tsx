@@ -2,6 +2,7 @@
 
 import FluidBackground from "../components/FluidBackground";
 import TechStream from "../components/TechStream";
+import ProjectShowcase from "../components/ProjectShowcase";
 import { motion, useScroll, useTransform, useMotionValue, useSpring } from "framer-motion";
 import { useRef, useState, useEffect } from "react";
 
@@ -24,11 +25,11 @@ const ServiceCard = ({ title, description, tags, impact, caseStudy, index }: { t
     viewport={{ once: false, margin: "-50px" }}
     transition={{ duration: 0.6, delay: index * 0.05 }}
     whileHover={{ y: -10, backgroundColor: "rgba(255,255,255,0.08)" }}
-    className="bg-white/5 backdrop-blur-md border border-white/10 p-8 rounded-2xl hover:border-cyan-500/30 transition-all group h-full flex flex-col"
+    className="bg-white/5 backdrop-blur-md border border-white/10 p-8 rounded-2xl hover:border-white/30 transition-all group h-full flex flex-col"
   >
     <div className="h-1 w-12 pearl-bg mb-6 group-hover:w-full transition-all duration-500 rounded-full" />
 
-    <h3 className="text-2xl font-syne font-semibold mb-3 text-white group-hover:text-cyan-200 transition-colors">{title}</h3>
+    <h3 className="text-2xl font-syne font-semibold mb-3 text-white group-hover:text-white transition-colors">{title}</h3>
 
     <p className="text-white/60 mb-6 font-light leading-relaxed flex-grow">{description}</p>
 
@@ -37,7 +38,7 @@ const ServiceCard = ({ title, description, tags, impact, caseStudy, index }: { t
       <div className="mb-6 space-y-2 border-l-2 border-white/10 pl-4">
         {impact.map((item, i) => (
           <div key={i} className="text-sm text-white/80 font-mono flex items-center gap-2">
-            <span className="text-cyan-400">▹</span> {item}
+            <span className="text-white">▹</span> {item}
           </div>
         ))}
       </div>
@@ -45,7 +46,7 @@ const ServiceCard = ({ title, description, tags, impact, caseStudy, index }: { t
 
     {/* Case Study Badge */}
     {caseStudy && (
-      <div className="mb-6 inline-block bg-cyan-950/30 border border-cyan-500/20 px-3 py-1 rounded text-xs text-cyan-300 font-mono">
+      <div className="mb-6 inline-block bg-white/10 border border-white/30 px-3 py-1 rounded text-xs text-white font-mono">
         CASE STUDY: {caseStudy}
       </div>
     )}
@@ -95,8 +96,7 @@ export default function Home() {
 
       <div className="relative z-10 pointer-events-none">
 
-        {/* HERO SECTION */}
-        <section className="min-h-screen flex flex-col items-center justify-center p-4 md:p-8 overflow-hidden pointer-events-auto">
+        <section id="home" className="min-h-screen flex flex-col items-center justify-center p-4 md:p-8 overflow-hidden pointer-events-auto">
           <motion.div
             style={{ x: smoothX, y: smoothY }}
             initial={{ opacity: 0, scale: 0.9, filter: "blur(10px)" }}
@@ -120,29 +120,21 @@ export default function Home() {
             Orchestrating the Future of Digital Reality
           </motion.p>
 
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ delay: 1.5, duration: 1 }}
-            className="absolute bottom-10 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2"
-          >
-            <span className="text-xs uppercase tracking-[0.2em] text-white/50">Explore</span>
-            <motion.div
-              animate={{ y: [0, 10, 0] }}
-              transition={{ repeat: Infinity, duration: 2, ease: "easeInOut" }}
-              className="w-[1px] h-12 bg-gradient-to-b from-white to-transparent"
-            />
-          </motion.div>
+        </section>
+
+        {/* 3D PROJECT SHOWCASE (SPIRAL) */}
+        <section id="projects" className="pointer-events-auto">
+          <ProjectShowcase />
         </section>
 
         {/* MISSION SECTION */}
-        <section className="min-h-screen flex flex-col justify-center py-24 px-4 md:px-12 pointer-events-auto">
+        <section id="about" className="min-h-screen flex flex-col justify-center py-24 px-4 md:px-12 pointer-events-auto">
           <div className="max-w-7xl mx-auto space-y-20">
 
             {/* Header & Opening */}
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
               <FadeIn>
-                <span className="text-cyan-400 font-mono tracking-widest text-sm uppercase mb-4 block">Built for Business Impact</span>
+                <span className="text-white/60 font-mono tracking-widest text-sm uppercase mb-4 block">Built for Business Impact</span>
                 <h2 className="text-5xl md:text-7xl font-syne font-bold leading-tight">
                   Enterprise Software That drives <span className="animate-pearl">Real Results</span>
                 </h2>
@@ -190,7 +182,7 @@ export default function Home() {
                   { label: "Response Time", val: "<100ms" }
                 ].map((metric, i) => (
                   <div key={i} className="text-center">
-                    <div className="text-3xl md:text-4xl font-bold font-syne text-cyan-400 mb-2">{metric.val}</div>
+                    <div className="text-3xl md:text-4xl font-bold font-syne text-white mb-2">{metric.val}</div>
                     <div className="text-xs uppercase tracking-widest text-white/40">{metric.label}</div>
                   </div>
                 ))}
@@ -201,7 +193,7 @@ export default function Home() {
         </section>
 
         {/* SERVICES SECTION */}
-        <section className="min-h-screen py-24 px-4 md:px-12 pointer-events-auto">
+        <section id="services" className="min-h-screen py-24 px-4 md:px-12 pointer-events-auto">
           <div className="max-w-7xl mx-auto">
             <FadeIn className="mb-20 text-center">
               <h2 className="text-sm font-mono tracking-widest uppercase text-white/40 mb-4">Enterprise-Grade Solutions</h2>
@@ -214,15 +206,8 @@ export default function Home() {
                   title: "Real-Time Trading Platforms",
                   desc: "High-frequency trading engines, portfolio management systems, and market data pipelines processing millions of transactions daily.",
                   impact: ["₹10Cr+ daily trading volume", "<50ms order execution", "100+ institutional users"],
-                  caseStudy: "AlgoTrader T1 (MPass Finance)",
+                  caseStudy: "Reverbex Neora",
                   tags: ["Flutter", "TimescaleDB", "FastAPI", "KiteAPI"]
-                },
-                {
-                  title: "Multiplayer Gaming Systems",
-                  desc: "Server-authoritative engines and secure wallet systems handling 10k+ concurrents with live streaming integration.",
-                  impact: ["10k+ concurrent players", "₹5L+ daily txs", "2-tier commission engine"],
-                  caseStudy: "Reddy Anna Gaming",
-                  tags: ["Node.js", "Socket.IO", "Postgres", "OvenMedia"]
                 },
                 {
                   title: "University Mgmt Systems",
@@ -292,11 +277,53 @@ export default function Home() {
         </section>
 
         {/* HORIZONTAL TECH STEAM */}
-        <TechStream />
+        <section id="tech" className="pointer-events-auto">
+          <div className="text-center mb-10 pt-20">
+            <h2 className="text-4xl md:text-6xl font-syne font-bold text-white mb-4">
+              Our <span className="animate-pearl">Technology Stack</span>
+            </h2>
+            <div className="w-20 h-1 pearl-bg mx-auto rounded-full" />
+          </div>
+          <TechStream />
+        </section>
 
+        {/* CONTACT SECTION */}
+        <section id="contact" className="min-h-[50vh] flex flex-col justify-center py-24 px-4 md:px-12 pointer-events-auto border-t border-white/10 bg-black/40">
+          <div className="max-w-4xl mx-auto text-center">
+            <FadeIn>
+              <h2 className="text-5xl md:text-7xl font-syne font-bold mb-8">Let&apos;s Build the Future</h2>
+              <p className="text-xl text-white/60 font-light mb-12 max-w-2xl mx-auto">
+                Ready to transform your business requirements into production-grade reality?
+                Let&apos;s talk about your next mission-critical project.
+              </p>
 
+              <a
+                href="mailto:reverbextech@gmail.com"
+                className="inline-flex items-center gap-3 pearl-bg text-black px-8 py-4 rounded-full text-lg font-bold hover:brightness-110 transition-all hover:scale-105"
+              >
+                <span>Start a Project</span>
+                <span className="text-xl">→</span>
+              </a>
+
+              <div className="mt-16 grid grid-cols-1 md:grid-cols-3 gap-8 text-sm text-white/40 font-mono uppercase tracking-widest">
+                <div>
+                  <div className="text-white mb-2">Email</div>
+                  reverbextech@gmail.com
+                </div>
+                <div>
+                  <div className="text-white mb-2">Phone</div>
+                  +91 99299 86743
+                </div>
+                <div>
+                  <div className="text-white mb-2">Location</div>
+                  Jaipur, Rajasthan, India
+                </div>
+              </div>
+            </FadeIn>
+          </div>
+        </section>
 
       </div>
-    </main>
+    </main >
   );
 }

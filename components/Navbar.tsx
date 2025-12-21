@@ -56,7 +56,7 @@ export default function Navbar() {
                                 {link.name}
                             </ScrollLink>
                         ))}
-                        <button className="bg-white text-black px-6 py-2 rounded-full text-sm font-bold hover:bg-gray-200 transition-colors">
+                        <button className="pearl-bg text-black px-6 py-2 rounded-full text-sm font-bold hover:brightness-110 transition-colors">
                             Get Started
                         </button>
                     </div>
