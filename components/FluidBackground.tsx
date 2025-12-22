@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useRef, useMemo, useEffect } from "react";
+import React, { useRef, useMemo, useEffect, useState } from "react";
 import { Canvas, useFrame, useThree } from "@react-three/fiber";
 import * as THREE from "three";
 import {
@@ -22,10 +22,10 @@ const Fluid = () => {
     // Simulation parameters
     const simRes = 128; // Simulation resolution (lower = faster)
     const dyeRes = 512; // Dye resolution (higher = crisper)
-    const densityDissipation = 0.98;
-    const velocityDissipation = 0.99;
+    const densityDissipation = 0.985; // Increased from 0.98 for longer-lasting trails
+    const velocityDissipation = 0.992; // Increased from 0.99 for more fluid persistence
     const pressureIterations = 20;
-    const curl = 30;
+    const curl = 40; // Increased from 30 for more visible vorticity
     const splatRadius = 0.002;
     const splatForce = 6000;
 
@@ -192,22 +192,22 @@ const Fluid = () => {
                 const dx = (0.5 - x) * force + (Math.random() - 0.5) * 200;
                 const dy = (0.5 - y) * force + (Math.random() - 0.5) * 200;
 
-                // Brand Colors: Cyan, Indigo, Pink, White
+                // Brand Colors: Cyan, Indigo, Pink, White - reduced brightness
                 const brandColors = [0x22d3ee, 0x818cf8, 0xe879f9, 0xffffff];
                 const hex = brandColors[Math.floor(Math.random() * brandColors.length)];
-                const color = new THREE.Color(hex).multiplyScalar(0.6);
+                const color = new THREE.Color(hex).multiplyScalar(0.35); // Reduced from 0.6 to 0.35
 
                 splat(x, y, dx, dy, color);
             }
             // Removed central swirl for purity
         } else {
-            // Ambient motion: gentle swirls
-            const t = time * 0.5;
-            const x = 0.5 + Math.sin(t) * 0.3; // Wander around
-            const y = 0.5 + Math.cos(t * 1.3) * 0.3;
-            const dx = Math.sin(t * 2.5) * 200;
-            const dy = Math.cos(t * 1.5) * 200;
-            const color = new THREE.Color().setHSL((t * 0.1) % 1, 0.5, 0.2).multiplyScalar(0.3); // Faint background color
+            // Enhanced ambient motion: colorful but very subtle brightness
+            const t = time * 0.3; // Slower for more elegance
+            const x = 0.5 + Math.sin(t) * 0.4; // Larger wander radius
+            const y = 0.5 + Math.cos(t * 1.3) * 0.4;
+            const dx = Math.sin(t * 2.5) * 600; // Stronger force
+            const dy = Math.cos(t * 1.5) * 600;
+            const color = new THREE.Color().setHSL((t * 0.1) % 1, 0.8, 0.25).multiplyScalar(0.3); // Colorful (sat 0.8) but very subtle (light 0.25, mult 0.3)
             splat(x, y, dx, dy, color);
         }
 
@@ -215,7 +215,8 @@ const Fluid = () => {
         if (isMoved.current && (Date.now() - lastMouseChange.current < 100)) {
             const dx = mouse.current.x - prevMouse.current.x;
             const dy = mouse.current.y - prevMouse.current.y;
-            const color = new THREE.Color().setHSL((Date.now() % 10000) / 10000, 1.0, 0.5).multiplyScalar(0.5);
+            // Colorful but less bright on mouse interaction
+            const color = new THREE.Color().setHSL((Date.now() % 10000) / 10000, 0.9, 0.35).multiplyScalar(0.4);
 
             splat(mouse.current.x, mouse.current.y, dx * splatForce, dy * splatForce, color);
             prevMouse.current.copy(mouse.current);
@@ -320,8 +321,26 @@ const Fluid = () => {
 };
 
 export default function FluidBackground() {
+    const [isLoaded, setIsLoaded] = React.useState(false);
+
+    React.useEffect(() => {
+        // Set loaded after a short delay to ensure canvas is ready
+        const timer = setTimeout(() => setIsLoaded(true), 100);
+        return () => clearTimeout(timer);
+    }, []);
+
     return (
-        <div style={{ position: "fixed", top: 0, left: 0, width: "100%", height: "100%", zIndex: 0 }}>
+        <div style={{
+            position: "fixed",
+            top: 0,
+            left: 0,
+            width: "100%",
+            height: "100%",
+            zIndex: 0,
+            background: "linear-gradient(135deg, #000000 0%, #0a0a0a 50%, #000000 100%)",
+            opacity: isLoaded ? 1 : 0.8,
+            transition: "opacity 0.5s ease-in-out"
+        }}>
             <Canvas
                 camera={{ position: [0, 0, 1] }}
                 gl={{
@@ -330,7 +349,8 @@ export default function FluidBackground() {
                     preserveDrawingBuffer: false,
                     powerPreference: 'high-performance'
                 }}
-                dpr={[1, 2]} // Handle high DPI
+                dpr={[1, 2]}
+                style={{ opacity: isLoaded ? 1 : 0 }}
             >
                 <Fluid />
             </Canvas>

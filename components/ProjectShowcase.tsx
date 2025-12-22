@@ -1,9 +1,8 @@
 "use client";
 
-import { motion, useScroll, useTransform, useSpring } from "framer-motion";
+import { motion, useScroll, useTransform, useSpring, useInView } from "framer-motion";
 import { useRef } from "react";
 import DiagonalPosterCard from "./DiagonalPosterCard";
-import { SiReact, SiNextdotjs } from "react-icons/si";
 
 // 13 Projects (Updated)
 const projects = [
@@ -38,11 +37,11 @@ const projects = [
         thumbnail: '/pictures/AudioForge AI/Screenshot 2025-12-22 035810.png',
         images: ['/pictures/AudioForge AI/Screenshot 2025-12-22 035810.png']
     },
-    // NEW: Andar Bahar
+    // NEW: Realtime Virtual Token Card Game
     {
         id: 17,
-        title: 'Andar Bahar',
-        subtitle: 'Virtual Money Card Game',
+        title: 'Realtime Virtual Token Game of Cards',
+        subtitle: 'Multiplayer Card Gaming Platform',
         client: 'Gaming Enterprise',
         impact: ['10k+ concurrents', '<50ms latency', 'Live Dealer'],
         tags: ['Node.js', 'Socket.IO', 'Canvas'],
@@ -166,74 +165,142 @@ const projects = [
 
 ];
 
+// Individual project card with smooth scroll-based animations only
+const AnimatedProjectCard = ({ project, index, totalProjects }: { project: any; index: number; totalProjects: number }) => {
+    const cardRef = useRef(null);
+    const { scrollYProgress } = useScroll({
+        target: cardRef,
+        offset: ["start end", "end start"]
+    });
+
+    // Smooth opacity transition
+    const opacity = useTransform(
+        scrollYProgress,
+        [0, 0.3, 0.5, 0.7, 1],
+        [0, 1, 1, 1, 0]
+    );
+
+    // Subtle scale for depth
+    const scale = useTransform(
+        scrollYProgress,
+        [0, 0.3, 0.5, 0.7, 1],
+        [0.9, 1, 1, 1, 0.9]
+    );
+
+    // Y position for smooth entry
+    const y = useTransform(
+        scrollYProgress,
+        [0, 0.3, 0.5],
+        [50, 0, 0]
+    );
+
+    return (
+        <motion.div
+            ref={cardRef}
+            style={{ opacity, scale, y }}
+            className="shrink-0"
+        >
+            <DiagonalPosterCard project={project} />
+        </motion.div>
+    );
+};
+
 export default function ProjectShowcase() {
     const targetRef = useRef<HTMLDivElement>(null);
     const { scrollYProgress } = useScroll({
         target: targetRef,
     });
 
-    // Smooth progress for cleaner movement
     const smoothProgress = useSpring(scrollYProgress, {
         stiffness: 70,
         damping: 25,
         restDelta: 0.001
     });
 
-    // Main horizontal transform
-    // We want to scroll from 0 to -(TotalWidth - ViewportWidth)
-    // We'll give it plenty of runway (e.g., 400vh or 500vh container)
-    // and map [0,1] to [0%, -X%]
     const x = useTransform(smoothProgress, [0, 1], ["0%", "-85%"]);
 
     return (
-        // Height controls how fast the scroll feels. More height = slower, easier to control.
         <section ref={targetRef} className="relative h-[600vh] bg-transparent">
-
             <div className="sticky top-0 h-screen flex items-center overflow-hidden">
-
-                {/* Horizontal Container */}
+                
                 <motion.div
                     style={{ x }}
                     className="flex gap-16 px-[5vw] w-max items-center"
                 >
-                    {/* Intro text Card (Optional, or just start projects) */}
-                    <div className="w-[80vw] md:w-[600px] shrink-0 flex flex-col justify-center">
-                        <h2 className="text-5xl md:text-8xl font-syne font-bold leading-tight">
+                    {/* Intro */}
+                    <motion.div
+                        className="w-[80vw] md:w-[600px] shrink-0 flex flex-col justify-center"
+                        initial={{ opacity: 0, y: 30 }}
+                        whileInView={{ opacity: 1, y: 0 }}
+                        viewport={{ once: true }}
+                        transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
+                    >
+                        <h2 className="text-5xl md:text-8xl font-bold leading-tight">
                             Selected <br /> <span className="animate-pearl">Works</span>
                         </h2>
                         <div className="w-20 h-1 bg-white/20 mt-8 mb-4" />
                         <p className="text-xl md:text-2xl text-white/60 font-light max-w-md">
                             A curated selection of enterprise systems, AI tools, and digital experiences.
                         </p>
-                    </div>
+                    </motion.div>
 
-                    {/* Project Cards */}
-                    {projects.map((project) => (
-                        <div key={project.id} className="items-center flex">
-                            <DiagonalPosterCard project={project} />
-                        </div>
+                    {/* Project Cards with Individual Animations */}
+                    {projects.map((project, index) => (
+                        <AnimatedProjectCard
+                            key={project.id}
+                            project={project}
+                            index={index}
+                            totalProjects={projects.length}
+                        />
                     ))}
 
-                    {/* Outro / Call to Action at the end of the scroll */}
-                    <div className="w-[80vw] md:w-[500px] shrink-0 flex flex-col justify-center items-start pl-20">
-                        <h3 className="text-4xl font-syne font-bold mb-6">See More on GitHub</h3>
-                        <a href="https://github.com" target="_blank" rel="noreferrer" className="flex items-center gap-3 text-xl hover:text-white transition-colors">
-                            <div className="p-4 bg-white/10 rounded-full">
-                                <SiNextdotjs className="text-2xl" />
-                            </div>
-                            <span>View All Repos</span>
-                        </a>
-                    </div>
-                </motion.div>
-
-                {/* Progress Bar (Bottom) */}
-                <motion.div className="absolute bottom-10 left-10 right-10 h-[1px] bg-white/10 overflow-hidden">
+                    {/* Outro */}
                     <motion.div
-                        style={{ scaleX: smoothProgress }}
-                        className="h-full pearl-bg origin-left"
-                    />
+                        className="w-[80vw] md:w-[500px] shrink-0 flex flex-col justify-center items-start pl-20"
+                        initial={{ opacity: 0, x: 50 }}
+                        whileInView={{ opacity: 1, x: 0 }}
+                        viewport={{ once: true }}
+                        transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
+                    >
+                        <h3 className="text-4xl font-bold mb-6">Explore More</h3>
+                        <p className="text-white/60 mb-8 text-lg">View our complete portfolio and case studies</p>
+                        <motion.button
+                            whileHover={{ scale: 1.05, boxShadow: "0 10px 40px rgba(34, 211, 238, 0.4)" }}
+                            whileTap={{ scale: 0.95 }}
+                            className="pearl-bg text-black px-8 py-4 rounded-full font-bold text-lg"
+                        >
+                            View All Projects →
+                        </motion.button>
+                    </motion.div>
                 </motion.div>
 
+                {/* Progress Bar */}
+                <div className="absolute bottom-10 left-10 right-10">
+                    <div className="h-[1px] bg-white/10 overflow-hidden rounded-full">
+                        <motion.div
+                            style={{ scaleX: smoothProgress }}
+                            className="h-full pearl-bg origin-left"
+                        />
+                    </div>
+                    {/* Pagination Dots */}
+                    <div className="flex justify-center gap-2 mt-6">
+                        {projects.map((_, index) => (
+                            <motion.div
+                                key={index}
+                                className="w-2 h-2 rounded-full bg-white/20"
+                                animate={{
+                                    scale: smoothProgress.get() * projects.length >= index &&
+                                           smoothProgress.get() * projects.length < index + 1 ? 1.5 : 1,
+                                    backgroundColor: smoothProgress.get() * projects.length >= index &&
+                                                    smoothProgress.get() * projects.length < index + 1
+                                                    ? "rgba(34, 211, 238, 1)"
+                                                    : "rgba(255, 255, 255, 0.2)"
+                                }}
+                                transition={{ duration: 0.3 }}
+                            />
+                        ))}
+                    </div>
+                </div>
             </div>
         </section>
     );

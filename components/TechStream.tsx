@@ -1,7 +1,7 @@
 "use client";
 
 import { motion, useScroll, useTransform, useSpring } from "framer-motion";
-import { useRef, useMemo, memo } from "react";
+import { useRef, useMemo, memo, useState } from "react";
 import React from "react";
 // Import Icons
 import {
@@ -160,21 +160,48 @@ const techLanes = {
     ]
 };
 
-// Optimized TechCard: No blur, lightweight DOM
-const TechCard = memo(({ tech }: { tech: any }) => (
-    <motion.div
-        className="relative group min-w-[100px] md:min-w-[140px] h-[100px] md:h-[140px] flex flex-col items-center justify-center p-3 rounded-2xl border border-white/5 bg-black/40 hover:bg-white/10 hover:border-white/30 transition-all duration-200"
+// Enhanced TechCard with tooltip
+const TechCard = memo(({ tech }: { tech: any }) => {
+  const [showTooltip, setShowTooltip] = useState(false);
+  
+  return (
+    <div className="relative">
+      <motion.div
+        className="relative group min-w-[100px] md:min-w-[140px] h-[100px] md:h-[140px] flex flex-col items-center justify-center p-3 rounded-2xl border border-white/5 bg-black/40 transition-all duration-200"
         style={{ willChange: "transform" }}
-        whileHover={{ scale: 1.05 }}
-    >
+        whileHover={{
+          scale: 1.15,
+          y: -5,
+          backgroundColor: "rgba(255,255,255,0.1)",
+          borderColor: "rgba(34, 211, 238, 0.5)",
+          boxShadow: "0 10px 30px rgba(34, 211, 238, 0.3)"
+        }}
+        onHoverStart={() => setShowTooltip(true)}
+        onHoverEnd={() => setShowTooltip(false)}
+      >
         <div className="text-3xl md:text-4xl mb-2 transition-transform duration-200 group-hover:scale-110">
-            {tech.icon}
+          {tech.icon}
         </div>
         <span className="text-[10px] md:text-xs font-syne font-semibold text-white/50 group-hover:text-white transition-colors text-center">
-            {tech.name}
+          {tech.name}
         </span>
-    </motion.div>
-));
+      </motion.div>
+      
+      {/* Tooltip */}
+      {showTooltip && (
+        <motion.div
+          initial={{ opacity: 0, y: 10, scale: 0.9 }}
+          animate={{ opacity: 1, y: 0, scale: 1 }}
+          exit={{ opacity: 0, y: 10, scale: 0.9 }}
+          className="absolute -top-14 left-1/2 -translate-x-1/2 bg-black/95 backdrop-blur-md px-4 py-2 rounded-lg border border-white/30 whitespace-nowrap z-50 pointer-events-none"
+        >
+          <span className="text-sm font-semibold text-white block">{tech.name}</span>
+          <span className="text-xs text-cyan-400 mt-1 block">Click to learn more</span>
+        </motion.div>
+      )}
+    </div>
+  );
+});
 
 TechCard.displayName = 'TechCard';
 
@@ -192,14 +219,14 @@ export default function TechStream() {
         restDelta: 0.001
     });
 
-    // Normalized scroll range 0-1 mapped to different speeds
-    const xTop = useTransform(smoothScrollY, [0, 1], ["5%", "-150%"]);
-    const xMiddle = useTransform(smoothScrollY, [0, 1], ["-5%", "-180%"]);
-    const xBottom = useTransform(smoothScrollY, [0, 1], ["-10%", "-160%"]);
+    // Synchronized scroll range - all three rows move at the same speed and same distance
+    // Slower scroll for better visibility
+    const xTop = useTransform(smoothScrollY, [0, 1], ["0%", "-180%"]);
+    const xMiddle = useTransform(smoothScrollY, [0, 1], ["0%", "-180%"]);
+    const xBottom = useTransform(smoothScrollY, [0, 1], ["0%", "-180%"]);
 
-    const techOpacity = useTransform(smoothScrollY, [0.75, 0.85], [1, 0]);
-    const xContact = useTransform(smoothScrollY, [0.85, 1], ["100vw", "0vw"]);
-    const contactOpacity = useTransform(smoothScrollY, [0.85, 0.95], [0, 1]);
+    // Fade out tech section at the very end to eliminate empty space
+    const techOpacity = useTransform(smoothScrollY, [0.9, 1], [1, 0]);
 
     const memoizedLanes = useMemo(() => techLanes, []);
 
@@ -207,18 +234,28 @@ export default function TechStream() {
         <section ref={targetRef} className="relative h-[300vh] w-full bg-black/5">
             <div className="sticky top-0 h-screen flex flex-col justify-center overflow-hidden">
 
-                {/* Main Tech Flow */}
+                {/* Main Tech Flow with Category Headers */}
                 <motion.div
                     style={{ opacity: techOpacity, willChange: "opacity" }}
                     className="flex flex-col gap-8 md:gap-14 py-8 relative z-10"
                 >
 
-                    {/* TOP LANE */}
+                    {/* TOP LANE - Frontend & UI */}
                     <div className="relative w-full">
-                        <div className="absolute top-1/2 left-0 w-full h-[1px] bg-gradient-to-r from-transparent via-white/20 to-transparent" />
+                        <motion.div
+                            className="absolute left-4 md:left-10 -top-8 px-3 py-1 bg-cyan-500/10 border border-cyan-500/30 rounded-full"
+                            initial={{ opacity: 0, x: -20 }}
+                            whileInView={{ opacity: 1, x: 0 }}
+                            viewport={{ once: true }}
+                        >
+                            <span className="text-xs uppercase tracking-widest text-cyan-400 font-mono font-semibold">
+                                Frontend & UI
+                            </span>
+                        </motion.div>
+                        <div className="absolute top-1/2 left-0 w-full h-[1px] bg-gradient-to-r from-transparent via-cyan-500/20 to-transparent" />
                         <motion.div
                             style={{ x: xTop }}
-                            className="flex gap-6 md:gap-10 pl-10 md:pl-20 items-center w-[500vw]"
+                            className="flex gap-6 md:gap-10 pl-20 items-center w-[500vw]"
                         >
                             {memoizedLanes.top.map((tech, i) => (
                                 <TechCard key={`top-${i}`} tech={tech} />
@@ -226,12 +263,23 @@ export default function TechStream() {
                         </motion.div>
                     </div>
 
-                    {/* MIDDLE LANE */}
+                    {/* MIDDLE LANE - Backend & Core */}
                     <div className="relative w-full">
-                        <div className="absolute top-1/2 left-0 w-full h-[1px] bg-gradient-to-r from-transparent via-white/20 to-transparent" />
+                        <motion.div
+                            className="absolute left-4 md:left-10 -top-8 px-3 py-1 bg-indigo-500/10 border border-indigo-500/30 rounded-full"
+                            initial={{ opacity: 0, x: -20 }}
+                            whileInView={{ opacity: 1, x: 0 }}
+                            viewport={{ once: true }}
+                            transition={{ delay: 0.1 }}
+                        >
+                            <span className="text-xs uppercase tracking-widest text-indigo-400 font-mono font-semibold">
+                                Backend & Core
+                            </span>
+                        </motion.div>
+                        <div className="absolute top-1/2 left-0 w-full h-[1px] bg-gradient-to-r from-transparent via-indigo-500/20 to-transparent" />
                         <motion.div
                             style={{ x: xMiddle }}
-                            className="flex gap-6 md:gap-10 pl-[50vw] items-center w-[500vw]"
+                            className="flex gap-6 md:gap-10 pl-20 items-center w-[500vw]"
                         >
                             {memoizedLanes.middle.map((tech, i) => (
                                 <TechCard key={`mid-${i}`} tech={tech} />
@@ -239,12 +287,23 @@ export default function TechStream() {
                         </motion.div>
                     </div>
 
-                    {/* BOTTOM LANE */}
+                    {/* BOTTOM LANE - Data & AI */}
                     <div className="relative w-full">
-                        <div className="absolute top-1/2 left-0 w-full h-[1px] bg-gradient-to-r from-transparent via-white/20 to-transparent" />
+                        <motion.div
+                            className="absolute left-4 md:left-10 -top-8 px-3 py-1 bg-pink-500/10 border border-pink-500/30 rounded-full"
+                            initial={{ opacity: 0, x: -20 }}
+                            whileInView={{ opacity: 1, x: 0 }}
+                            viewport={{ once: true }}
+                            transition={{ delay: 0.2 }}
+                        >
+                            <span className="text-xs uppercase tracking-widest text-pink-400 font-mono font-semibold">
+                                Data & AI
+                            </span>
+                        </motion.div>
+                        <div className="absolute top-1/2 left-0 w-full h-[1px] bg-gradient-to-r from-transparent via-pink-500/20 to-transparent" />
                         <motion.div
                             style={{ x: xBottom }}
-                            className="flex gap-6 md:gap-10 pl-32 items-center w-[500vw]"
+                            className="flex gap-6 md:gap-10 pl-20 items-center w-[500vw]"
                         >
                             {memoizedLanes.bottom.map((tech, i) => (
                                 <TechCard key={`bot-${i}`} tech={tech} />

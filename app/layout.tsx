@@ -1,17 +1,21 @@
 import type { Metadata } from 'next'
-import { Syne, Inter } from 'next/font/google'
+import { Space_Grotesk, Inter } from 'next/font/google'
 import './globals.css'
+import Navbar from "../components/Navbar";
+import SmoothScroll from "../components/SmoothScroll";
 
-const syne = Syne({
+const spaceGrotesk = Space_Grotesk({
   subsets: ['latin'],
-  variable: '--font-syne',
+  variable: '--font-space-grotesk',
   display: 'swap',
+  weight: ['300', '400', '500', '600', '700'],
 })
 
 const inter = Inter({
   subsets: ['latin'],
   variable: '--font-inter',
   display: 'swap',
+  weight: ['300', '400', '500', '600', '700'],
 })
 
 export const metadata: Metadata = {
@@ -19,18 +23,18 @@ export const metadata: Metadata = {
   description: 'Building Solutions with Creativity',
 }
 
-import Navbar from "../components/Navbar";
-
 export default function RootLayout({
   children,
 }: {
   children: React.ReactNode
 }) {
   return (
-    <html lang="en" className={`${syne.variable} ${inter.variable}`}>
+    <html lang="en" className={`${spaceGrotesk.variable} ${inter.variable}`}>
       <body className={inter.className}>
-        <Navbar />
-        {children}
+        <SmoothScroll>
+          <Navbar />
+          {children}
+        </SmoothScroll>
       </body>
     </html>
   )
