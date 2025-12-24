@@ -1,14 +1,9 @@
 "use client";
 
-import { motion, useScroll, useTransform, useSpring, useInView } from "framer-motion";
-import { useRef } from "react";
-import DiagonalPosterCard from "./DiagonalPosterCard";
+import { motion } from "framer-motion";
+import Image from "next/image";
 
-// 13 Projects (Updated)
 const projects = [
-    // --- PROJECTS WITH IMAGES (First) ---
-
-    // 1. JECRC NO-DUES SYSTEM
     {
         id: 1,
         slug: 'jecrc-no-dues',
@@ -19,38 +14,33 @@ const projects = [
         tags: ['Next.js', 'Supabase', 'PostgreSQL'],
         gradient: 'from-green-500 via-emerald-600 to-teal-700',
         icon: '🏫',
-        images: ['/pictures/no_dues_system/Screenshot 2025-12-22 030206.png'],
         thumbnail: '/pictures/no_dues_system/Screenshot 2025-12-22 030206.png',
         liveUrl: 'https://nodues.jecrcuniversity.edu.in/'
     },
-    // NEW: AudioForge AI
     {
-        id: 16,
-        slug: 'audioforge-ai',
-        title: 'AudioForge AI',
-        subtitle: 'Music Companion App',
-        client: 'Creative Tool',
-        impact: ['AI Music Gen', 'Real-time Audio', 'VST Plugin'],
-        tags: ['Python', 'TorchAudio', 'React'],
-        gradient: 'from-pink-500 via-rose-600 to-red-700',
-        icon: '🎵',
-        thumbnail: '/pictures/AudioForge AI/Screenshot 2025-12-22 035810.png',
-        images: ['/pictures/AudioForge AI/Screenshot 2025-12-22 035810.png']
+        id: 20,
+        slug: 'nether-ai',
+        title: 'Nether AI',
+        subtitle: 'AI-Powered Presentation Generator',
+        client: 'Tech Startup',
+        impact: ['Auto Slide Generation', 'Smart Layouts', 'Content Suggestions'],
+        tags: ['Python', 'OpenAI', 'React'],
+        gradient: 'from-rose-500 via-pink-600 to-purple-700',
+        icon: '🧠',
+        thumbnail: '/pictures/nether ai/Frontpage.png',
     },
-    // NEW: Realtime Virtual Token Card Game
     {
-        id: 17,
-        title: 'Realtime Virtual Token Game of Cards',
-        subtitle: 'Multiplayer Card Gaming Platform',
-        client: 'Gaming Enterprise',
-        impact: ['10k+ concurrents', '<50ms latency', 'Live Dealer'],
-        tags: ['Node.js', 'Socket.IO', 'Canvas'],
-        gradient: 'from-amber-500 via-orange-600 to-red-700',
-        icon: '🃏',
-        thumbnail: '/pictures/AudioForge AI/Screenshot 2025-12-22 035911.png',
-        images: ['/pictures/AudioForge AI/Screenshot 2025-12-22 035911.png']
+        id: 21,
+        slug: 'neora',
+        title: 'Neora',
+        subtitle: 'Trading Companion App',
+        client: 'FinTech',
+        impact: ['Real-time Market Data', 'Portfolio Tracking', 'Trade Analytics'],
+        tags: ['Flutter', 'TimescaleDB', 'WebSocket'],
+        gradient: 'from-blue-500 via-indigo-600 to-violet-700',
+        icon: '📈',
+        thumbnail: '/pictures/neora/Screenshot 2025-12-22 034701.png',
     },
-    // UPDATED: FLURRY AI (Was Perry AI)
     {
         id: 9,
         slug: 'flurry-ai',
@@ -62,9 +52,7 @@ const projects = [
         gradient: 'from-violet-500 via-purple-600 to-fuchsia-700',
         icon: '🎨',
         thumbnail: '/pictures/Screenshot 2025-12-22 040024.png',
-        images: ['/pictures/Screenshot 2025-12-22 040024.png']
     },
-    // 2. GEOPIXEL
     {
         id: 2,
         slug: 'geopixel',
@@ -76,9 +64,7 @@ const projects = [
         gradient: 'from-cyan-500 via-blue-600 to-indigo-700',
         icon: '🛰️',
         thumbnail: '/pictures/GEOpixel/Screenshot from 2025-06-30 17-16-27.png',
-        images: ['/pictures/GEOpixel/Screenshot from 2025-06-30 17-16-27.png']
     },
-    // 3. GIST
     {
         id: 3,
         slug: 'gist',
@@ -90,9 +76,7 @@ const projects = [
         gradient: 'from-indigo-500 via-purple-600 to-pink-700',
         icon: '🌍',
         thumbnail: '/pictures/GEOpixel/Screenshot from 2025-06-23 15-46-43.png',
-        images: ['/pictures/GEOpixel/Screenshot from 2025-06-23 15-46-43.png']
     },
-    // 4. NADIR
     {
         id: 4,
         slug: 'nadir',
@@ -104,204 +88,264 @@ const projects = [
         gradient: 'from-blue-500 via-cyan-600 to-teal-700',
         icon: '🌦️',
         thumbnail: '/pictures/nadir/nadir.jpg',
-        images: ['/pictures/nadir/nadir.jpg']
     },
-    // 7. AI STUDIO
     {
-        id: 15,
-        slug: 'ai-studio',
-        title: 'AI Studio Workspace',
-        subtitle: 'Next-Gen ML Prototyping',
-        client: 'Internal Tool',
-        impact: ['Rapid Prototyping', 'Model Evaluation', 'Collaborative'],
-        tags: ['React', 'TensorFlow.js', 'Google Cloud'],
+        id: 22,
+        slug: 'modern-web-template',
+        title: 'Modern Web Solution',
+        subtitle: 'High-Performance Landing Page',
+        client: 'Reverbex Internal',
+        impact: ['High Conversion', 'SEO Optimized', 'Fast Loading'],
+        tags: ['React', 'Tailwind', 'Framer Motion'],
         gradient: 'from-orange-500 via-amber-600 to-yellow-700',
-        icon: '🧪',
-        thumbnail: '/pictures/Screenshot_22-12-2025_34156_aistudio.google.com.jpeg',
-        images: ['/pictures/Screenshot_22-12-2025_34156_aistudio.google.com.jpeg']
-    },
-    // 9. NEORA
-    {
-        id: 7,
-        slug: 'neora',
-        title: 'Reverbex Neora',
-        subtitle: 'AI Stock Companion',
-        client: 'FinTech',
-        impact: ['Real-time ticks', 'Sentiment Analysis', 'Auto-trade'],
-        tags: ['Flutter', 'FastAPI', 'n8n'],
-        gradient: 'from-green-500 via-emerald-600 to-teal-700',
-        icon: '📈',
-        images: ['/pictures/neora/Screenshot 2025-12-22 034701.png'],
-        thumbnail: '/pictures/neora/Screenshot 2025-12-22 034701.png'
-    },
-    // 12. NETHER AI
-    {
-        id: 13,
-        slug: 'nether-ai',
-        title: 'Nether AI Gateway',
-        subtitle: 'LLM Orchestrator',
-        client: 'Internal Infra',
-        impact: ['Model routing', 'Cost opt', 'Failover'],
-        tags: ['Node.js', 'Ollama', 'Docker'],
-        gradient: 'from-fuchsia-500 via-pink-600 to-rose-700',
-        icon: '🧠',
-        images: ['/pictures/nether ai/Frontpage.png'],
-        thumbnail: '/pictures/nether ai/Frontpage.png'
-    },
-    // 6. CORPORATE WEB
-    {
-        id: 11,
-        slug: 'corporate-web',
-        title: 'Enterprise Web',
-        subtitle: 'Modern Corp Identity',
-        client: 'Enterprise',
-        impact: ['High conversion', 'SEO Perfect', 'Fast Load'],
-        tags: ['Next.js', 'Tailwind', 'Framer'],
-        gradient: 'from-sky-500 via-blue-600 to-indigo-700',
-        icon: '💼',
+        icon: '📄',
         thumbnail: '/pictures/template modern web solution/lading page.png',
-        images: ['/pictures/template modern web solution/lading page.png']
     },
-
+    {
+        id: 23,
+        slug: 'alive-web-design',
+        title: 'Alive Web Design',
+        subtitle: 'Next Level Animated Websites',
+        client: 'Reverbex Internal',
+        impact: ['Immersive Experience', 'High Performance', 'Modern UI'],
+        tags: ['Next.js', 'Framer Motion', 'WebGL'],
+        gradient: 'from-blue-400 via-indigo-500 to-violet-600',
+        icon: '🤖',
+        thumbnail: '/pictures/Screenshot_22-12-2025_34156_aistudio.google.com.jpeg',
+    },
 ];
 
-// Individual project card with smooth scroll-based animations only
-const AnimatedProjectCard = ({ project, index, totalProjects }: { project: any; index: number; totalProjects: number }) => {
-    const cardRef = useRef(null);
-    const { scrollYProgress } = useScroll({
-        target: cardRef,
-        offset: ["start end", "end start"]
-    });
+// Layout variation 1: Image Left, Text Right
+const LayoutImageLeft = ({ project, index }: any) => (
+    <section className="snap-start w-full h-screen flex items-center justify-center px-4 md:px-12 bg-transparent overflow-hidden">
+        <div className="max-w-7xl w-full grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+            {/* Image - Slides from left */}
+            <motion.div
+                initial={{ opacity: 0, x: -200 }}
+                whileInView={{ opacity: 1, x: 0 }}
+                viewport={{ once: false, margin: "-10%" }}
+                transition={{ duration: 0.5, ease: "circOut" }}
+                className="relative rounded-2xl overflow-hidden border border-white/10"
+            >
+                <img
+                    src={project.thumbnail}
+                    alt={project.title}
+                    className="w-full h-auto object-contain"
+                />
+                <div className={`absolute inset-0 bg-gradient-to-br ${project.gradient} opacity-20 mix-blend-overlay pointer-events-none`} />
+            </motion.div>
 
-    // Smooth opacity transition
-    const opacity = useTransform(
-        scrollYProgress,
-        [0, 0.3, 0.5, 0.7, 1],
-        [0, 1, 1, 1, 0]
-    );
+            {/* Text - Slides from right */}
+            <motion.div
+                initial={{ opacity: 0, x: 200 }}
+                whileInView={{ opacity: 1, x: 0 }}
+                viewport={{ once: false, margin: "-10%" }}
+                transition={{ duration: 0.5, delay: 0.1, ease: "circOut" }}
+            >
+                <div className="text-6xl mb-4">{project.icon}</div>
+                <h3 className="text-4xl md:text-5xl font-bold mb-3">{project.title}</h3>
+                <p className="text-xl text-white/60 mb-6">{project.subtitle}</p>
 
-    // Subtle scale for depth
-    const scale = useTransform(
-        scrollYProgress,
-        [0, 0.3, 0.5, 0.7, 1],
-        [0.9, 1, 1, 1, 0.9]
-    );
+                <div className="space-y-3 mb-6">
+                    {project.impact.map((item: string, i: number) => (
+                        <motion.div
+                            key={i}
+                            initial={{ opacity: 0, x: -20 }}
+                            whileInView={{ opacity: 1, x: 0 }}
+                            viewport={{ once: false }}
+                            transition={{ duration: 0.3, delay: 0.2 + (i * 0.05) }}
+                            className="flex items-center gap-3"
+                        >
+                            <div className="w-1.5 h-1.5 rounded-full bg-cyan-400" />
+                            <span className="text-white/80">{item}</span>
+                        </motion.div>
+                    ))}
+                </div>
 
-    // Y position for smooth entry
-    const y = useTransform(
-        scrollYProgress,
-        [0, 0.3, 0.5],
-        [50, 0, 0]
-    );
+                <div className="flex flex-wrap gap-2">
+                    {project.tags.map((tag: string, i: number) => (
+                        <motion.span
+                            key={tag}
+                            initial={{ opacity: 0, scale: 0.8 }}
+                            whileInView={{ opacity: 1, scale: 1 }}
+                            viewport={{ once: false }}
+                            transition={{ duration: 0.3, delay: 0.4 + (i * 0.05) }}
+                            className="px-3 py-1 bg-white/5 border border-white/10 rounded-full text-sm text-white/60"
+                        >
+                            {tag}
+                        </motion.span>
+                    ))}
+                </div>
+            </motion.div>
+        </div>
+    </section>
+);
 
-    return (
-        <motion.div
-            ref={cardRef}
-            style={{ opacity, scale, y }}
-            className="shrink-0"
-        >
-            <DiagonalPosterCard project={project} />
-        </motion.div>
-    );
-};
+// Layout variation 2: Image Right, Text Left
+const LayoutImageRight = ({ project, index }: any) => (
+    <section className="snap-start w-full h-screen flex items-center justify-center px-4 md:px-12 bg-transparent overflow-hidden">
+        <div className="max-w-7xl w-full grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+            {/* Text - Slides from left */}
+            <motion.div
+                initial={{ opacity: 0, x: -200 }}
+                whileInView={{ opacity: 1, x: 0 }}
+                viewport={{ once: false, margin: "-10%" }}
+                transition={{ duration: 0.5, ease: "circOut" }}
+                className="order-2 lg:order-1"
+            >
+                <div className="text-6xl mb-4">{project.icon}</div>
+                <h3 className="text-4xl md:text-5xl font-bold mb-3">{project.title}</h3>
+                <p className="text-xl text-white/60 mb-6">{project.subtitle}</p>
+
+                <div className="space-y-3 mb-6">
+                    {project.impact.map((item: string, i: number) => (
+                        <motion.div
+                            key={i}
+                            initial={{ opacity: 0, x: -20 }}
+                            whileInView={{ opacity: 1, x: 0 }}
+                            viewport={{ once: false }}
+                            transition={{ duration: 0.3, delay: 0.1 + (i * 0.05) }}
+                            className="flex items-center gap-3"
+                        >
+                            <div className="w-1.5 h-1.5 rounded-full bg-cyan-400" />
+                            <span className="text-white/80">{item}</span>
+                        </motion.div>
+                    ))}
+                </div>
+
+                <div className="flex flex-wrap gap-2">
+                    {project.tags.map((tag: string, i: number) => (
+                        <motion.span
+                            key={tag}
+                            initial={{ opacity: 0, scale: 0.8 }}
+                            whileInView={{ opacity: 1, scale: 1 }}
+                            viewport={{ once: false }}
+                            transition={{ duration: 0.3, delay: 0.3 + (i * 0.05) }}
+                            className="px-3 py-1 bg-white/5 border border-white/10 rounded-full text-sm text-white/60"
+                        >
+                            {tag}
+                        </motion.span>
+                    ))}
+                </div>
+            </motion.div>
+
+            {/* Image - Slides from right */}
+            <motion.div
+                initial={{ opacity: 0, x: 200 }}
+                whileInView={{ opacity: 1, x: 0 }}
+                viewport={{ once: false, margin: "-10%" }}
+                transition={{ duration: 0.5, delay: 0.1, ease: "circOut" }}
+                className="relative rounded-2xl overflow-hidden border border-white/10 order-1 lg:order-2"
+            >
+                <img
+                    src={project.thumbnail}
+                    alt={project.title}
+                    className="w-full h-auto object-contain"
+                />
+                <div className={`absolute inset-0 bg-gradient-to-br ${project.gradient} opacity-20 mix-blend-overlay pointer-events-none`} />
+            </motion.div>
+        </div>
+    </section>
+);
+
+// Layout variation 3: Centered with fade
+const LayoutCentered = ({ project, index }: any) => (
+    <section className="snap-start w-full h-screen flex items-center justify-center px-4 md:px-12 bg-transparent overflow-hidden">
+        <div className="max-w-5xl w-full text-center">
+            {/* Image - Fades and scales up */}
+            <motion.div
+                initial={{ opacity: 0, scale: 0.9 }}
+                whileInView={{ opacity: 1, scale: 1 }}
+                viewport={{ once: false, margin: "-10%" }}
+                transition={{ duration: 0.5, ease: "circOut" }}
+                className="relative rounded-2xl overflow-hidden border border-white/10 mb-8"
+            >
+                <img
+                    src={project.thumbnail}
+                    alt={project.title}
+                    className="w-full h-auto object-contain"
+                />
+                <div className={`absolute inset-0 bg-gradient-to-br ${project.gradient} opacity-20 mix-blend-overlay pointer-events-none`} />
+            </motion.div>
+
+            {/* Text - Slides from bottom */}
+            <motion.div
+                initial={{ opacity: 0, y: 50 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: false, margin: "-10%" }}
+                transition={{ duration: 0.5, delay: 0.2, ease: "circOut" }}
+            >
+                <div className="text-6xl mb-4">{project.icon}</div>
+                <h3 className="text-4xl md:text-5xl font-bold mb-3">{project.title}</h3>
+                <p className="text-xl text-white/60 mb-6">{project.subtitle}</p>
+
+                <div className="flex flex-wrap justify-center gap-4 mb-6">
+                    {project.impact.map((item: string, i: number) => (
+                        <motion.span
+                            key={i}
+                            initial={{ opacity: 0, y: 20 }}
+                            whileInView={{ opacity: 1, y: 0 }}
+                            viewport={{ once: false }}
+                            transition={{ duration: 0.5, delay: 0.5 + (i * 0.1) }}
+                            className="text-white/80"
+                        >
+                            {item}
+                        </motion.span>
+                    ))}
+                </div>
+
+                <div className="flex flex-wrap justify-center gap-2">
+                    {project.tags.map((tag: string, i: number) => (
+                        <motion.span
+                            key={tag}
+                            initial={{ opacity: 0, scale: 0.8 }}
+                            whileInView={{ opacity: 1, scale: 1 }}
+                            viewport={{ once: false }}
+                            transition={{ duration: 0.3, delay: 0.7 + (i * 0.05) }}
+                            className="px-3 py-1 bg-white/5 border border-white/10 rounded-full text-sm text-white/60"
+                        >
+                            {tag}
+                        </motion.span>
+                    ))}
+                </div>
+            </motion.div>
+        </div>
+    </section>
+);
+
+// Export individual project slides for the ScrollManager to handle
+export const ProjectSlides = projects.map((project, index) => {
+    const layoutType = index % 3;
+    if (layoutType === 0) return <LayoutImageLeft key={project.id} project={project} index={index} />;
+    if (layoutType === 1) return <LayoutImageRight key={project.id} project={project} index={index} />;
+    return <LayoutCentered key={project.id} project={project} index={index} />;
+});
 
 export default function ProjectShowcase() {
-    const targetRef = useRef<HTMLDivElement>(null);
-    const { scrollYProgress } = useScroll({
-        target: targetRef,
-    });
-
-    const smoothProgress = useSpring(scrollYProgress, {
-        stiffness: 70,
-        damping: 25,
-        restDelta: 0.001
-    });
-
-    const x = useTransform(smoothProgress, [0, 1], ["0%", "-85%"]);
-
     return (
-        <section ref={targetRef} className="relative h-[600vh] bg-transparent">
-            <div className="sticky top-0 h-screen flex items-center overflow-hidden">
-                
+        <>
+            {/* Intro Slide */}
+            <section className="snap-start w-full h-screen flex items-center justify-center px-4 md:px-12 bg-transparent overflow-hidden">
                 <motion.div
-                    style={{ x }}
-                    className="flex gap-16 px-[5vw] w-max items-center"
+                    className="max-w-4xl text-center"
+                    initial={{ opacity: 0, scale: 0.95 }}
+                    whileInView={{ opacity: 1, scale: 1 }}
+                    viewport={{ once: false, margin: "-10%" }}
+                    transition={{ duration: 0.6, ease: "circOut" }}
                 >
-                    {/* Intro */}
-                    <motion.div
-                        className="w-[80vw] md:w-[600px] shrink-0 flex flex-col justify-center"
-                        initial={{ opacity: 0, y: 30 }}
-                        whileInView={{ opacity: 1, y: 0 }}
-                        viewport={{ once: true }}
-                        transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
-                    >
-                        <h2 className="text-5xl md:text-8xl font-bold leading-tight">
-                            Selected <br /> <span className="animate-pearl">Works</span>
-                        </h2>
-                        <div className="w-20 h-1 bg-white/20 mt-8 mb-4" />
-                        <p className="text-xl md:text-2xl text-white/60 font-light max-w-md">
-                            A curated selection of enterprise systems, AI tools, and digital experiences.
-                        </p>
-                    </motion.div>
-
-                    {/* Project Cards with Individual Animations */}
-                    {projects.map((project, index) => (
-                        <AnimatedProjectCard
-                            key={project.id}
-                            project={project}
-                            index={index}
-                            totalProjects={projects.length}
-                        />
-                    ))}
-
-                    {/* Outro */}
-                    <motion.div
-                        className="w-[80vw] md:w-[500px] shrink-0 flex flex-col justify-center items-start pl-20"
-                        initial={{ opacity: 0, x: 50 }}
-                        whileInView={{ opacity: 1, x: 0 }}
-                        viewport={{ once: true }}
-                        transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
-                    >
-                        <h3 className="text-4xl font-bold mb-6">Explore More</h3>
-                        <p className="text-white/60 mb-8 text-lg">View our complete portfolio and case studies</p>
-                        <motion.button
-                            whileHover={{ scale: 1.05, boxShadow: "0 10px 40px rgba(34, 211, 238, 0.4)" }}
-                            whileTap={{ scale: 0.95 }}
-                            className="pearl-bg text-black px-8 py-4 rounded-full font-bold text-lg"
-                        >
-                            View All Projects →
-                        </motion.button>
-                    </motion.div>
+                    <h2 className="text-5xl md:text-8xl font-bold leading-tight mb-8">
+                        Featured <br />
+                        <span className="animate-pearl">Engagements</span>
+                    </h2>
+                    <div className="w-20 h-1 bg-white/20 mx-auto mb-6" />
+                    <p className="text-xl md:text-2xl text-white/60 font-light">
+                        Delivering scalable solutions for complex industry challenges
+                    </p>
                 </motion.div>
+            </section>
 
-                {/* Progress Bar */}
-                <div className="absolute bottom-10 left-10 right-10">
-                    <div className="h-[1px] bg-white/10 overflow-hidden rounded-full">
-                        <motion.div
-                            style={{ scaleX: smoothProgress }}
-                            className="h-full pearl-bg origin-left"
-                        />
-                    </div>
-                    {/* Pagination Dots */}
-                    <div className="flex justify-center gap-2 mt-6">
-                        {projects.map((_, index) => (
-                            <motion.div
-                                key={index}
-                                className="w-2 h-2 rounded-full bg-white/20"
-                                animate={{
-                                    scale: smoothProgress.get() * projects.length >= index &&
-                                           smoothProgress.get() * projects.length < index + 1 ? 1.5 : 1,
-                                    backgroundColor: smoothProgress.get() * projects.length >= index &&
-                                                    smoothProgress.get() * projects.length < index + 1
-                                                    ? "rgba(34, 211, 238, 1)"
-                                                    : "rgba(255, 255, 255, 0.2)"
-                                }}
-                                transition={{ duration: 0.3 }}
-                            />
-                        ))}
-                    </div>
-                </div>
-            </div>
-        </section>
+            {/* Project Slides */}
+            {ProjectSlides}
+        </>
     );
 }

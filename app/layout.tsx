@@ -2,7 +2,6 @@ import type { Metadata } from 'next'
 import { Space_Grotesk, Inter } from 'next/font/google'
 import './globals.css'
 import Navbar from "../components/Navbar";
-import SmoothScroll from "../components/SmoothScroll";
 
 const spaceGrotesk = Space_Grotesk({
   subsets: ['latin'],
@@ -31,10 +30,8 @@ export default function RootLayout({
   return (
     <html lang="en" className={`${spaceGrotesk.variable} ${inter.variable}`}>
       <body className={inter.className}>
-        <SmoothScroll>
-          <Navbar />
-          {children}
-        </SmoothScroll>
+        <Navbar />
+        {children}
       </body>
     </html>
   )

@@ -32,6 +32,21 @@
   /* Pearl white */
 }
 
+html {
+  scroll-snap-type: y mandatory;
+  scroll-behavior: smooth;
+  overflow-y: scroll;
+  scrollbar-width: none;
+  /* Firefox */
+  -ms-overflow-style: none;
+  /* IE and Edge */
+}
+
+/* Hide scrollbar for Chrome, Safari and Opera */
+html::-webkit-scrollbar {
+  display: none;
+}
+
 body {
   margin: 0;
   padding: 0;
@@ -40,10 +55,37 @@ body {
   position: relative;
   font-family: var(--font-inter), sans-serif;
   letter-spacing: -0.01em;
+  overflow-x: hidden;
+  scrollbar-width: none;
+  /* Firefox */
+  -ms-overflow-style: none;
+  /* IE and Edge */
 }
 
+body::-webkit-scrollbar {
+  display: none;
+}
+
+
+
+/* Snap sections */
+.snap-section,
+.snap-start {
+  scroll-snap-align: start;
+  scroll-snap-stop: always !important;
+  min-height: 100vh;
+  min-height: 100dvh;
+}
+
+
+
 /* Headings use Space Grotesk */
-h1, h2, h3, h4, h5, h6 {
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
   font-family: var(--font-space-grotesk), sans-serif;
   letter-spacing: -0.02em;
 }
@@ -63,31 +105,23 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 .animate-pearl {
-  /* Real texture mapping */
+  /* Same pearl texture as buttons */
   background-image: url('/textures/pearl.png');
-  background-size: 150% auto;
-  /* Zoomed in to show texture detail */
+  /* Fixed size to prevent texture stretching beyond native resolution */
+  background-size: 600px auto;
   background-position: center;
-
   animation: pearl-flow 20s ease-in-out infinite;
-  /* Slow, heavy liquid movement */
 
+  /* Clip to text */
   -webkit-background-clip: text;
   background-clip: text;
   -webkit-text-fill-color: transparent;
   color: transparent;
-
-  /* Filter adjustments to make it pop on dark background */
-  filter: brightness(1.2) contrast(1.1) drop-shadow(0 2px 10px rgba(255, 255, 255, 0.15));
-
-  /* Slight stroke to define edges against dark bg */
-  -webkit-text-stroke: 0px transparent;
 }
 
 @media (max-width: 768px) {
   .animate-pearl {
-    background-size: 200% auto;
-    /* More zoom on mobile */
+    background-size: 400px auto;
   }
 
   .metrics-banner {
@@ -116,6 +150,9 @@ h1, h2, h3, h4, h5, h6 {
 * {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  /* Prevent layout shifts */
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
 }
 
 /* GPU acceleration for transforms */
@@ -124,7 +161,13 @@ h1, h2, h3, h4, h5, h6 {
   will-change: transform;
 }
 
-/* Lenis handles smooth scrolling - removed native scroll-behavior */
+/* Smooth animations */
+@media (prefers-reduced-motion: no-preference) {
+  * {
+    transition-timing-function: cubic-bezier(0.19, 1, 0.22, 1);
+  }
+}
+
 
 /* Custom scrollbar */
 ::-webkit-scrollbar {
@@ -167,6 +210,7 @@ h1, h2, h3, h4, h5, h6 {
 
 /* Reduce motion for accessibility */
 @media (prefers-reduced-motion: reduce) {
+
   *,
   *::before,
   *::after {
@@ -174,7 +218,7 @@ h1, h2, h3, h4, h5, h6 {
     animation-iteration-count: 1 !important;
     transition-duration: 0.01ms !important;
   }
-  
+
 }
 
 /* Focus styles for accessibility */

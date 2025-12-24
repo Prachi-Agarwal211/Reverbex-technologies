@@ -67,9 +67,8 @@ export default function Navbar() {
                                 to={link.to}
                                 smooth={true}
                                 duration={500}
-                                className={`relative text-sm font-medium cursor-pointer transition-colors tracking-wide ${
-                                    activeSection === link.to ? "text-white" : "text-white/70 hover:text-white"
-                                }`}
+                                className={`relative text-sm font-medium cursor-pointer transition-colors tracking-wide ${activeSection === link.to ? "text-white" : "text-white/70 hover:text-white"
+                                    }`}
                             >
                                 {link.name}
                                 {activeSection === link.to && (
