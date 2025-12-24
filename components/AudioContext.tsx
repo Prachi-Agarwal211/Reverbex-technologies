@@ -92,7 +92,7 @@ export function AudioProvider({ children }: { children: React.ReactNode }) {
             return;
         }
 
-        analyserRef.current.getByteFrequencyData(dataArrayRef.current);
+        analyserRef.current.getByteFrequencyData(dataArrayRef.current as any);
         const data = Array.from(dataArrayRef.current);
 
         // Calculate frequency bands
