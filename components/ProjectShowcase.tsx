@@ -127,9 +127,11 @@ const LayoutImageLeft = ({ project, index }: any) => (
                 transition={{ duration: 0.5, ease: "circOut" }}
                 className="relative rounded-2xl overflow-hidden border border-white/10"
             >
-                <img
+                <Image
                     src={project.thumbnail}
                     alt={project.title}
+                    width={800}
+                    height={600}
                     className="w-full h-auto object-contain"
                 />
                 <div className={`absolute inset-0 bg-gradient-to-br ${project.gradient} opacity-20 mix-blend-overlay pointer-events-none`} />
@@ -237,9 +239,11 @@ const LayoutImageRight = ({ project, index }: any) => (
                 transition={{ duration: 0.5, delay: 0.1, ease: "circOut" }}
                 className="relative rounded-2xl overflow-hidden border border-white/10 order-1 lg:order-2"
             >
-                <img
+                <Image
                     src={project.thumbnail}
                     alt={project.title}
+                    width={800}
+                    height={600}
                     className="w-full h-auto object-contain"
                 />
                 <div className={`absolute inset-0 bg-gradient-to-br ${project.gradient} opacity-20 mix-blend-overlay pointer-events-none`} />
@@ -260,9 +264,11 @@ const LayoutCentered = ({ project, index }: any) => (
                 transition={{ duration: 0.5, ease: "circOut" }}
                 className="relative rounded-2xl overflow-hidden border border-white/10 mb-8"
             >
-                <img
+                <Image
                     src={project.thumbnail}
                     alt={project.title}
+                    width={800}
+                    height={600}
                     className="w-full h-auto object-contain"
                 />
                 <div className={`absolute inset-0 bg-gradient-to-br ${project.gradient} opacity-20 mix-blend-overlay pointer-events-none`} />

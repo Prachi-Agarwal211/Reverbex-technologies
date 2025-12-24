@@ -1,6 +1,8 @@
 "use client";
 
 import FluidBackground from "../components/FluidBackground";
+import AudioReactiveFluidBackground, { setupAudioContext } from "../components/AudioReactiveFluid";
+import AudioVisualizer from "../components/AudioVisualizer";
 import FloatingOrbs from "../components/FloatingOrbs";
 import TechStream from "../components/TechStream";
 import ProjectShowcase, { ProjectSlides } from "../components/ProjectShowcase";
@@ -168,6 +170,8 @@ const CounterMetric = ({ metric, delay }: { metric: any; delay: number }) => {
 
 export default function Home() {
   const containerRef = useRef(null);
+  const audioRef = useRef<HTMLAudioElement>(null);
+
   // Mouse parallax for hero
   const mouseX = useMotionValue(0);
   const mouseY = useMotionValue(0);
@@ -184,6 +188,13 @@ export default function Home() {
     window.addEventListener("mousemove", handleMouseMove);
     return () => window.removeEventListener("mousemove", handleMouseMove);
   }, [mouseX, mouseY]);
+
+  // Setup audio context when component mounts
+  useEffect(() => {
+    if (audioRef.current) {
+      setupAudioContext(audioRef.current);
+    }
+  }, []);
 
   // Define content sections for the ScrollManager
   const sections = [
@@ -510,7 +521,7 @@ export default function Home() {
     <section key="contact" id="contact" className="w-full h-screen flex flex-col justify-center py-24 px-4 md:px-12 border-t border-white/10 bg-transparent">
       <div className="max-w-4xl mx-auto text-center">
         <FadeIn>
-          <h2 className="text-5xl md:text-7xl font-syne font-bold mb-8 animate-pearl">Let's Build the Future</h2>
+          <h2 className="text-5xl md:text-7xl font-syne font-bold mb-8 animate-pearl">Let&apos;s Build the Future</h2>
           <p className="text-xl text-white/60 font-light mb-12 max-w-2xl mx-auto">
             Ready to transform your business requirements into production-grade reality?
             Let&apos;s talk about your next mission-critical project.
