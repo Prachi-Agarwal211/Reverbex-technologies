@@ -77,6 +77,25 @@ body::-webkit-scrollbar {
   min-height: 100dvh;
 }
 
+/* Mobile-specific fixes */
+@media (max-width: 768px) {
+  html {
+    scroll-snap-type: none;
+    /* Disable snap on mobile for natural scrolling */
+  }
+
+  body {
+    overflow-y: auto !important;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .snap-section,
+  .snap-start {
+    scroll-snap-align: none;
+    min-height: auto;
+  }
+}
+
 
 
 /* Headings use Space Grotesk */

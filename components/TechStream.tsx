@@ -113,7 +113,7 @@ const MarqueeRow = ({ row, isBackground = false }: { row: any; isBackground?: bo
 
 export default function TechStream() {
   return (
-    <section className="snap-start w-full h-screen flex flex-col justify-center items-center bg-transparent relative overflow-hidden">
+    <section className="snap-start w-full min-h-screen md:h-screen flex flex-col justify-center items-center bg-transparent relative overflow-hidden py-20 md:py-0">
       <div className="w-full max-w-[1920px] mx-auto z-10 flex flex-col justify-center h-full py-20 pb-0">
 
         {/* Header - Added padding to prevent clipping */}

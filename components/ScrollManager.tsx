@@ -108,8 +108,27 @@ export default function ScrollManager({ children }: ScrollManagerProps) {
         };
 
         const handleTouchMove = (e: TouchEvent) => {
-            if (!touchStartY.current) return;
-            e.preventDefault();
+            // Allow native scrolling, just track for end event
+        };
+
+        const isScrollable = (element: HTMLElement | null, direction: 'up' | 'down'): boolean => {
+            if (!element || element === document.body) return false;
+
+            const style = window.getComputedStyle(element);
+            const overflowY = style.overflowY;
+            const isScrollContainer = overflowY === 'auto' || overflowY === 'scroll';
+
+            if (isScrollContainer) {
+                if (direction === 'down') { // swiping up to scroll down
+                    // Check if can scroll more down
+                    return element.scrollTop + element.clientHeight < element.scrollHeight - 1;
+                } else { // swiping down to scroll up
+                    // Check if can scroll more up
+                    return element.scrollTop > 0;
+                }
+            }
+
+            return isScrollable(element.parentElement, direction);
         };
 
         const handleTouchEnd = (e: TouchEvent) => {
@@ -120,18 +139,31 @@ export default function ScrollManager({ children }: ScrollManagerProps) {
             const SWIPE_THRESHOLD = 50;
 
             if (Math.abs(deltaY) > SWIPE_THRESHOLD) {
-                if (deltaY > 0) {
-                    scrollToSlide(currentSlide + 1);
-                } else {
-                    scrollToSlide(currentSlide - 1);
+                const direction = deltaY > 0 ? 'down' : 'up'; // 'down' means content moves up (swipe up)
+
+                // START SMART LOGIC: Check if we are scrolling internal content
+                // We pass the inverse direction to isScrollable because:
+                // Swipe UP (deltaY > 0) -> we want to scroll DOWN the content
+                const target = e.target as HTMLElement;
+                const scrollingContent = isScrollable(target, direction);
+
+                if (!scrollingContent) {
+                    if (deltaY > 0) {
+                        scrollToSlide(currentSlide + 1);
+                    } else {
+                        scrollToSlide(currentSlide - 1);
+                    }
                 }
             }
             touchStartY.current = null;
         };
 
-        window.addEventListener("touchstart", handleTouchStart, { passive: false });
-        window.addEventListener("touchmove", handleTouchMove, { passive: false });
-        window.addEventListener("touchend", handleTouchEnd, { passive: false });
+        // Use passive: false to allow preventing default if we wanted to block scroll, 
+        // but here we WANT native scroll, so passive: true is fine.
+        // We rely on the fact that if native scroll happens, we don't switch slides (logic above).
+        window.addEventListener("touchstart", handleTouchStart, { passive: true });
+        window.addEventListener("touchmove", handleTouchMove, { passive: true });
+        window.addEventListener("touchend", handleTouchEnd, { passive: true });
 
         return () => {
             window.removeEventListener("touchstart", handleTouchStart);
@@ -156,7 +188,7 @@ export default function ScrollManager({ children }: ScrollManagerProps) {
                     initial="enter" // Start all slides as "entered" (below screen)
                     animate={getSlideVariant(i)}
                     variants={variants}
-                    className="absolute inset-0 w-full h-full will-change-transform"
+                    className="absolute inset-0 w-full h-full will-change-transform overflow-y-auto md:overflow-hidden overscroll-contain"
                     style={{
                         // Only render meaningful content for nearby slides to save GPU
                         display: Math.abs(currentSlide - i) <= 1 ? 'block' : 'none'

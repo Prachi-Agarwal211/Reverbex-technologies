@@ -8,7 +8,7 @@ export default function AudioVisualizer() {
     const audio = useAudioSafe();
     const [mounted, setMounted] = useState(false);
     const [expanded, setExpanded] = useState(false);
-    const [autoPlayEnabled, setAutoPlayEnabled] = useState(true);
+    const [autoPlayEnabled, setAutoPlayEnabled] = useState(false);
     const hasAttemptedAutoplay = useState(false); // Ref refactored to state to force render if needed, but actually ref is better for logic. Let's stick to the plan.
     // actually, let's use a ref for the "has attempted" flag so we don't re-render unnecessarily
     const autoplayAttempted = useRef(false);

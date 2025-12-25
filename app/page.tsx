@@ -199,7 +199,7 @@ export default function Home() {
   // Define content sections for the ScrollManager
   const sections = [
     // Slide 1: Hero
-    <section key="hero" id="home" className="w-full h-screen flex flex-col items-center justify-center p-4 md:p-8 overflow-hidden">
+    <section key="hero" id="home" className="w-full min-h-screen md:h-screen flex flex-col items-center justify-center p-4 md:p-8 overflow-hidden pt-20 md:pt-8">
       <motion.div
         style={{ x: smoothX, y: smoothY }}
         initial={{ opacity: 0, scale: 0.9 }}
@@ -511,14 +511,14 @@ export default function Home() {
     </section>,
 
     // Slide 10: Tech Stream
-    <div key="techstream" className="h-screen w-full relative">
+    <div key="techstream" className="min-h-screen md:h-screen w-full relative">
       <div className="absolute inset-0 flex items-center justify-center">
         <TechStream />
       </div>
     </div>,
 
     // Slide Last: Contact
-    <section key="contact" id="contact" className="w-full h-screen flex flex-col justify-center py-24 px-4 md:px-12 border-t border-white/10 bg-transparent">
+    <section key="contact" id="contact" className="w-full min-h-screen md:h-screen flex flex-col justify-center py-24 px-4 md:px-12 border-t border-white/10 bg-transparent">
       <div className="max-w-4xl mx-auto text-center">
         <FadeIn>
           <h2 className="text-5xl md:text-7xl font-syne font-bold mb-8 animate-pearl">Let&apos;s Build the Future</h2>
@@ -555,7 +555,7 @@ export default function Home() {
   ];
 
   return (
-    <main ref={containerRef} className="w-full h-screen relative text-white selection:bg-purple-500/30 bg-black overflow-hidden">
+    <main ref={containerRef} className="w-full min-h-screen md:h-screen relative text-white selection:bg-purple-500/30 bg-black overflow-y-auto md:overflow-hidden">
 
       {/* Global Scroll Connector */}
       <ScrollProgress />

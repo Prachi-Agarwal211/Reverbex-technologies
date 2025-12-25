@@ -50,7 +50,7 @@ export default function Navbar() {
                 initial={{ opacity: 0, y: -20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
-                className="relative w-full z-50 bg-transparent py-6"
+                className="fixed md:relative top-0 left-0 w-full z-50 bg-black/80 md:bg-transparent py-4 md:py-6 backdrop-blur-md md:backdrop-blur-none"
             >
                 <div className="max-w-7xl mx-auto px-6 md:px-12 flex items-center justify-between">
 

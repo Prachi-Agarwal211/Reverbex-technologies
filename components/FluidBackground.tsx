@@ -19,13 +19,10 @@ import {
 const Fluid = () => {
     const { gl, size, viewport } = useThree();
 
-    // Simulation parameters
-    const simRes = 128; // Simulation resolution (lower = faster)
-    const dyeRes = 512; // Dye resolution (higher = crisper)
-    const densityDissipation = 0.985; // Increased from 0.98 for longer-lasting trails
-    const velocityDissipation = 0.992; // Increased from 0.99 for more fluid persistence
-    const pressureIterations = 20;
-    const curl = 40; // Increased from 30 for more visible vorticity
+    // Constants
+    const densityDissipation = 0.985;
+    const velocityDissipation = 0.992;
+    const curl = 40;
     const splatRadius = 0.002;
     const splatForce = 6000;
 
@@ -34,6 +31,28 @@ const Fluid = () => {
     const prevMouse = useRef(new THREE.Vector2(0, 0));
     const lastMouseChange = useRef(0);
     const isMoved = useRef(false);
+
+    // Dynamic quality settings based on device capability
+    const [quality, setQuality] = useState({ simRes: 128, dyeRes: 512, iterations: 20 });
+
+    useEffect(() => {
+        const checkMobile = () => {
+            const isMobile = window.innerWidth < 768;
+            setQuality({
+                simRes: isMobile ? 64 : 128,          // Half resolution physics
+                dyeRes: isMobile ? 256 : 512,         // Half resolution visual
+                iterations: isMobile ? 10 : 20        // Half calculation steps
+            });
+        };
+
+        checkMobile();
+        window.addEventListener('resize', checkMobile);
+        return () => window.removeEventListener('resize', checkMobile);
+    }, []);
+
+    const simRes = quality.simRes;
+    const dyeRes = quality.dyeRes;
+    const pressureIterations = quality.iterations;
 
     // FBO helper
     const createFBO = useMemo(() => (w: number, h: number, type: THREE.TextureDataType = THREE.HalfFloatType) => {
@@ -47,6 +66,7 @@ const Fluid = () => {
         });
     }, []);
 
+    // Double buffering helper
     const createDoubleFBO = useMemo(() => (w: number, h: number, type: THREE.TextureDataType = THREE.HalfFloatType) => {
         return {
             read: createFBO(w, h, type),
@@ -59,7 +79,7 @@ const Fluid = () => {
         };
     }, [createFBO]);
 
-    // Initialize FBOs
+    // Initialize FBOs with dynamic resolution
     const density = useMemo(() => createDoubleFBO(dyeRes, dyeRes), [createDoubleFBO, dyeRes]);
     const velocity = useMemo(() => createDoubleFBO(simRes, simRes), [createDoubleFBO, simRes]);
     const divergence = useMemo(() => createFBO(simRes, simRes), [createFBO, simRes]);
@@ -180,34 +200,29 @@ const Fluid = () => {
 
         // Auto splats for entrance animation
         if (time < 3.5) {
-            // Slower frequency: "Pure Ink Drop" look
             if (Math.random() < 0.05) {
                 const angle = Math.random() * Math.PI * 2;
                 const radius = 0.1 + Math.random() * 0.25;
                 const x = 0.5 + Math.cos(angle) * radius;
                 const y = 0.5 + Math.sin(angle) * radius;
 
-                // Gentle velocity (implosive/explosive mix)
                 const force = 800;
                 const dx = (0.5 - x) * force + (Math.random() - 0.5) * 200;
                 const dy = (0.5 - y) * force + (Math.random() - 0.5) * 200;
 
-                // Brand Colors: Cyan, Indigo, Pink, White - reduced brightness
                 const brandColors = [0x22d3ee, 0x818cf8, 0xe879f9, 0xffffff];
                 const hex = brandColors[Math.floor(Math.random() * brandColors.length)];
-                const color = new THREE.Color(hex).multiplyScalar(0.35); // Reduced from 0.6 to 0.35
+                const color = new THREE.Color(hex).multiplyScalar(0.35);
 
                 splat(x, y, dx, dy, color);
             }
-            // Removed central swirl for purity
         } else {
-            // Enhanced ambient motion: colorful but very subtle brightness
-            const t = time * 0.3; // Slower for more elegance
-            const x = 0.5 + Math.sin(t) * 0.4; // Larger wander radius
+            const t = time * 0.3;
+            const x = 0.5 + Math.sin(t) * 0.4;
             const y = 0.5 + Math.cos(t * 1.3) * 0.4;
-            const dx = Math.sin(t * 2.5) * 600; // Stronger force
+            const dx = Math.sin(t * 2.5) * 600;
             const dy = Math.cos(t * 1.5) * 600;
-            const color = new THREE.Color().setHSL((t * 0.1) % 1, 0.8, 0.25).multiplyScalar(0.3); // Colorful (sat 0.8) but very subtle (light 0.25, mult 0.3)
+            const color = new THREE.Color().setHSL((t * 0.1) % 1, 0.8, 0.25).multiplyScalar(0.3);
             splat(x, y, dx, dy, color);
         }
 
@@ -215,7 +230,6 @@ const Fluid = () => {
         if (isMoved.current && (Date.now() - lastMouseChange.current < 100)) {
             const dx = mouse.current.x - prevMouse.current.x;
             const dy = mouse.current.y - prevMouse.current.y;
-            // Colorful but less bright on mouse interaction
             const color = new THREE.Color().setHSL((Date.now() % 10000) / 10000, 0.9, 0.35).multiplyScalar(0.4);
 
             splat(mouse.current.x, mouse.current.y, dx * splatForce, dy * splatForce, color);
@@ -263,7 +277,7 @@ const Fluid = () => {
             pRead = pWrite;
             pWrite = temp;
         }
-        pressure.read = pRead; // Update internal state if needed, though we swapped local vars
+        pressure.read = pRead;
         pressure.write = pWrite;
 
         // --- Gradient Subtract ---
@@ -303,7 +317,6 @@ const Fluid = () => {
         }
     });
 
-    // Render the final texture to a quad in the main scene
     return (
         <mesh ref={mesh}>
             <planeGeometry args={[2, 2]} />

@@ -22,6 +22,14 @@ const inter = Inter({
 export const metadata: Metadata = {
   title: 'Reverbex Technologies',
   description: 'Building Solutions with Creativity',
+  manifest: "/manifest.json",
+  themeColor: "#000000",
+  viewport: {
+    width: "device-width",
+    initialScale: 1,
+    maximumScale: 1,
+    userScalable: false,
+  }
 }
 
 export default function RootLayout({
