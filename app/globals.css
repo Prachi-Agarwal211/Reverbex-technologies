@@ -110,18 +110,44 @@ h6 {
   /* Fixed size to prevent texture stretching beyond native resolution */
   background-size: 600px auto;
   background-position: center;
-  animation: pearl-flow 20s ease-in-out infinite;
+  animation: pearl-flow 25s linear infinite;
 
   /* Clip to text */
   -webkit-background-clip: text;
   background-clip: text;
   -webkit-text-fill-color: transparent;
   color: transparent;
+
+  /* 
+     Structural Emboss for Transparent Text 
+     1. Top-left white highlight (Light source)
+     2. Bottom-right dark shadow (Depth)
+     NOTE: This applies to the IMAGE itself because the text is transparent.
+  */
+  filter:
+    drop-shadow(-1px -1px 0 rgba(255, 255, 255, 0.4)) drop-shadow(2px 2px 2px rgba(0, 0, 0, 0.8));
+}
+
+.text-emboss {
+  /* 
+     Enhance the effect for larger headings
+     Add a stronger rim light 
+  */
+  filter:
+    drop-shadow(-2px -2px 1px rgba(255, 255, 255, 0.3)) drop-shadow(3px 3px 6px rgba(0, 0, 0, 0.9));
+
+  font-weight: 800;
+  letter-spacing: -0.02em;
 }
 
 @media (max-width: 768px) {
   .animate-pearl {
     background-size: 400px auto;
+  }
+
+  .text-emboss {
+    /* Simpler filter on mobile for performance and readability */
+    filter: drop-shadow(1px 1px 2px rgba(0, 0, 0, 0.8));
   }
 
   .metrics-banner {
@@ -142,8 +168,11 @@ h6 {
   background-image: url('/textures/pearl.png');
   background-size: 200% auto;
   background-position: center;
-  animation: pearl-flow 20s ease-in-out infinite;
-  box-shadow: 0 4px 20px rgba(255, 255, 255, 0.1);
+  animation: pearl-flow 25s linear infinite;
+  box-shadow:
+    0 4px 20px rgba(255, 255, 255, 0.1),
+    inset 0 0 20px rgba(255, 255, 255, 0.2);
+  /* Inset glow */
 }
 
 /* Performance optimizations */

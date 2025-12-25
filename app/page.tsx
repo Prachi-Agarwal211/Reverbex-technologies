@@ -1,8 +1,6 @@
 "use client";
 
-import FluidBackground from "../components/FluidBackground";
-import AudioReactiveFluidBackground, { setupAudioContext } from "../components/AudioReactiveFluid";
-import AudioVisualizer from "../components/AudioVisualizer";
+import InteractiveFluidBackground from "../components/InteractiveFluid";
 import FloatingOrbs from "../components/FloatingOrbs";
 import TechStream from "../components/TechStream";
 import ProjectShowcase, { ProjectSlides } from "../components/ProjectShowcase";
@@ -88,19 +86,19 @@ const ServiceCard = ({ title, description, tags, impact, caseStudy, index }: { t
       boxShadow: "0 15px 40px rgba(34, 211, 238, 0.25)",
       borderColor: "rgba(34, 211, 238, 0.4)"
     }}
-    className="bg-white/5 backdrop-blur-md border border-white/10 p-8 rounded-2xl group h-full flex flex-col"
+    className="bg-white/5 backdrop-blur-md border border-white/10 p-6 md:p-8 rounded-2xl group h-full flex flex-col"
   >
     <div className="h-1 w-12 pearl-bg mb-6 group-hover:w-full transition-all duration-500 rounded-full" />
 
-    <h3 className="text-2xl font-semibold mb-3 text-white group-hover:text-white transition-colors">{title}</h3>
+    <h3 className="text-xl md:text-2xl font-semibold mb-3 text-white group-hover:text-white transition-colors">{title}</h3>
 
-    <p className="text-white/60 mb-6 font-light leading-relaxed flex-grow">{description}</p>
+    <p className="text-white/60 mb-6 font-light leading-relaxed flex-grow text-sm md:text-base">{description}</p>
 
     {/* Real Impact Metrics */}
     {impact && (
       <div className="mb-6 space-y-2 border-l-2 border-white/10 pl-4">
         {impact.map((item, i) => (
-          <div key={i} className="text-sm text-white/80 font-mono flex items-center gap-2">
+          <div key={i} className="text-xs md:text-sm text-white/80 font-mono flex items-center gap-2">
             <span className="text-white">▹</span> {item}
           </div>
         ))}
@@ -160,56 +158,30 @@ const CounterMetric = ({ metric, delay }: { metric: any; delay: number }) => {
       animate={isInView ? { opacity: 1, scale: 1 } : { opacity: 0, scale: 0.8 }}
       transition={{ duration: 0.5, delay, ease: "circOut" }}
     >
-      <div className="text-3xl md:text-4xl font-bold text-white mb-2">
+      <div className="text-2xl md:text-4xl font-bold text-white mb-2">
         {metric.prefix}{count}{metric.suffix}
       </div>
-      <div className="text-xs uppercase tracking-widest text-white/40">{metric.label}</div>
+      <div className="text-[10px] md:text-xs uppercase tracking-widest text-white/40">{metric.label}</div>
     </motion.div>
   );
 };
 
 export default function Home() {
   const containerRef = useRef(null);
-  const audioRef = useRef<HTMLAudioElement>(null);
-
-  // Mouse parallax for hero
-  const mouseX = useMotionValue(0);
-  const mouseY = useMotionValue(0);
-  const smoothX = useSpring(mouseX, { stiffness: 50, damping: 20 });
-  const smoothY = useSpring(mouseY, { stiffness: 50, damping: 20 });
-
-  useEffect(() => {
-    const handleMouseMove = (e: MouseEvent) => {
-      const x = (e.clientX / window.innerWidth - 0.5) * 20;
-      const y = (e.clientY / window.innerHeight - 0.5) * 20;
-      mouseX.set(x);
-      mouseY.set(y);
-    };
-    window.addEventListener("mousemove", handleMouseMove);
-    return () => window.removeEventListener("mousemove", handleMouseMove);
-  }, [mouseX, mouseY]);
-
-  // Setup audio context when component mounts
-  useEffect(() => {
-    if (audioRef.current) {
-      setupAudioContext(audioRef.current);
-    }
-  }, []);
 
   // Define content sections for the ScrollManager
   const sections = [
     // Slide 1: Hero
     <section key="hero" id="home" className="w-full h-screen flex flex-col items-center justify-center p-4 md:p-8 overflow-hidden">
       <motion.div
-        style={{ x: smoothX, y: smoothY }}
         initial={{ opacity: 0, scale: 0.9 }}
         whileInView={{ opacity: 1, scale: 1 }}
         viewport={{ once: false }}
         transition={{ duration: 1.5, ease: [0.16, 1, 0.3, 1] }}
-        className="text-center relative"
+        className="text-center relative z-10"
       >
         <div className="absolute inset-0 bg-white/10 blur-[120px] rounded-full opacity-30" />
-        <h1 className="relative text-5xl md:text-7xl lg:text-9xl font-bold tracking-tighter animate-pearl text-center leading-[0.9]">
+        <h1 className="relative text-4xl md:text-7xl lg:text-9xl font-bold tracking-tighter animate-pearl text-emboss text-center leading-[1.1] md:leading-[0.9]">
           Reverbex <br className="md:hidden" /> Technologies
         </h1>
       </motion.div>
@@ -219,7 +191,7 @@ export default function Home() {
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: false }}
         transition={{ delay: 0.5, duration: 1, ease: [0.16, 1, 0.3, 1] }}
-        className="mt-8 text-lg md:text-2xl text-white/80 font-light tracking-wide text-center max-w-xl"
+        className="mt-6 md:mt-8 text-base md:text-2xl text-white/80 font-light tracking-wide text-center max-w-xl px-4"
       >
         Orchestrating the Future of Digital Reality
       </motion.p>
@@ -236,12 +208,12 @@ export default function Home() {
       >
         <ScrambleText
           text="Featured Engagements"
-          className="text-5xl md:text-8xl font-bold leading-tight mb-8 animate-pearl"
+          className="text-4xl md:text-8xl font-bold leading-tight mb-6 md:mb-8 animate-pearl text-emboss"
         />
-        <div className="w-20 h-1 bg-white/20 mx-auto mb-6" />
+        <div className="w-16 md:w-20 h-1 bg-white/20 mx-auto mb-4 md:mb-6" />
         <ScrambleText
           text="Delivering scalable solutions for complex industry challenges"
-          className="text-xl md:text-2xl text-white/60 font-light"
+          className="text-lg md:text-2xl text-white/60 font-light px-2"
           delay={0.5}
         />
       </motion.div>
@@ -251,18 +223,18 @@ export default function Home() {
     ...ProjectSlides,
 
     // Slide 4: Mission Intro
-    <section key="mission-intro" id="about-mission" className="w-full h-screen flex flex-col justify-center px-4 md:px-12 bg-transparent overflow-hidden">
-      <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+    <section key="mission-intro" id="about-mission" className="w-full min-h-screen md:h-screen flex flex-col justify-center px-4 md:px-12 bg-transparent overflow-hidden py-20 md:py-0">
+      <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-8 md:gap-12 items-center">
         <motion.div
           initial={{ opacity: 0, x: -50 }}
           whileInView={{ opacity: 1, x: 0 }}
           viewport={{ once: false }}
           transition={{ duration: 0.5, ease: "circOut" }}
         >
-          <span className="text-white/60 font-mono tracking-widest text-sm uppercase mb-4 block">Built for Business Impact</span>
+          <span className="text-white/60 font-mono tracking-widest text-xs md:text-sm uppercase mb-2 md:mb-4 block">Built for Business Impact</span>
           <ScrambleText
             text="Enterprise Software That Drives Real Results"
-            className="text-5xl md:text-7xl font-bold leading-tight"
+            className="text-3xl md:text-5xl lg:text-7xl font-bold leading-tight"
           />
         </motion.div>
         <motion.div
@@ -270,7 +242,7 @@ export default function Home() {
           whileInView={{ opacity: 1, x: 0 }}
           viewport={{ once: false, amount: 0.3 }}
           transition={{ duration: 0.8, delay: 0.2, ease: [0.19, 1, 0.22, 1] }}
-          className="text-lg md:text-xl text-white/70 font-light leading-relaxed space-y-6"
+          className="text-base md:text-xl text-white/70 font-light leading-relaxed space-y-4 md:space-y-6"
         >
           <p>
             Since 2020, we&apos;ve delivered <strong>20+ mission-critical systems</strong> across enterprise, finance, education, and gaming.
@@ -283,13 +255,13 @@ export default function Home() {
     </section>,
 
     // Slide 5: Values
-    <section key="values" id="about-values" className="w-full h-screen flex flex-col justify-center px-4 md:px-12 bg-transparent overflow-hidden">
-      <div className="max-w-7xl mx-auto space-y-20 w-full">
+    <section key="values" id="about-values" className="w-full min-h-screen md:h-screen flex flex-col justify-center px-4 md:px-12 bg-transparent overflow-hidden py-20 md:py-0">
+      <div className="max-w-7xl mx-auto space-y-8 md:space-y-20 w-full flex flex-col justify-center">
         <motion.div
-          className="grid grid-cols-1 md:grid-cols-3 gap-8"
+          className="grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-8 flex-shrink-0"
           initial={{ opacity: 0, y: 100 }}
           whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: false, amount: 0.3 }}
+          viewport={{ once: false, amount: 0.1 }}
           transition={{ duration: 0.8, ease: [0.19, 1, 0.22, 1] }}
         >
           {[
@@ -308,19 +280,19 @@ export default function Home() {
           ].map((pillar, i) => (
             <motion.div
               key={i}
-              className="bg-white/5 border border-white/10 p-8 rounded-xl"
+              className="bg-white/5 border border-white/10 p-6 md:p-8 rounded-xl"
               whileHover={{ scale: 1.05, backgroundColor: "rgba(255,255,255,0.08)" }}
               transition={{ duration: 0.3 }}
             >
-              <h3 className="text-xl font-bold mb-4 text-white">{pillar.title}</h3>
-              <p className="text-white/60 text-sm leading-relaxed">{pillar.description}</p>
+              <h3 className="text-lg md:text-xl font-bold mb-2 md:mb-4 text-white">{pillar.title}</h3>
+              <p className="text-white/60 text-xs md:text-sm leading-relaxed">{pillar.description}</p>
             </motion.div>
           ))}
         </motion.div>
 
         {/* Metrics Banner */}
-        <div className="border-t border-b border-white/10 py-12">
-          <div className="grid grid-cols-2 lg:grid-cols-4 gap-8">
+        <div className="border-t border-b border-white/10 py-8 md:py-12 flex-shrink-0">
+          <div className="grid grid-cols-2 lg:grid-cols-4 gap-6 md:gap-8">
             {[
               { label: "Data Processed Daily", val: "500M+", prefix: "", suffix: "M+" },
               { label: "Concurrent Users", val: "10k+", prefix: "", suffix: "k+" },
@@ -335,20 +307,20 @@ export default function Home() {
     </section>,
 
     // Slide 6: Services - Featured
-    <section key="features" className="w-full h-screen flex flex-col justify-center px-4 md:px-12 bg-transparent overflow-hidden">
-      <div className="max-w-7xl mx-auto w-full">
+    <section key="features" className="w-full min-h-screen md:h-screen flex flex-col justify-center px-4 md:px-12 bg-transparent overflow-hidden py-20 md:py-0">
+      <div className="max-w-7xl mx-auto w-full flex flex-col justify-center">
         <motion.div
-          className="mb-12"
+          className="mb-8 md:mb-12 flex-shrink-0"
           initial={{ opacity: 0, x: -100 }}
           whileInView={{ opacity: 1, x: 0 }}
           viewport={{ once: false, amount: 0.3 }}
           transition={{ duration: 0.8, ease: [0.19, 1, 0.22, 1] }}
         >
-          <h2 className="text-sm font-mono tracking-widest uppercase text-white/40 mb-2">Capabilities</h2>
-          <h3 className="text-4xl font-bold animate-pearl">Featured Solutions</h3>
+          <h2 className="text-xs md:text-sm font-mono tracking-widest uppercase text-white/40 mb-2">Capabilities</h2>
+          <h3 className="text-3xl md:text-4xl font-bold animate-pearl">Featured Solutions</h3>
         </motion.div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6 flex-shrink-0 pb-10">
           {[
             {
               title: "Real-Time Trading",
@@ -382,20 +354,20 @@ export default function Home() {
     </section>,
 
     // Slide 7: Services - Enterprise
-    <section key="enterprise" className="w-full h-screen flex flex-col justify-center px-4 md:px-12 bg-transparent overflow-hidden">
-      <div className="max-w-7xl mx-auto w-full">
+    <section key="enterprise" className="w-full min-h-screen md:h-screen flex flex-col justify-center px-4 md:px-12 bg-transparent overflow-hidden py-20 md:py-0">
+      <div className="max-w-7xl mx-auto w-full flex flex-col justify-center">
         <motion.div
-          className="mb-12 text-right"
+          className="mb-8 md:mb-12 text-right flex-shrink-0"
           initial={{ opacity: 0, x: 100 }}
           whileInView={{ opacity: 1, x: 0 }}
           viewport={{ once: false, amount: 0.3 }}
           transition={{ duration: 0.8, ease: [0.19, 1, 0.22, 1] }}
         >
-          <h2 className="text-sm font-mono tracking-widest uppercase text-white/40 mb-2">Capabilities</h2>
-          <h3 className="text-4xl font-bold animate-pearl">Enterprise & Data</h3>
+          <h2 className="text-xs md:text-sm font-mono tracking-widest uppercase text-white/40 mb-2">Capabilities</h2>
+          <h3 className="text-3xl md:text-4xl font-bold animate-pearl">Enterprise & Data</h3>
         </motion.div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6 flex-shrink-0 pb-10">
           {[
             {
               title: "Analytics Dashboards",
@@ -425,20 +397,20 @@ export default function Home() {
     </section>,
 
     // Slide 8: Services - Advanced
-    <section key="advanced" className="w-full h-screen flex flex-col justify-center px-4 md:px-12 bg-transparent overflow-hidden">
-      <div className="max-w-7xl mx-auto w-full">
+    <section key="advanced" className="w-full min-h-screen md:h-screen flex flex-col justify-center px-4 md:px-12 bg-transparent overflow-hidden py-20 md:py-0">
+      <div className="max-w-7xl mx-auto w-full flex flex-col justify-center">
         <motion.div
-          className="mb-12 text-center"
+          className="mb-8 md:mb-12 text-center flex-shrink-0"
           initial={{ opacity: 0, scale: 0.9 }}
           whileInView={{ opacity: 1, scale: 1 }}
           viewport={{ once: false, amount: 0.3 }}
           transition={{ duration: 0.8, ease: [0.19, 1, 0.22, 1] }}
         >
-          <h2 className="text-sm font-mono tracking-widest uppercase text-white/40 mb-2">Capabilities</h2>
-          <h3 className="text-4xl font-bold animate-pearl">Advanced Technologies</h3>
+          <h2 className="text-xs md:text-sm font-mono tracking-widest uppercase text-white/40 mb-2">Capabilities</h2>
+          <h3 className="text-3xl md:text-4xl font-bold animate-pearl">Advanced Technologies</h3>
         </motion.div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6 flex-shrink-0 pb-10">
           {[
             {
               title: "Generative AI Agent",
@@ -468,20 +440,20 @@ export default function Home() {
     </section>,
 
     // Slide 9: Services - Core
-    <section key="core" className="w-full h-screen flex flex-col justify-center px-4 md:px-12 bg-transparent overflow-hidden">
-      <div className="max-w-7xl mx-auto w-full">
+    <section key="core" className="w-full min-h-screen md:h-screen flex flex-col justify-center px-4 md:px-12 bg-transparent overflow-hidden py-20 md:py-0">
+      <div className="max-w-7xl mx-auto w-full flex flex-col justify-center">
         <motion.div
-          className="mb-12"
+          className="mb-8 md:mb-12 flex-shrink-0"
           initial={{ opacity: 0, x: -100 }}
           whileInView={{ opacity: 1, x: 0 }}
           viewport={{ once: false, amount: 0.3 }}
           transition={{ duration: 0.8, ease: [0.19, 1, 0.22, 1] }}
         >
-          <h2 className="text-sm font-mono tracking-widest uppercase text-white/40 mb-2">Capabilities</h2>
-          <h3 className="text-4xl font-bold animate-pearl">Core Engineering</h3>
+          <h2 className="text-xs md:text-sm font-mono tracking-widest uppercase text-white/40 mb-2">Capabilities</h2>
+          <h3 className="text-3xl md:text-4xl font-bold animate-pearl">Core Engineering</h3>
         </motion.div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6 flex-shrink-0 pb-10">
           {[
             {
               title: "Full-Stack Web",
@@ -521,8 +493,8 @@ export default function Home() {
     <section key="contact" id="contact" className="w-full h-screen flex flex-col justify-center py-24 px-4 md:px-12 border-t border-white/10 bg-transparent">
       <div className="max-w-4xl mx-auto text-center">
         <FadeIn>
-          <h2 className="text-5xl md:text-7xl font-syne font-bold mb-8 animate-pearl">Let&apos;s Build the Future</h2>
-          <p className="text-xl text-white/60 font-light mb-12 max-w-2xl mx-auto">
+          <h2 className="text-4xl md:text-5xl lg:text-7xl font-syne font-bold mb-6 md:mb-8 animate-pearl">Let&apos;s Build the Future</h2>
+          <p className="text-lg md:text-xl text-white/60 font-light mb-8 md:mb-12 max-w-2xl mx-auto px-4">
             Ready to transform your business requirements into production-grade reality?
             Let&apos;s talk about your next mission-critical project.
           </p>
@@ -535,7 +507,7 @@ export default function Home() {
             <span className="text-xl">→</span>
           </a>
 
-          <div className="mt-16 grid grid-cols-1 md:grid-cols-3 gap-8 text-sm text-white/40 font-mono uppercase tracking-widest">
+          <div className="mt-12 md:mt-16 grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-8 text-sm text-white/40 font-mono uppercase tracking-widest px-4">
             <div>
               <div className="text-white mb-2">Email</div>
               reverbextech@gmail.com
@@ -563,7 +535,7 @@ export default function Home() {
       {/* Fixed background elements */}
       <div className="fixed inset-0 z-0 pointer-events-none">
         <FloatingOrbs />
-        <FluidBackground />
+        <InteractiveFluidBackground />
       </div>
 
       {/* Hijacked Scroll Container */}

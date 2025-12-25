@@ -1,30 +1,20 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { useAudioSafe } from "./AudioContext";
 
 export default function FloatingOrbs() {
-  const audio = useAudioSafe();
+  // Static/Ambient animation values since audio is removed
+  const bassScale = 1;
+  const midScale = 1;
+  const highScale = 1;
 
-  // Get audio intensity values, default to 0 if no audio context
-  const bassIntensity = audio?.bassIntensity || 0;
-  const midIntensity = audio?.midIntensity || 0;
-  const highIntensity = audio?.highIntensity || 0;
-  const isBeat = audio?.isBeat || false;
-
-  // Calculate dynamic values based on audio
-  const bassScale = 1 + (bassIntensity / 255) * 0.3;  // Up to 30% larger on bass
-  const midScale = 1 + (midIntensity / 255) * 0.2;    // Up to 20% larger on mids
-  const highScale = 1 + (highIntensity / 255) * 0.15; // Up to 15% larger on highs
-
-  // Color intensity based on audio
-  const bassOpacity = 0.25 + (bassIntensity / 255) * 0.35;
-  const midOpacity = 0.12 + (midIntensity / 255) * 0.25;
-  const highOpacity = 0.1 + (highIntensity / 255) * 0.2;
+  const bassOpacity = 0.3;
+  const midOpacity = 0.2;
+  const highOpacity = 0.15;
 
   return (
     <div className="fixed inset-0 z-0 pointer-events-none overflow-hidden">
-      {/* Cyan Orb - Top Left - Reacts to BASS */}
+      {/* Cyan Orb - Top Left */}
       <motion.div
         className="absolute w-[500px] h-[500px] rounded-full"
         style={{
@@ -34,16 +24,16 @@ export default function FloatingOrbs() {
         animate={{
           x: ["-10%", "5%", "-10%"],
           y: ["20%", "30%", "20%"],
-          scale: isBeat ? bassScale * 1.2 : bassScale,
+          scale: [1, 1.1, 1],
         }}
         transition={{
           x: { duration: 20, repeat: Infinity, ease: "easeInOut" },
           y: { duration: 20, repeat: Infinity, ease: "easeInOut" },
-          scale: { duration: isBeat ? 0.1 : 0.3, ease: "easeOut" },
+          scale: { duration: 8, repeat: Infinity, ease: "easeInOut" },
         }}
       />
 
-      {/* Purple Orb - Bottom Right - Reacts to MIDS */}
+      {/* Purple Orb - Bottom Right */}
       <motion.div
         className="absolute w-80 h-80 rounded-full"
         style={{
@@ -55,16 +45,16 @@ export default function FloatingOrbs() {
         animate={{
           x: ["10%", "-5%", "10%"],
           y: ["-20%", "-30%", "-20%"],
-          scale: midScale,
+          scale: [1, 1.15, 1],
         }}
         transition={{
           x: { duration: 18, repeat: Infinity, ease: "easeInOut", delay: 1 },
           y: { duration: 18, repeat: Infinity, ease: "easeInOut", delay: 1 },
-          scale: { duration: 0.3, ease: "easeOut" },
+          scale: { duration: 7, repeat: Infinity, ease: "easeInOut" },
         }}
       />
 
-      {/* Pink Orb - Center Right - Reacts to HIGHS */}
+      {/* Pink Orb - Center Right */}
       <motion.div
         className="absolute w-72 h-72 rounded-full"
         style={{
@@ -76,16 +66,16 @@ export default function FloatingOrbs() {
         animate={{
           x: ["-5%", "5%", "-5%"],
           y: ["-10%", "10%", "-10%"],
-          scale: highScale,
+          scale: [1, 1.1, 1],
         }}
         transition={{
           x: { duration: 22, repeat: Infinity, ease: "easeInOut", delay: 2 },
           y: { duration: 22, repeat: Infinity, ease: "easeInOut", delay: 2 },
-          scale: { duration: 0.2, ease: "easeOut" },
+          scale: { duration: 6, repeat: Infinity, ease: "easeInOut" },
         }}
       />
 
-      {/* Blue Orb - Top Center - Reacts to MIDS */}
+      {/* Blue Orb - Top Center */}
       <motion.div
         className="absolute w-64 h-64 rounded-full"
         style={{
@@ -97,16 +87,16 @@ export default function FloatingOrbs() {
         animate={{
           x: ["-15%", "15%", "-15%"],
           y: ["0%", "10%", "0%"],
-          scale: midScale * 0.9,
+          scale: [1, 1.2, 1],
         }}
         transition={{
           x: { duration: 25, repeat: Infinity, ease: "easeInOut", delay: 3 },
           y: { duration: 25, repeat: Infinity, ease: "easeInOut", delay: 3 },
-          scale: { duration: 0.3, ease: "easeOut" },
+          scale: { duration: 9, repeat: Infinity, ease: "easeInOut" },
         }}
       />
 
-      {/* Teal Orb - Bottom Left - Reacts to BASS */}
+      {/* Teal Orb - Bottom Left */}
       <motion.div
         className="absolute w-56 h-56 rounded-full"
         style={{
@@ -118,27 +108,14 @@ export default function FloatingOrbs() {
         animate={{
           x: ["5%", "-5%", "5%"],
           y: ["5%", "-5%", "5%"],
-          scale: bassScale * 0.95,
+          scale: [1, 1.1, 1],
         }}
         transition={{
           x: { duration: 19, repeat: Infinity, ease: "easeInOut", delay: 4 },
           y: { duration: 19, repeat: Infinity, ease: "easeInOut", delay: 4 },
-          scale: { duration: isBeat ? 0.1 : 0.3, ease: "easeOut" },
+          scale: { duration: 8, repeat: Infinity, ease: "easeInOut" },
         }}
       />
-
-      {/* Beat Flash - Center overlay that pulses on beat */}
-      {isBeat && (
-        <motion.div
-          className="absolute inset-0"
-          style={{
-            background: "radial-gradient(circle at center, rgba(34, 211, 238, 0.1) 0%, transparent 50%)",
-          }}
-          initial={{ opacity: 0.5 }}
-          animate={{ opacity: 0 }}
-          transition={{ duration: 0.3 }}
-        />
-      )}
     </div>
   );
 }

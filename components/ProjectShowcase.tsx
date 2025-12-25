@@ -117,8 +117,8 @@ const projects = [
 
 // Layout variation 1: Image Left, Text Right
 const LayoutImageLeft = ({ project, index }: any) => (
-    <section className="snap-start w-full h-screen flex items-center justify-center px-4 md:px-12 bg-transparent overflow-hidden">
-        <div className="max-w-7xl w-full grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+    <section className="snap-start w-full min-h-screen md:h-screen flex items-center justify-center px-4 md:px-12 bg-transparent overflow-hidden py-20 md:py-0">
+        <div className="max-w-7xl w-full grid grid-cols-1 lg:grid-cols-2 gap-8 md:gap-12 items-center">
             {/* Image - Slides from left */}
             <motion.div
                 initial={{ opacity: 0, x: -200 }}
@@ -144,8 +144,8 @@ const LayoutImageLeft = ({ project, index }: any) => (
                 viewport={{ once: false, margin: "-10%" }}
                 transition={{ duration: 0.5, delay: 0.1, ease: "circOut" }}
             >
-                <div className="text-6xl mb-4">{project.icon}</div>
-                <h3 className="text-4xl md:text-5xl font-bold mb-3">{project.title}</h3>
+                <div className="text-4xl md:text-6xl mb-4">{project.icon}</div>
+                <h3 className="text-3xl md:text-5xl font-bold mb-3">{project.title}</h3>
                 <p className="text-xl text-white/60 mb-6">{project.subtitle}</p>
 
                 <div className="space-y-3 mb-6">
@@ -185,8 +185,8 @@ const LayoutImageLeft = ({ project, index }: any) => (
 
 // Layout variation 2: Image Right, Text Left
 const LayoutImageRight = ({ project, index }: any) => (
-    <section className="snap-start w-full h-screen flex items-center justify-center px-4 md:px-12 bg-transparent overflow-hidden">
-        <div className="max-w-7xl w-full grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+    <section className="snap-start w-full min-h-screen md:h-screen flex items-center justify-center px-4 md:px-12 bg-transparent overflow-hidden py-20 md:py-0">
+        <div className="max-w-7xl w-full grid grid-cols-1 lg:grid-cols-2 gap-8 md:gap-12 items-center">
             {/* Text - Slides from left */}
             <motion.div
                 initial={{ opacity: 0, x: -200 }}
@@ -195,8 +195,8 @@ const LayoutImageRight = ({ project, index }: any) => (
                 transition={{ duration: 0.5, ease: "circOut" }}
                 className="order-2 lg:order-1"
             >
-                <div className="text-6xl mb-4">{project.icon}</div>
-                <h3 className="text-4xl md:text-5xl font-bold mb-3">{project.title}</h3>
+                <div className="text-4xl md:text-6xl mb-4">{project.icon}</div>
+                <h3 className="text-3xl md:text-5xl font-bold mb-3">{project.title}</h3>
                 <p className="text-xl text-white/60 mb-6">{project.subtitle}</p>
 
                 <div className="space-y-3 mb-6">
@@ -254,7 +254,7 @@ const LayoutImageRight = ({ project, index }: any) => (
 
 // Layout variation 3: Centered with fade
 const LayoutCentered = ({ project, index }: any) => (
-    <section className="snap-start w-full h-screen flex items-center justify-center px-4 md:px-12 bg-transparent overflow-hidden">
+    <section className="snap-start w-full min-h-screen md:h-screen flex items-center justify-center px-4 md:px-12 bg-transparent overflow-hidden py-20 md:py-0">
         <div className="max-w-5xl w-full text-center">
             {/* Image - Fades and scales up */}
             <motion.div
@@ -281,8 +281,8 @@ const LayoutCentered = ({ project, index }: any) => (
                 viewport={{ once: false, margin: "-10%" }}
                 transition={{ duration: 0.5, delay: 0.2, ease: "circOut" }}
             >
-                <div className="text-6xl mb-4">{project.icon}</div>
-                <h3 className="text-4xl md:text-5xl font-bold mb-3">{project.title}</h3>
+                <div className="text-4xl md:text-6xl mb-4">{project.icon}</div>
+                <h3 className="text-3xl md:text-5xl font-bold mb-3">{project.title}</h3>
                 <p className="text-xl text-white/60 mb-6">{project.subtitle}</p>
 
                 <div className="flex flex-wrap justify-center gap-4 mb-6">
@@ -331,7 +331,7 @@ export default function ProjectShowcase() {
     return (
         <>
             {/* Intro Slide */}
-            <section className="snap-start w-full h-screen flex items-center justify-center px-4 md:px-12 bg-transparent overflow-hidden">
+            <section className="snap-start w-full min-h-screen md:h-screen flex items-center justify-center px-4 md:px-12 bg-transparent overflow-hidden">
                 <motion.div
                     className="max-w-4xl text-center"
                     initial={{ opacity: 0, scale: 0.95 }}

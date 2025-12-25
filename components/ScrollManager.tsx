@@ -140,6 +140,18 @@ export default function ScrollManager({ children }: ScrollManagerProps) {
         };
     }, [currentSlide, isScrolling, scrollToSlide]);
 
+    // Mobile Detection
+    const [isMobile, setIsMobile] = useState(false);
+    useEffect(() => {
+        const checkMobile = () => {
+            setIsMobile(window.innerWidth < 768);
+        };
+
+        checkMobile();
+        window.addEventListener('resize', checkMobile);
+        return () => window.removeEventListener('resize', checkMobile);
+    }, []);
+
     // Logic to determine which variant a slide should have
     const getSlideVariant = (index: number) => {
         if (index === currentSlide) return "center";
@@ -147,6 +159,20 @@ export default function ScrollManager({ children }: ScrollManagerProps) {
         return "exit";
     };
 
+    // Mobile View: Standard Vertical Scroll with Snap
+    if (isMobile) {
+        return (
+            <div className="w-full h-screen overflow-y-scroll snap-y snap-mandatory relative z-10 scroll-smooth">
+                {children.map((child, i) => (
+                    <div key={i} className="w-full relative snap-start">
+                        {child}
+                    </div>
+                ))}
+            </div>
+        );
+    }
+
+    // Desktop View: Hijacked Scroll
     return (
         <div className="fixed inset-0 overflow-hidden bg-transparent text-white">
             {children.map((child, i) => (

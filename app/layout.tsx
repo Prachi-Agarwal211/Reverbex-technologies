@@ -2,8 +2,6 @@ import type { Metadata } from 'next'
 import { Space_Grotesk, Inter } from 'next/font/google'
 import './globals.css'
 import Navbar from "../components/Navbar";
-import { AudioProvider } from "../components/AudioContext";
-import AudioVisualizer from "../components/AudioVisualizer";
 
 const spaceGrotesk = Space_Grotesk({
   subsets: ['latin'],
@@ -31,12 +29,9 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en" className={`${spaceGrotesk.variable} ${inter.variable}`}>
-      <body className={inter.className}>
-        <AudioProvider>
-          <Navbar />
-          {children}
-          <AudioVisualizer />
-        </AudioProvider>
+      <body className={`${inter.className} overflow-x-hidden antialiased bg-black`}>
+        <Navbar />
+        {children}
       </body>
     </html>
   )
