@@ -83,7 +83,7 @@ export default function Navbar() {
                         <motion.button
                             whileHover={{ scale: 1.05, boxShadow: "0 4px 20px rgba(34, 211, 238, 0.4)" }}
                             whileTap={{ scale: 0.95 }}
-                            className="pearl-bg text-black px-6 py-2 rounded-full text-sm font-bold"
+                            className="pearl-bg pearl-emboss text-black px-6 py-2 rounded-full text-sm font-bold"
                         >
                             Get Started
                         </motion.button>

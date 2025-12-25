@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useAudioSafe } from "./AudioContext";
 
@@ -8,21 +8,40 @@ export default function AudioVisualizer() {
     const audio = useAudioSafe();
     const [mounted, setMounted] = useState(false);
     const [expanded, setExpanded] = useState(false);
+    const [autoPlayEnabled, setAutoPlayEnabled] = useState(true);
+    const hasAttemptedAutoplay = useState(false); // Ref refactored to state to force render if needed, but actually ref is better for logic. Let's stick to the plan.
+    // actually, let's use a ref for the "has attempted" flag so we don't re-render unnecessarily
+    const autoplayAttempted = useRef(false);
 
     useEffect(() => {
         setMounted(true);
+        // Load autoplay preference
+        const stored = localStorage.getItem("audio_autoplay");
+        if (stored !== null) {
+            setAutoPlayEnabled(stored === "true");
+        }
     }, []);
 
-    // Autoplay on mount
+    // Autoplay logic
     useEffect(() => {
-        if (mounted && audio && !audio.isPlaying) {
-            // Small delay to ensure audio context is ready
-            const timer = setTimeout(() => {
-                audio.togglePlay();
-            }, 1500);
-            return () => clearTimeout(timer);
+        if (mounted && audio && !audio.isPlaying && !autoplayAttempted.current) {
+            autoplayAttempted.current = true; // Mark as attempted immediately
+
+            if (autoPlayEnabled) {
+                // Small delay to ensure audio context is ready
+                const timer = setTimeout(() => {
+                    audio.togglePlay();
+                }, 1500);
+                return () => clearTimeout(timer);
+            }
         }
-    }, [mounted, audio]);
+    }, [mounted, audio, autoPlayEnabled]);
+
+    const toggleAutoplay = () => {
+        const newValue = !autoPlayEnabled;
+        setAutoPlayEnabled(newValue);
+        localStorage.setItem("audio_autoplay", String(newValue));
+    };
 
     if (!mounted || !audio) return null;
 
@@ -65,6 +84,22 @@ export default function AudioVisualizer() {
                         <div className="mb-4">
                             <div className="text-sm font-semibold text-white truncate">What A Life</div>
                             <div className="text-xs text-white/50 truncate">John Summit, Guz ft. Stevie Appleton</div>
+                        </div>
+
+                        {/* Autoplay Toggle */}
+                        <div className="flex items-center justify-between mb-4">
+                            <span className="text-xs text-white/60">Autoplay</span>
+                            <button
+                                onClick={toggleAutoplay}
+                                className={`w-8 h-4 rounded-full transition-colors duration-200 relative ${autoPlayEnabled ? 'bg-cyan-400' : 'bg-white/20'
+                                    }`}
+                            >
+                                <div
+                                    className={`absolute top-0.5 w-3 h-3 rounded-full bg-white transition-transform duration-200 ${autoPlayEnabled ? 'left-4.5 translate-x-0' : 'left-0.5'
+                                        }`}
+                                    style={{ left: autoPlayEnabled ? '1.125rem' : '0.125rem' }}
+                                />
+                            </button>
                         </div>
 
                         {/* Volume Slider */}
@@ -117,8 +152,8 @@ export default function AudioVisualizer() {
                 style={{
                     background: "linear-gradient(135deg, rgba(255,255,255,0.95) 0%, rgba(220,220,230,0.9) 50%, rgba(255,255,255,0.85) 100%)",
                     boxShadow: isBeat
-                        ? "0 0 40px rgba(255,255,255,0.8), 0 0 80px rgba(34,211,238,0.4), inset 0 2px 4px rgba(255,255,255,1), inset 0 -2px 4px rgba(0,0,0,0.1)"
-                        : "0 8px 32px rgba(0,0,0,0.3), inset 0 2px 4px rgba(255,255,255,1), inset 0 -2px 4px rgba(0,0,0,0.1)",
+                        ? "0 0 40px rgba(255,255,255,0.8), 0 0 80px rgba(34,211,238,0.4), inset 3px 3px 6px rgba(255,255,255,1), inset -3px -3px 6px rgba(0,0,0,0.3)"
+                        : "0 6px 12px -2px rgba(0,0,0,0.4), inset 3px 3px 6px rgba(255,255,255,1), inset -3px -3px 6px rgba(0,0,0,0.3)",
                     border: "1px solid rgba(255,255,255,0.5)"
                 }}
                 animate={{

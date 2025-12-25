@@ -117,6 +117,9 @@ h6 {
   background-clip: text;
   -webkit-text-fill-color: transparent;
   color: transparent;
+
+  /* 3D Emboss Filter for Text */
+  filter: drop-shadow(1px 1px 0px rgba(0, 0, 0, 0.2)) drop-shadow(-1px -1px 0px rgba(255, 255, 255, 0.4));
 }
 
 @media (max-width: 768px) {
@@ -144,6 +147,28 @@ h6 {
   background-position: center;
   animation: pearl-flow 20s ease-in-out infinite;
   box-shadow: 0 4px 20px rgba(255, 255, 255, 0.1);
+}
+
+/* 3D Emboss effect for Pearl buttons */
+.pearl-emboss {
+  /* Top-left highlight (white) and Bottom-right shadow (dark) for 3D pop */
+  box-shadow:
+    /* Outer drop shadow for lift */
+    0 4px 8px -1px rgba(0, 0, 0, 0.3),
+    /* Inner top-left highlight */
+    inset 2px 2px 4px rgba(255, 255, 255, 1),
+    /* Inner bottom-right shadow */
+    inset -2px -2px 4px rgba(0, 0, 0, 0.2);
+
+  border: 1px solid rgba(255, 255, 255, 0.4);
+}
+
+.pearl-emboss:active {
+  /* Pressed state */
+  box-shadow:
+    inset 2px 2px 8px rgba(0, 0, 0, 0.2),
+    inset -1px -1px 4px rgba(255, 255, 255, 0.5);
+  transform: translateY(1px);
 }
 
 /* Performance optimizations */

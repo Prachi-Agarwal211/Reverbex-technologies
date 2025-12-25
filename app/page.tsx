@@ -226,7 +226,7 @@ export default function Home() {
     </section>,
 
     // Slide 2: Projects Intro
-    <section key="projects-intro" className="w-full h-screen flex items-center justify-center px-4 md:px-12 bg-transparent overflow-hidden">
+    <section key="projects-intro" className="w-full min-h-screen flex items-center justify-center px-4 md:px-12 bg-transparent overflow-x-hidden py-20 md:py-0">
       <motion.div
         className="max-w-4xl text-center"
         initial={{ opacity: 0, scale: 0.95 }}
@@ -251,7 +251,7 @@ export default function Home() {
     ...ProjectSlides,
 
     // Slide 4: Mission Intro
-    <section key="mission-intro" id="about-mission" className="w-full h-screen flex flex-col justify-center px-4 md:px-12 bg-transparent overflow-hidden">
+    <section key="mission-intro" id="about-mission" className="w-full min-h-screen flex flex-col justify-center px-4 md:px-12 bg-transparent overflow-x-hidden py-20 md:py-0">
       <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
         <motion.div
           initial={{ opacity: 0, x: -50 }}
@@ -283,7 +283,7 @@ export default function Home() {
     </section>,
 
     // Slide 5: Values
-    <section key="values" id="about-values" className="w-full h-screen flex flex-col justify-center px-4 md:px-12 bg-transparent overflow-hidden">
+    <section key="values" id="about-values" className="w-full min-h-screen flex flex-col justify-center px-4 md:px-12 bg-transparent overflow-x-hidden py-24 md:py-8">
       <div className="max-w-7xl mx-auto space-y-20 w-full">
         <motion.div
           className="grid grid-cols-1 md:grid-cols-3 gap-8"
@@ -335,7 +335,7 @@ export default function Home() {
     </section>,
 
     // Slide 6: Services - Featured
-    <section key="features" className="w-full h-screen flex flex-col justify-center px-4 md:px-12 bg-transparent overflow-hidden">
+    <section key="features" className="w-full min-h-screen flex flex-col justify-center px-4 md:px-12 bg-transparent overflow-x-hidden py-24 md:py-0">
       <div className="max-w-7xl mx-auto w-full">
         <motion.div
           className="mb-12"
@@ -382,7 +382,7 @@ export default function Home() {
     </section>,
 
     // Slide 7: Services - Enterprise
-    <section key="enterprise" className="w-full h-screen flex flex-col justify-center px-4 md:px-12 bg-transparent overflow-hidden">
+    <section key="enterprise" className="w-full min-h-screen flex flex-col justify-center px-4 md:px-12 bg-transparent overflow-x-hidden py-24 md:py-0">
       <div className="max-w-7xl mx-auto w-full">
         <motion.div
           className="mb-12 text-right"
@@ -425,7 +425,7 @@ export default function Home() {
     </section>,
 
     // Slide 8: Services - Advanced
-    <section key="advanced" className="w-full h-screen flex flex-col justify-center px-4 md:px-12 bg-transparent overflow-hidden">
+    <section key="advanced" className="w-full min-h-screen flex flex-col justify-center px-4 md:px-12 bg-transparent overflow-x-hidden py-24 md:py-0">
       <div className="max-w-7xl mx-auto w-full">
         <motion.div
           className="mb-12 text-center"
@@ -468,7 +468,7 @@ export default function Home() {
     </section>,
 
     // Slide 9: Services - Core
-    <section key="core" className="w-full h-screen flex flex-col justify-center px-4 md:px-12 bg-transparent overflow-hidden">
+    <section key="core" className="w-full min-h-screen flex flex-col justify-center px-4 md:px-12 bg-transparent overflow-x-hidden py-24 md:py-0">
       <div className="max-w-7xl mx-auto w-full">
         <motion.div
           className="mb-12"
