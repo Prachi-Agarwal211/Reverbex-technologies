@@ -188,7 +188,7 @@ export default function ScrollManager({ children }: ScrollManagerProps) {
                     initial="enter" // Start all slides as "entered" (below screen)
                     animate={getSlideVariant(i)}
                     variants={variants}
-                    className="absolute inset-0 w-full h-full will-change-transform overflow-y-auto md:overflow-hidden overscroll-contain"
+                    className="absolute inset-0 w-full h-full will-change-transform overflow-y-auto md:overflow-hidden overscroll-contain no-scrollbar"
                     style={{
                         // Only render meaningful content for nearby slides to save GPU
                         display: Math.abs(currentSlide - i) <= 1 ? 'block' : 'none'

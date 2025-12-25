@@ -39,9 +39,9 @@ const Fluid = () => {
         const checkMobile = () => {
             const isMobile = window.innerWidth < 768;
             setQuality({
-                simRes: isMobile ? 64 : 128,          // Half resolution physics
-                dyeRes: isMobile ? 256 : 512,         // Half resolution visual
-                iterations: isMobile ? 10 : 20        // Half calculation steps
+                simRes: isMobile ? 128 : 256,         // Bumped up mobile res for visibility (64 was too low)
+                dyeRes: isMobile ? 256 : 512,
+                iterations: isMobile ? 12 : 20        // Reduced iterations for performance
             });
         };
 
@@ -171,13 +171,16 @@ const Fluid = () => {
         return { scene, mesh: plane };
     }, []);
 
+    // Higher radius for mobile visibility (simRes is lower)
+    const activeSplatRadius = window.innerWidth < 768 ? 0.01 : 0.003;
+
     const splat = (x: number, y: number, dx: number, dy: number, color: THREE.Color) => {
         // Velocity splat
         materials.splat.uniforms.uTarget.value = velocity.read.texture;
         materials.splat.uniforms.aspectRatio.value = size.width / size.height;
         materials.splat.uniforms.point.value.set(x, y);
         materials.splat.uniforms.color.value.set(dx, dy, 0.0);
-        materials.splat.uniforms.radius.value = splatRadius;
+        materials.splat.uniforms.radius.value = activeSplatRadius;
 
         simScene.mesh.material = materials.splat;
         gl.setRenderTarget(velocity.write);
@@ -200,30 +203,41 @@ const Fluid = () => {
 
         // Auto splats for entrance animation
         if (time < 3.5) {
-            if (Math.random() < 0.05) {
+            if (Math.random() < 0.1) { // Increased frequency
                 const angle = Math.random() * Math.PI * 2;
                 const radius = 0.1 + Math.random() * 0.25;
                 const x = 0.5 + Math.cos(angle) * radius;
                 const y = 0.5 + Math.sin(angle) * radius;
 
-                const force = 800;
+                const force = 1000;
                 const dx = (0.5 - x) * force + (Math.random() - 0.5) * 200;
                 const dy = (0.5 - y) * force + (Math.random() - 0.5) * 200;
 
                 const brandColors = [0x22d3ee, 0x818cf8, 0xe879f9, 0xffffff];
                 const hex = brandColors[Math.floor(Math.random() * brandColors.length)];
-                const color = new THREE.Color(hex).multiplyScalar(0.35);
+                const color = new THREE.Color(hex).multiplyScalar(0.4);
 
                 splat(x, y, dx, dy, color);
             }
         } else {
-            const t = time * 0.3;
-            const x = 0.5 + Math.sin(t) * 0.4;
-            const y = 0.5 + Math.cos(t * 1.3) * 0.4;
-            const dx = Math.sin(t * 2.5) * 600;
-            const dy = Math.cos(t * 1.5) * 600;
-            const color = new THREE.Color().setHSL((t * 0.1) % 1, 0.8, 0.25).multiplyScalar(0.3);
+            // Enhanced Ambient Motion
+            const t = time * 0.5;
+            // Main orb
+            const x = 0.5 + Math.sin(t) * 0.3;
+            const y = 0.5 + Math.cos(t * 1.2) * 0.3;
+            const dx = Math.sin(t * 2.5) * 800;
+            const dy = Math.cos(t * 1.5) * 800;
+            const color = new THREE.Color().setHSL((t * 0.1) % 1, 0.8, 0.25).multiplyScalar(0.4);
             splat(x, y, dx, dy, color);
+
+            // Secondary orb for more life
+            const t2 = time * 0.3 + 2;
+            const x2 = 0.5 + Math.sin(t2 * 1.1) * 0.4;
+            const y2 = 0.5 + Math.cos(t2 * 0.9) * 0.4;
+            const dx2 = Math.cos(t2 * 2.1) * 600;
+            const dy2 = Math.sin(t2 * 1.8) * 600;
+            const color2 = new THREE.Color().setHSL((t2 * 0.15 + 0.5) % 1, 0.8, 0.25).multiplyScalar(0.3);
+            splat(x2, y2, dx2, dy2, color2);
         }
 
         // --- Inputs ---
