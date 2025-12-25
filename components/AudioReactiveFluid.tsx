@@ -16,19 +16,75 @@ import {
     gradientSubtractShader,
 } from "./FluidSimulation/shaders";
 
+// Global audio state variables (Module Scope)
+let audioContext: AudioContext | null = null;
+let sourceNode: MediaElementAudioSourceNode | null = null;
+let analyser: AnalyserNode | null = null;
+let dataArray: Uint8Array | null = null;
+
 // Audio data context for sharing between Three.js and React
 const AudioDataContext = createContext<{
     frequencyData: number[];
     setFrequencyData: (data: number[]) => void;
 } | null>(null);
 
-// Legacy exports for backwards compatibility
+// Setup audio context with error handling
 export const setupAudioContext = (audioElement: HTMLAudioElement) => {
-    console.warn("setupAudioContext is deprecated. Using AudioProvider instead.");
+    try {
+        if (!audioContext) {
+            // Safety check for browser support
+            const AudioContextClass = window.AudioContext || (window as any).webkitAudioContext;
+            if (!AudioContextClass) {
+                console.warn("Web Audio API not supported");
+                return;
+            }
+            audioContext = new AudioContextClass();
+        }
+
+        if (sourceNode) {
+            try {
+                sourceNode.disconnect();
+            } catch (e) {
+                // Ignore disconnect errors
+            }
+        }
+
+        // Create or reuse source
+        try {
+            sourceNode = audioContext.createMediaElementSource(audioElement);
+            analyser = audioContext.createAnalyser();
+            analyser.fftSize = 256;
+            sourceNode.connect(analyser);
+            analyser.connect(audioContext.destination);
+
+            // Expose analyser globally for other components to read if needed
+            (window as any).__audioAnalyser = analyser;
+
+            // Resume context if suspended (common on mobile)
+            if (audioContext.state === 'suspended') {
+                const resumeContext = () => {
+                    audioContext?.resume().then(() => {
+                        console.log("Audio Context Resumed");
+                    }).catch(err => console.error("Audio resume failed", err));
+                    window.removeEventListener('click', resumeContext);
+                    window.removeEventListener('touchstart', resumeContext);
+                };
+                window.addEventListener('click', resumeContext);
+                window.addEventListener('touchstart', resumeContext);
+            }
+        } catch (mediaError) {
+            console.warn("Media Element Source already connected or failed:", mediaError);
+            // Non-fatal, just means visualization might fail
+        }
+
+        dataArray = new Uint8Array(analyser ? analyser.frequencyBinCount : 128);
+    } catch (e) {
+        console.error("Audio Context Setup Fatal Error:", e);
+    }
 };
 
 export const getAudioData = () => {
-    return null; // Now handled by AudioContext
+    return null; // Now handled by internal logic or AudioContext
 };
 
 interface AudioReactiveFluidProps {
@@ -449,10 +505,10 @@ function AudioReactiveFluidWithContext() {
     const [frequencyData, setFrequencyData] = useState<number[]>([]);
 
     useEffect(() => {
-        // Poll for audio data from the global audio element
         const pollAudio = () => {
             // Try to find the audio element and its analyser
             const audioElement = document.querySelector('audio');
+            // Check for exposed analyser on window which we set in setupAudioContext
             if (audioElement && (window as any).__audioAnalyser) {
                 const analyser = (window as any).__audioAnalyser as AnalyserNode;
                 const dataArray = new Uint8Array(analyser.frequencyBinCount);

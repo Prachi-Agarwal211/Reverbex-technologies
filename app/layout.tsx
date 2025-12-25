@@ -4,6 +4,7 @@ import './globals.css'
 import Navbar from "../components/Navbar";
 import { AudioProvider } from "../components/AudioContext";
 import AudioVisualizer from "../components/AudioVisualizer";
+import ErrorBoundary from "../components/ErrorBoundary";
 
 const spaceGrotesk = Space_Grotesk({
   subsets: ['latin'],
@@ -40,11 +41,13 @@ export default function RootLayout({
   return (
     <html lang="en" className={`${spaceGrotesk.variable} ${inter.variable}`}>
       <body className={inter.className}>
-        <AudioProvider>
-          <Navbar />
-          {children}
-          <AudioVisualizer />
-        </AudioProvider>
+        <ErrorBoundary>
+          <AudioProvider>
+            <Navbar />
+            {children}
+            <AudioVisualizer />
+          </AudioProvider>
+        </ErrorBoundary>
       </body>
     </html>
   )

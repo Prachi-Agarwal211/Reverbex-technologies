@@ -88,19 +88,19 @@ const ServiceCard = ({ title, description, tags, impact, caseStudy, index }: { t
       boxShadow: "0 15px 40px rgba(34, 211, 238, 0.25)",
       borderColor: "rgba(34, 211, 238, 0.4)"
     }}
-    className="bg-white/5 backdrop-blur-md border border-white/10 p-8 rounded-2xl group h-full flex flex-col"
+    className="bg-white/5 backdrop-blur-md border border-white/10 p-4 md:p-8 rounded-2xl group h-full flex flex-col"
   >
-    <div className="h-1 w-12 pearl-bg mb-6 group-hover:w-full transition-all duration-500 rounded-full" />
+    <div className="h-1 w-12 pearl-bg mb-4 md:mb-6 group-hover:w-full transition-all duration-500 rounded-full" />
 
-    <h3 className="text-2xl font-semibold mb-3 text-white group-hover:text-white transition-colors">{title}</h3>
+    <h3 className="text-lg md:text-2xl font-semibold mb-2 md:mb-3 text-white group-hover:text-white transition-colors">{title}</h3>
 
-    <p className="text-white/60 mb-6 font-light leading-relaxed flex-grow">{description}</p>
+    <p className="text-sm md:text-base text-white/60 mb-4 md:mb-6 font-light leading-relaxed flex-grow">{description}</p>
 
     {/* Real Impact Metrics */}
     {impact && (
-      <div className="mb-6 space-y-2 border-l-2 border-white/10 pl-4">
+      <div className="mb-4 md:mb-6 space-y-2 border-l-2 border-white/10 pl-4">
         {impact.map((item, i) => (
-          <div key={i} className="text-sm text-white/80 font-mono flex items-center gap-2">
+          <div key={i} className="text-xs md:text-sm text-white/80 font-mono flex items-center gap-2">
             <span className="text-white">▹</span> {item}
           </div>
         ))}
@@ -109,20 +109,21 @@ const ServiceCard = ({ title, description, tags, impact, caseStudy, index }: { t
 
     {/* Case Study Badge */}
     {caseStudy && (
-      <div className="mb-6 inline-block bg-white/10 border border-white/30 px-3 py-1 rounded text-xs text-white font-mono">
+      <div className="mb-4 md:mb-6 inline-block bg-white/10 border border-white/30 px-3 py-1 rounded text-[10px] md:text-xs text-white font-mono">
         CASE STUDY: {caseStudy}
       </div>
     )}
 
     <div className="flex flex-wrap gap-2 mt-auto">
       {tags.map((tag) => (
-        <span key={tag} className="text-xs font-mono uppercase tracking-wider bg-white/5 px-2 py-1 rounded text-white/40 border border-white/5 group-hover:border-white/20 transition-colors">
+        <span key={tag} className="text-[10px] md:text-xs font-mono uppercase tracking-wider bg-white/5 px-2 py-1 rounded text-white/40 border border-white/5 group-hover:border-white/20 transition-colors">
           {tag}
         </span>
       ))}
     </div>
   </motion.div>
 );
+
 
 // Counter animation component for metrics
 const CounterMetric = ({ metric, delay }: { metric: any; delay: number }) => {
@@ -348,7 +349,7 @@ export default function Home() {
           <h3 className="text-4xl font-bold animate-pearl">Featured Solutions</h3>
         </motion.div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+        <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 md:gap-6">
           {[
             {
               title: "Real-Time Trading",
@@ -395,7 +396,7 @@ export default function Home() {
           <h3 className="text-4xl font-bold animate-pearl">Enterprise & Data</h3>
         </motion.div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+        <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 md:gap-6">
           {[
             {
               title: "Analytics Dashboards",
@@ -438,7 +439,7 @@ export default function Home() {
           <h3 className="text-4xl font-bold animate-pearl">Advanced Technologies</h3>
         </motion.div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+        <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 md:gap-6">
           {[
             {
               title: "Generative AI Agent",
@@ -481,7 +482,7 @@ export default function Home() {
           <h3 className="text-4xl font-bold animate-pearl">Core Engineering</h3>
         </motion.div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+        <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 md:gap-6">
           {[
             {
               title: "Full-Stack Web",
