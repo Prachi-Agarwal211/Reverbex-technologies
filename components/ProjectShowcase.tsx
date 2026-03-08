@@ -10,7 +10,7 @@ const projects = [
         title: 'JECRC No-Dues',
         subtitle: 'Zero-Paper Clearance',
         client: 'JECRC University',
-        impact: ['5,000+ students', '80% faster', 'Real-time sync'],
+        impact: ['20,000+ students', '80% faster', 'Real-time sync'],
         tags: ['Next.js', 'Supabase', 'PostgreSQL'],
         gradient: 'from-green-500 via-emerald-600 to-teal-700',
         icon: '🏫',

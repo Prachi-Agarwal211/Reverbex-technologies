@@ -1,13 +1,23 @@
 "use client";
 
-import InteractiveFluidBackground from "../components/InteractiveFluid";
-import FloatingOrbs from "../components/FloatingOrbs";
-import TechStream from "../components/TechStream";
+import dynamic from "next/dynamic";
+import { motion, useInView } from "framer-motion";
+import { useRef, useState, useEffect, memo } from "react";
+
+// Dynamically import heavy WebGL/Canvas backgrounds to speed up initial load and prevent SSR issues
+const InteractiveFluidBackground = dynamic(() => import("../components/InteractiveFluid"), {
+  ssr: false,
+});
+const FloatingOrbs = dynamic(() => import("../components/FloatingOrbs"), {
+  ssr: false,
+});
+const TechStream = dynamic(() => import("../components/TechStream"), {
+  ssr: false,
+});
+
 import ScrollProgress from "../components/ScrollProgress";
 import ScrambleText from "../components/ScrambleText";
 import MobileContactBar from "../components/MobileContactBar";
-import { motion, useInView } from "framer-motion";
-import { useRef, useState, useEffect } from "react";
 
 const FadeIn = ({ children, delay = 0, className = "" }: { children: React.ReactNode, delay?: number, className?: string }) => (
   <motion.div
@@ -52,78 +62,141 @@ const PhoneIcon = (props: any) => (
   </svg>
 );
 
-const BentoCard = ({ title, description, icon, colSpan = 1, delay = 0 }: { title: string, description: string, icon: React.ReactNode, colSpan?: number, delay?: number }) => (
-  <motion.div
-    initial={{ opacity: 0, y: 30, scale: 0.98 }}
-    whileInView={{ opacity: 1, y: 0, scale: 1 }}
-    viewport={{ once: true, margin: "-10%" }}
-    transition={{ duration: 0.5, delay, ease: "circOut" }}
-    whileHover={{
-      y: -10,
-      scale: 1.02,
-      backgroundColor: "rgba(255,255,255,0.08)",
-      boxShadow: "0 15px 40px rgba(34, 211, 238, 0.25)",
-      borderColor: "rgba(34, 211, 238, 0.4)"
-    }}
-    className={`bg-white/5 backdrop-blur-md border border-white/10 p-8 md:p-10 rounded-2xl group transition-all duration-300 h-full flex flex-col ${colSpan === 2 ? 'md:col-span-2' : 'col-span-1'}`}
-  >
-    <div className="h-1 w-12 pearl-bg mb-6 group-hover:w-full transition-all duration-500 rounded-full" />
-    <div className="w-12 h-12 rounded-lg bg-white/5 flex items-center justify-center text-white/80 group-hover:text-white transition-colors mb-6 border border-white/10">
-      {icon}
-    </div>
-    <h3 className="text-xl md:text-2xl font-bold mb-3 text-white tracking-tight group-hover:text-white transition-colors">{title}</h3>
-    <p className="text-white/60 mb-6 font-light leading-relaxed flex-grow text-sm md:text-base">{description}</p>
-  </motion.div>
-);
+const BentoCard = memo(function BentoCard({ title, description, icon, colSpan = 1, delay = 0 }: { title: string, description: string, icon: React.ReactNode, colSpan?: number, delay?: number }) {
+  return (
+    <motion.div
+      initial={{ opacity: 0, y: 30, scale: 0.98 }}
+      whileInView={{ opacity: 1, y: 0, scale: 1 }}
+      viewport={{ once: true, margin: "-10%" }}
+      transition={{ duration: 0.5, delay, ease: "circOut" }}
+      whileHover={{
+        y: -10,
+        scale: 1.02,
+        backgroundColor: "rgba(255,255,255,0.08)",
+        boxShadow: "0 15px 40px rgba(34, 211, 238, 0.25)",
+        borderColor: "rgba(34, 211, 238, 0.4)"
+      }}
+      className={`bg-white/5 backdrop-blur-md border border-white/10 p-8 md:p-10 rounded-2xl group transition-all duration-300 h-full flex flex-col ${colSpan === 2 ? 'md:col-span-2' : 'col-span-1'}`}
+    >
+      <div className="h-1 w-12 pearl-bg mb-6 group-hover:w-full transition-all duration-500 rounded-full" />
+      <div className="w-12 h-12 rounded-lg bg-white/5 flex items-center justify-center text-white/80 group-hover:text-white transition-colors mb-6 border border-white/10">
+        {icon}
+      </div>
+      <h3 className="text-xl md:text-2xl font-bold mb-3 text-white tracking-tight group-hover:text-white transition-colors">{title}</h3>
+      <p className="text-white/60 mb-6 font-light leading-relaxed flex-grow text-sm md:text-base">{description}</p>
+    </motion.div>
+  );
+});
 
-const ProcessStep = ({ num, title, description, delay = 0 }: { num: string, title: string, description: string, delay?: number }) => (
-  <motion.div
-    initial={{ opacity: 0, scale: 0.95, y: 30 }}
-    whileInView={{ opacity: 1, scale: 1, y: 0 }}
-    viewport={{ once: true, margin: "-10%" }}
-    transition={{ duration: 0.8, delay, ease: [0.16, 1, 0.3, 1] }}
-    className="flex flex-col relative bg-gradient-to-br from-white/5 to-transparent backdrop-blur-xl border border-white/10 p-8 rounded-3xl hover:border-white/20 transition-all duration-500 overflow-hidden group"
-  >
-    {/* Subtle glow effect on hover */}
-    <div className="absolute inset-0 bg-white/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500 blur-2xl" />
+const ProcessStep = memo(function ProcessStep({ num, title, description, delay = 0 }: { num: string, title: string, description: string, delay?: number }) {
+  return (
+    <motion.div
+      initial={{ opacity: 0, scale: 0.95, y: 30 }}
+      whileInView={{ opacity: 1, scale: 1, y: 0 }}
+      viewport={{ once: true, margin: "-10%" }}
+      transition={{ duration: 0.8, delay, ease: [0.16, 1, 0.3, 1] }}
+      className="flex flex-col relative bg-gradient-to-br from-white/5 to-transparent backdrop-blur-xl border border-white/10 p-8 rounded-3xl hover:border-white/20 transition-all duration-500 overflow-hidden group"
+    >
+      {/* Subtle glow effect on hover */}
+      <div className="absolute inset-0 bg-white/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500 blur-2xl" />
 
-    <div className="text-5xl md:text-7xl font-bold text-transparent bg-clip-text bg-gradient-to-b from-white/20 to-transparent mb-6 font-syne relative z-10">{num}</div>
-    <h4 className="text-xl md:text-2xl font-bold text-white mb-3 tracking-tight relative z-10">{title}</h4>
-    <p className="text-white/60 text-sm md:text-base leading-relaxed relative z-10">{description}</p>
-  </motion.div>
-);
+      <div className="text-5xl md:text-7xl font-bold text-transparent bg-clip-text bg-gradient-to-b from-white/20 to-transparent mb-6 font-syne relative z-10">{num}</div>
+      <h4 className="text-xl md:text-2xl font-bold text-white mb-3 tracking-tight relative z-10">{title}</h4>
+      <p className="text-white/60 text-sm md:text-base leading-relaxed relative z-10">{description}</p>
+    </motion.div>
+  );
+});
 
 // New: Experience Timeline Component
-const ExperienceHighlight = () => (
-  <div className="w-full relative py-20">
-    <div className="absolute left-1/2 top-0 bottom-0 w-px bg-gradient-to-b from-transparent via-white/10 to-transparent -translate-x-1/2 hidden md:block" />
+const ExperienceHighlight = memo(function ExperienceHighlight() {
+  return (
+    <div className="w-full relative py-20">
+      <div className="absolute left-1/2 top-0 bottom-0 w-px bg-gradient-to-b from-transparent via-white/10 to-transparent -translate-x-1/2 hidden md:block" />
 
-    <div className="space-y-24 md:space-y-32">
-      {[
-        { year: "20+", title: "Mission-Critical Systems", desc: "Successfully architects and deployed across global enterprise environments." },
-        { year: "500M+", title: "Data Points Processed", desc: "Daily volume managed through our high-performance TimescaleDB & Python pipelines." },
-        { year: "0", title: "Compromises on Security", desc: "Military-grade encryption and strict access controls built into every layer." },
-      ].map((item, i) => (
-        <motion.div
-          key={i}
-          initial={{ opacity: 0, y: 50 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, margin: "-10%" }}
-          transition={{ duration: 0.8, delay: i * 0.2, ease: [0.16, 1, 0.3, 1] }}
-          className={`flex flex-col md:flex-row items-center justify-between w-full ${i % 2 === 0 ? 'md:flex-row-reverse' : ''}`}
-        >
-          <div className="w-full md:w-5/12 p-8" />
-          <div className="hidden md:flex absolute left-1/2 -translate-x-1/2 w-4 h-4 rounded-full bg-black border-2 border-white/30 z-10 shadow-[0_0_15px_rgba(255,255,255,0.3)]" />
-          <div className={`w-full md:w-5/12 bg-white/5 backdrop-blur-xl border border-white/10 p-8 rounded-3xl hover:bg-white/10 transition-colors duration-500 ${i % 2 === 0 ? 'text-left md:text-right' : 'text-left'}`}>
-            <h3 className="text-5xl md:text-7xl font-bold animate-pearl text-emboss mb-4 tracking-tighter">{item.year}</h3>
-            <h4 className="text-xl md:text-2xl font-bold text-white mb-2">{item.title}</h4>
-            <p className="text-white/50 leading-relaxed font-light">{item.desc}</p>
-          </div>
-        </motion.div>
-      ))}
+      <div className="space-y-24 md:space-y-32">
+        {[
+          { year: "20+", title: "Mission-Critical Systems", desc: "Successfully architects and deployed across global enterprise environments." },
+          { year: "500M+", title: "Data Points Processed", desc: "Daily volume managed through our high-performance TimescaleDB & Python pipelines." },
+          { year: "0", title: "Compromises on Security", desc: "Military-grade encryption and strict access controls built into every layer." },
+        ].map((item, i) => (
+          <motion.div
+            key={i}
+            initial={{ opacity: 0, y: 50 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, margin: "-10%" }}
+            transition={{ duration: 0.8, delay: i * 0.2, ease: [0.16, 1, 0.3, 1] }}
+            className={`flex flex-col md:flex-row items-center justify-between w-full ${i % 2 === 0 ? 'md:flex-row-reverse' : ''}`}
+          >
+            <div className="w-full md:w-5/12 p-8" />
+            <div className="hidden md:flex absolute left-1/2 -translate-x-1/2 w-4 h-4 rounded-full bg-black border-2 border-white/30 z-10 shadow-[0_0_15px_rgba(255,255,255,0.3)]" />
+            <div className={`w-full md:w-5/12 bg-white/5 backdrop-blur-xl border border-white/10 p-8 rounded-3xl hover:bg-white/10 transition-colors duration-500 ${i % 2 === 0 ? 'text-left md:text-right' : 'text-left'}`}>
+              <h3 className="text-5xl md:text-7xl font-bold animate-pearl text-emboss mb-4 tracking-tighter">{item.year}</h3>
+              <h4 className="text-xl md:text-2xl font-bold text-white mb-2">{item.title}</h4>
+              <p className="text-white/50 leading-relaxed font-light">{item.desc}</p>
+            </div>
+          </motion.div>
+        ))}
+      </div>
     </div>
-  </div>
-);
+  );
+});
+
+// New: Founder Profile Component utilizing the brand logo instead of portraits
+const FeaturedPartners = memo(function FeaturedPartners() {
+  return (
+    <div className="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8 w-full max-w-5xl mx-auto">
+      <motion.div
+        initial={{ opacity: 0, y: 30 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true, margin: "-10%" }}
+        transition={{ duration: 0.6, ease: "circOut" }}
+        className="bg-white/5 backdrop-blur-md border border-white/10 p-8 md:p-10 rounded-3xl group hover:border-white/20 transition-all duration-300 relative overflow-hidden"
+      >
+        <div className="absolute inset-0 bg-gradient-to-br from-emerald-500/10 to-teal-700/10 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+        <div className="relative z-10 flex flex-col h-full">
+          <div className="flex items-center gap-4 mb-6">
+            <div className="w-12 h-12 rounded-xl bg-white/5 border border-white/10 flex items-center justify-center text-3xl">
+              🏫
+            </div>
+            <div>
+              <h3 className="text-2xl font-bold tracking-tight text-white mb-1">JECRC University</h3>
+              <p className="text-emerald-400 font-mono text-xs uppercase tracking-widest">Educational Partner</p>
+            </div>
+          </div>
+          <h4 className="text-xl text-white/90 mb-4 font-semibold">Zero-Paper Clearance & No-Dues System</h4>
+          <p className="text-white/60 font-light leading-relaxed flex-grow">
+            We completely digitized their clearance process, delivering a real-time No-Dues System serving over 20,000+ students. This eliminated paper trails and reduced processing time by 80%.
+          </p>
+        </div>
+      </motion.div>
+
+      <motion.div
+        initial={{ opacity: 0, y: 30 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true, margin: "-10%" }}
+        transition={{ duration: 0.6, delay: 0.2, ease: "circOut" }}
+        className="bg-white/5 backdrop-blur-md border border-white/10 p-8 md:p-10 rounded-3xl group hover:border-white/20 transition-all duration-300 relative overflow-hidden"
+      >
+        <div className="absolute inset-0 bg-gradient-to-br from-rose-500/10 to-orange-500/10 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+        <div className="relative z-10 flex flex-col h-full">
+          <div className="flex items-center gap-4 mb-6">
+            <div className="w-12 h-12 rounded-xl bg-white/5 border border-white/10 flex items-center justify-center text-3xl">
+              🛍️
+            </div>
+            <div>
+              <h3 className="text-2xl font-bold tracking-tight text-white mb-1">Aarya Clothing</h3>
+              <p className="text-rose-400 font-mono text-xs uppercase tracking-widest">Retail & Ecommerce</p>
+            </div>
+          </div>
+          <h4 className="text-xl text-white/90 mb-4 font-semibold">India's 1st AI CRM & Ecommerce Platform</h4>
+          <p className="text-white/60 font-light leading-relaxed flex-grow">
+            We architected a custom e-commerce solution integrating an advanced CRM. It features autonomous AI operations and a virtual AI salesperson that handles customer inquiries and drives conversions around the clock.
+          </p>
+        </div>
+      </motion.div>
+    </div>
+  );
+});
 
 // New: Founders Profile Component utilizing the brand logo instead of portraits
 const FounderProfile = ({ name, role, delay }: { name: string, role: string, delay: number }) => (
@@ -305,6 +378,107 @@ export default function Home() {
           </div>
         </section>
 
+        {/* PRODUCTS SECTION / READY TO DEPLOY SOFWARE */}
+        <section id="products" className="w-full py-24 md:py-32 px-4 md:px-12 bg-transparent relative z-10 border-t border-white/5">
+          <div className="max-w-7xl mx-auto">
+            <FadeIn className="text-center mb-16">
+              <h2 className="text-sm font-mono tracking-widest uppercase text-white/40 mb-4 block">Ready-To-Deploy Software</h2>
+              <h2 className="text-4xl md:text-6xl font-bold tracking-tight mb-6 text-transparent bg-clip-text bg-gradient-to-r from-white to-white/80">Turnkey Solutions</h2>
+              <p className="text-white/60 text-lg md:text-xl font-light max-w-2xl mx-auto">
+                In addition to custom engineering, we offer battle-tested platforms available for immediate deployment and licensing.
+              </p>
+            </FadeIn>
+
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 w-full max-w-7xl mx-auto">
+              {/* Product 1: AI E-commerce */}
+              <motion.div
+                initial={{ opacity: 0, y: 30 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, margin: "-10%" }}
+                transition={{ duration: 0.6, ease: "circOut" }}
+                className="bg-gradient-to-br from-rose-500/10 to-orange-900/10 backdrop-blur-md border border-rose-500/20 p-8 md:p-12 rounded-3xl relative overflow-hidden group flex flex-col h-full"
+              >
+                <div className="absolute top-4 right-4 md:top-6 md:right-6">
+                  <div className="bg-rose-500/20 text-rose-300 font-mono text-[10px] md:text-xs px-3 py-1.5 md:px-4 md:py-2 rounded-full uppercase tracking-widest border border-rose-500/30 font-bold shadow-[0_0_15px_rgba(244,63,94,0.2)]">
+                    Available for Licensing
+                  </div>
+                </div>
+                <div className="w-14 h-14 md:w-16 md:h-16 rounded-2xl bg-rose-500/10 border border-rose-500/20 flex items-center justify-center text-3xl md:text-4xl mb-6">
+                  🛍️
+                </div>
+                <h3 className="text-2xl md:text-3xl font-bold text-white mb-4 tracking-tight">AI CRM & Ecommerce Platform</h3>
+                <p className="text-base md:text-lg text-rose-100/70 mb-8 leading-relaxed font-light flex-grow">
+                  India's 1st custom AI-powered e-commerce ecosystem. Features autonomous AI operations and a virtual AI salesperson to automate your sales funnel and handle customer inquiries around the clock. First deployed for Aarya Clothing.
+                </p>
+
+                <div className="grid grid-cols-1 gap-3 mb-10">
+                  {[
+                    "Virtual AI Salesperson (24/7)",
+                    "Autonomous Customer Inquiries",
+                    "Advanced Integrated CRM",
+                    "Automated Sales Funnel & Conversions"
+                  ].map((feature, i) => (
+                    <div key={i} className="flex items-center gap-3">
+                      <div className="w-1.5 h-1.5 rounded-full bg-rose-400 shadow-[0_0_8px_rgba(251,113,133,0.8)]" />
+                      <span className="text-white/80 text-sm">{feature}</span>
+                    </div>
+                  ))}
+                </div>
+
+                <a
+                  href="#contact"
+                  className="w-full text-center bg-rose-500 text-white px-8 py-4 rounded-full text-base font-bold hover:bg-rose-400 hover:scale-[1.02] transition-all shadow-[0_0_20px_rgba(244,63,94,0.3)] mt-auto"
+                >
+                  Request a Demo
+                </a>
+              </motion.div>
+
+              {/* Product 2: No Dues */}
+              <motion.div
+                initial={{ opacity: 0, y: 30 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, margin: "-10%" }}
+                transition={{ duration: 0.6, delay: 0.2, ease: "circOut" }}
+                className="bg-gradient-to-br from-emerald-500/10 to-teal-900/10 backdrop-blur-md border border-emerald-500/20 p-8 md:p-12 rounded-3xl relative overflow-hidden group flex flex-col h-full"
+              >
+                <div className="absolute top-4 right-4 md:top-6 md:right-6">
+                  <div className="bg-emerald-500/20 text-emerald-300 font-mono text-[10px] md:text-xs px-3 py-1.5 md:px-4 md:py-2 rounded-full uppercase tracking-widest border border-emerald-500/30 font-bold shadow-[0_0_15px_rgba(16,185,129,0.2)]">
+                    Available for Licensing
+                  </div>
+                </div>
+                <div className="w-14 h-14 md:w-16 md:h-16 rounded-2xl bg-emerald-500/10 border border-emerald-500/20 flex items-center justify-center text-3xl md:text-4xl mb-6">
+                  🏫
+                </div>
+                <h3 className="text-2xl md:text-3xl font-bold text-white mb-4 tracking-tight">Digital No-Dues System</h3>
+                <p className="text-base md:text-lg text-emerald-100/70 mb-8 leading-relaxed font-light flex-grow">
+                  A zero-paper clearance platform designed for educational institutions. Handle thousands of students, track department approvals in real-time, and eliminate bottlenecks. Successfully serving 20,000+ students at JECRC University.
+                </p>
+
+                <div className="grid grid-cols-1 gap-3 mb-10">
+                  {[
+                    "Real-time Dashboard & Analytics",
+                    "Multi-Department Workflows",
+                    "Automated Email & SMS Alerts",
+                    "Student Portal & Status Tracking"
+                  ].map((feature, i) => (
+                    <div key={i} className="flex items-center gap-3">
+                      <div className="w-1.5 h-1.5 rounded-full bg-emerald-400 shadow-[0_0_8px_rgba(52,211,153,0.8)]" />
+                      <span className="text-white/80 text-sm">{feature}</span>
+                    </div>
+                  ))}
+                </div>
+
+                <a
+                  href="#contact"
+                  className="w-full text-center bg-emerald-500 text-black px-8 py-4 rounded-full text-base font-bold hover:bg-emerald-400 hover:scale-[1.02] transition-all shadow-[0_0_20px_rgba(16,185,129,0.3)] mt-auto"
+                >
+                  Request a Demo
+                </a>
+              </motion.div>
+            </div>
+          </div>
+        </section>
+
         {/* SERVICES / WHAT WE DO BENTO GRID */}
         <section id="services" className="w-full py-24 md:py-32 px-4 md:px-12 bg-transparent relative z-10">
           <div className="max-w-7xl mx-auto">
@@ -346,6 +520,89 @@ export default function Home() {
                 delay={0.4}
               />
             </div>
+          </div>
+        </section>
+
+        {/* WHO WE HELP SECTION */}
+
+        {/* USE CASES SECTION */}
+
+        {/* HOW WE WORK / PROCESS SECTION */}
+        <section id="process" className="w-full py-24 md:py-32 px-4 md:px-12 bg-transparent relative z-10 border-t border-white/5">
+          <div className="max-w-7xl mx-auto">
+            <FadeIn className="flex flex-col items-center">
+              <h2 className="text-sm font-mono tracking-widest uppercase text-white/40 mb-4 block text-center">Process</h2>
+              <h2 className="text-4xl md:text-6xl font-bold tracking-tight mb-12 text-center animate-pearl text-emboss pb-2">Engineering Philosophy</h2>
+
+              <div className="relative w-full max-w-3xl aspect-video rounded-[2rem] md:rounded-[3rem] overflow-hidden border border-white/10 bg-black/40 backdrop-blur-xl flex items-center justify-center shadow-[0_20px_60px_rgba(0,0,0,0.6)] mb-20 p-4 md:p-8">
+                <div className="absolute inset-0 bg-gradient-to-br from-teal-500/10 to-purple-500/10 opacity-50 group-hover:opacity-100 transition-opacity duration-500 blur-2xl" />
+                <video
+                  src="/Reverbex_logo.mp4"
+                  autoPlay
+                  loop
+                  muted
+                  playsInline
+                  className="relative z-10 w-full h-full object-contain mix-blend-screen opacity-100 drop-shadow-[0_0_15px_rgba(255,255,255,0.1)]"
+                />
+              </div>
+            </FadeIn>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+              <ProcessStep
+                num="01"
+                title="Discovery & Audit"
+                description="We analyze your existing workflows, identify bottlenecks, and define clear, measurable ROI targets before writing a single line of code."
+                delay={0.1}
+              />
+              <ProcessStep
+                num="02"
+                title="Architecture Design"
+                description="Designing resilient, scalable systems. We choose the right tools—from LLMs to databases—to guarantee long-term performance."
+                delay={0.2}
+              />
+              <ProcessStep
+                num="03"
+                title="Agile Deployment"
+                description="Rapid iterations and strict QA. We build in production-ready environments from day one, ensuring zero downtime during rollout."
+                delay={0.3}
+              />
+              <ProcessStep
+                num="04"
+                title="Scale & Monitor"
+                description="Post-launch, we enforce rigorous APM (Application Performance Monitoring) and infrastructure scaling to support your growth."
+                delay={0.4}
+              />
+            </div>
+          </div>
+        </section>
+
+        {/* EXPERIENCE HIGHLIGHT SECTION */}
+        <section id="experience" className="w-full py-24 md:py-32 px-4 md:px-12 bg-transparent relative z-10 border-t border-white/5">
+          <div className="max-w-7xl mx-auto">
+            <FadeIn className="text-center mb-20">
+              <h2 className="text-sm font-mono tracking-widest uppercase text-white/40 mb-4 block">Proven Track Record</h2>
+              <h2 className="text-4xl md:text-6xl font-bold tracking-tight mb-6 text-transparent bg-clip-text bg-gradient-to-r from-white to-white/80">Delivering at Scale</h2>
+              <p className="text-white/60 text-lg md:text-xl font-light max-w-2xl mx-auto">
+                We&apos;ve partnered with industry leaders and disruptive startups to architect systems that refuse to fail.
+              </p>
+            </FadeIn>
+
+            <ExperienceHighlight />
+          </div>
+        </section>
+
+        {/* FEATURED PARTNERS SECTION */}
+        <section id="partners" className="w-full py-24 md:py-32 px-4 md:px-12 bg-transparent relative z-10 border-t border-white/5">
+          <div className="max-w-7xl mx-auto">
+            <FadeIn className="text-center mb-16">
+              <h2 className="text-sm font-mono tracking-widest uppercase text-white/40 mb-4 block">Trusted By Inovators</h2>
+              <h2 className="text-4xl md:text-6xl font-bold tracking-tight mb-6 text-transparent bg-clip-text bg-gradient-to-r from-white to-white/80">Featured Partners</h2>
+              <p className="text-white/60 text-lg md:text-xl font-light max-w-2xl mx-auto">
+                From universities to modern e-commerce, we build transformative technical foundations across industries.
+              </p>
+            </FadeIn>
+
+            <FeaturedPartners />
           </div>
         </section>
 
@@ -413,70 +670,6 @@ export default function Home() {
                 </motion.div>
               ))}
             </div>
-          </div>
-        </section>
-
-        {/* HOW WE WORK / PROCESS SECTION */}
-        <section id="process" className="w-full py-24 md:py-32 px-4 md:px-12 bg-transparent relative z-10 border-t border-white/5">
-          <div className="max-w-7xl mx-auto">
-            <FadeIn className="flex flex-col items-center">
-              <h2 className="text-sm font-mono tracking-widest uppercase text-white/40 mb-4 block text-center">Process</h2>
-              <h2 className="text-4xl md:text-6xl font-bold tracking-tight mb-12 text-center animate-pearl text-emboss pb-2">Engineering Philosophy</h2>
-
-              <div className="relative w-full max-w-3xl aspect-video rounded-[2rem] md:rounded-[3rem] overflow-hidden border border-white/10 bg-black/40 backdrop-blur-xl flex items-center justify-center shadow-[0_20px_60px_rgba(0,0,0,0.6)] mb-20 p-4 md:p-8">
-                <div className="absolute inset-0 bg-gradient-to-br from-teal-500/10 to-purple-500/10 opacity-50 group-hover:opacity-100 transition-opacity duration-500 blur-2xl" />
-                <video
-                  src="/Reverbex_logo.mp4"
-                  autoPlay
-                  loop
-                  muted
-                  playsInline
-                  className="relative z-10 w-full h-full object-contain mix-blend-screen opacity-100 drop-shadow-[0_0_15px_rgba(255,255,255,0.1)]"
-                />
-              </div>
-            </FadeIn>
-
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-              <ProcessStep
-                num="01"
-                title="Discovery & Audit"
-                description="We analyze your existing workflows, identify bottlenecks, and define clear, measurable ROI targets before writing a single line of code."
-                delay={0.1}
-              />
-              <ProcessStep
-                num="02"
-                title="Architecture Design"
-                description="Designing resilient, scalable systems. We choose the right tools—from LLMs to databases—to guarantee long-term performance."
-                delay={0.2}
-              />
-              <ProcessStep
-                num="03"
-                title="Agile Deployment"
-                description="Rapid iterations and strict QA. We build in production-ready environments from day one, ensuring zero downtime during rollout."
-                delay={0.3}
-              />
-              <ProcessStep
-                num="04"
-                title="Scale & Monitor"
-                description="Post-launch, we enforce rigorous APM (Application Performance Monitoring) and infrastructure scaling to support your growth."
-                delay={0.4}
-              />
-            </div>
-          </div>
-        </section>
-
-        {/* EXPERIENCE HIGHLIGHT SECTION */}
-        <section id="experience" className="w-full py-24 md:py-32 px-4 md:px-12 bg-transparent relative z-10 border-t border-white/5">
-          <div className="max-w-7xl mx-auto">
-            <FadeIn className="text-center mb-20">
-              <h2 className="text-sm font-mono tracking-widest uppercase text-white/40 mb-4 block">Proven Track Record</h2>
-              <h2 className="text-4xl md:text-6xl font-bold tracking-tight mb-6 text-transparent bg-clip-text bg-gradient-to-r from-white to-white/80">Delivering at Scale</h2>
-              <p className="text-white/60 text-lg md:text-xl font-light max-w-2xl mx-auto">
-                We&apos;ve partnered with industry leaders and disruptive startups to architect systems that refuse to fail.
-              </p>
-            </FadeIn>
-
-            <ExperienceHighlight />
           </div>
         </section>
 
