@@ -117,7 +117,7 @@ const projects = [
 
 // Layout variation 1: Image Left, Text Right
 const LayoutImageLeft = ({ project, index }: any) => (
-    <section className="snap-start w-full min-h-screen md:h-screen flex items-center justify-center px-4 md:px-12 bg-transparent overflow-hidden py-20 md:py-0">
+    <section className="w-full py-16 md:py-24 flex items-center justify-center px-4 md:px-12 bg-transparent overflow-hidden">
         <div className="max-w-7xl w-full grid grid-cols-1 lg:grid-cols-2 gap-8 md:gap-12 items-center">
             {/* Image - Slides from left */}
             <motion.div
@@ -185,7 +185,7 @@ const LayoutImageLeft = ({ project, index }: any) => (
 
 // Layout variation 2: Image Right, Text Left
 const LayoutImageRight = ({ project, index }: any) => (
-    <section className="snap-start w-full min-h-screen md:h-screen flex items-center justify-center px-4 md:px-12 bg-transparent overflow-hidden py-20 md:py-0">
+    <section className="w-full py-16 md:py-24 flex items-center justify-center px-4 md:px-12 bg-transparent overflow-hidden">
         <div className="max-w-7xl w-full grid grid-cols-1 lg:grid-cols-2 gap-8 md:gap-12 items-center">
             {/* Text - Slides from left */}
             <motion.div
@@ -254,7 +254,7 @@ const LayoutImageRight = ({ project, index }: any) => (
 
 // Layout variation 3: Centered with fade
 const LayoutCentered = ({ project, index }: any) => (
-    <section className="snap-start w-full min-h-screen md:h-screen flex items-center justify-center px-4 md:px-12 bg-transparent overflow-hidden py-20 md:py-0">
+    <section className="w-full py-16 md:py-24 flex items-center justify-center px-4 md:px-12 bg-transparent overflow-hidden">
         <div className="max-w-5xl w-full text-center">
             {/* Image - Fades and scales up */}
             <motion.div
@@ -331,7 +331,7 @@ export default function ProjectShowcase() {
     return (
         <>
             {/* Intro Slide */}
-            <section className="snap-start w-full min-h-screen md:h-screen flex items-center justify-center px-4 md:px-12 bg-transparent overflow-hidden">
+            <section className="w-full py-24 md:py-32 flex items-center justify-center px-4 md:px-12 bg-transparent overflow-hidden">
                 <motion.div
                     className="max-w-4xl text-center"
                     initial={{ opacity: 0, scale: 0.95 }}

@@ -6,10 +6,10 @@ import { motion, AnimatePresence, useScroll } from "framer-motion";
 
 const navLinks = [
     { name: "Home", to: "home" },
-    { name: "About", to: "about" },
-    { name: "Services", to: "services" },
-    { name: "Tech Stack", to: "tech" },
-    { name: "Projects", to: "projects" },
+    { name: "Solutions", to: "services" },
+    { name: "Process", to: "process" },
+    { name: "Experience", to: "experience" },
+    { name: "Founders", to: "founders" },
     { name: "Contact", to: "contact" },
 ];
 
@@ -21,7 +21,7 @@ export default function Navbar() {
     useEffect(() => {
         const handleScroll = () => {
             // Track active section
-            const sections = ["home", "projects", "about", "services", "tech", "contact"];
+            const sections = ["home", "services", "process", "experience", "founders", "contact"];
             for (const section of sections) {
                 const element = document.getElementById(section);
                 if (element) {
@@ -55,8 +55,11 @@ export default function Navbar() {
                 <div className="max-w-7xl mx-auto px-6 md:px-12 flex items-center justify-between">
 
                     {/* Logo */}
-                    <a href="#" className="text-xl md:text-2xl font-bold tracking-tighter hover:opacity-80 transition-opacity">
-                        Reverbex Technologies
+                    <a href="#" className="flex items-center gap-3 hover:opacity-80 transition-opacity z-50">
+                        <img src="/logo.PNG" alt="Reverbex Technologies Logo" className="h-10 md:h-14 w-auto object-contain" />
+                        <span className="text-xl md:text-2xl font-bold tracking-tighter hidden sm:block text-white">
+                            Reverbex Technologies
+                        </span>
                     </a>
 
                     {/* Desktop Links */}

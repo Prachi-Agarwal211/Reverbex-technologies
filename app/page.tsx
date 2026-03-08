@@ -3,18 +3,17 @@
 import InteractiveFluidBackground from "../components/InteractiveFluid";
 import FloatingOrbs from "../components/FloatingOrbs";
 import TechStream from "../components/TechStream";
-import ProjectShowcase, { ProjectSlides } from "../components/ProjectShowcase";
 import ScrollProgress from "../components/ScrollProgress";
-import ScrollManager from "../components/ScrollManager";
 import ScrambleText from "../components/ScrambleText";
-import { motion, useScroll, useTransform, useMotionValue, useSpring, useInView } from "framer-motion";
+import MobileContactBar from "../components/MobileContactBar";
+import { motion, useInView } from "framer-motion";
 import { useRef, useState, useEffect } from "react";
 
 const FadeIn = ({ children, delay = 0, className = "" }: { children: React.ReactNode, delay?: number, className?: string }) => (
   <motion.div
     initial={{ opacity: 0, y: 30 }}
     whileInView={{ opacity: 1, y: 0 }}
-    viewport={{ once: false, margin: "-10%" }}
+    viewport={{ once: true, margin: "-10%" }}
     transition={{ duration: 0.5, delay, ease: "circOut" }}
     className={className}
   >
@@ -22,102 +21,129 @@ const FadeIn = ({ children, delay = 0, className = "" }: { children: React.React
   </motion.div>
 );
 
-// Animated heading with word-by-word reveal
-const AnimatedHeading = ({ text, className = "" }: { text: string; className?: string }) => {
-  const words = text.split(' ');
+// Minimal Icon Components
+const BrainIcon = (props: any) => (
+  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" {...props}><path d="M12 5a3 3 0 1 0-5.997.125 4 4 0 0 0-2.526 5.77 4 4 0 0 0 .556 6.588A4 4 0 1 0 12 18Z" /><path d="M12 5a3 3 0 1 1 5.997.125 4 4 0 0 1 2.526 5.77 4 4 0 0 1-.556 6.588A4 4 0 1 1 12 18Z" /><path d="M15 13a4.5 4.5 0 0 1-3-4 4.5 4.5 0 0 1-3 4" /><path d="M17.599 6.5a3 3 0 0 0 .399-1.375" /></svg>
+);
+const WorkflowIcon = (props: any) => (
+  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" {...props}><rect width="8" height="8" x="3" y="3" rx="2" /><path d="M7 11v4a2 2 0 0 0 2 2h4" /><rect width="8" height="8" x="13" y="13" rx="2" /></svg>
+);
+const DatabaseIcon = (props: any) => (
+  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" {...props}><ellipse cx="12" cy="5" rx="9" ry="3" /><path d="M3 5V19A9 3 0 0 0 21 19V5" /><path d="M3 12A9 3 0 0 0 21 12" /></svg>
+);
+const LayoutIcon = (props: any) => (
+  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" {...props}><rect width="18" height="18" x="3" y="3" rx="2" ry="2" /><line x1="3" x2="21" y1="9" y2="9" /><line x1="9" x2="9" y1="21" y2="9" /></svg>
+);
+const WhatsAppIcon = (props: any) => (
+  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" {...props}>
+    <path d="M3 21l1.65-3.8a9 9 0 1 1 3.4 2.9L3 21" />
+    <path d="M9 10a.5.5 0 0 0 1 0V9a.5.5 0 0 0-1 0v1a5 5 0 0 0 5 5h1a.5.5 0 0 0 0-1h-1a.5.5 0 0 0 0 1" />
+  </svg>
+);
+const MailIcon = (props: any) => (
+  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" {...props}>
+    <rect width="20" height="16" x="2" y="4" rx="2" />
+    <path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7" />
+  </svg>
+);
+const PhoneIcon = (props: any) => (
+  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" {...props}>
+    <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z" />
+  </svg>
+);
 
-  const container = {
-    hidden: { opacity: 0 },
-    visible: {
-      opacity: 1,
-      transition: {
-        staggerChildren: 0.08,
-        delayChildren: 0.1
-      }
-    }
-  };
-
-  const child = {
-    hidden: {
-      opacity: 0,
-      y: 20
-    },
-    visible: {
-      opacity: 1,
-      y: 0,
-      transition: {
-        duration: 0.3,
-        ease: "circOut"
-      }
-    }
-  };
-
-  return (
-    <motion.h2
-      className={className}
-      variants={container}
-      initial="hidden"
-      whileInView="visible"
-      viewport={{ once: false, margin: "-10%" }}
-    >
-      {words.map((word, index) => (
-        <motion.span
-          key={index}
-          variants={child}
-          className="inline-block mr-2"
-        >
-          {word}
-        </motion.span>
-      ))}
-    </motion.h2>
-  );
-};
-
-const ServiceCard = ({ title, description, tags, impact, caseStudy, index }: { title: string, description: string, tags: string[], impact?: string[], caseStudy?: string, index: number }) => (
+const BentoCard = ({ title, description, icon, colSpan = 1, delay = 0 }: { title: string, description: string, icon: React.ReactNode, colSpan?: number, delay?: number }) => (
   <motion.div
     initial={{ opacity: 0, y: 30, scale: 0.98 }}
     whileInView={{ opacity: 1, y: 0, scale: 1 }}
-    viewport={{ once: false, margin: "-10%" }}
-    transition={{ duration: 0.4, delay: index * 0.05, ease: "circOut" }}
+    viewport={{ once: true, margin: "-10%" }}
+    transition={{ duration: 0.5, delay, ease: "circOut" }}
     whileHover={{
       y: -10,
       scale: 1.02,
-      backgroundColor: "rgba(255,255,255,0.1)",
+      backgroundColor: "rgba(255,255,255,0.08)",
       boxShadow: "0 15px 40px rgba(34, 211, 238, 0.25)",
       borderColor: "rgba(34, 211, 238, 0.4)"
     }}
-    className="bg-white/5 backdrop-blur-md border border-white/10 p-6 md:p-8 rounded-2xl group h-full flex flex-col"
+    className={`bg-white/5 backdrop-blur-md border border-white/10 p-8 md:p-10 rounded-2xl group transition-all duration-300 h-full flex flex-col ${colSpan === 2 ? 'md:col-span-2' : 'col-span-1'}`}
   >
     <div className="h-1 w-12 pearl-bg mb-6 group-hover:w-full transition-all duration-500 rounded-full" />
-
-    <h3 className="text-xl md:text-2xl font-semibold mb-3 text-white group-hover:text-white transition-colors">{title}</h3>
-
+    <div className="w-12 h-12 rounded-lg bg-white/5 flex items-center justify-center text-white/80 group-hover:text-white transition-colors mb-6 border border-white/10">
+      {icon}
+    </div>
+    <h3 className="text-xl md:text-2xl font-bold mb-3 text-white tracking-tight group-hover:text-white transition-colors">{title}</h3>
     <p className="text-white/60 mb-6 font-light leading-relaxed flex-grow text-sm md:text-base">{description}</p>
+  </motion.div>
+);
 
-    {/* Real Impact Metrics */}
-    {impact && (
-      <div className="mb-6 space-y-2 border-l-2 border-white/10 pl-4">
-        {impact.map((item, i) => (
-          <div key={i} className="text-xs md:text-sm text-white/80 font-mono flex items-center gap-2">
-            <span className="text-white">▹</span> {item}
+const ProcessStep = ({ num, title, description, delay = 0 }: { num: string, title: string, description: string, delay?: number }) => (
+  <motion.div
+    initial={{ opacity: 0, scale: 0.95, y: 30 }}
+    whileInView={{ opacity: 1, scale: 1, y: 0 }}
+    viewport={{ once: true, margin: "-10%" }}
+    transition={{ duration: 0.8, delay, ease: [0.16, 1, 0.3, 1] }}
+    className="flex flex-col relative bg-gradient-to-br from-white/5 to-transparent backdrop-blur-xl border border-white/10 p-8 rounded-3xl hover:border-white/20 transition-all duration-500 overflow-hidden group"
+  >
+    {/* Subtle glow effect on hover */}
+    <div className="absolute inset-0 bg-white/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500 blur-2xl" />
+
+    <div className="text-5xl md:text-7xl font-bold text-transparent bg-clip-text bg-gradient-to-b from-white/20 to-transparent mb-6 font-syne relative z-10">{num}</div>
+    <h4 className="text-xl md:text-2xl font-bold text-white mb-3 tracking-tight relative z-10">{title}</h4>
+    <p className="text-white/60 text-sm md:text-base leading-relaxed relative z-10">{description}</p>
+  </motion.div>
+);
+
+// New: Experience Timeline Component
+const ExperienceHighlight = () => (
+  <div className="w-full relative py-20">
+    <div className="absolute left-1/2 top-0 bottom-0 w-px bg-gradient-to-b from-transparent via-white/10 to-transparent -translate-x-1/2 hidden md:block" />
+
+    <div className="space-y-24 md:space-y-32">
+      {[
+        { year: "20+", title: "Mission-Critical Systems", desc: "Successfully architects and deployed across global enterprise environments." },
+        { year: "500M+", title: "Data Points Processed", desc: "Daily volume managed through our high-performance TimescaleDB & Python pipelines." },
+        { year: "0", title: "Compromises on Security", desc: "Military-grade encryption and strict access controls built into every layer." },
+      ].map((item, i) => (
+        <motion.div
+          key={i}
+          initial={{ opacity: 0, y: 50 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: "-10%" }}
+          transition={{ duration: 0.8, delay: i * 0.2, ease: [0.16, 1, 0.3, 1] }}
+          className={`flex flex-col md:flex-row items-center justify-between w-full ${i % 2 === 0 ? 'md:flex-row-reverse' : ''}`}
+        >
+          <div className="w-full md:w-5/12 p-8" />
+          <div className="hidden md:flex absolute left-1/2 -translate-x-1/2 w-4 h-4 rounded-full bg-black border-2 border-white/30 z-10 shadow-[0_0_15px_rgba(255,255,255,0.3)]" />
+          <div className={`w-full md:w-5/12 bg-white/5 backdrop-blur-xl border border-white/10 p-8 rounded-3xl hover:bg-white/10 transition-colors duration-500 ${i % 2 === 0 ? 'text-left md:text-right' : 'text-left'}`}>
+            <h3 className="text-5xl md:text-7xl font-bold animate-pearl text-emboss mb-4 tracking-tighter">{item.year}</h3>
+            <h4 className="text-xl md:text-2xl font-bold text-white mb-2">{item.title}</h4>
+            <p className="text-white/50 leading-relaxed font-light">{item.desc}</p>
           </div>
-        ))}
-      </div>
-    )}
-
-    {/* Case Study Badge */}
-    {caseStudy && (
-      <div className="mb-6 inline-block bg-white/10 border border-white/30 px-3 py-1 rounded text-xs text-white font-mono">
-        CASE STUDY: {caseStudy}
-      </div>
-    )}
-
-    <div className="flex flex-wrap gap-2 mt-auto">
-      {tags.map((tag) => (
-        <span key={tag} className="text-xs font-mono uppercase tracking-wider bg-white/5 px-2 py-1 rounded text-white/40 border border-white/5 group-hover:border-white/20 transition-colors">
-          {tag}
-        </span>
+        </motion.div>
       ))}
+    </div>
+  </div>
+);
+
+// New: Founders Profile Component utilizing the brand logo instead of portraits
+const FounderProfile = ({ name, role, delay }: { name: string, role: string, delay: number }) => (
+  <motion.div
+    initial={{ opacity: 0, scale: 0.95 }}
+    whileInView={{ opacity: 1, scale: 1 }}
+    viewport={{ once: true, margin: "-10%" }}
+    transition={{ duration: 0.8, delay, ease: [0.16, 1, 0.3, 1] }}
+    className="group relative rounded-3xl overflow-hidden aspect-[3/4] md:aspect-square bg-black border border-white/10 isolation-isolate flex flex-col items-center justify-center p-8"
+  >
+    <div className="absolute inset-0 bg-gradient-to-br from-teal-500/5 to-purple-500/5 opacity-50 group-hover:scale-105 transition-transform duration-700" />
+
+    <div className="relative z-10 w-3/4 flex items-center justify-center mb-6 group-hover:-translate-y-4 transition-transform duration-500">
+      <img src="/logo.PNG" alt="Reverbex Technologies Logo" className="w-full h-auto object-contain drop-shadow-[0_0_15px_rgba(255,255,255,0.15)]" />
+    </div>
+
+    <div className="relative z-10 text-center transform translate-y-2 group-hover:-translate-y-2 transition-transform duration-500">
+      <h3 className="text-2xl md:text-3xl font-bold text-white mb-1 tracking-tight">{name}</h3>
+      <p className="text-teal-400 font-mono text-xs md:text-sm uppercase tracking-widest">{role}</p>
+      <div className="w-12 h-px bg-white/20 mt-6 mb-0 mx-auto group-hover:w-full transition-all duration-700" />
     </div>
   </motion.div>
 );
@@ -125,13 +151,15 @@ const ServiceCard = ({ title, description, tags, impact, caseStudy, index }: { t
 // Counter animation component for metrics
 const CounterMetric = ({ metric, delay }: { metric: any; delay: number }) => {
   const ref = useRef(null);
-  const isInView = useInView(ref, { once: false, margin: "-100px" });
+  const isInView = useInView(ref, { once: false, margin: "-50px" });
   const [count, setCount] = useState(0);
 
   useEffect(() => {
     if (!isInView) return;
 
-    const numericValue = parseInt(metric.val.replace(/[^0-9]/g, ''));
+    const numericValue = parseFloat(metric.val.replace(/[^0-9.]/g, ''));
+    if (isNaN(numericValue)) return;
+
     const duration = 2000; // 2 seconds
     const steps = 60;
     const increment = numericValue / steps;
@@ -143,7 +171,12 @@ const CounterMetric = ({ metric, delay }: { metric: any; delay: number }) => {
         setCount(numericValue);
         clearInterval(timer);
       } else {
-        setCount(Math.floor(current));
+        // preserve 1 decimal place if the original string had one
+        if (metric.val.includes('.')) {
+          setCount(parseFloat(current.toFixed(1)));
+        } else {
+          setCount(Math.floor(current));
+        }
       }
     }, duration / steps);
 
@@ -153,15 +186,15 @@ const CounterMetric = ({ metric, delay }: { metric: any; delay: number }) => {
   return (
     <motion.div
       ref={ref}
-      className="text-center"
+      className="text-center md:text-left"
       initial={{ opacity: 0, scale: 0.8 }}
       animate={isInView ? { opacity: 1, scale: 1 } : { opacity: 0, scale: 0.8 }}
       transition={{ duration: 0.5, delay, ease: "circOut" }}
     >
-      <div className="text-2xl md:text-4xl font-bold text-white mb-2">
+      <div className="text-3xl md:text-5xl font-bold tracking-tight text-white mb-2">
         {metric.prefix}{count}{metric.suffix}
       </div>
-      <div className="text-[10px] md:text-xs uppercase tracking-widest text-white/40">{metric.label}</div>
+      <div className="text-xs uppercase tracking-widest text-white/40 font-mono">{metric.label}</div>
     </motion.div>
   );
 };
@@ -169,379 +202,386 @@ const CounterMetric = ({ metric, delay }: { metric: any; delay: number }) => {
 export default function Home() {
   const containerRef = useRef(null);
 
-  // Define content sections for the ScrollManager
-  const sections = [
-    // Slide 1: Hero
-    <section key="hero" id="home" className="w-full h-screen flex flex-col items-center justify-center p-4 md:p-8 overflow-hidden">
-      <motion.div
-        initial={{ opacity: 0, scale: 0.9 }}
-        whileInView={{ opacity: 1, scale: 1 }}
-        viewport={{ once: false }}
-        transition={{ duration: 1.5, ease: [0.16, 1, 0.3, 1] }}
-        className="text-center relative z-10"
-      >
-        <div className="absolute inset-0 bg-white/10 blur-[120px] rounded-full opacity-30" />
-        <h1 className="relative text-4xl md:text-7xl lg:text-9xl font-bold tracking-tighter animate-pearl text-emboss text-center leading-[1.1] md:leading-[0.9]">
-          Reverbex <br className="md:hidden" /> Technologies
-        </h1>
-      </motion.div>
-
-      <motion.p
-        initial={{ opacity: 0, y: 20 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        viewport={{ once: false }}
-        transition={{ delay: 0.5, duration: 1, ease: [0.16, 1, 0.3, 1] }}
-        className="mt-6 md:mt-8 text-base md:text-2xl text-white/80 font-light tracking-wide text-center max-w-xl px-4"
-      >
-        Orchestrating the Future of Digital Reality
-      </motion.p>
-    </section>,
-
-    // Slide 2: Projects Intro
-    <section key="projects-intro" className="w-full h-screen flex items-center justify-center px-4 md:px-12 bg-transparent overflow-hidden">
-      <motion.div
-        className="max-w-4xl text-center"
-        initial={{ opacity: 0, scale: 0.95 }}
-        whileInView={{ opacity: 1, scale: 1 }}
-        viewport={{ once: false, margin: "-10%" }}
-        transition={{ duration: 0.6, ease: "circOut" }}
-      >
-        <ScrambleText
-          text="Featured Engagements"
-          className="text-4xl md:text-8xl font-bold leading-tight mb-6 md:mb-8 animate-pearl text-emboss"
-        />
-        <div className="w-16 md:w-20 h-1 bg-white/20 mx-auto mb-4 md:mb-6" />
-        <ScrambleText
-          text="Delivering scalable solutions for complex industry challenges"
-          className="text-lg md:text-2xl text-white/60 font-light px-2"
-          delay={0.5}
-        />
-      </motion.div>
-    </section>,
-
-    // Slide 3+: Project Slides
-    ...ProjectSlides,
-
-    // Slide 4: Mission Intro
-    <section key="mission-intro" id="about-mission" className="w-full min-h-screen md:h-screen flex flex-col justify-center px-4 md:px-12 bg-transparent overflow-hidden py-20 md:py-0">
-      <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-8 md:gap-12 items-center">
-        <motion.div
-          initial={{ opacity: 0, x: -50 }}
-          whileInView={{ opacity: 1, x: 0 }}
-          viewport={{ once: false }}
-          transition={{ duration: 0.5, ease: "circOut" }}
-        >
-          <span className="text-white/60 font-mono tracking-widest text-xs md:text-sm uppercase mb-2 md:mb-4 block">Built for Business Impact</span>
-          <ScrambleText
-            text="Enterprise Software That Drives Real Results"
-            className="text-3xl md:text-5xl lg:text-7xl font-bold leading-tight"
-          />
-        </motion.div>
-        <motion.div
-          initial={{ opacity: 0, x: 100 }}
-          whileInView={{ opacity: 1, x: 0 }}
-          viewport={{ once: false, amount: 0.3 }}
-          transition={{ duration: 0.8, delay: 0.2, ease: [0.19, 1, 0.22, 1] }}
-          className="text-base md:text-xl text-white/70 font-light leading-relaxed space-y-4 md:space-y-6"
-        >
-          <p>
-            Since 2020, we&apos;ve delivered <strong>20+ mission-critical systems</strong> across enterprise, finance, education, and gaming.
-          </p>
-          <p>
-            Our clients choose us because we combine technical excellence with business acumen. We don&apos;t just write code; we solve revenue, cost, and efficiency equations.
-          </p>
-        </motion.div>
-      </div>
-    </section>,
-
-    // Slide 5: Values
-    <section key="values" id="about-values" className="w-full min-h-screen md:h-screen flex flex-col justify-center px-4 md:px-12 bg-transparent overflow-hidden py-20 md:py-0">
-      <div className="max-w-7xl mx-auto space-y-8 md:space-y-20 w-full flex flex-col justify-center">
-        <motion.div
-          className="grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-8 flex-shrink-0"
-          initial={{ opacity: 0, y: 100 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: false, amount: 0.1 }}
-          transition={{ duration: 0.8, ease: [0.19, 1, 0.22, 1] }}
-        >
-          {[
-            {
-              title: "Production-Ready",
-              description: "We don't deliver prototypes. Every system is built for scale, security, and real-world production from Day One."
-            },
-            {
-              title: "Business-First",
-              description: "Technology serves your business. Our solutions directly address revenue goals, cost reductions, and efficiency targets."
-            },
-            {
-              title: "Full-Stack Execution",
-              description: "From architecture to deployment. One team, one vision, zero handoffs. We own the entire lifecycle."
-            }
-          ].map((pillar, i) => (
-            <motion.div
-              key={i}
-              className="bg-white/5 border border-white/10 p-6 md:p-8 rounded-xl"
-              whileHover={{ scale: 1.05, backgroundColor: "rgba(255,255,255,0.08)" }}
-              transition={{ duration: 0.3 }}
-            >
-              <h3 className="text-lg md:text-xl font-bold mb-2 md:mb-4 text-white">{pillar.title}</h3>
-              <p className="text-white/60 text-xs md:text-sm leading-relaxed">{pillar.description}</p>
-            </motion.div>
-          ))}
-        </motion.div>
-
-        {/* Metrics Banner */}
-        <div className="border-t border-b border-white/10 py-8 md:py-12 flex-shrink-0">
-          <div className="grid grid-cols-2 lg:grid-cols-4 gap-6 md:gap-8">
-            {[
-              { label: "Data Processed Daily", val: "500M+", prefix: "", suffix: "M+" },
-              { label: "Concurrent Users", val: "10k+", prefix: "", suffix: "k+" },
-              { label: "System Uptime", val: "99.9%", prefix: "", suffix: "%" },
-              { label: "Response Time", val: "<100ms", prefix: "<", suffix: "ms" }
-            ].map((metric, i) => (
-              <CounterMetric key={i} metric={metric} delay={0.2 + i * 0.1} />
-            ))}
-          </div>
-        </div>
-      </div>
-    </section>,
-
-    // Slide 6: Services - Featured
-    <section key="features" className="w-full min-h-screen md:h-screen flex flex-col justify-center px-4 md:px-12 bg-transparent overflow-hidden py-20 md:py-0">
-      <div className="max-w-7xl mx-auto w-full flex flex-col justify-center">
-        <motion.div
-          className="mb-8 md:mb-12 flex-shrink-0"
-          initial={{ opacity: 0, x: -100 }}
-          whileInView={{ opacity: 1, x: 0 }}
-          viewport={{ once: false, amount: 0.3 }}
-          transition={{ duration: 0.8, ease: [0.19, 1, 0.22, 1] }}
-        >
-          <h2 className="text-xs md:text-sm font-mono tracking-widest uppercase text-white/40 mb-2">Capabilities</h2>
-          <h3 className="text-3xl md:text-4xl font-bold animate-pearl">Featured Solutions</h3>
-        </motion.div>
-
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6 flex-shrink-0 pb-10">
-          {[
-            {
-              title: "Real-Time Trading",
-              description: "High-frequency engines & market data pipelines.",
-              tags: ["Flutter", "TimescaleDB"],
-              caseStudy: "Neora"
-            },
-            {
-              title: "University Mgmt",
-              description: "End-to-end campus administration platforms.",
-              tags: ["Next.js", "Supabase"],
-              caseStudy: "No-Dues"
-            },
-            {
-              title: "AI Content Bot",
-              description: "Auto-captioning & scheduling for social growth.",
-              tags: ["Python", "Gemini API"],
-              caseStudy: "InstaBot"
-            },
-            {
-              title: "Geospatial Intel",
-              description: "Satellite imagery processing & 3D viz.",
-              tags: ["CesiumJS", "PostGIS"],
-              caseStudy: "GEOPIXEL"
-            }
-          ].map((service, i) => (
-            <ServiceCard key={i} index={i} {...service} impact={[]} />
-          ))}
-        </div>
-      </div>
-    </section>,
-
-    // Slide 7: Services - Enterprise
-    <section key="enterprise" className="w-full min-h-screen md:h-screen flex flex-col justify-center px-4 md:px-12 bg-transparent overflow-hidden py-20 md:py-0">
-      <div className="max-w-7xl mx-auto w-full flex flex-col justify-center">
-        <motion.div
-          className="mb-8 md:mb-12 text-right flex-shrink-0"
-          initial={{ opacity: 0, x: 100 }}
-          whileInView={{ opacity: 1, x: 0 }}
-          viewport={{ once: false, amount: 0.3 }}
-          transition={{ duration: 0.8, ease: [0.19, 1, 0.22, 1] }}
-        >
-          <h2 className="text-xs md:text-sm font-mono tracking-widest uppercase text-white/40 mb-2">Capabilities</h2>
-          <h3 className="text-3xl md:text-4xl font-bold animate-pearl">Enterprise & Data</h3>
-        </motion.div>
-
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6 flex-shrink-0 pb-10">
-          {[
-            {
-              title: "Analytics Dashboards",
-              description: "Unified KPI tracking from multiple sources.",
-              tags: ["React", "D3.js"],
-            },
-            {
-              title: "Workflow Auto",
-              description: "Eliminating manual tasks with smart pipelines.",
-              tags: ["n8n", "Python"],
-            },
-            {
-              title: "CRM & ERP",
-              description: "Custom business process management systems.",
-              tags: ["Odoo", "Custom"],
-            },
-            {
-              title: "Legacy Modernization",
-              description: "Migrating mainframes to cloud-native microservices.",
-              tags: ["AWS", "Docker"],
-            }
-          ].map((service, i) => (
-            <ServiceCard key={i} index={i} {...service} impact={[]} />
-          ))}
-        </div>
-      </div>
-    </section>,
-
-    // Slide 8: Services - Advanced
-    <section key="advanced" className="w-full min-h-screen md:h-screen flex flex-col justify-center px-4 md:px-12 bg-transparent overflow-hidden py-20 md:py-0">
-      <div className="max-w-7xl mx-auto w-full flex flex-col justify-center">
-        <motion.div
-          className="mb-8 md:mb-12 text-center flex-shrink-0"
-          initial={{ opacity: 0, scale: 0.9 }}
-          whileInView={{ opacity: 1, scale: 1 }}
-          viewport={{ once: false, amount: 0.3 }}
-          transition={{ duration: 0.8, ease: [0.19, 1, 0.22, 1] }}
-        >
-          <h2 className="text-xs md:text-sm font-mono tracking-widest uppercase text-white/40 mb-2">Capabilities</h2>
-          <h3 className="text-3xl md:text-4xl font-bold animate-pearl">Advanced Technologies</h3>
-        </motion.div>
-
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6 flex-shrink-0 pb-10">
-          {[
-            {
-              title: "Generative AI Agent",
-              description: "Custom LLM solutions for customer support & internal tools.",
-              tags: ["LangChain", "OpenAI"],
-            },
-            {
-              title: "Blockchain Apps",
-              description: "Smart contracts & dApps for transparent operations.",
-              tags: ["Solidity", "Rust"],
-            },
-            {
-              title: "IoT Systems",
-              description: "Real-time device monitoring & control networks.",
-              tags: ["MQTT", "Go"],
-            },
-            {
-              title: "AR/VR Experiences",
-              description: "Immersive training & product showcases.",
-              tags: ["Unity", "Three.js"],
-            }
-          ].map((service, i) => (
-            <ServiceCard key={i} index={i} {...service} impact={[]} />
-          ))}
-        </div>
-      </div>
-    </section>,
-
-    // Slide 9: Services - Core
-    <section key="core" className="w-full min-h-screen md:h-screen flex flex-col justify-center px-4 md:px-12 bg-transparent overflow-hidden py-20 md:py-0">
-      <div className="max-w-7xl mx-auto w-full flex flex-col justify-center">
-        <motion.div
-          className="mb-8 md:mb-12 flex-shrink-0"
-          initial={{ opacity: 0, x: -100 }}
-          whileInView={{ opacity: 1, x: 0 }}
-          viewport={{ once: false, amount: 0.3 }}
-          transition={{ duration: 0.8, ease: [0.19, 1, 0.22, 1] }}
-        >
-          <h2 className="text-xs md:text-sm font-mono tracking-widest uppercase text-white/40 mb-2">Capabilities</h2>
-          <h3 className="text-3xl md:text-4xl font-bold animate-pearl">Core Engineering</h3>
-        </motion.div>
-
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6 flex-shrink-0 pb-10">
-          {[
-            {
-              title: "Full-Stack Web",
-              description: "Scalable, secure, and SEO-optimized web applications.",
-              tags: ["Next.js", "Node.js"],
-            },
-            {
-              title: "Mobile Apps",
-              description: "Cross-platform iOS & Android solutions.",
-              tags: ["React Native", "Flutter"],
-            },
-            {
-              title: "DevOps & CI/CD",
-              description: "Automated deployment & infrastructure as code.",
-              tags: ["Kubernetes", "Terraform"],
-            },
-            {
-              title: "API Development",
-              description: "Robust REST & GraphQL API architectures.",
-              tags: ["FastAPI", "GraphQL"],
-            }
-          ].map((service, i) => (
-            <ServiceCard key={i} index={i} {...service} impact={[]} />
-          ))}
-        </div>
-      </div>
-    </section>,
-
-    // Slide 10: Tech Stream
-    <div key="techstream" className="h-screen w-full relative">
-      <div className="absolute inset-0 flex items-center justify-center">
-        <TechStream />
-      </div>
-    </div>,
-
-    // Slide Last: Contact
-    <section key="contact" id="contact" className="w-full h-screen flex flex-col justify-center py-24 px-4 md:px-12 border-t border-white/10 bg-transparent">
-      <div className="max-w-4xl mx-auto text-center">
-        <FadeIn>
-          <h2 className="text-4xl md:text-5xl lg:text-7xl font-syne font-bold mb-6 md:mb-8 animate-pearl">Let&apos;s Build the Future</h2>
-          <p className="text-lg md:text-xl text-white/60 font-light mb-8 md:mb-12 max-w-2xl mx-auto px-4">
-            Ready to transform your business requirements into production-grade reality?
-            Let&apos;s talk about your next mission-critical project.
-          </p>
-
-          <a
-            href="mailto:reverbextech@gmail.com"
-            className="inline-flex items-center gap-3 pearl-bg text-black px-8 py-4 rounded-full text-lg font-bold hover:brightness-110 transition-all hover:scale-105"
-          >
-            <span>Start a Project</span>
-            <span className="text-xl">→</span>
-          </a>
-
-          <div className="mt-12 md:mt-16 grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-8 text-sm text-white/40 font-mono uppercase tracking-widest px-4">
-            <div>
-              <div className="text-white mb-2">Email</div>
-              reverbextech@gmail.com
-            </div>
-            <div>
-              <div className="text-white mb-2">Phone</div>
-              +91 99299 86743
-            </div>
-            <div>
-              <div className="text-white mb-2">Location</div>
-              Jaipur, Rajasthan, India
-            </div>
-          </div>
-        </FadeIn>
-      </div>
-    </section>
-  ];
-
   return (
-    <main ref={containerRef} className="w-full h-screen relative text-white selection:bg-purple-500/30 bg-black overflow-hidden">
-
+    <main ref={containerRef} className="w-full relative text-white selection:bg-purple-500/30 bg-black min-h-screen">
       {/* Global Scroll Connector */}
       <ScrollProgress />
 
-      {/* Fixed background elements */}
+      {/* Fixed background elements (Pearl fluid & orbs) */}
       <div className="fixed inset-0 z-0 pointer-events-none">
         <FloatingOrbs />
-        <InteractiveFluidBackground />
+        <div className="w-full h-full">
+          <InteractiveFluidBackground />
+        </div>
       </div>
 
-      {/* Hijacked Scroll Container */}
-      <ScrollManager>
-        {sections}
-      </ScrollManager>
+      {/* Main Content Area - Native Scroll */}
+      <div className="relative z-10 w-full overflow-hidden flex flex-col">
+
+        {/* HERO SECTION */}
+        <section id="home" className="w-full min-h-[90vh] flex flex-col items-center justify-center p-4 md:p-8 pt-32 pb-16 bg-transparent">
+          <motion.div
+            initial={{ opacity: 0, scale: 0.95 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
+            className="text-center relative z-10 max-w-5xl mx-auto flex flex-col items-center"
+          >
+            <div className="absolute inset-0 bg-white/10 blur-[120px] rounded-full opacity-30 pointer-events-none" />
+
+            <ScrambleText
+              text="Intelligent Automation."
+              className="relative text-4xl sm:text-5xl md:text-6xl lg:text-7xl xl:text-8xl font-bold tracking-tight text-transparent bg-clip-text bg-gradient-to-r from-white to-white/80 mb-2 leading-[1.1] md:leading-[1]"
+            />
+            <h1 className="relative text-4xl sm:text-5xl md:text-6xl lg:text-7xl xl:text-8xl font-bold tracking-tight animate-pearl text-emboss text-center leading-[1.1] md:leading-[1] mb-12">
+              Enterprise SaaS.
+            </h1>
+
+            <motion.p
+              initial={{ opacity: 0, y: 15 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.3, duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
+              className="text-lg md:text-xl xl:text-2xl text-white/50 font-light tracking-wide text-center max-w-4xl mx-auto px-4 mb-16 leading-relaxed"
+            >
+              We build high-performance AI agents and custom software systems that reduce manual work, accelerate response times, and scale your operations without adding headcount.
+            </motion.p>
+
+            <motion.div
+              initial={{ opacity: 0, scale: 0.95 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ delay: 0.5, duration: 0.6 }}
+              className="flex flex-col sm:flex-row gap-4 relative z-20 mb-8 w-full sm:w-auto px-4"
+            >
+              <a
+                href="#contact"
+                className="w-full sm:w-auto inline-flex items-center justify-center pearl-bg text-black px-8 py-4 rounded-full text-base font-bold hover:brightness-110 hover:scale-105 transition-all"
+              >
+                Book a Consultation
+              </a>
+              <a
+                href="https://wa.me/919929986743?text=Hi%20Anurag,%20I%20want%20to%20discuss%20AI%20automation%20for%20my%20business."
+                target="_blank"
+                rel="noopener noreferrer"
+                className="w-full sm:w-auto inline-flex items-center justify-center bg-teal-500/10 border border-teal-500/30 text-teal-400 backdrop-blur-md px-8 py-4 rounded-full text-base font-bold hover:bg-teal-500/20 transition-colors"
+              >
+                <WhatsAppIcon className="w-5 h-5 mr-2" />
+                Chat on WhatsApp
+              </a>
+            </motion.div>
+
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ delay: 0.8, duration: 0.6 }}
+              className="flex flex-col sm:flex-row items-center justify-center gap-4 sm:gap-8 text-sm text-white/50 font-mono tracking-wider relative z-20"
+            >
+              <a href="mailto:15anuragsingh2003@gmail.com" className="hover:text-white transition-colors flex items-center gap-2">
+                <MailIcon className="w-4 h-4" /> 15anuragsingh2003@gmail.com
+              </a>
+              <span className="hidden sm:inline opacity-30">|</span>
+              <a href="tel:+919929986743" className="hover:text-white transition-colors flex items-center gap-2">
+                <PhoneIcon className="w-4 h-4" /> +91 99299 86743
+              </a>
+            </motion.div>
+          </motion.div>
+        </section>
+
+        {/* METRICS BANNER */}
+        <section className="w-full py-16 px-4 md:px-12 bg-transparent relative z-10 border-y border-white/10 backdrop-blur-sm">
+          <div className="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center gap-12">
+            <div className="text-sm font-mono tracking-widest uppercase text-white/40 md:w-1/4 text-center md:text-left">
+              Proven Scale <br /> & Reliability
+            </div>
+            <div className="grid grid-cols-2 lg:grid-cols-4 gap-8 md:gap-12 w-full md:w-3/4">
+              {[
+                { label: "Data Evaluated Daily", val: "50M+", prefix: "", suffix: "M+" },
+                { label: "Active Deployments", val: "20+", prefix: "", suffix: "+" },
+                { label: "Core System Uptime", val: "99.9%", prefix: "", suffix: "%" },
+                { label: "P99 Avg Latency", val: "<100ms", prefix: "<", suffix: "ms" }
+              ].map((metric, i) => (
+                <CounterMetric key={i} metric={metric} delay={0.2 + i * 0.1} />
+              ))}
+            </div>
+          </div>
+        </section>
+
+        {/* SERVICES / WHAT WE DO BENTO GRID */}
+        <section id="services" className="w-full py-24 md:py-32 px-4 md:px-12 bg-transparent relative z-10">
+          <div className="max-w-7xl mx-auto">
+            <FadeIn>
+              <h2 className="text-sm font-mono tracking-widest uppercase text-white/40 mb-4 block">Capabilities</h2>
+              <h2 className="text-4xl md:text-6xl font-bold tracking-tight mb-6 animate-pearl text-emboss pb-2">Core Solutions</h2>
+              <p className="text-white/60 text-lg md:text-xl font-light max-w-2xl mb-16">
+                From autonomous AI agents to complex data pipelines, we engineer robust solutions that become the backbone of your business operations.
+              </p>
+            </FadeIn>
+
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+              <BentoCard
+                title="Generative AI & LLM Agents"
+                description="Custom RAG pipelines, autonomous customer support agents, and internal knowledge bases built on state-of-the-art frontier models (OpenAI, Gemini, Anthropic)."
+                icon={<BrainIcon className="w-6 h-6" />}
+                colSpan={2}
+                delay={0.1}
+              />
+              <BentoCard
+                title="Workflow Automation"
+                description="Eliminate repetitive tasks. We design robust n8n and custom Python pipelines that integrate with your existing CRM, ERP, and internal systems."
+                icon={<WorkflowIcon className="w-6 h-6" />}
+                colSpan={1}
+                delay={0.2}
+              />
+              <BentoCard
+                title="SaaS & Web Architecture"
+                description="High-performance, secure, and globally distributed web applications using Next.js, React, Node.js, and serverless infrastructure."
+                icon={<LayoutIcon className="w-6 h-6" />}
+                colSpan={1}
+                delay={0.3}
+              />
+              <BentoCard
+                title="Intelligent Data Dashboards"
+                description="Turn fragmented enterprise data into actionable intelligence. Custom analytics portals with real-time syncing, TimescaleDB, and interactive React visualizations."
+                icon={<DatabaseIcon className="w-6 h-6" />}
+                colSpan={2}
+                delay={0.4}
+              />
+            </div>
+          </div>
+        </section>
+
+        {/* WHO WE HELP SECTION */}
+        <section id="who-we-help" className="w-full py-24 md:py-32 px-4 md:px-12 bg-transparent relative z-10 border-t border-white/5">
+          <div className="max-w-7xl mx-auto">
+            <FadeIn>
+              <h2 className="text-sm font-mono tracking-widest uppercase text-white/40 mb-4 block">Target Audience</h2>
+              <h2 className="text-4xl md:text-6xl font-bold tracking-tight mb-16 text-transparent bg-clip-text bg-gradient-to-r from-white to-white/80">Who We Help</h2>
+            </FadeIn>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6">
+              {[
+                { title: "Operations-Heavy Businesses", desc: "Scaling manual processes into intelligent automated pipelines." },
+                { title: "Service Companies", desc: "Eliminating repetitive workflows, data entry, and slow response times." },
+                { title: "SaaS Founders", desc: "Accelerating product development with robust enterprise-grade architectures." },
+                { title: "Data-Driven Teams", desc: "Stopping the chaos of manual reporting by building custom real-time dashboards." }
+              ].map((item, i) => (
+                <motion.div
+                  key={i}
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true, margin: "-10%" }}
+                  transition={{ duration: 0.5, delay: i * 0.1 }}
+                  className="bg-white/5 backdrop-blur-sm border border-white/10 p-8 rounded-2xl hover:bg-white/10 transition-colors"
+                >
+                  <h3 className="text-lg md:text-xl font-bold text-white mb-3">{item.title}</h3>
+                  <p className="text-white/60 text-sm leading-relaxed">{item.desc}</p>
+                </motion.div>
+              ))}
+            </div>
+          </div>
+        </section>
+
+        {/* USE CASES SECTION */}
+        <section id="use-cases" className="w-full py-24 md:py-32 px-4 md:px-12 bg-transparent relative z-10 border-t border-white/5">
+          <div className="max-w-7xl mx-auto">
+            <FadeIn>
+              <h2 className="text-sm font-mono tracking-widest uppercase text-white/40 mb-4 block">Practical Applications</h2>
+              <h2 className="text-4xl md:text-6xl font-bold tracking-tight mb-16 text-transparent bg-clip-text bg-gradient-to-r from-white to-white/80">Proven Use Cases</h2>
+            </FadeIn>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              {[
+                { title: "AI Customer Support", desc: "WhatsApp, chat, and email automation handling 80% of L1 inquiries instantly." },
+                { title: "Internal Workflow Automation", desc: "Multi-step approvals, automated report generation, and system handoffs via n8n & Python." },
+                { title: "Custom SaaS Platforms", desc: "Client data portals and admin dashboards with secure, role-based access." },
+                { title: "Document & Ops Automation", desc: "AI-driven extraction, analysis, and routing of invoices, contracts, and unstructured data." }
+              ].map((item, i) => (
+                <motion.div
+                  key={i}
+                  initial={{ opacity: 0, scale: 0.98 }}
+                  whileInView={{ opacity: 1, scale: 1 }}
+                  viewport={{ once: true, margin: "-10%" }}
+                  transition={{ duration: 0.5, delay: i * 0.1 }}
+                  className="flex flex-col sm:flex-row gap-6 bg-gradient-to-br from-white/5 to-transparent border border-white/10 p-8 rounded-2xl hover:border-white/20 transition-all group hover:bg-white/5" style={{ boxShadow: "inset 0 0 0 1px rgba(255,255,255,0)" }}
+                >
+                  <div className="w-12 h-12 shrink-0 rounded-full pearl-bg flex items-center justify-center text-black group-hover:scale-110 transition-transform shadow-[0_0_15px_rgba(34,211,238,0.3)]">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polyline points="20 6 9 17 4 12" /></svg>
+                  </div>
+                  <div>
+                    <h3 className="text-xl font-bold text-white mb-2">{item.title}</h3>
+                    <p className="text-white/60 leading-relaxed">{item.desc}</p>
+                  </div>
+                </motion.div>
+              ))}
+            </div>
+          </div>
+        </section>
+
+        {/* HOW WE WORK / PROCESS SECTION */}
+        <section id="process" className="w-full py-24 md:py-32 px-4 md:px-12 bg-transparent relative z-10 border-t border-white/5">
+          <div className="max-w-7xl mx-auto">
+            <FadeIn className="flex flex-col items-center">
+              <h2 className="text-sm font-mono tracking-widest uppercase text-white/40 mb-4 block text-center">Process</h2>
+              <h2 className="text-4xl md:text-6xl font-bold tracking-tight mb-12 text-center animate-pearl text-emboss pb-2">Engineering Philosophy</h2>
+
+              <div className="relative w-full max-w-3xl aspect-video rounded-[2rem] md:rounded-[3rem] overflow-hidden border border-white/10 bg-black/40 backdrop-blur-xl flex items-center justify-center shadow-[0_20px_60px_rgba(0,0,0,0.6)] mb-20 p-4 md:p-8">
+                <div className="absolute inset-0 bg-gradient-to-br from-teal-500/10 to-purple-500/10 opacity-50 group-hover:opacity-100 transition-opacity duration-500 blur-2xl" />
+                <video
+                  src="/Reverbex_logo.mp4"
+                  autoPlay
+                  loop
+                  muted
+                  playsInline
+                  className="relative z-10 w-full h-full object-contain mix-blend-screen opacity-100 drop-shadow-[0_0_15px_rgba(255,255,255,0.1)]"
+                />
+              </div>
+            </FadeIn>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+              <ProcessStep
+                num="01"
+                title="Discovery & Audit"
+                description="We analyze your existing workflows, identify bottlenecks, and define clear, measurable ROI targets before writing a single line of code."
+                delay={0.1}
+              />
+              <ProcessStep
+                num="02"
+                title="Architecture Design"
+                description="Designing resilient, scalable systems. We choose the right tools—from LLMs to databases—to guarantee long-term performance."
+                delay={0.2}
+              />
+              <ProcessStep
+                num="03"
+                title="Agile Deployment"
+                description="Rapid iterations and strict QA. We build in production-ready environments from day one, ensuring zero downtime during rollout."
+                delay={0.3}
+              />
+              <ProcessStep
+                num="04"
+                title="Scale & Monitor"
+                description="Post-launch, we enforce rigorous APM (Application Performance Monitoring) and infrastructure scaling to support your growth."
+                delay={0.4}
+              />
+            </div>
+          </div>
+        </section>
+
+        {/* EXPERIENCE HIGHLIGHT SECTION */}
+        <section id="experience" className="w-full py-24 md:py-32 px-4 md:px-12 bg-transparent relative z-10 border-t border-white/5">
+          <div className="max-w-7xl mx-auto">
+            <FadeIn className="text-center mb-20">
+              <h2 className="text-sm font-mono tracking-widest uppercase text-white/40 mb-4 block">Proven Track Record</h2>
+              <h2 className="text-4xl md:text-6xl font-bold tracking-tight mb-6 text-transparent bg-clip-text bg-gradient-to-r from-white to-white/80">Delivering at Scale</h2>
+              <p className="text-white/60 text-lg md:text-xl font-light max-w-2xl mx-auto">
+                We've partnered with industry leaders and disruptive startups to architect systems that refuse to fail.
+              </p>
+            </FadeIn>
+
+            <ExperienceHighlight />
+          </div>
+        </section>
+
+        {/* LEADERSHIP / FOUNDERS SECTION */}
+        <section id="founders" className="w-full py-24 md:py-32 px-4 md:px-12 bg-transparent relative z-10 border-t border-white/5">
+          <div className="max-w-7xl mx-auto">
+            <div className="grid grid-cols-1 lg:grid-cols-3 gap-12 md:gap-16 items-center">
+
+              <FadeIn className="lg:col-span-1">
+                <h2 className="text-sm font-mono tracking-widest uppercase text-white/40 mb-4 block">Leadership</h2>
+                <h2 className="text-4xl md:text-6xl font-bold tracking-tight mb-8 text-transparent bg-clip-text bg-gradient-to-r from-white to-white/70">The Visionaries</h2>
+                <p className="text-white/60 text-lg font-light leading-relaxed mb-8">
+                  Founded by a team obsessed with technical perfection and business optimization. We believe AI is not a buzzword—it's the fundamental architecture of the next decade of enterprise.
+                </p>
+                <a
+                  href="#contact"
+                  className="inline-flex items-center gap-2 text-white font-mono uppercase tracking-widest text-sm hover:text-teal-400 transition-colors group"
+                >
+                  <span className="w-8 h-px bg-white/30 group-hover:bg-teal-400 group-hover:w-12 transition-all" />
+                  Connect with Leadership
+                </a>
+              </FadeIn>
+
+              <div className="lg:col-span-2 grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8">
+                <FounderProfile
+                  name="Anurag Singh"
+                  role="Co-Founder & Tech Lead"
+                  delay={0.2}
+                />
+                <FounderProfile
+                  name="Prachi Agarwal"
+                  role="Co-Founder & Operations"
+                  delay={0.4}
+                />
+              </div>
+
+            </div>
+          </div>
+        </section>
+
+        {/* TECH STREAM SECTION */}
+        <section className="w-full py-24 md:py-32 bg-transparent relative z-10 overflow-hidden">
+          <FadeIn className="max-w-7xl mx-auto px-4 md:px-12 mb-12">
+            <h3 className="text-sm font-mono tracking-widest uppercase text-white/40 text-center">Powered By Premium Technologies</h3>
+          </FadeIn>
+          <TechStream />
+        </section>
+
+        {/* CONTACT SECTION */}
+        <section id="contact" className="w-full min-h-screen flex flex-col justify-center py-24 px-4 md:px-12 bg-transparent relative z-10 border-t border-white/10">
+          <div className="max-w-4xl mx-auto text-center w-full">
+            <FadeIn>
+              <h2 className="text-5xl md:text-7xl lg:text-8xl font-syne font-bold mb-6 md:mb-8 animate-pearl text-emboss tracking-tight pb-2">Ready to Automate?</h2>
+              <p className="text-lg md:text-2xl text-white/80 font-light mb-12 md:mb-16 max-w-2xl mx-auto px-4">
+                Partner with us to build intelligent systems that drive real business outcomes. Reach out instantly or schedule a call.
+              </p>
+
+              <div className="flex flex-col sm:flex-row items-center justify-center gap-4 md:gap-6 w-full max-w-2xl mx-auto px-4">
+                <a
+                  href="https://wa.me/919929986743?text=Hi%20Anurag,%20I%20want%20to%20discuss%20AI%20automation%20for%20my%20business."
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="w-full sm:w-auto flex-1 inline-flex items-center justify-center gap-3 pearl-bg text-black px-8 py-5 rounded-full text-lg font-bold hover:brightness-110 transition-all hover:scale-105"
+                >
+                  <WhatsAppIcon className="w-6 h-6" />
+                  <span>Chat on WhatsApp</span>
+                </a>
+
+                <a
+                  href="mailto:15anuragsingh2003@gmail.com"
+                  className="w-full sm:w-auto flex-1 inline-flex items-center justify-center gap-3 bg-white/5 border border-white/10 backdrop-blur-md text-white px-8 py-5 rounded-full text-lg font-bold hover:bg-white/10 transition-all hover:scale-105"
+                >
+                  <MailIcon className="w-6 h-6" />
+                  <span>Send an Email</span>
+                </a>
+              </div>
+
+              <div className="mt-20 md:mt-24 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8 md:gap-12 text-sm text-white/40 font-mono uppercase tracking-widest px-4 border-t border-white/10 pt-16">
+                <div className="flex flex-col items-center">
+                  <MailIcon className="w-6 h-6 mb-4 text-white/60" />
+                  <div className="text-white mb-2">Email</div>
+                  <a href="mailto:15anuragsingh2003@gmail.com" className="hover:text-white transition-colors">15anuragsingh2003@gmail.com</a>
+                </div>
+                <div className="flex flex-col items-center">
+                  <PhoneIcon className="w-6 h-6 mb-4 text-white/60" />
+                  <div className="text-white mb-2">Phone / WhatsApp</div>
+                  <a href="tel:+919929986743" className="hover:text-white transition-colors">+91 99299 86743</a>
+                </div>
+                <div className="flex flex-col items-center sm:col-span-2 md:col-span-1">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="w-6 h-6 mb-4 text-white/60"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z" /><circle cx="12" cy="10" r="3" /></svg>
+                  <div className="text-white mb-2">Engineering HQ</div>
+                  Jaipur, Rajasthan, India
+                </div>
+              </div>
+            </FadeIn>
+          </div>
+        </section>
+
+        {/* CLOSING SPACING */}
+        <div className="h-20" />
+
+        {/* MOBILE CONTACT BAR */}
+        <MobileContactBar />
+
+
+      </div>
     </main>
   );
 }

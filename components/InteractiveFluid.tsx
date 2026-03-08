@@ -16,21 +16,21 @@ import {
     gradientSubtractShader,
 } from "./FluidSimulation/shaders";
 
-const InteractiveFluid = () => {
+const InteractiveFluid = ({ isMobile }: { isMobile: boolean }) => {
     const { gl, size } = useThree();
 
-    // Simulation parameters
-    const simRes = 256;
-    const dyeRes = 1024;
+    // Simulation parameters: Dramatically lower for mobile to ensure 60fps
+    const simRes = isMobile ? 128 : 256;
+    const dyeRes = isMobile ? 512 : 1024;
     // Smudge Effect: High dissipation keeps trails lingering
     const densityDissipation = 0.99;
     const velocityDissipation = 0.99;
-    const pressureIterations = 20;
-    const curl = 30; // Reduced curl for smoother, less chaotic flow
+    const pressureIterations = isMobile ? 10 : 20;
+    const curl = 15; // Significantly reduced curl for smoother, less chaotic flow
     // Small size as requested
-    const splatRadius = 0.008;
+    const splatRadius = isMobile ? 0.012 : 0.008;
     // Reduced force for gentle "smudging" rather than shooting
-    const splatForce = 4000;
+    const splatForce = isMobile ? 3000 : 4000;
 
     // Mouse state
     const mouse = useRef(new THREE.Vector2(0, 0));
@@ -180,8 +180,9 @@ const InteractiveFluid = () => {
         const time = clock.getElapsedTime();
 
         // 1. AUTOMATIC MOVEMENT (The continuous background smudge)
-        const autoX = 0.5 + 0.35 * Math.sin(time * 0.4) + 0.15 * Math.cos(time * 0.9);
-        const autoY = 0.5 + 0.25 * Math.cos(time * 0.5) + 0.15 * Math.sin(time * 1.2);
+        // Slowed down significantly to avoid shakiness
+        const autoX = 0.5 + 0.35 * Math.sin(time * 0.15) + 0.15 * Math.cos(time * 0.25);
+        const autoY = 0.5 + 0.25 * Math.cos(time * 0.2) + 0.15 * Math.sin(time * 0.35);
 
         const autoDx = autoX - prevAutoMouse.current.x;
         const autoDy = autoY - prevAutoMouse.current.y;
@@ -311,8 +312,10 @@ const InteractiveFluid = () => {
 
 export default function InteractiveFluidBackground() {
     const [isLoaded, setIsLoaded] = React.useState(false);
+    const [isMobile, setIsMobile] = React.useState(false);
 
     React.useEffect(() => {
+        setIsMobile(window.innerWidth < 768);
         const timer = setTimeout(() => setIsLoaded(true), 100);
         return () => clearTimeout(timer);
     }, []);
@@ -329,21 +332,23 @@ export default function InteractiveFluidBackground() {
             opacity: isLoaded ? 1 : 0.8,
             transition: "opacity 0.5s ease-in-out"
         }}>
-            <Canvas
-                camera={{ position: [0, 0, 1.5] }}
-                gl={{
-                    alpha: true,
-                    antialias: true,
-                    preserveDrawingBuffer: false,
-                    powerPreference: 'high-performance',
-                    stencil: false,
-                    depth: false
-                }}
-                dpr={[1, 2]} // Quality scaling
-                style={{ opacity: isLoaded ? 1 : 0 }}
-            >
-                <InteractiveFluid />
-            </Canvas>
+            {isLoaded && (
+                <Canvas
+                    camera={{ position: [0, 0, 1.5] }}
+                    gl={{
+                        alpha: true,
+                        antialias: false, // Turn off antialias for performance
+                        preserveDrawingBuffer: false,
+                        powerPreference: 'high-performance',
+                        stencil: false,
+                        depth: false
+                    }}
+                    dpr={isMobile ? [1, 1] : [1, 2]} // Quality scaling: 1x on mobile
+                    style={{ opacity: isLoaded ? 1 : 0 }}
+                >
+                    <InteractiveFluid isMobile={isMobile} />
+                </Canvas>
+            )}
         </div>
     );
 }
