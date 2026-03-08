@@ -137,6 +137,7 @@ const FounderProfile = ({ name, role, delay }: { name: string, role: string, del
     <div className="absolute inset-0 bg-gradient-to-br from-teal-500/5 to-purple-500/5 opacity-50 group-hover:scale-105 transition-transform duration-700" />
 
     <div className="relative z-10 w-3/4 flex items-center justify-center mb-6 group-hover:-translate-y-4 transition-transform duration-500">
+      {/* eslint-disable-next-line @next/next/no-img-element */}
       <img src="/logo.PNG" alt="Reverbex Technologies Logo" className="w-full h-auto object-contain drop-shadow-[0_0_15px_rgba(255,255,255,0.15)]" />
     </div>
 
@@ -471,7 +472,7 @@ export default function Home() {
               <h2 className="text-sm font-mono tracking-widest uppercase text-white/40 mb-4 block">Proven Track Record</h2>
               <h2 className="text-4xl md:text-6xl font-bold tracking-tight mb-6 text-transparent bg-clip-text bg-gradient-to-r from-white to-white/80">Delivering at Scale</h2>
               <p className="text-white/60 text-lg md:text-xl font-light max-w-2xl mx-auto">
-                We've partnered with industry leaders and disruptive startups to architect systems that refuse to fail.
+                We&apos;ve partnered with industry leaders and disruptive startups to architect systems that refuse to fail.
               </p>
             </FadeIn>
 
@@ -488,7 +489,7 @@ export default function Home() {
                 <h2 className="text-sm font-mono tracking-widest uppercase text-white/40 mb-4 block">Leadership</h2>
                 <h2 className="text-4xl md:text-6xl font-bold tracking-tight mb-8 text-transparent bg-clip-text bg-gradient-to-r from-white to-white/70">The Visionaries</h2>
                 <p className="text-white/60 text-lg font-light leading-relaxed mb-8">
-                  Founded by a team obsessed with technical perfection and business optimization. We believe AI is not a buzzword—it's the fundamental architecture of the next decade of enterprise.
+                  Founded by a team obsessed with technical perfection and business optimization. We believe AI is not a buzzword—it&apos;s the fundamental architecture of the next decade of enterprise.
                 </p>
                 <a
                   href="#contact"

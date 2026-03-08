@@ -56,6 +56,7 @@ export default function Navbar() {
 
                     {/* Logo */}
                     <a href="#" className="flex items-center gap-3 hover:opacity-80 transition-opacity z-50">
+                        {/* eslint-disable-next-line @next/next/no-img-element */}
                         <img src="/logo.PNG" alt="Reverbex Technologies Logo" className="h-10 md:h-14 w-auto object-contain" />
                         <span className="text-xl md:text-2xl font-bold tracking-tighter hidden sm:block text-white">
                             Reverbex Technologies
