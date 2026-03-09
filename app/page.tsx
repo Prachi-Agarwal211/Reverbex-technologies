@@ -188,7 +188,7 @@ const FeaturedPartners = memo(function FeaturedPartners() {
               <p className="text-rose-400 font-mono text-xs uppercase tracking-widest">Retail & Ecommerce</p>
             </div>
           </div>
-          <h4 className="text-xl text-white/90 mb-4 font-semibold">India's 1st AI CRM & Ecommerce Platform</h4>
+          <h4 className="text-xl text-white/90 mb-4 font-semibold">India&apos;s 1st AI CRM & Ecommerce Platform</h4>
           <p className="text-white/60 font-light leading-relaxed flex-grow">
             We architected a custom e-commerce solution integrating an advanced CRM. It features autonomous AI operations and a virtual AI salesperson that handles customer inquiries and drives conversions around the clock.
           </p>
@@ -408,7 +408,7 @@ export default function Home() {
                 </div>
                 <h3 className="text-2xl md:text-3xl font-bold text-white mb-4 tracking-tight">AI CRM & Ecommerce Platform</h3>
                 <p className="text-base md:text-lg text-rose-100/70 mb-8 leading-relaxed font-light flex-grow">
-                  India's 1st custom AI-powered e-commerce ecosystem. Features autonomous AI operations and a virtual AI salesperson to automate your sales funnel and handle customer inquiries around the clock. First deployed for Aarya Clothing.
+                  India&apos;s 1st custom AI-powered e-commerce ecosystem. Features autonomous AI operations and a virtual AI salesperson to automate your sales funnel and handle customer inquiries around the clock. First deployed for Aarya Clothing.
                 </p>
 
                 <div className="grid grid-cols-1 gap-3 mb-10">
