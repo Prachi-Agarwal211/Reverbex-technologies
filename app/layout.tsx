@@ -1,7 +1,9 @@
-import type { Metadata } from 'next'
+import type { Metadata, Viewport } from 'next'
 import { Space_Grotesk, Inter } from 'next/font/google'
 import './globals.css'
 import Navbar from "../components/Navbar";
+import ServiceWorkerRegistration from "../components/ServiceWorkerRegistration";
+import SmoothScroll from "../components/SmoothScroll";
 
 const spaceGrotesk = Space_Grotesk({
   subsets: ['latin'],
@@ -20,6 +22,11 @@ const inter = Inter({
 export const metadata: Metadata = {
   title: 'Reverbex Technologies',
   description: 'Building Solutions with Creativity',
+  manifest: '/manifest.json',
+}
+
+export const viewport: Viewport = {
+  themeColor: '#000000',
 }
 
 export default function RootLayout({
@@ -31,7 +38,10 @@ export default function RootLayout({
     <html lang="en" className={`${spaceGrotesk.variable} ${inter.variable}`}>
       <body className={`${inter.className} overflow-x-hidden antialiased bg-black`}>
         <Navbar />
-        {children}
+        <SmoothScroll>
+          {children}
+        </SmoothScroll>
+        <ServiceWorkerRegistration />
       </body>
     </html>
   )

@@ -1,30 +1,42 @@
 "use client";
 
-import { ReactNode, useEffect } from "react";
-import Lenis from "@studio-freight/lenis";
+import { useEffect } from "react";
+import Lenis from "lenis";
+import gsap from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
 
-export default function SmoothScroll({ children }: { children: ReactNode }) {
+if (typeof window !== "undefined") {
+  gsap.registerPlugin(ScrollTrigger);
+}
+
+export default function SmoothScroll({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
   useEffect(() => {
+    console.log("SmoothScroll mounted");
     const lenis = new Lenis({
-      lerp: 0.08,
-      duration: 1.5,
+      duration: 1.2,
+      easing: (t: number) => Math.min(1, 1.001 - Math.pow(2, -10 * t)), // https://www.desmos.com/calculator/brs54l4xou
+      orientation: "vertical",
+      gestureOrientation: "vertical",
       smoothWheel: true,
-      wheelMultiplier: 0.8,
-      touchMultiplier: 1.5,
-      infinite: false,
-      syncTouch: true,
-      syncTouchLerp: 0.1,
+      wheelMultiplier: 1,
+      touchMultiplier: 2,
     });
 
-    function raf(time: number) {
-      lenis.raf(time);
-      requestAnimationFrame(raf);
-    }
+    lenis.on("scroll", ScrollTrigger.update);
 
-    requestAnimationFrame(raf);
+    gsap.ticker.add((time) => {
+      lenis.raf(time * 1000);
+    });
+
+    gsap.ticker.lagSmoothing(0);
 
     return () => {
       lenis.destroy();
+      gsap.ticker.remove(lenis.raf);
     };
   }, []);
 

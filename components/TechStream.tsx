@@ -1,162 +1,159 @@
 "use client";
 
 import { motion } from "framer-motion";
-import React from "react";
-// Import Icons
+import React, { useEffect, useState, useMemo, useRef } from "react";
 import {
-  SiReact, SiNextdotjs, SiVuedotjs, SiSvelte, SiAngular, SiTypescript, SiJavascript, SiThreedotjs,
-  SiTailwindcss, SiFramer, SiNodedotjs, SiExpress, SiDjango, SiFastapi, SiNestjs,
-  SiDocker, SiKubernetes, SiPostgresql, SiMongodb, SiRedis, SiTensorflow, SiPytorch,
-  SiOpenai, SiAmazon, SiGooglecloud, SiVercel, SiGit, SiGithub, SiPython, SiGo,
-  SiRust, SiGraphql, SiSocketdotio, SiElasticsearch,
-  SiPrisma, SiSupabase, SiFirebase, SiRedux, SiWebrtc
+  SiReact, SiNextdotjs, SiTypescript, SiThreedotjs,
+  SiTailwindcss, SiNodedotjs, SiPython, SiDocker,
+  SiPostgresql, SiOpenai, SiAmazon, SiGooglecloud,
+  SiVercel, SiMongodb, SiRedis, SiTensorflow,
+  SiPytorch, SiGraphql, SiFirebase, SiGit
 } from "react-icons/si";
 
-const techCategories = [
-  {
-    row: 1,
-    direction: -1,
-    speed: 40,
-    items: [
-      { name: "React", icon: <SiReact className="text-[#61DAFB]" /> },
-      { name: "Next.js", icon: <SiNextdotjs className="text-white" /> },
-      { name: "TypeScript", icon: <SiTypescript className="text-[#3178C6]" /> },
-      { name: "Three.js", icon: <SiThreedotjs className="text-white" /> },
-      { name: "Tailwind", icon: <SiTailwindcss className="text-[#06B6D4]" /> },
-      { name: "Framer", icon: <SiFramer className="text-white" /> },
-      { name: "Vue", icon: <SiVuedotjs className="text-[#4FC08D]" /> },
-      { name: "Redux", icon: <SiRedux className="text-[#764ABC]" /> },
-      { name: "Svelte", icon: <SiSvelte className="text-[#FF3E00]" /> },
-      { name: "TensorFlow", icon: <SiTensorflow className="text-[#FF6F00]" /> },
-      { name: "PyTorch", icon: <SiPytorch className="text-[#EE4C2C]" /> },
-    ]
-  },
-  {
-    row: 2,
-    direction: 1,
-    speed: 35,
-    items: [
-      { name: "Node.js", icon: <SiNodedotjs className="text-[#339933]" /> },
-      { name: "Python", icon: <SiPython className="text-[#3776AB]" /> },
-      { name: "Go", icon: <SiGo className="text-[#00ADD8]" /> },
-      { name: "Rust", icon: <SiRust className="text-white" /> },
-      { name: "FastAPI", icon: <SiFastapi className="text-[#009688]" /> },
-      { name: "Django", icon: <SiDjango className="text-[#092E20]" /> },
-      { name: "GraphQL", icon: <SiGraphql className="text-[#E10098]" /> },
-      { name: "Redis", icon: <SiRedis className="text-[#DC382D]" /> },
-      { name: "OpenAI", icon: <SiOpenai className="text-white" /> },
-      { name: "Prisma", icon: <SiPrisma className="text-white" /> },
-      { name: "PostgreSQL", icon: <SiPostgresql className="text-[#4169E1]" /> },
-    ]
-  },
-  {
-    row: 3,
-    direction: -1,
-    speed: 30,
-    items: [
-      { name: "Docker", icon: <SiDocker className="text-[#2496ED]" /> },
-      { name: "Kubernetes", icon: <SiKubernetes className="text-[#326CE5]" /> },
-      { name: "AWS", icon: <SiAmazon className="text-[#FF9900]" /> },
-      { name: "GCP", icon: <SiGooglecloud className="text-[#4285F4]" /> },
-      { name: "Vercel", icon: <SiVercel className="text-white" /> },
-      { name: "WebRTC", icon: <SiWebrtc className="text-[#333333]" /> },
-      { name: "Supabase", icon: <SiSupabase className="text-[#3ECF8E]" /> },
-      { name: "Git", icon: <SiGit className="text-[#F05032]" /> },
-      { name: "MongoDB", icon: <SiMongodb className="text-[#47A248]" /> },
-      { name: "Firebase", icon: <SiFirebase className="text-[#FFCA28]" /> },
-      { name: "Socket.IO", icon: <SiSocketdotio className="text-white" /> },
-    ]
-  }
+const techItems = [
+  { name: "React", icon: <SiReact className="text-[#61DAFB]" /> },
+  { name: "Next.js", icon: <SiNextdotjs className="text-white" /> },
+  { name: "TypeScript", icon: <SiTypescript className="text-[#3178C6]" /> },
+  { name: "Three.js", icon: <SiThreedotjs className="text-white" /> },
+  { name: "Tailwind", icon: <SiTailwindcss className="text-[#06B6D4]" /> },
+  { name: "Node.js", icon: <SiNodedotjs className="text-[#339933]" /> },
+  { name: "Python", icon: <SiPython className="text-[#3776AB]" /> },
+  { name: "Docker", icon: <SiDocker className="text-[#2496ED]" /> },
+  { name: "PostgreSQL", icon: <SiPostgresql className="text-[#4169E1]" /> },
+  { name: "OpenAI", icon: <SiOpenai className="text-white" /> },
+  { name: "AWS", icon: <SiAmazon className="text-[#FF9900]" /> },
+  { name: "GCP", icon: <SiGooglecloud className="text-[#4285F4]" /> },
 ];
 
-const TechCard = ({ item, isBackground = false }: { item: any; isBackground?: boolean }) => (
-  <div className={`flex flex-col items-center justify-center 
-    ${isBackground ? 'min-w-[200px] md:min-w-[280px] opacity-10 blur-[1px]' : 'min-w-[100px] md:min-w-[140px] hover:scale-110 active:scale-95'}
-    p-4 mx-2 transition-all duration-300 group cursor-default`}
-  >
-    <div className={`${isBackground ? 'text-8xl md:text-9xl' : 'text-5xl md:text-6xl'} mb-4 transition-transform duration-300`}>
+const TechCard = ({ item }: { item: any }) => (
+  <div className="flex flex-col items-center justify-center min-w-[70px] md:min-w-[140px] p-2 mx-1 md:mx-2 transition-transform duration-300 hover:scale-110 cursor-default">
+    <div className="text-3xl md:text-6xl mb-1 md:mb-2 transition-transform">
       {item.icon}
     </div>
-    {!isBackground && (
-      <span className="text-xs font-mono text-white/40 group-hover:text-white transition-colors">
-        {item.name}
-      </span>
-    )}
+    <span className="text-[8px] md:text-xs font-mono text-white/40">
+      {item.name}
+    </span>
   </div>
 );
 
-const MarqueeRow = ({ row, isBackground = false }: { row: any; isBackground?: boolean }) => {
+function MarqueeRow({ direction = 1, speed = 40, isPaused = false, isMobile = false }: { 
+  direction?: number; 
+  speed?: number; 
+  isPaused?: boolean;
+  isMobile?: boolean;
+}) {
+  const items = useMemo(() => [...techItems, ...techItems, ...techItems], []);
+  
+  if (isPaused || isMobile) {
+    // STATIC GRID on mobile for better performance
+    return (
+      <div className="flex flex-wrap justify-center gap-2 md:gap-4 px-4">
+        {techItems.map((item, i) => (
+          <TechCard key={`static-${i}`} item={item} />
+        ))}
+      </div>
+    );
+  }
+
   return (
-    <div className={`flex overflow-hidden relative w-full ${isBackground ? 'py-0 absolute top-0 left-0 h-full items-center opacity-30 pointer-events-none' : 'py-2'} mask-gradient`}>
+    <div className="flex overflow-hidden mask-gradient">
       <motion.div
         className="flex"
-        animate={{
-          x: row.direction === -1 ? ["0%", "-50%"] : ["-50%", "0%"]
-        }}
+        animate={{ x: direction === -1 ? ["0%", "-50%"] : ["-50%", "0%"] }}
         transition={{
-          x: {
-            repeat: Infinity,
-            repeatType: "loop",
-            duration: isBackground ? row.speed * 2 : row.speed,
-            ease: "linear",
-          },
+          x: { repeat: Infinity, repeatType: "loop", duration: speed, ease: "linear" },
         }}
       >
-        {/* Repeat 4 times for smoother loop */}
-        {[...row.items, ...row.items, ...row.items, ...row.items].map((item, i) => (
-          <TechCard key={`${item.name}-${i}-${isBackground}`} item={item} isBackground={isBackground} />
+        {items.map((item, i) => (
+          <TechCard key={`${item.name}-${i}`} item={item} />
         ))}
       </motion.div>
     </div>
   );
-};
+}
 
 export default function TechStream() {
-  return (
-    <section className="snap-start w-full h-screen flex flex-col justify-center items-center bg-transparent relative overflow-hidden">
-      <div className="w-full max-w-[1920px] mx-auto z-10 flex flex-col justify-center h-full py-20 pb-0">
+  const [mounted, setMounted] = useState(false);
+  const [isMobile, setIsMobile] = useState(false);
+  const [isPaused, setIsPaused] = useState(false);
+  const sectionRef = useRef<HTMLElement>(null);
 
-        {/* Header - Added padding to prevent clipping */}
+  useEffect(() => {
+    setMounted(true);
+    const checkMobile = () => {
+      setIsMobile(window.innerWidth < 768);
+    };
+    checkMobile();
+    window.addEventListener('resize', checkMobile);
+    
+    // PAUSE when not in view
+    const observer = new IntersectionObserver(
+      ([entry]) => setIsPaused(!entry.isIntersecting),
+      { threshold: 0.1 }
+    );
+    
+    if (sectionRef.current) {
+      observer.observe(sectionRef.current);
+    }
+    
+    return () => {
+      window.removeEventListener('resize', checkMobile);
+      observer.disconnect();
+    };
+  }, []);
+
+  if (!mounted) return null;
+
+  return (
+    <section 
+      ref={sectionRef}
+      className="w-full min-h-[40vh] md:h-screen flex flex-col justify-center items-center bg-transparent relative overflow-hidden py-12 md:py-0"
+    >
+      <div className="w-full max-w-[1920px] mx-auto z-10 flex flex-col justify-center h-full">
+        
         <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: false }}
-          className="text-center mb-8 px-4 relative z-20"
+          initial={{ opacity: 0 }}
+          whileInView={{ opacity: 1 }}
+          viewport={{ once: true }}
+          className="text-center mb-6 md:mb-8 px-4"
         >
-          <h2 className="text-4xl md:text-7xl font-bold mb-4">
+          <h2 className="text-3xl md:text-7xl font-bold mb-2 md:mb-4">
             Powering <span className="animate-pearl">Innovation</span>
           </h2>
-          <p className="text-white/60 text-lg max-w-2xl mx-auto">
-            A comprehensive arsenal of cutting-edge technologies
+          <p className="text-white/60 text-sm md:text-lg max-w-2xl mx-auto">
+            Cutting-edge technologies
           </p>
         </motion.div>
 
-        {/* Dense Marquee Grid */}
-        <div className="relative w-full flex-grow flex flex-col justify-center space-y-4 md:space-y-6">
-          {/* Background "Tunnel" Layers */}
-          <div className="absolute inset-0 z-0 flex flex-col justify-center opacity-20 pointer-events-none mix-blend-overlay scale-125">
-            <MarqueeRow row={{ ...techCategories[0], direction: 1 }} isBackground={true} />
-            <MarqueeRow row={{ ...techCategories[2], direction: -1 }} isBackground={true} />
-          </div>
-
-          {/* Foreground Active Layers */}
-          {techCategories.map((cat, i) => (
-            <MarqueeRow key={i} row={cat} />
-          ))}
+        <div className="relative w-full flex-grow flex flex-col justify-center gap-4 md:gap-6">
+          <MarqueeRow 
+            direction={-1} 
+            speed={isMobile ? 80 : 40} 
+            isPaused={isPaused}
+            isMobile={isMobile}
+          />
+          {/* Only show second row on desktop */}
+          {!isMobile && (
+            <MarqueeRow 
+              direction={1} 
+              speed={35} 
+              isPaused={isPaused}
+              isMobile={false}
+            />
+          )}
         </div>
       </div>
 
-      {/* Background Decor */}
       <div className="absolute inset-0 z-0 pointer-events-none">
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-purple-500/05 rounded-full blur-[120px]" />
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[400px] md:w-[800px] h-[400px] md:h-[800px] bg-purple-500/05 rounded-full blur-2xl md:blur-[120px]" />
       </div>
 
       <style jsx global>{`
-                .mask-gradient {
-                    mask-image: linear-gradient(to right, transparent, black 5%, black 95%, transparent);
-                    -webkit-mask-image: linear-gradient(to right, transparent, black 5%, black 95%, transparent);
-                }
-            `}</style>
+        .mask-gradient {
+          mask-image: linear-gradient(to right, transparent, black 5%, black 95%, transparent);
+          -webkit-mask-image: linear-gradient(to right, transparent, black 5%, black 95%, transparent);
+        }
+      `}</style>
     </section>
   );
 }

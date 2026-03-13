@@ -1,35 +1,53 @@
 "use client";
 
 import dynamic from "next/dynamic";
-import { motion, useInView } from "framer-motion";
-import { useRef, useState, useEffect, memo } from "react";
+import { useRef, useState, useEffect, memo, useCallback } from "react";
+import gsap from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { useGSAP } from "@gsap/react";
 
-// Dynamically import heavy WebGL/Canvas backgrounds to speed up initial load and prevent SSR issues
-const InteractiveFluidBackground = dynamic(() => import("../components/InteractiveFluid"), {
-  ssr: false,
-});
-const FloatingOrbs = dynamic(() => import("../components/FloatingOrbs"), {
-  ssr: false,
-});
+if (typeof window !== "undefined") {
+  gsap.registerPlugin(ScrollTrigger, useGSAP);
+}
+
+
 const TechStream = dynamic(() => import("../components/TechStream"), {
   ssr: false,
+  loading: () => (
+    <div className="w-full min-h-[40vh] flex items-center justify-center bg-transparent">
+      <div className="text-white/40 font-mono text-sm">Loading...</div>
+    </div>
+  ),
 });
 
 import ScrollProgress from "../components/ScrollProgress";
 import ScrambleText from "../components/ScrambleText";
 import MobileContactBar from "../components/MobileContactBar";
 
-const FadeIn = ({ children, delay = 0, className = "" }: { children: React.ReactNode, delay?: number, className?: string }) => (
-  <motion.div
-    initial={{ opacity: 0, y: 30 }}
-    whileInView={{ opacity: 1, y: 0 }}
-    viewport={{ once: true, margin: "-10%" }}
-    transition={{ duration: 0.5, delay, ease: "circOut" }}
-    className={className}
+import LampVideo from "../components/LampVideo";
+
+const FadeIn = memo(({ children, delay = 0, className = "" }: { children: React.ReactNode, delay?: number, className?: string }) => (
+  <div
+    className={`gsap-fade-up will-change-transform opacity-0 translate-y-8 ${className}`}
+    data-delay={delay}
   >
     {children}
-  </motion.div>
-);
+  </div>
+));
+
+FadeIn.displayName = 'FadeIn';
+
+// LAZY SECTION - Only renders when in view
+const LazySection = memo(({ children, className, once = true }: { children: React.ReactNode, className?: string, once?: boolean }) => {
+  const ref = useRef<HTMLDivElement>(null);
+  return (
+    <div ref={ref} className={className}>
+      {children}
+    </div>
+  );
+});
+
+LazySection.displayName = 'LazySection';
 
 // Minimal Icon Components
 const BrainIcon = (props: any) => (
@@ -64,19 +82,9 @@ const PhoneIcon = (props: any) => (
 
 const BentoCard = memo(function BentoCard({ title, description, icon, colSpan = 1, delay = 0 }: { title: string, description: string, icon: React.ReactNode, colSpan?: number, delay?: number }) {
   return (
-    <motion.div
-      initial={{ opacity: 0, y: 30, scale: 0.98 }}
-      whileInView={{ opacity: 1, y: 0, scale: 1 }}
-      viewport={{ once: true, margin: "-10%" }}
-      transition={{ duration: 0.5, delay, ease: "circOut" }}
-      whileHover={{
-        y: -10,
-        scale: 1.02,
-        backgroundColor: "rgba(255,255,255,0.08)",
-        boxShadow: "0 15px 40px rgba(34, 211, 238, 0.25)",
-        borderColor: "rgba(34, 211, 238, 0.4)"
-      }}
-      className={`bg-white/5 backdrop-blur-md border border-white/10 p-8 md:p-10 rounded-2xl group transition-all duration-300 h-full flex flex-col ${colSpan === 2 ? 'md:col-span-2' : 'col-span-1'}`}
+    <div
+      className={`gsap-bento-card bg-white/5 opacity-0 translate-y-8 scale-[0.98] backdrop-blur-md border border-white/10 p-8 md:p-10 rounded-2xl group transition-all duration-300 h-full flex flex-col hover:-translate-y-2 hover:scale-[1.02] hover:bg-white/10 hover:shadow-[0_15px_40px_rgba(34,211,238,0.25)] hover:border-[rgba(34,211,238,0.4)] ${colSpan === 2 ? 'md:col-span-2' : 'col-span-1'}`}
+      data-delay={delay}
     >
       <div className="h-1 w-12 pearl-bg mb-6 group-hover:w-full transition-all duration-500 rounded-full" />
       <div className="w-12 h-12 rounded-lg bg-white/5 flex items-center justify-center text-white/80 group-hover:text-white transition-colors mb-6 border border-white/10">
@@ -84,18 +92,15 @@ const BentoCard = memo(function BentoCard({ title, description, icon, colSpan = 
       </div>
       <h3 className="text-xl md:text-2xl font-bold mb-3 text-white tracking-tight group-hover:text-white transition-colors">{title}</h3>
       <p className="text-white/60 mb-6 font-light leading-relaxed flex-grow text-sm md:text-base">{description}</p>
-    </motion.div>
+    </div>
   );
 });
 
 const ProcessStep = memo(function ProcessStep({ num, title, description, delay = 0 }: { num: string, title: string, description: string, delay?: number }) {
   return (
-    <motion.div
-      initial={{ opacity: 0, scale: 0.95, y: 30 }}
-      whileInView={{ opacity: 1, scale: 1, y: 0 }}
-      viewport={{ once: true, margin: "-10%" }}
-      transition={{ duration: 0.8, delay, ease: [0.16, 1, 0.3, 1] }}
-      className="flex flex-col relative bg-gradient-to-br from-white/5 to-transparent backdrop-blur-xl border border-white/10 p-8 rounded-3xl hover:border-white/20 transition-all duration-500 overflow-hidden group"
+    <div
+      className="gsap-process-step opacity-0 scale-[0.95] translate-y-8 flex flex-col relative bg-gradient-to-br from-white/5 to-transparent backdrop-blur-xl border border-white/10 p-8 rounded-3xl hover:border-white/20 transition-all duration-500 overflow-hidden group"
+      data-delay={delay}
     >
       {/* Subtle glow effect on hover */}
       <div className="absolute inset-0 bg-white/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500 blur-2xl" />
@@ -103,7 +108,7 @@ const ProcessStep = memo(function ProcessStep({ num, title, description, delay =
       <div className="text-5xl md:text-7xl font-bold text-transparent bg-clip-text bg-gradient-to-b from-white/20 to-transparent mb-6 font-syne relative z-10">{num}</div>
       <h4 className="text-xl md:text-2xl font-bold text-white mb-3 tracking-tight relative z-10">{title}</h4>
       <p className="text-white/60 text-sm md:text-base leading-relaxed relative z-10">{description}</p>
-    </motion.div>
+    </div>
   );
 });
 
@@ -119,13 +124,10 @@ const ExperienceHighlight = memo(function ExperienceHighlight() {
           { year: "500M+", title: "Data Points Processed", desc: "Daily volume managed through our high-performance TimescaleDB & Python pipelines." },
           { year: "0", title: "Compromises on Security", desc: "Military-grade encryption and strict access controls built into every layer." },
         ].map((item, i) => (
-          <motion.div
+          <div
             key={i}
-            initial={{ opacity: 0, y: 50 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, margin: "-10%" }}
-            transition={{ duration: 0.8, delay: i * 0.2, ease: [0.16, 1, 0.3, 1] }}
-            className={`flex flex-col md:flex-row items-center justify-between w-full ${i % 2 === 0 ? 'md:flex-row-reverse' : ''}`}
+            className={`gsap-fade-up opacity-0 translate-y-[50px] flex flex-col md:flex-row items-center justify-between w-full ${i % 2 === 0 ? 'md:flex-row-reverse' : ''}`}
+            data-delay={i * 0.2}
           >
             <div className="w-full md:w-5/12 p-8" />
             <div className="hidden md:flex absolute left-1/2 -translate-x-1/2 w-4 h-4 rounded-full bg-black border-2 border-white/30 z-10 shadow-[0_0_15px_rgba(255,255,255,0.3)]" />
@@ -134,7 +136,7 @@ const ExperienceHighlight = memo(function ExperienceHighlight() {
               <h4 className="text-xl md:text-2xl font-bold text-white mb-2">{item.title}</h4>
               <p className="text-white/50 leading-relaxed font-light">{item.desc}</p>
             </div>
-          </motion.div>
+          </div>
         ))}
       </div>
     </div>
@@ -145,12 +147,8 @@ const ExperienceHighlight = memo(function ExperienceHighlight() {
 const FeaturedPartners = memo(function FeaturedPartners() {
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8 w-full max-w-5xl mx-auto">
-      <motion.div
-        initial={{ opacity: 0, y: 30 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        viewport={{ once: true, margin: "-10%" }}
-        transition={{ duration: 0.6, ease: "circOut" }}
-        className="bg-white/5 backdrop-blur-md border border-white/10 p-8 md:p-10 rounded-3xl group hover:border-white/20 transition-all duration-300 relative overflow-hidden"
+      <div
+        className="gsap-fade-up opacity-0 translate-y-8 bg-white/5 backdrop-blur-md border border-white/10 p-8 md:p-10 rounded-3xl group hover:border-white/20 transition-all duration-300 relative overflow-hidden"
       >
         <div className="absolute inset-0 bg-gradient-to-br from-emerald-500/10 to-teal-700/10 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
         <div className="relative z-10 flex flex-col h-full">
@@ -168,14 +166,11 @@ const FeaturedPartners = memo(function FeaturedPartners() {
             We completely digitized their clearance process, delivering a real-time No-Dues System serving over 20,000+ students. This eliminated paper trails and reduced processing time by 80%.
           </p>
         </div>
-      </motion.div>
+      </div>
 
-      <motion.div
-        initial={{ opacity: 0, y: 30 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        viewport={{ once: true, margin: "-10%" }}
-        transition={{ duration: 0.6, delay: 0.2, ease: "circOut" }}
-        className="bg-white/5 backdrop-blur-md border border-white/10 p-8 md:p-10 rounded-3xl group hover:border-white/20 transition-all duration-300 relative overflow-hidden"
+      <div
+        className="gsap-fade-up opacity-0 text-white translate-y-8 bg-white/5 backdrop-blur-md border border-white/10 p-8 md:p-10 rounded-3xl group hover:border-white/20 transition-all duration-300 relative overflow-hidden"
+        data-delay={0.2}
       >
         <div className="absolute inset-0 bg-gradient-to-br from-rose-500/10 to-orange-500/10 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
         <div className="relative z-10 flex flex-col h-full">
@@ -193,19 +188,16 @@ const FeaturedPartners = memo(function FeaturedPartners() {
             We architected a custom e-commerce solution integrating an advanced CRM. It features autonomous AI operations and a virtual AI salesperson that handles customer inquiries and drives conversions around the clock.
           </p>
         </div>
-      </motion.div>
+      </div>
     </div>
   );
 });
 
 // New: Founders Profile Component utilizing the brand logo instead of portraits
 const FounderProfile = ({ name, role, delay }: { name: string, role: string, delay: number }) => (
-  <motion.div
-    initial={{ opacity: 0, scale: 0.95 }}
-    whileInView={{ opacity: 1, scale: 1 }}
-    viewport={{ once: true, margin: "-10%" }}
-    transition={{ duration: 0.8, delay, ease: [0.16, 1, 0.3, 1] }}
-    className="group relative rounded-3xl overflow-hidden aspect-[3/4] md:aspect-square bg-black border border-white/10 isolation-isolate flex flex-col items-center justify-center p-8"
+  <div
+    className="gsap-scale-up opacity-0 scale-[0.95] group relative rounded-3xl overflow-hidden aspect-[3/4] md:aspect-square bg-black border border-white/10 isolation-isolate flex flex-col items-center justify-center p-8"
+    data-delay={delay}
   >
     <div className="absolute inset-0 bg-gradient-to-br from-teal-500/5 to-purple-500/5 opacity-50 group-hover:scale-105 transition-transform duration-700" />
 
@@ -219,86 +211,161 @@ const FounderProfile = ({ name, role, delay }: { name: string, role: string, del
       <p className="text-teal-400 font-mono text-xs md:text-sm uppercase tracking-widest">{role}</p>
       <div className="w-12 h-px bg-white/20 mt-6 mb-0 mx-auto group-hover:w-full transition-all duration-700" />
     </div>
-  </motion.div>
+  </div>
 );
 
-// Counter animation component for metrics
-const CounterMetric = ({ metric, delay }: { metric: any; delay: number }) => {
+// Counter animation component for metrics - OPTIMIZED
+const CounterMetric = memo(({ metric, delay }: { metric: any; delay: number }) => {
   const ref = useRef(null);
-  const isInView = useInView(ref, { once: false, margin: "-50px" });
   const [count, setCount] = useState(0);
 
-  useEffect(() => {
-    if (!isInView) return;
+  useGSAP(() => {
+    ScrollTrigger.create({
+      trigger: ref.current,
+      start: "top 90%",
+      once: true,
+      onEnter: () => {
+        gsap.to(ref.current, {
+          opacity: 1,
+          scale: 1,
+          duration: 0.5,
+          delay: delay,
+          ease: "circ.out",
+        });
 
-    const numericValue = parseFloat(metric.val.replace(/[^0-9.]/g, ''));
-    if (isNaN(numericValue)) return;
+        const numericValue = parseFloat(metric.val.replace(/[^0-9.]/g, ''));
+        if (isNaN(numericValue)) return;
 
-    const duration = 2000; // 2 seconds
-    const steps = 60;
-    const increment = numericValue / steps;
-    let current = 0;
-
-    const timer = setInterval(() => {
-      current += increment;
-      if (current >= numericValue) {
-        setCount(numericValue);
-        clearInterval(timer);
-      } else {
-        // preserve 1 decimal place if the original string had one
-        if (metric.val.includes('.')) {
-          setCount(parseFloat(current.toFixed(1)));
-        } else {
-          setCount(Math.floor(current));
-        }
+        let obj = { val: 0 };
+        gsap.to(obj, {
+          val: numericValue,
+          duration: 2,
+          ease: "power2.out",
+          onUpdate: () => {
+            if (metric.val.includes('.')) {
+              setCount(parseFloat(obj.val.toFixed(1)));
+            } else {
+              setCount(Math.floor(obj.val));
+            }
+          }
+        });
       }
-    }, duration / steps);
-
-    return () => clearInterval(timer);
-  }, [isInView, metric.val]);
+    });
+  }, { scope: ref });
 
   return (
-    <motion.div
+    <div
       ref={ref}
-      className="text-center md:text-left"
-      initial={{ opacity: 0, scale: 0.8 }}
-      animate={isInView ? { opacity: 1, scale: 1 } : { opacity: 0, scale: 0.8 }}
-      transition={{ duration: 0.5, delay, ease: "circOut" }}
+      className="text-center md:text-left opacity-0 scale-90"
     >
       <div className="text-3xl md:text-5xl font-bold tracking-tight text-white mb-2">
         {metric.prefix}{count}{metric.suffix}
       </div>
       <div className="text-xs uppercase tracking-widest text-white/40 font-mono">{metric.label}</div>
-    </motion.div>
+    </div>
   );
-};
+});
+
+CounterMetric.displayName = 'CounterMetric';
 
 export default function Home() {
   const containerRef = useRef(null);
+
+  useGSAP(() => {
+    console.log("Home useGSAP running");
+    // Hero Animations
+    gsap.to(".hero-anim", {
+      y: 0,
+      opacity: 1,
+      scale: 1,
+      duration: 1,
+      stagger: 0.15,
+      ease: "power3.out",
+      delay: 0.2,
+    });
+
+    // Fade Up Animations
+    gsap.utils.toArray(".gsap-fade-up").forEach((el: any) => {
+      gsap.to(el, {
+        y: 0,
+        opacity: 1,
+        duration: 0.8,
+        ease: "power3.out",
+        delay: el.dataset.delay ? parseFloat(el.dataset.delay) : 0,
+        scrollTrigger: {
+          trigger: el,
+          start: "top 85%",
+          once: true,
+        }
+      });
+    });
+
+    // Bento Card Animations
+    gsap.utils.toArray(".gsap-bento-card").forEach((el: any) => {
+      gsap.to(el, {
+        y: 0,
+        opacity: 1,
+        scale: 1,
+        duration: 0.8,
+        ease: "back.out(1.5)",
+        delay: el.dataset.delay ? parseFloat(el.dataset.delay) : 0,
+        scrollTrigger: {
+          trigger: el,
+          start: "top 85%",
+          once: true,
+        }
+      });
+    });
+
+    // Process Step Animations
+    gsap.utils.toArray(".gsap-process-step").forEach((el: any) => {
+      gsap.to(el, {
+        y: 0,
+        opacity: 1,
+        scale: 1,
+        duration: 0.8,
+        ease: "power3.out",
+        delay: el.dataset.delay ? parseFloat(el.dataset.delay) : 0,
+        scrollTrigger: {
+          trigger: el,
+          start: "top 85%",
+          once: true,
+        }
+      });
+    });
+
+    // Scale Up Animations
+    gsap.utils.toArray(".gsap-scale-up").forEach((el: any) => {
+      gsap.to(el, {
+        opacity: 1,
+        scale: 1,
+        duration: 0.8,
+        ease: "power3.out",
+        delay: el.dataset.delay ? parseFloat(el.dataset.delay) : 0,
+        scrollTrigger: {
+          trigger: el,
+          start: "top 85%",
+          once: true,
+        }
+      });
+    });
+  }, { scope: containerRef });
 
   return (
     <main ref={containerRef} className="w-full relative text-white selection:bg-purple-500/30 bg-black min-h-screen">
       {/* Global Scroll Connector */}
       <ScrollProgress />
 
-      {/* Fixed background elements (Pearl fluid & orbs) */}
-      <div className="fixed inset-0 z-0 pointer-events-none">
-        <FloatingOrbs />
-        <div className="w-full h-full">
-          <InteractiveFluidBackground />
-        </div>
-      </div>
+
 
       {/* Main Content Area - Native Scroll */}
       <div className="relative z-10 w-full overflow-hidden flex flex-col">
 
         {/* HERO SECTION */}
-        <section id="home" className="w-full min-h-[90vh] flex flex-col items-center justify-center p-4 md:p-8 pt-32 pb-16 bg-transparent">
-          <motion.div
-            initial={{ opacity: 0, scale: 0.95 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
-            className="text-center relative z-10 max-w-5xl mx-auto flex flex-col items-center"
+        <section id="home" className="w-full min-h-[90vh] flex flex-col items-center justify-center p-4 md:p-8 pt-32 pb-16 bg-transparent relative">
+          <div
+            className="hero-anim opacity-0 text-center relative z-10 max-w-5xl mx-auto flex flex-col items-center"
+            data-delay="0"
           >
             <div className="absolute inset-0 bg-white/10 blur-[120px] rounded-full opacity-30 pointer-events-none" />
 
@@ -310,20 +377,16 @@ export default function Home() {
               Enterprise SaaS.
             </h1>
 
-            <motion.p
-              initial={{ opacity: 0, y: 15 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.3, duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
-              className="text-lg md:text-xl xl:text-2xl text-white/50 font-light tracking-wide text-center max-w-4xl mx-auto px-4 mb-16 leading-relaxed"
+            <p
+              className="hero-anim translate-y-4 opacity-0 text-lg md:text-xl xl:text-2xl text-white/50 font-light tracking-wide text-center max-w-4xl mx-auto px-4 mb-16 leading-relaxed"
+              data-delay="0.3"
             >
               We build high-performance AI agents and custom software systems that reduce manual work, accelerate response times, and scale your operations without adding headcount.
-            </motion.p>
+            </p>
 
-            <motion.div
-              initial={{ opacity: 0, scale: 0.95 }}
-              animate={{ opacity: 1, scale: 1 }}
-              transition={{ delay: 0.5, duration: 0.6 }}
-              className="flex flex-col sm:flex-row gap-4 relative z-20 mb-8 w-full sm:w-auto px-4"
+            <div
+              className="hero-anim scale-95 opacity-0 flex flex-col sm:flex-row gap-4 relative z-20 mb-8 w-full sm:w-auto px-4"
+              data-delay="0.5"
             >
               <a
                 href="#contact"
@@ -340,13 +403,11 @@ export default function Home() {
                 <WhatsAppIcon className="w-5 h-5 mr-2" />
                 Chat on WhatsApp
               </a>
-            </motion.div>
+            </div>
 
-            <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ delay: 0.8, duration: 0.6 }}
-              className="flex flex-col sm:flex-row items-center justify-center gap-4 sm:gap-8 text-sm text-white/50 font-mono tracking-wider relative z-20"
+            <div
+              className="hero-anim opacity-0 flex flex-col sm:flex-row items-center justify-center gap-4 sm:gap-8 text-sm text-white/50 font-mono tracking-wider relative z-20"
+              data-delay="0.8"
             >
               <a href="mailto:15anuragsingh2003@gmail.com" className="hover:text-white transition-colors flex items-center gap-2">
                 <MailIcon className="w-4 h-4" /> 15anuragsingh2003@gmail.com
@@ -355,8 +416,8 @@ export default function Home() {
               <a href="tel:+919929986743" className="hover:text-white transition-colors flex items-center gap-2">
                 <PhoneIcon className="w-4 h-4" /> +91 99299 86743
               </a>
-            </motion.div>
-          </motion.div>
+            </div>
+          </div>
         </section>
 
         {/* METRICS BANNER */}
@@ -391,12 +452,8 @@ export default function Home() {
 
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 w-full max-w-7xl mx-auto">
               {/* Product 1: AI E-commerce */}
-              <motion.div
-                initial={{ opacity: 0, y: 30 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true, margin: "-10%" }}
-                transition={{ duration: 0.6, ease: "circOut" }}
-                className="bg-gradient-to-br from-rose-500/10 to-orange-900/10 backdrop-blur-md border border-rose-500/20 p-8 md:p-12 rounded-3xl relative overflow-hidden group flex flex-col h-full"
+              <div
+                className="gsap-fade-up opacity-0 translate-y-8 bg-gradient-to-br from-rose-500/10 to-orange-900/10 backdrop-blur-md border border-rose-500/20 p-8 md:p-12 rounded-3xl relative overflow-hidden group flex flex-col h-full"
               >
                 <div className="absolute top-4 right-4 md:top-6 md:right-6">
                   <div className="bg-rose-500/20 text-rose-300 font-mono text-[10px] md:text-xs px-3 py-1.5 md:px-4 md:py-2 rounded-full uppercase tracking-widest border border-rose-500/30 font-bold shadow-[0_0_15px_rgba(244,63,94,0.2)]">
@@ -431,15 +488,12 @@ export default function Home() {
                 >
                   Request a Demo
                 </a>
-              </motion.div>
+              </div>
 
               {/* Product 2: No Dues */}
-              <motion.div
-                initial={{ opacity: 0, y: 30 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true, margin: "-10%" }}
-                transition={{ duration: 0.6, delay: 0.2, ease: "circOut" }}
-                className="bg-gradient-to-br from-emerald-500/10 to-teal-900/10 backdrop-blur-md border border-emerald-500/20 p-8 md:p-12 rounded-3xl relative overflow-hidden group flex flex-col h-full"
+              <div
+                className="gsap-fade-up opacity-0 translate-y-8 bg-gradient-to-br from-emerald-500/10 to-teal-900/10 backdrop-blur-md border border-emerald-500/20 p-8 md:p-12 rounded-3xl relative overflow-hidden group flex flex-col h-full"
+                data-delay={0.2}
               >
                 <div className="absolute top-4 right-4 md:top-6 md:right-6">
                   <div className="bg-emerald-500/20 text-emerald-300 font-mono text-[10px] md:text-xs px-3 py-1.5 md:px-4 md:py-2 rounded-full uppercase tracking-widest border border-emerald-500/30 font-bold shadow-[0_0_15px_rgba(16,185,129,0.2)]">
@@ -474,7 +528,7 @@ export default function Home() {
                 >
                   Request a Demo
                 </a>
-              </motion.div>
+              </div>
             </div>
           </div>
         </section>
@@ -534,17 +588,13 @@ export default function Home() {
               <h2 className="text-sm font-mono tracking-widest uppercase text-white/40 mb-4 block text-center">Process</h2>
               <h2 className="text-4xl md:text-6xl font-bold tracking-tight mb-12 text-center animate-pearl text-emboss pb-2">Engineering Philosophy</h2>
 
-              <div className="relative w-full max-w-3xl aspect-video rounded-[2rem] md:rounded-[3rem] overflow-hidden border border-white/10 bg-black/40 backdrop-blur-xl flex items-center justify-center shadow-[0_20px_60px_rgba(0,0,0,0.6)] mb-20 p-4 md:p-8">
-                <div className="absolute inset-0 bg-gradient-to-br from-teal-500/10 to-purple-500/10 opacity-50 group-hover:opacity-100 transition-opacity duration-500 blur-2xl" />
-                <video
-                  src="/Reverbex_logo.mp4"
-                  autoPlay
-                  loop
-                  muted
-                  playsInline
-                  className="relative z-10 w-full h-full object-contain mix-blend-screen opacity-100 drop-shadow-[0_0_15px_rgba(255,255,255,0.1)]"
-                />
-              </div>
+              <LampVideo
+                videoSrc="/Reverbex_logo.mp4"
+                posterSrc="/logo.PNG"
+                className="mb-20"
+                lampColor="#22d3ee"
+                lampIntensity={1.5}
+              />
             </FadeIn>
 
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
@@ -621,17 +671,14 @@ export default function Home() {
                 { title: "SaaS Founders", desc: "Accelerating product development with robust enterprise-grade architectures." },
                 { title: "Data-Driven Teams", desc: "Stopping the chaos of manual reporting by building custom real-time dashboards." }
               ].map((item, i) => (
-                <motion.div
+                <div
                   key={i}
-                  initial={{ opacity: 0, y: 20 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true, margin: "-10%" }}
-                  transition={{ duration: 0.5, delay: i * 0.1 }}
-                  className="bg-white/5 backdrop-blur-sm border border-white/10 p-8 rounded-2xl hover:bg-white/10 transition-colors"
+                  className="gsap-fade-up opacity-0 translate-y-8 bg-white/5 backdrop-blur-sm border border-white/10 p-8 rounded-2xl hover:bg-white/10 transition-colors"
+                  data-delay={i * 0.1}
                 >
                   <h3 className="text-lg md:text-xl font-bold text-white mb-3">{item.title}</h3>
                   <p className="text-white/60 text-sm leading-relaxed">{item.desc}</p>
-                </motion.div>
+                </div>
               ))}
             </div>
           </div>
@@ -652,13 +699,10 @@ export default function Home() {
                 { title: "Custom SaaS Platforms", desc: "Client data portals and admin dashboards with secure, role-based access." },
                 { title: "Document & Ops Automation", desc: "AI-driven extraction, analysis, and routing of invoices, contracts, and unstructured data." }
               ].map((item, i) => (
-                <motion.div
+                <div
                   key={i}
-                  initial={{ opacity: 0, scale: 0.98 }}
-                  whileInView={{ opacity: 1, scale: 1 }}
-                  viewport={{ once: true, margin: "-10%" }}
-                  transition={{ duration: 0.5, delay: i * 0.1 }}
-                  className="flex flex-col sm:flex-row gap-6 bg-gradient-to-br from-white/5 to-transparent border border-white/10 p-8 rounded-2xl hover:border-white/20 transition-all group hover:bg-white/5" style={{ boxShadow: "inset 0 0 0 1px rgba(255,255,255,0)" }}
+                  className="gsap-scale-up opacity-0 scale-[0.98] flex flex-col sm:flex-row gap-6 bg-gradient-to-br from-white/5 to-transparent border border-white/10 p-8 rounded-2xl hover:border-white/20 transition-all group hover:bg-white/5" style={{ boxShadow: "inset 0 0 0 1px rgba(255,255,255,0)" }}
+                  data-delay={i * 0.1}
                 >
                   <div className="w-12 h-12 shrink-0 rounded-full pearl-bg flex items-center justify-center text-black group-hover:scale-110 transition-transform shadow-[0_0_15px_rgba(34,211,238,0.3)]">
                     <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polyline points="20 6 9 17 4 12" /></svg>
@@ -667,7 +711,7 @@ export default function Home() {
                     <h3 className="text-xl font-bold text-white mb-2">{item.title}</h3>
                     <p className="text-white/60 leading-relaxed">{item.desc}</p>
                   </div>
-                </motion.div>
+                </div>
               ))}
             </div>
           </div>
@@ -710,13 +754,13 @@ export default function Home() {
           </div>
         </section>
 
-        {/* TECH STREAM SECTION */}
-        <section className="w-full py-24 md:py-32 bg-transparent relative z-10 overflow-hidden">
+        {/* TECH STREAM SECTION - Lazy loaded */}
+        <LazySection className="w-full py-24 md:py-32 bg-transparent relative z-10 overflow-hidden">
           <FadeIn className="max-w-7xl mx-auto px-4 md:px-12 mb-12">
             <h3 className="text-sm font-mono tracking-widest uppercase text-white/40 text-center">Powered By Premium Technologies</h3>
           </FadeIn>
           <TechStream />
-        </section>
+        </LazySection>
 
         {/* CONTACT SECTION */}
         <section id="contact" className="w-full min-h-screen flex flex-col justify-center py-24 px-4 md:px-12 bg-transparent relative z-10 border-t border-white/10">
