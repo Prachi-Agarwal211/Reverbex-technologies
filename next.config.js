@@ -2,34 +2,37 @@
 const nextConfig = {
   reactStrictMode: true,
   
-  // Suppress cross-origin warnings for 127.0.0.1
+  // Enable streaming - faster initial page load
   experimental: {
-    allowedDevOrigins: ['127.0.0.1:3000', 'localhost:3000'],
     // Optimize package imports - tree shaking
     optimizePackageImports: ['framer-motion', 'react-icons'],
     
-    // Better scroll restoration
-    scrollRestoration: true,
+    // Optimize SSR
+    serverActions: {
+      bodySizeLimit: '2mb',
+    },
   },
 
-  // Image optimization for better performance
+  // Enable compression
+  compress: true,
+  
+  // Image optimization
   images: {
     formats: ['image/avif', 'image/webp'],
     deviceSizes: [640, 750, 828, 1080, 1200, 1920, 2048, 3840],
     imageSizes: [16, 32, 48, 64, 96, 128, 256, 384],
-    minimumCacheTTL: 60,
+    minimumCacheTTL: 60 * 60 * 24 * 30, // 30 days
     dangerouslyAllowSVG: false,
     contentDispositionType: 'attachment',
     contentSecurityPolicy: "default-src 'self'; script-src 'none'; sandbox;",
   },
   
-  // Bundle optimization
+  // Remove console in production
   compiler: {
     removeConsole: process.env.NODE_ENV === 'production',
-    reactRemoveProperties: { properties: ['^data-'] },
   },
   
-  // Webpack optimization for code splitting
+  // Webpack optimizations
   webpack: (config, { dev, isServer }) => {
     // Only customize splitChunks, don't override entire optimization
     config.optimization.splitChunks = {
@@ -46,6 +49,12 @@ const nextConfig = {
           chunks: 'all',
           priority: 10,
         },
+        gsap: {
+          test: /[\\/]node_modules[\\/]gsap[\\/]/,
+          name: 'gsap-vendor',
+          chunks: 'all',
+          priority: 10,
+        },
         default: {
           minChunks: 2,
           priority: -20,
@@ -54,7 +63,7 @@ const nextConfig = {
       },
     };
     
-    // Reduce source maps in production for smaller bundle
+    // Reduce source maps in production
     if (!dev && !isServer) {
       config.devtool = false;
     }
@@ -74,6 +83,10 @@ const nextConfig = {
             key: 'Cache-Control',
             value: 'public, max-age=31536000, immutable',
           },
+          {
+            key: 'X-Device-Type',
+            value: 'desktop',
+          },
         ],
       },
       {
@@ -82,6 +95,15 @@ const nextConfig = {
           {
             key: 'Cache-Control',
             value: 'public, max-age=31536000, immutable',
+          },
+        ],
+      },
+      {
+        source: '/images/:path*',
+        headers: [
+          {
+            key: 'Cache-Control',
+            value: 'public, max-age=2592000, immutable',
           },
         ],
       },

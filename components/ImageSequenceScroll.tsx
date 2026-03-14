@@ -10,7 +10,9 @@ if (typeof window !== "undefined") {
   gsap.registerPlugin(ScrollTrigger, useGSAP, ScrollToPlugin);
 }
 
-const TOTAL_FRAMES = 192; // 0 to 191
+const TOTAL_FRAMES = 138; // Only 138 frames exist (frame_000 to frame_137)
+const MIN_FRAMES_TO_SHOW = 20; // Show content after loading at least this many frames
+const LOAD_BATCH_SIZE = 10; // Batch size for progressive loading
 
 export default function ImageSequenceScroll() {
   const containerRef = useRef<HTMLDivElement>(null);
@@ -19,34 +21,86 @@ export default function ImageSequenceScroll() {
   const scrollIndicatorRef = useRef<HTMLDivElement>(null);
 
   const [images, setImages] = useState<HTMLImageElement[]>([]);
-  const [loadedPercent, setLoadedPercent] = useState(0);
+  const [loadedCount, setLoadedCount] = useState(0);
+  const [isReady, setIsReady] = useState(false);
+  const [firstFrameLoaded, setFirstFrameLoaded] = useState(false);
+  const imageRefs = useRef<HTMLImageElement[]>([]);
 
-  // Preload images
+  // Progressive loading with batch processing
   useEffect(() => {
-    const loadedImages: HTMLImageElement[] = [];
-    let loadedCount = 0;
+    let mounted = true;
+    const loadedImages: HTMLImageElement[] = new Array(TOTAL_FRAMES);
+    let currentLoaded = 0;
+    let isReady = false;
 
-    for (let i = 0; i < TOTAL_FRAMES; i++) {
+    const loadBatch = (startIndex: number) => {
+      if (!mounted) return;
+      
+      const endIndex = Math.min(startIndex + LOAD_BATCH_SIZE, TOTAL_FRAMES);
+
+      for (let i = startIndex; i < endIndex; i++) {
         const img = new Image();
+        img.decoding = "async"; // Async decoding for better performance
         const paddedIndex = i.toString().padStart(3, '0');
         img.src = `/images/frame_${paddedIndex}_delay-0.041s.jpg`;
+        
         img.onload = () => {
-            loadedCount++;
-            setLoadedPercent(Math.floor((loadedCount / TOTAL_FRAMES) * 100));
-            
-            // OPTIMIZATION: Set the first batch of images early to start rendering
-            if (loadedCount === 1) {
-                setImages([...loadedImages]);
-            } else if (loadedCount === TOTAL_FRAMES) {
-                setImages([...loadedImages]);
-            }
+          if (!mounted) return;
+          loadedImages[i] = img;
+          currentLoaded++;
+          
+          // Show first frame preview when first image loads
+          if (currentLoaded === 1) {
+            setFirstFrameLoaded(true);
+          }
+          
+          // Update images array progressively and mark ready when threshold reached
+          if (currentLoaded >= MIN_FRAMES_TO_SHOW && !isReady) {
+            isReady = true;
+            setImages([...loadedImages]);
+            setIsReady(true);
+          } else if (currentLoaded < MIN_FRAMES_TO_SHOW) {
+            // Update available frames for progressive rendering
+            setImages([...loadedImages]);
+          }
+          
+          setLoadedCount(currentLoaded);
         };
-        loadedImages.push(img);
-    }
-  }, []);
+        
+        img.onerror = () => {
+          // Skip failed images gracefully - still count them as loaded
+          currentLoaded++;
+          setLoadedCount(currentLoaded);
+          // Even on error, update images array
+          setImages([...loadedImages]);
+        };
+      }
+    };
+
+    // Start loading first batch immediately
+    loadBatch(0);
+    
+    // Load remaining batches with delay to not block main thread
+    let batchIndex = LOAD_BATCH_SIZE;
+    const loadRemaining = () => {
+      if (batchIndex < TOTAL_FRAMES) {
+        loadBatch(batchIndex);
+        batchIndex += LOAD_BATCH_SIZE;
+        // Use setTimeout to yield to main thread
+        setTimeout(loadRemaining, 50);
+      }
+    };
+    setTimeout(loadRemaining, 100);
+
+    return () => {
+      mounted = false;
+    };
+  }, []); // Empty deps - only run once on mount
 
   useGSAP(() => {
-    if (images.length < TOTAL_FRAMES) return;
+    // Filter out undefined/null entries (unloaded frames)
+    const loadedImages = images.filter(img => img && img.complete);
+    if (loadedImages.length < MIN_FRAMES_TO_SHOW) return;
 
     const canvas = canvasRef.current;
     if (!canvas) return;
@@ -54,7 +108,8 @@ export default function ImageSequenceScroll() {
     if (!ctx) return;
 
     const render = (frameIndex: number) => {
-        const img = images[frameIndex];
+        // Use loaded images array with index mapping
+        const img = loadedImages[Math.min(frameIndex, loadedImages.length - 1)];
         if (!img || !img.complete) return;
         
         const pixelRatio = window.devicePixelRatio || 1;
@@ -125,8 +180,9 @@ export default function ImageSequenceScroll() {
         pin: true,
         anticipatePin: 1,
         onUpdate: (self) => {
-            // OPTIMIZATION: Manual render trigger for even smoother frame transitions
-            render(Math.round(self.progress * (TOTAL_FRAMES - 1)));
+            // Use loaded images count for progress calculation
+            const maxFrame = loadedImages.length - 1;
+            render(Math.round(self.progress * maxFrame));
         }
       }
     });
@@ -186,17 +242,38 @@ export default function ImageSequenceScroll() {
         window.removeEventListener("resize", handleResize);
     };
 
-  }, { scope: containerRef, dependencies: [images] });
+  }, { scope: containerRef, dependencies: [loadedCount] });
 
-  if (loadedPercent < 100) {
-      return (
-          <div className="w-full h-screen flex flex-col items-center justify-center bg-black text-white relative z-50">
-              <div className="w-64 h-1 bg-white/10 rounded-full mb-4 overflow-hidden relative">
-                  <div className="absolute top-0 left-0 h-full bg-white transition-all duration-300" style={{ width: `${loadedPercent}%` }} />
-              </div>
-              <div className="text-sm font-mono tracking-widest text-white/50">PRELOADING SEQUENCE... {loadedPercent}%</div>
+  // Loading skeleton - shows immediately with first frame preview
+  if (!isReady) {
+    return (
+      <div className="w-full h-screen flex flex-col items-center justify-center bg-black text-white relative z-50 overflow-hidden">
+        {/* First frame preview while loading */}
+        {firstFrameLoaded && (
+          <div className="absolute inset-0 opacity-30">
+            <img 
+              src="/images/frame_000_delay-0.041s.jpg" 
+              alt="Loading preview"
+              className="w-full h-full object-cover blur-sm"
+            />
           </div>
-      );
+        )}
+        <div className="absolute inset-0 bg-black/80" />
+        
+        {/* Loading indicator */}
+        <div className="flex flex-col items-center gap-4 z-10">
+          <div className="w-48 h-1 bg-white/10 rounded-full overflow-hidden">
+            <div 
+              className="h-full bg-white transition-all duration-300 ease-out"
+              style={{ width: `${Math.min((loadedCount / MIN_FRAMES_TO_SHOW) * 100, 100)}%` }}
+            />
+          </div>
+          <div className="text-xs font-mono tracking-widest text-white/40">
+            LOADING... {loadedCount}/{TOTAL_FRAMES}
+          </div>
+        </div>
+      </div>
+    );
   }
 
   return (

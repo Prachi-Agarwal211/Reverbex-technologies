@@ -1,12 +1,25 @@
 "use client";
-import React, { useRef, useEffect } from "react";
+import React, { useRef, useEffect, useState, useCallback } from "react";
 import gsap from "gsap";
 
 export default function WebGLBackground() {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
+  const [isMounted, setIsMounted] = useState(false);
+
+  // Delay initialization to not block first paint
+  useEffect(() => {
+    setIsMounted(true);
+  }, []);
 
   useEffect(() => {
+    if (!isMounted) return;
+    
+    // Skip if already initialized
+    if (canvasRef.current?.getContext("webgl")) {
+      // Already initialized, just ensure canvas is visible
+      return;
+    }
     const canvas = canvasRef.current;
     if (!canvas) return;
 
@@ -184,15 +197,17 @@ export default function WebGLBackground() {
   return (
     <div ref={containerRef} className="fixed inset-0 w-full h-full bg-[#030610] overflow-hidden pointer-events-none z-0">
       
-      {/* VIBRANT THEME SPLIT FALLBACK GRADIENTS */}
+      {/* Static gradient - shown immediately */}
       <div className="absolute inset-0 bg-gradient-to-r from-blue-600/20 to-yellow-600/20 opacity-100" />
       <div className="absolute inset-0 bg-[radial-gradient(circle_at_20%_30%,#1e40af_0%,transparent_70%)] opacity-50" />
       <div className="absolute inset-0 bg-[radial-gradient(circle_at_80%_70%,#854d0e_0%,transparent_70%)] opacity-50" />
       
-      {/* WebGL Canvas Overlay */}
-      <canvas ref={canvasRef} className="absolute inset-0 w-full h-full block mix-blend-screen" />
+      {/* WebGL Canvas - loads after mount */}
+      {isMounted && (
+        <canvas ref={canvasRef} className="absolute inset-0 w-full h-full block mix-blend-screen" />
+      )}
       
-      {/* High-Contrast Overlays */}
+      {/* Overlays */}
       <div className="absolute inset-0 bg-radial-gradient from-transparent via-black/10 to-black/70" />
       <div className="absolute inset-x-0 top-0 h-32 bg-gradient-to-b from-[#030610] to-transparent opacity-80" />
       <div className="absolute inset-x-0 bottom-0 h-32 bg-gradient-to-t from-[#030610] to-transparent opacity-80" />

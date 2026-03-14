@@ -10,6 +10,8 @@ const spaceGrotesk = Space_Grotesk({
   variable: '--font-space-grotesk',
   display: 'swap',
   weight: ['300', '400', '500', '600', '700'],
+  preload: true,
+  fallback: ['system-ui', 'sans-serif'],
 })
 
 const inter = Inter({
@@ -17,6 +19,8 @@ const inter = Inter({
   variable: '--font-inter',
   display: 'swap',
   weight: ['300', '400', '500', '600', '700'],
+  preload: true,
+  fallback: ['system-ui', 'sans-serif'],
 })
 
 export const metadata: Metadata = {
@@ -36,6 +40,14 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en" className={`${spaceGrotesk.variable} ${inter.variable}`} suppressHydrationWarning>
+      <head>
+        {/* Preconnect for faster asset loading */}
+        <link rel="preconnect" href="/" />
+        <link rel="dns-prefetch" href="/" />
+        {/* Preload critical images */}
+        <link rel="preload" as="image" href="/images/frame_000_delay-0.041s.jpg" />
+        <link rel="preload" as="image" href="/logo.PNG" />
+      </head>
       <body className={`${inter.className} overflow-x-hidden antialiased bg-black`}>
         <Navbar />
         <SmoothScroll>
