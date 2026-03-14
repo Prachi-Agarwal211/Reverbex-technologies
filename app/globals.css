@@ -273,28 +273,14 @@ canvas,
 * {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  box-sizing: border-box;
 }
 
-/* GPU acceleration for specific elements only */
-.fixed,
-.motion-div,
-canvas,
-[data-motion] {
-  backface-visibility: hidden;
-  -webkit-backface-visibility: hidden;
-}
-
-/* GPU acceleration utility */
-.gpu-accelerated {
-  transform: translateZ(0);
-  will-change: transform;
-}
-
-/* Smooth animations with cubic bezier */
-@media (prefers-reduced-motion: no-preference) {
-  * {
-    transition-timing-function: cubic-bezier(0.19, 1, 0.22, 1);
-  }
+/* Remove universal transition which kills performance */
+/* Only apply transitions to specific interactive elements */
+a, button, .transition-all {
+  transition-timing-function: cubic-bezier(0.19, 1, 0.22, 1);
+  transition-duration: 300ms;
 }
 
 @layer utilities {

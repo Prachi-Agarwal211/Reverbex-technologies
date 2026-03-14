@@ -23,10 +23,15 @@ const techItems = [
   { name: "GCP", icon: <SiGooglecloud className="text-[#4285F4]" /> },
 ];
 
-function TechCard({ item }: { item: any }) {
+function TechCard({ item, index }: { item: any, index: number }) {
+  // PERFORMANCE FIX: Pre-calculate theme color to avoid heavy logic in render
+  const isYellowSide = index % 2 === 0;
+  const accentColor = isYellowSide ? "group-hover:drop-shadow-[0_0_20px_rgba(255,180,0,0.6)]" : "group-hover:drop-shadow-[0_0_20px_rgba(0,150,255,0.6)]";
+  const borderColor = isYellowSide ? "group-hover:border-yellow-500/40" : "group-hover:border-blue-500/40";
+
   return (
-    <div className="flex flex-col items-center justify-center min-w-[120px] md:min-w-[180px] aspect-square p-4 md:p-8 m-2 md:m-4 transition-all duration-500 hover:scale-110 active:scale-95 cursor-default group border-2 border-white/20 bg-white/10 backdrop-blur-md hover:bg-white/20 hover:border-white/40 shadow-2xl" style={{ willChange: "transform" }}>
-      <div className={`text-4xl md:text-7xl mb-4 transition-all duration-500 group-hover:drop-shadow-[0_0_20px_rgba(255,255,255,0.6)]`}>
+    <div className={`flex flex-col items-center justify-center min-w-[120px] md:min-w-[180px] aspect-square p-4 md:p-8 m-2 md:m-4 transition-all duration-500 hover:scale-110 active:scale-95 cursor-default group border-2 border-white/20 bg-white/10 backdrop-blur-md hover:bg-white/20 shadow-2xl ${borderColor}`} style={{ willChange: "transform" }}>
+      <div className={`text-4xl md:text-7xl mb-4 transition-all duration-500 ${accentColor}`}>
         {item.icon}
       </div>
       <span className="text-[12px] md:text-[14px] font-mono text-white font-bold tracking-widest uppercase group-hover:scale-110 transition-all duration-500 drop-shadow-[0_2px_4px_rgba(0,0,0,0.5)]">
@@ -61,7 +66,7 @@ function MarqueeRow({ direction = 1, speed = 60, isPaused = false }: {
         style={{ willChange: "transform" }}
       >
         {items.map((item, i) => (
-          <TechCard key={`${item.name}-${i}`} item={item} />
+          <TechCard key={`${item.name}-${i}`} item={item} index={i} />
         ))}
       </motion.div>
     </div>
