@@ -1,0 +1,133 @@
+uid=1_0 RootWebArea "Reverbex Technologies" url="http://127.0.0.1:3000/"
+  uid=1_1 ignored
+    uid=1_2 generic
+      uid=1_3 generic
+      uid=1_4 navigation
+        uid=1_5 ignored
+          uid=1_6 link "Reverbex Technologies Logo Reverbex" url="http://127.0.0.1:3000/#"
+            uid=1_7 image "Reverbex Technologies Logo" url="http://127.0.0.1:3000/logo.PNG"
+            uid=1_8 ignored
+              uid=1_9 StaticText "Reverbex"
+                uid=1_10 InlineTextBox "Reverbex"
+          uid=1_11 ignored
+            uid=1_12 link "HOME"
+              uid=1_13 StaticText "HOME"
+                uid=1_10 InlineTextBox "HOME"
+              uid=1_14 generic
+            uid=1_15 link "SOLUTIONS"
+              uid=1_16 StaticText "SOLUTIONS"
+                uid=1_10 InlineTextBox "SOLUTIONS"
+            uid=1_17 link "PROCESS"
+              uid=1_18 StaticText "PROCESS"
+                uid=1_10 InlineTextBox "PROCESS"
+            uid=1_19 link "EXPERIENCE"
+              uid=1_20 StaticText "EXPERIENCE"
+                uid=1_10 InlineTextBox "EXPERIENCE"
+            uid=1_21 link "FOUNDERS"
+              uid=1_22 StaticText "FOUNDERS"
+                uid=1_10 InlineTextBox "FOUNDERS"
+            uid=1_23 link "CONTACT"
+              uid=1_24 StaticText "CONTACT"
+                uid=1_10 InlineTextBox "CONTACT"
+            uid=1_25 button "GET STARTED"
+              uid=1_26 StaticText "GET STARTED"
+                uid=1_10 InlineTextBox "GET "
+                uid=1_10 InlineTextBox "STARTED"
+      uid=1_27 main
+        uid=1_28 generic
+          uid=1_29 generic
+            uid=1_30 Canvas
+            uid=1_31 generic
+            uid=1_32 generic
+              uid=1_33 generic
+                uid=1_34 heading "WE BUILD INTELLIGENT SYSTEMS." level="1"
+                  uid=1_35 StaticText "WE BUILD"
+                    uid=1_10 InlineTextBox "WE BUILD"
+                  uid=1_36 LineBreak "
+"
+                    uid=1_10 InlineTextBox "
+"
+                  uid=1_37 StaticText "INTELLIGENT"
+                    uid=1_10 InlineTextBox "INTELLIGENT"
+                  uid=1_38 LineBreak "
+"
+                    uid=1_10 InlineTextBox "
+"
+                  uid=1_39 StaticText "SYSTEMS."
+                    uid=1_10 InlineTextBox "SYSTEMS."
+                uid=1_40 paragraph
+                  uid=1_41 StaticText "REVERBEX TECHNOLOGIES / 2026"
+                    uid=1_10 InlineTextBox "REVERBEX TECHNOLOGIES / 2026"
+              uid=1_42 generic
+                uid=1_43 heading "SCALE WITHOUT FRICTION." level="2"
+                  uid=1_44 StaticText "SCALE"
+                    uid=1_10 InlineTextBox "SCALE"
+                  uid=1_45 LineBreak "
+"
+                    uid=1_10 InlineTextBox "
+"
+                  uid=1_46 StaticText "WITHOUT"
+                    uid=1_10 InlineTextBox "WITHOUT"
+                  uid=1_47 LineBreak "
+"
+                    uid=1_10 InlineTextBox "
+"
+                  uid=1_48 StaticText "FRICTION."
+                    uid=1_10 InlineTextBox "FRICTION."
+                uid=1_49 paragraph
+                  uid=1_50 StaticText "SEAMLESS INFRASTRUCTURE"
+                    uid=1_10 InlineTextBox "SEAMLESS INFRASTRUCTURE"
+              uid=1_51 generic
+                uid=1_52 heading "AUTONOMOUS ECOSYSTEMS." level="2"
+                  uid=1_53 StaticText "AUTONOMOUS"
+                    uid=1_10 InlineTextBox "AUTONOMOUS"
+                  uid=1_54 LineBreak "
+"
+                    uid=1_10 InlineTextBox "
+"
+                  uid=1_55 StaticText "ECOSYSTEMS."
+                    uid=1_10 InlineTextBox "ECOSYSTEMS."
+                uid=1_56 paragraph
+                  uid=1_57 StaticText "NEXT-GEN AUTOMATION"
+                    uid=1_10 InlineTextBox "NEXT-GEN AUTOMATION"
+              uid=1_58 generic
+                uid=1_59 heading "ZERO COMPROMISES." level="2"
+                  uid=1_60 StaticText "ZERO"
+                    uid=1_10 InlineTextBox "ZERO"
+                  uid=1_61 LineBreak "
+"
+                    uid=1_10 InlineTextBox "
+"
+                  uid=1_62 StaticText "COMPROMISES."
+                    uid=1_10 InlineTextBox "COMPROMISES."
+                uid=1_63 paragraph
+                  uid=1_64 StaticText "PRECISION ENGINEERING"
+                    uid=1_10 InlineTextBox "PRECISION ENGINEERING"
+              uid=1_65 generic
+                uid=1_66 heading "CONNECT." level="2"
+                  uid=1_67 StaticText "CONNECT."
+                    uid=1_10 InlineTextBox "CONNECT."
+                uid=1_68 link "hello@reverbex.com" url="mailto:hello@reverbex.com"
+                  uid=1_69 StaticText "hello@reverbex.com"
+                    uid=1_10 InlineTextBox "hello@reverbex.com"
+            uid=1_70 generic
+              uid=1_71 ignored
+                uid=1_72 StaticText "SCROLL"
+                  uid=1_10 InlineTextBox "SCROLL"
+              uid=1_73 ignored
+      uid=1_74 generic
+        uid=1_75 generic
+          uid=1_76 generic
+            uid=1_77 ignored
+              uid=1_78 ignored
+                uid=1_79 generic
+                  uid=1_80 ignored
+                    uid=1_81 button "Open Next.js Dev Tools" expandable haspopup="menu"
+                      uid=1_82 image
+                        uid=1_83 ignored
+                        uid=1_84 ignored
+                        uid=1_85 ignored
+                        uid=1_86 ignored
+                        uid=1_87 ignored
+      uid=1_88 generic
+        uid=1_89 alert atomic live="assertive" relevant="additions text"

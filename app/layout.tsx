@@ -1,9 +1,9 @@
 import type { Metadata, Viewport } from 'next'
 import { Space_Grotesk, Inter } from 'next/font/google'
 import './globals.css'
-import Navbar from "../components/Navbar";
 import ServiceWorkerRegistration from "../components/ServiceWorkerRegistration";
 import SmoothScroll from "../components/SmoothScroll";
+import Navbar from "../components/Navbar";
 
 const spaceGrotesk = Space_Grotesk({
   subsets: ['latin'],
@@ -35,7 +35,7 @@ export default function RootLayout({
   children: React.ReactNode
 }) {
   return (
-    <html lang="en" className={`${spaceGrotesk.variable} ${inter.variable}`}>
+    <html lang="en" className={`${spaceGrotesk.variable} ${inter.variable}`} suppressHydrationWarning>
       <body className={`${inter.className} overflow-x-hidden antialiased bg-black`}>
         <Navbar />
         <SmoothScroll>

@@ -26,6 +26,9 @@ export default function SmoothScroll({
       touchMultiplier: 2,
     });
 
+    // Expose lenis globally for programmatic scrolling
+    (window as any).lenis = lenis;
+
     lenis.on("scroll", ScrollTrigger.update);
 
     gsap.ticker.add((time) => {

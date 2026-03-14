@@ -2,6 +2,16 @@
 const nextConfig = {
   reactStrictMode: true,
   
+  // Suppress cross-origin warnings for 127.0.0.1
+  experimental: {
+    allowedDevOrigins: ['127.0.0.1:3000', 'localhost:3000'],
+    // Optimize package imports - tree shaking
+    optimizePackageImports: ['framer-motion', 'react-icons'],
+    
+    // Better scroll restoration
+    scrollRestoration: true,
+  },
+
   // Image optimization for better performance
   images: {
     formats: ['image/avif', 'image/webp'],
@@ -17,15 +27,6 @@ const nextConfig = {
   compiler: {
     removeConsole: process.env.NODE_ENV === 'production',
     reactRemoveProperties: { properties: ['^data-'] },
-  },
-  
-  // Experimental features for better performance
-  experimental: {
-    // Optimize package imports - tree shaking
-    optimizePackageImports: ['framer-motion', 'react-icons'],
-    
-    // Better scroll restoration
-    scrollRestoration: true,
   },
   
   // Webpack optimization for code splitting
@@ -63,6 +64,8 @@ const nextConfig = {
   
   // Headers for better caching
   async headers() {
+    if (process.env.NODE_ENV !== 'production') return [];
+    
     return [
       {
         source: '/:path*',
