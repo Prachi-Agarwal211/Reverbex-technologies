@@ -75,9 +75,10 @@ export default function Founders() {
                   <div className="flex flex-col gap-4 w-full max-w-sm">
                     <a 
                       href={`mailto:${founder.email}`}
-                      className="group/link flex items-center gap-4 py-4 border-b border-white/20 text-white hover:text-blue-400 transition-all text-[12px] font-mono font-bold tracking-widest uppercase active:scale-95"
+                      aria-label={`Email ${founder.name}`}
+                      className="group/link flex items-center gap-4 py-4 border-b border-white/20 text-white hover:text-blue-400 transition-all text-[12px] font-mono font-bold tracking-widest uppercase active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white rounded-lg p-2 -ml-2"
                     >
-                      <div className="w-12 h-12 rounded-full border-2 border-white/30 flex items-center justify-center group-hover/link:bg-white group-hover/link:text-black transition-all duration-500 shadow-md">
+                      <div className="w-12 h-12 rounded-full border-2 border-white/30 flex items-center justify-center group-hover/link:bg-white group-hover/link:text-black transition-all duration-500 shadow-md" aria-hidden="true">
                         <HiOutlineMail className="text-xl" />
                       </div>
                       <span className="break-all">{founder.email}</span>
@@ -88,9 +89,10 @@ export default function Founders() {
                         href={`https://wa.me/${founder.whatsapp}`}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="group/link flex items-center gap-4 py-4 border-b border-white/20 text-white hover:text-green-400 transition-all text-[12px] font-mono font-bold tracking-widest uppercase active:scale-95"
+                        aria-label={`WhatsApp ${founder.name}`}
+                        className="group/link flex items-center gap-4 py-4 border-b border-white/20 text-white hover:text-green-400 transition-all text-[12px] font-mono font-bold tracking-widest uppercase active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white rounded-lg p-2 -ml-2"
                       >
-                        <div className="w-12 h-12 rounded-full border-2 border-white/30 flex items-center justify-center group-hover/link:bg-[#25D366] group-hover/link:border-[#25D366] group-hover/link:text-white transition-all duration-500 shadow-md">
+                        <div className="w-12 h-12 rounded-full border-2 border-white/30 flex items-center justify-center group-hover/link:bg-[#25D366] group-hover/link:border-[#25D366] group-hover/link:text-white transition-all duration-500 shadow-md" aria-hidden="true">
                           <SiWhatsapp className="text-xl" />
                         </div>
                         <span>+{founder.whatsapp}</span>

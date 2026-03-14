@@ -10,7 +10,6 @@ export default function WebGLBackground() {
     const canvas = canvasRef.current;
     if (!canvas) return;
 
-    // Use alpha: false for better performance if no transparency is needed
     const gl = canvas.getContext("webgl", { alpha: false, antialias: false }) || 
                canvas.getContext("experimental-webgl", { alpha: false, antialias: false });
     if (!gl) return;
@@ -22,7 +21,6 @@ export default function WebGLBackground() {
       }
     `;
 
-    // PERFORMANCE FIX: Use mediump for mobile performance
     const fsSource = `
       precision mediump float;
       uniform float u_time;
@@ -49,33 +47,43 @@ export default function WebGLBackground() {
         vec2 p = uv * 2.0 - 1.0;
         p.x *= u_resolution.x / u_resolution.y;
 
-        vec3 col = vec3(0.005, 0.01, 0.02);
-        vec3 themeBlue = vec3(0.0, 0.5, 1.0);
-        vec3 themeYellow = vec3(1.0, 0.8, 0.1);
+        // BRIGHTER Obsidian Base
+        vec3 col = vec3(0.01, 0.02, 0.04);
         
-        float splitEdge = smoothstep(-0.8, 0.8, p.x);
+        // Define Theme Colors - ULTRA VIBRANT
+        vec3 themeBlue = vec3(0.0, 0.6, 1.0);
+        vec3 themeYellow = vec3(1.0, 0.8, 0.2);
+        
+        float splitEdge = smoothstep(-1.0, 1.0, p.x);
         vec3 rayColor = mix(themeBlue, themeYellow, splitEdge);
 
-        // Dynamic Volumetric Rays
+        // Dynamic Volumetric Rays - SHARPER & BRIGHTER
         float rays = 0.0;
         vec2 rayOrigin = vec2(0.0, 2.5);
         
-        for(float i = 0.0; i < 6.0; i++) { // Reduced iterations for speed
-            float t = u_time * 0.1 + i * 1.2;
+        for(float i = 0.0; i < 8.0; i++) {
+            float t = u_time * 0.15 + i * 1.2;
             float angle = 0.4 * sin(t) + 0.05 * cos(t * 1.6);
             vec2 dir = vec2(cos(angle + 1.57), sin(angle + 1.57));
             float dist = length(p - rayOrigin);
             float ray = max(0.0, 1.0 - abs(dot(normalize(p - rayOrigin), dir)));
-            rays += pow(ray, 50.0) * (0.4 / (dist + 0.1));
+            // Higher power (80.0) makes beams sharper
+            rays += pow(ray, 80.0) * (0.6 / (dist + 0.1));
         }
         
-        col += rays * rayColor * 1.5;
+        col += rays * rayColor * 2.5; // Massive intensity
         
-        // Simplified noise for mobile
-        float n = noise(p * 3.0 + u_time * 0.1);
-        col += n * rayColor * 0.1;
+        // Sharper Noise
+        float n = noise(p * 4.0 + u_time * 0.15);
+        col += n * rayColor * 0.15;
         
-        col *= 1.0 - smoothstep(0.5, 4.0, length(uv * 2.0 - 1.0));
+        // Stronger Inner Glow
+        float glow = 1.0 - length(p * 0.4);
+        col += mix(themeBlue * 0.1, themeYellow * 0.1, splitEdge) * pow(max(0.0, glow), 1.5);
+
+        // MINIMAL VIGNETTE - Keep background sharp and visible
+        col *= 1.0 - smoothstep(1.2, 5.0, length(uv * 2.0 - 1.0));
+
         gl_FragColor = vec4(col * u_opacity, 1.0);
       }
     `;
@@ -117,13 +125,13 @@ export default function WebGLBackground() {
     let start = Date.now();
     let opacity = { val: 0 };
 
-    gsap.to(opacity, { val: 1, duration: 1.5, ease: "power2.out" });
+    gsap.to(opacity, { val: 1, duration: 1.0, ease: "power2.out" });
 
     const render = () => {
       const w = window.innerWidth;
       const h = window.innerHeight;
       const isMobile = w < 768;
-      const scale = isMobile ? 0.5 : 1.0; // Lower resolution on mobile for high FPS
+      const scale = isMobile ? 0.7 : 1.0; 
       
       if (canvas.width !== w * scale || canvas.height !== h * scale) {
         canvas.width = w * scale;
@@ -144,9 +152,11 @@ export default function WebGLBackground() {
 
   return (
     <div ref={containerRef} className="fixed inset-0 w-full h-full bg-[#030610] overflow-hidden pointer-events-none z-0">
-      <div className="absolute inset-0 bg-gradient-to-r from-blue-600/10 to-yellow-600/10" />
-      <canvas ref={canvasRef} className="absolute inset-0 w-full h-full block" />
-      <div className="absolute inset-0 bg-radial-gradient from-transparent to-black/60" />
+      {/* Brighter fallback split */}
+      <div className="absolute inset-0 bg-gradient-to-r from-blue-600/20 to-yellow-600/20" />
+      <canvas ref={canvasRef} className="absolute inset-0 w-full h-full block mix-blend-screen" />
+      {/* Lighter overlay to keep background sharp and visible */}
+      <div className="absolute inset-0 bg-radial-gradient from-transparent to-black/40" />
     </div>
   );
 }

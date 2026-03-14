@@ -48,12 +48,13 @@ export default function ContactSection() {
                   <div className="flex flex-col sm:flex-row gap-6">
                     <motion.a 
                       href="mailto:15anuragsingh2003@gmail.com"
+                      aria-label="Email Anurag Singh"
                       whileHover={{ scale: 1.05 }}
                       whileTap={{ scale: 0.95 }}
-                      className="flex items-center gap-4 text-white hover:text-blue-400 transition-colors"
+                      className="flex items-center gap-4 text-white hover:text-blue-400 transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-white rounded-lg p-2 -ml-2"
                       style={{ willChange: "transform" }}
                     >
-                      <div className="w-12 h-12 shrink-0 rounded-full border-2 border-white/30 flex items-center justify-center group hover:bg-white hover:text-black transition-all duration-500 shadow-lg">
+                      <div className="w-12 h-12 shrink-0 rounded-full border-2 border-white/30 flex items-center justify-center group hover:bg-white hover:text-black transition-all duration-500 shadow-lg" aria-hidden="true">
                         <HiOutlineMail className="text-xl" />
                       </div>
                       <span className="text-sm font-mono font-bold tracking-widest uppercase">Email Channel</span>
@@ -62,12 +63,13 @@ export default function ContactSection() {
                       href="https://wa.me/9929986743"
                       target="_blank"
                       rel="noopener noreferrer"
+                      aria-label="WhatsApp Anurag Singh"
                       whileHover={{ scale: 1.05 }}
                       whileTap={{ scale: 0.95 }}
-                      className="flex items-center gap-4 text-white hover:text-green-400 transition-colors"
+                      className="flex items-center gap-4 text-white hover:text-green-400 transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-white rounded-lg p-2 -ml-2"
                       style={{ willChange: "transform" }}
                     >
-                      <div className="w-12 h-12 shrink-0 rounded-full border-2 border-white/30 flex items-center justify-center group hover:bg-[#25D366] hover:border-[#25D366] hover:text-white transition-all duration-500 shadow-lg">
+                      <div className="w-12 h-12 shrink-0 rounded-full border-2 border-white/30 flex items-center justify-center group hover:bg-[#25D366] hover:border-[#25D366] hover:text-white transition-all duration-500 shadow-lg" aria-hidden="true">
                         <SiWhatsapp className="text-xl" />
                       </div>
                       <span className="text-sm font-mono font-bold tracking-widest uppercase">WhatsApp Sync</span>
@@ -81,12 +83,13 @@ export default function ContactSection() {
                   <div className="flex flex-col sm:flex-row gap-6">
                     <motion.a 
                       href="mailto:prachiagarwal211@gmail.com"
+                      aria-label="Email Prachi Agarwal"
                       whileHover={{ scale: 1.05 }}
                       whileTap={{ scale: 0.95 }}
-                      className="flex items-center gap-4 text-white hover:text-blue-400 transition-colors"
+                      className="flex items-center gap-4 text-white hover:text-blue-400 transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-white rounded-lg p-2 -ml-2"
                       style={{ willChange: "transform" }}
                     >
-                      <div className="w-12 h-12 shrink-0 rounded-full border-2 border-white/30 flex items-center justify-center group hover:bg-white hover:text-black transition-all duration-500 shadow-lg">
+                      <div className="w-12 h-12 shrink-0 rounded-full border-2 border-white/30 flex items-center justify-center group hover:bg-white hover:text-black transition-all duration-500 shadow-lg" aria-hidden="true">
                         <HiOutlineMail className="text-xl" />
                       </div>
                       <span className="text-sm font-mono font-bold tracking-widest uppercase">Email Channel</span>
@@ -95,12 +98,13 @@ export default function ContactSection() {
                       href="https://wa.me/9155804490"
                       target="_blank"
                       rel="noopener noreferrer"
+                      aria-label="WhatsApp Prachi Agarwal"
                       whileHover={{ scale: 1.05 }}
                       whileTap={{ scale: 0.95 }}
-                      className="flex items-center gap-4 text-white hover:text-green-400 transition-colors"
+                      className="flex items-center gap-4 text-white hover:text-green-400 transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-white rounded-lg p-2 -ml-2"
                       style={{ willChange: "transform" }}
                     >
-                      <div className="w-12 h-12 shrink-0 rounded-full border-2 border-white/30 flex items-center justify-center group hover:bg-[#25D366] hover:border-[#25D366] hover:text-white transition-all duration-500 shadow-lg">
+                      <div className="w-12 h-12 shrink-0 rounded-full border-2 border-white/30 flex items-center justify-center group hover:bg-[#25D366] hover:border-[#25D366] hover:text-white transition-all duration-500 shadow-lg" aria-hidden="true">
                         <SiWhatsapp className="text-xl" />
                       </div>
                       <span className="text-sm font-mono font-bold tracking-widest uppercase">WhatsApp Sync</span>

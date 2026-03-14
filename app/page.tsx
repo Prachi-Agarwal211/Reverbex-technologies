@@ -1,11 +1,25 @@
 "use client";
 
 import React, { useRef, Suspense } from "react";
+import dynamic from 'next/dynamic';
 import ImageSequenceScroll from "../components/ImageSequenceScroll";
-import TechStream from "../components/TechStream";
-import ContactSection from "../components/ContactSection";
-import Founders from "../components/Founders";
-import WebGLBackground from "../components/WebGLBackground";
+
+// Dynamically import heavy and below-the-fold components
+const WebGLBackground = dynamic(() => import("../components/WebGLBackground"), {
+  ssr: false, // Ensure this only runs on the client
+});
+
+const TechStream = dynamic(() => import("../components/TechStream"), {
+  ssr: false,
+});
+
+const Founders = dynamic(() => import("../components/Founders"), {
+  ssr: false,
+});
+
+const ContactSection = dynamic(() => import("../components/ContactSection"), {
+  ssr: false,
+});
 
 function WebGLSkeleton() {
   return <div className="fixed inset-0 bg-[#030610] z-0" />;

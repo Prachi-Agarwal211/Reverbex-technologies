@@ -24,9 +24,28 @@ const inter = Inter({
 })
 
 export const metadata: Metadata = {
-  title: 'Reverbex Technologies',
-  description: 'Building Solutions with Creativity',
+  title: 'Reverbex Technologies | AI-Powered Solutions',
+  description: 'We architect autonomous systems that transform how modern enterprises operate. Custom AI, scalable neural architecture, and intelligent software solutions.',
+  keywords: ['AI', 'Artificial Intelligence', 'Software Development', 'Neural Networks', 'Enterprise Solutions', 'Reverbex'],
+  authors: [{ name: 'Anurag Singh' }, { name: 'Prachi Agarwal' }],
+  openGraph: {
+    title: 'Reverbex Technologies | AI-Powered Solutions',
+    description: 'We architect autonomous systems that transform how modern enterprises operate.',
+    url: 'https://reverbex.com',
+    siteName: 'Reverbex Technologies',
+    locale: 'en_US',
+    type: 'website',
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Reverbex Technologies | AI-Powered Solutions',
+    description: 'We architect autonomous systems that transform how modern enterprises operate.',
+  },
   manifest: '/manifest.json',
+  robots: {
+    index: true,
+    follow: true,
+  },
 }
 
 export const viewport: Viewport = {
@@ -41,14 +60,12 @@ export default function RootLayout({
   return (
     <html lang="en" className={`${spaceGrotesk.variable} ${inter.variable}`} suppressHydrationWarning>
       <head>
-        {/* Preconnect for faster asset loading */}
         <link rel="preconnect" href="/" />
         <link rel="dns-prefetch" href="/" />
-        {/* Preload critical images */}
         <link rel="preload" as="image" href="/images/frame_000_delay-0.041s.jpg" />
         <link rel="preload" as="image" href="/logo.PNG" />
       </head>
-      <body className={`${inter.className} overflow-x-hidden antialiased bg-black`}>
+      <body className={`${inter.className} overflow-x-hidden antialiased bg-black text-white`}>
         <Navbar />
         <SmoothScroll>
           {children}

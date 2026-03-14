@@ -17,13 +17,14 @@ export default function SmoothScroll({
   useEffect(() => {
     console.log("SmoothScroll mounted");
     const lenis = new Lenis({
-      duration: 1.2,
-      easing: (t: number) => Math.min(1, 1.001 - Math.pow(2, -10 * t)), // https://www.desmos.com/calculator/brs54l4xou
+      duration: 1.5, // Slightly longer for more "weight"
+      easing: (t: number) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
       orientation: "vertical",
       gestureOrientation: "vertical",
       smoothWheel: true,
-      wheelMultiplier: 1,
-      touchMultiplier: 2,
+      wheelMultiplier: 1.1, // Faster wheel response
+      touchMultiplier: 1.5, // Natural touch response
+      infinite: false,
     });
 
     // Expose lenis globally for programmatic scrolling
