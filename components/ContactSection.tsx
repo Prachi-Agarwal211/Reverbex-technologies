@@ -1,134 +1,110 @@
 "use client";
 
+import React, { useRef, useEffect } from "react";
 import { motion } from "framer-motion";
-import { SiWhatsapp } from "react-icons/si";
-import { HiOutlineMail } from "react-icons/hi";
 
 export default function ContactSection() {
+  const videoRef = useRef<HTMLVideoElement>(null);
+
+  useEffect(() => {
+    const video = videoRef.current;
+    if (video) {
+        // Lower playback rate for majestic feeling
+      video.playbackRate = 0.8;
+      video.play().catch(e => console.log("Autoplay prevented:", e));
+    }
+  }, []);
+
   return (
-    <footer id="contact" className="w-full bg-transparent py-32 md:py-64 px-6 md:px-24 border-t border-white/05 relative overflow-hidden">
-      
-      {/* HUD Accents */}
-      <div className="absolute top-0 left-0 w-32 h-32 border-l border-t border-white/10 m-8 pointer-events-none" />
-      <div className="absolute bottom-0 right-0 w-32 h-32 border-r border-b border-white/10 m-8 pointer-events-none" />
-
-      <div className="max-w-7xl mx-auto relative z-10">
-        
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-24 items-start">
-          
-          {/* Left - Narrative */}
-          <div className="flex flex-col gap-12">
-            <div className="flex items-center gap-4">
-              <img src="/logo.PNG" alt="Reverbex" className="h-20 w-auto brightness-0 invert drop-shadow-[0_0_10px_rgba(255,255,255,0.5)]" />
-              <h2 className="text-5xl font-bold tracking-tighter uppercase text-white drop-shadow-[0_0_15px_rgba(255,255,255,0.3)]">Reverbex</h2>
-            </div>
-            
-            <p className="text-3xl md:text-5xl font-bold leading-tight tracking-tight text-white/90 drop-shadow-[0_4px_10px_rgba(0,0,0,0.8)]">
-              We architect <span className="text-white drop-shadow-[0_0_20px_rgba(255,255,255,0.5)]">autonomous systems</span> that transform how modern enterprises operate.
-            </p>
-
-            <div className="flex flex-col gap-2">
-              <span className="text-[14px] font-mono font-bold tracking-[0.5em] text-white/80 uppercase">Global Headquarters</span>
-              <span className="text-lg text-white font-bold drop-shadow-[0_2px_4px_rgba(0,0,0,0.5)]">India / Remote-First Operations</span>
-            </div>
-          </div>
-
-          {/* Right - Control HUD */}
-          <div className="flex flex-col gap-12">
-            <div className="border-2 border-white/20 bg-white/10 backdrop-blur-3xl p-8 md:p-12 hover:bg-white/20 transition-colors duration-500 shadow-2xl">
-              <h3 className="text-[12px] font-mono font-bold tracking-[0.5em] text-white uppercase mb-12 flex items-center gap-4">
-                <div className="w-3 h-3 rounded-full bg-green-400 animate-pulse shadow-[0_0_15px_#4ade80]" />
-                Connectivity Hub
-              </h3>
-
-              <div className="flex flex-col gap-12">
-                {/* Anurag Singh */}
-                <div className="flex flex-col gap-6">
-                  <span className="text-[14px] font-mono font-bold text-white/80 uppercase tracking-[0.3em]">Lead Architect / Anurag Singh</span>
-                  <div className="flex flex-col sm:flex-row gap-6">
-                    <motion.a 
-                      href="mailto:15anuragsingh2003@gmail.com"
-                      aria-label="Email Anurag Singh"
-                      whileHover={{ scale: 1.05 }}
-                      whileTap={{ scale: 0.95 }}
-                      className="flex items-center gap-4 text-white hover:text-blue-400 transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-white rounded-lg p-2 -ml-2"
-                      style={{ willChange: "transform" }}
-                    >
-                      <div className="w-12 h-12 shrink-0 rounded-full border-2 border-white/30 flex items-center justify-center group hover:bg-white hover:text-black transition-all duration-500 shadow-lg" aria-hidden="true">
-                        <HiOutlineMail className="text-xl" />
-                      </div>
-                      <span className="text-sm font-mono font-bold tracking-widest uppercase">Email Channel</span>
-                    </motion.a>
-                    <motion.a 
-                      href="https://wa.me/9929986743"
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      aria-label="WhatsApp Anurag Singh"
-                      whileHover={{ scale: 1.05 }}
-                      whileTap={{ scale: 0.95 }}
-                      className="flex items-center gap-4 text-white hover:text-green-400 transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-white rounded-lg p-2 -ml-2"
-                      style={{ willChange: "transform" }}
-                    >
-                      <div className="w-12 h-12 shrink-0 rounded-full border-2 border-white/30 flex items-center justify-center group hover:bg-[#25D366] hover:border-[#25D366] hover:text-white transition-all duration-500 shadow-lg" aria-hidden="true">
-                        <SiWhatsapp className="text-xl" />
-                      </div>
-                      <span className="text-sm font-mono font-bold tracking-widest uppercase">WhatsApp Sync</span>
-                    </motion.a>
-                  </div>
-                </div>
-
-                {/* Prachi Agarwal */}
-                <div className="flex flex-col gap-6">
-                  <span className="text-[14px] font-mono font-bold text-white/80 uppercase tracking-[0.3em] mt-4">Strategy Lead / Prachi Agarwal</span>
-                  <div className="flex flex-col sm:flex-row gap-6">
-                    <motion.a 
-                      href="mailto:prachiagarwal211@gmail.com"
-                      aria-label="Email Prachi Agarwal"
-                      whileHover={{ scale: 1.05 }}
-                      whileTap={{ scale: 0.95 }}
-                      className="flex items-center gap-4 text-white hover:text-blue-400 transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-white rounded-lg p-2 -ml-2"
-                      style={{ willChange: "transform" }}
-                    >
-                      <div className="w-12 h-12 shrink-0 rounded-full border-2 border-white/30 flex items-center justify-center group hover:bg-white hover:text-black transition-all duration-500 shadow-lg" aria-hidden="true">
-                        <HiOutlineMail className="text-xl" />
-                      </div>
-                      <span className="text-sm font-mono font-bold tracking-widest uppercase">Email Channel</span>
-                    </motion.a>
-                    <motion.a 
-                      href="https://wa.me/9155804490"
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      aria-label="WhatsApp Prachi Agarwal"
-                      whileHover={{ scale: 1.05 }}
-                      whileTap={{ scale: 0.95 }}
-                      className="flex items-center gap-4 text-white hover:text-green-400 transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-white rounded-lg p-2 -ml-2"
-                      style={{ willChange: "transform" }}
-                    >
-                      <div className="w-12 h-12 shrink-0 rounded-full border-2 border-white/30 flex items-center justify-center group hover:bg-[#25D366] hover:border-[#25D366] hover:text-white transition-all duration-500 shadow-lg" aria-hidden="true">
-                        <SiWhatsapp className="text-xl" />
-                      </div>
-                      <span className="text-sm font-mono font-bold tracking-widest uppercase">WhatsApp Sync</span>
-                    </motion.a>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-
-        </div>
-
-        {/* Footer Bottom */}
-        <div className="mt-32 md:mt-64 pt-8 border-t border-white/10 flex flex-col md:flex-row justify-between items-center gap-8">
-          <p className="text-[10px] font-mono tracking-[0.5em] text-white/40 uppercase">
-            © 2026 Reverbex Technologies / Neural Systems Division
-          </p>
-          <div className="flex gap-12">
-            <a href="#" className="text-[10px] font-mono tracking-[0.5em] text-white/40 hover:text-white transition-colors uppercase underline-offset-4 hover:underline">Privacy Protocol</a>
-            <a href="#" className="text-[10px] font-mono tracking-[0.5em] text-white/40 hover:text-white transition-colors uppercase underline-offset-4 hover:underline">Terms of Access</a>
-          </div>
-        </div>
+    <section id="contact" className="relative w-full h-screen overflow-hidden bg-[#050505] flex flex-col justify-end">
+      {/* Absolute Video Background */}
+      <div className="absolute inset-0 w-full h-full z-0 pointer-events-none">
+        <video
+          ref={videoRef}
+          autoPlay
+          loop
+          muted
+          playsInline
+          preload="metadata"
+          className="w-full h-full object-cover"
+        >
+          <source src="/hero-video.mp4" type="video/mp4" />
+        </video>
+        {/* Subtle Dark Gradient Overlay to ensure text readability */}
+        <div className="absolute inset-0 bg-gradient-to-t from-black via-black/40 to-black/60" /> 
       </div>
+      
+      {/* Top Spacer to keep center empty */}
+      <div className="flex-1 w-full shrink-0 z-10 pointer-events-none" />
 
-    </footer>
+      {/* Content strictly positioned at the bottom/left to keep the center of the video fully visible */}
+      <div className="relative z-10 w-full max-w-7xl mx-auto px-6 pb-12 md:pb-24 flex flex-col items-start justify-end pointer-events-none">
+        <motion.div
+          initial={{ opacity: 0, x: -40 }}
+          whileInView={{ opacity: 1, x: 0 }}
+          viewport={{ once: true, margin: "-100px" }}
+          transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
+          className="pointer-events-auto"
+        >
+          <h2 className="text-5xl md:text-7xl lg:text-[6rem] text-white mb-4 tracking-tight drop-shadow-2xl leading-none" style={{ fontFamily: "var(--font-playfair), Georgia, serif" }}>
+            Get in Touch
+          </h2>
+          <p className="text-white/70 text-sm md:text-lg mb-10 tracking-[0.1em] font-light max-w-2xl" style={{ fontFamily: "var(--font-inter), sans-serif" }}>
+            Ready to transform your business with intelligent architecture? We build autonomous systems that redefine enterprise operations.
+          </p>
+        </motion.div>
+
+        <div className="flex flex-col md:flex-row gap-6 w-full lg:w-[60%] pointer-events-auto">
+          {/* Email Card */}
+          <motion.div 
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, margin: "-50px" }}
+            transition={{ duration: 0.8, delay: 0.1, ease: [0.16, 1, 0.3, 1] }}
+            className="flex-1 p-6 md:p-8 rounded-2xl border border-white/10 bg-black/40 backdrop-blur-xl hover:bg-black/60 hover:border-blue-500/40 transition-all duration-500 shadow-xl group relative overflow-hidden"
+          >
+            <div className="absolute inset-0 bg-gradient-to-br from-blue-500/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none" />
+            <p className="text-white/40 text-xs md:text-sm uppercase tracking-widest mb-2 font-semibold group-hover:text-blue-400/50 transition-colors">Contact</p>
+            <a href="mailto:hello@reverbex.com" className="text-lg md:text-xl text-white hover:text-blue-400 transition-colors relative z-10 font-light">
+              hello@reverbex.com
+            </a>
+          </motion.div>
+
+          {/* Location Card */}
+          <motion.div 
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, margin: "-50px" }}
+            transition={{ duration: 0.8, delay: 0.2, ease: [0.16, 1, 0.3, 1] }}
+            className="flex-1 p-6 md:p-8 rounded-2xl border border-white/10 bg-black/40 backdrop-blur-xl hover:bg-black/60 hover:border-yellow-500/40 transition-all duration-500 shadow-xl group relative overflow-hidden flex flex-col justify-between"
+          >
+            <div className="absolute inset-0 bg-gradient-to-bl from-yellow-500/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none" />
+            <p className="text-white/40 text-xs md:text-sm uppercase tracking-widest mb-2 font-semibold group-hover:text-yellow-400/50 transition-colors">Headquarters</p>
+            <p className="text-lg md:text-xl text-white relative z-10 font-light">
+              India / Remote-First
+            </p>
+          </motion.div>
+        </div>
+
+        {/* Bottom Footer Credits Line */}
+        <motion.div 
+          initial={{ opacity: 0 }}
+          whileInView={{ opacity: 1 }}
+          viewport={{ once: true }}
+          transition={{ duration: 1, delay: 0.8 }}
+          className="w-full mt-12 flex flex-col sm:flex-row items-start sm:items-center justify-between border-t border-white/10 pt-6 pointer-events-auto gap-4"
+        >
+          <p className="text-white/30 text-xs tracking-[0.2em] uppercase">
+            © 2026 Reverbex Technologies • Redefining Operations
+          </p>
+          <a 
+            href="#home" 
+            className="text-white/50 hover:text-white text-xs tracking-widest uppercase transition-colors"
+          >
+            Back to Top
+          </a>
+        </motion.div>
+      </div>
+    </section>
   );
 }

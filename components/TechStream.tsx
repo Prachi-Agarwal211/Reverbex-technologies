@@ -1,134 +1,98 @@
 "use client";
 
-import { motion } from "framer-motion";
-import React, { useEffect, useState, useMemo, useRef } from "react";
-import {
-  SiReact, SiNextdotjs, SiTypescript, SiThreedotjs,
-  SiTailwindcss, SiNodedotjs, SiPython, SiDocker,
-  SiPostgresql, SiOpenai, SiAmazon, SiGooglecloud
-} from "react-icons/si";
-
-const techItems = [
-  { name: "React", icon: <SiReact className="text-[#61DAFB]" /> },
-  { name: "Next.js", icon: <SiNextdotjs className="text-white" /> },
-  { name: "TypeScript", icon: <SiTypescript className="text-[#3178C6]" /> },
-  { name: "Three.js", icon: <SiThreedotjs className="text-white" /> },
-  { name: "Tailwind", icon: <SiTailwindcss className="text-[#06B6D4]" /> },
-  { name: "Node.js", icon: <SiNodedotjs className="text-[#339933]" /> },
-  { name: "Python", icon: <SiPython className="text-[#3776AB]" /> },
-  { name: "Docker", icon: <SiDocker className="text-[#2496ED]" /> },
-  { name: "PostgreSQL", icon: <SiPostgresql className="text-[#4169E1]" /> },
-  { name: "OpenAI", icon: <SiOpenai className="text-white" /> },
-  { name: "AWS", icon: <SiAmazon className="text-[#FF9900]" /> },
-  { name: "GCP", icon: <SiGooglecloud className="text-[#4285F4]" /> },
-];
-
-function TechCard({ item, index }: { item: any, index: number }) {
-  // PERFORMANCE FIX: Pre-calculate theme color to avoid heavy logic in render
-  const isYellowSide = index % 2 === 0;
-  const accentColor = isYellowSide ? "group-hover:drop-shadow-[0_0_20px_rgba(255,180,0,0.6)]" : "group-hover:drop-shadow-[0_0_20px_rgba(0,150,255,0.6)]";
-  const borderColor = isYellowSide ? "group-hover:border-yellow-500/40" : "group-hover:border-blue-500/40";
-
-  return (
-    <div className={`flex flex-col items-center justify-center min-w-[120px] md:min-w-[180px] aspect-square p-4 md:p-8 m-2 md:m-4 transition-all duration-500 hover:scale-110 active:scale-95 cursor-default group border-2 border-white/20 bg-white/10 backdrop-blur-md hover:bg-white/20 shadow-2xl ${borderColor}`} style={{ willChange: "transform" }}>
-      <div className={`text-4xl md:text-7xl mb-4 transition-all duration-500 ${accentColor}`}>
-        {item.icon}
-      </div>
-      <span className="text-[12px] md:text-[14px] font-mono text-white font-bold tracking-widest uppercase group-hover:scale-110 transition-all duration-500 drop-shadow-[0_2px_4px_rgba(0,0,0,0.5)]">
-        {item.name}
-      </span>
-    </div>
-  );
-}
-
-function MarqueeRow({ direction = 1, speed = 60, isPaused = false }: { 
-  direction?: number; 
-  speed?: number; 
-  isPaused?: boolean;
-}) {
-  const items = useMemo(() => [...techItems, ...techItems, ...techItems], []);
-  const [adjustedSpeed, setAdjustedSpeed] = useState(speed);
-  
-  useEffect(() => {
-    if (typeof window !== 'undefined' && window.innerWidth < 768) {
-      setAdjustedSpeed(speed * 1.5);
-    }
-  }, [speed]);
-
-  return (
-    <div className="flex overflow-hidden mask-gradient py-4">
-      <motion.div
-        className="flex"
-        animate={{ x: direction === -1 ? ["0%", "-50%"] : ["-50%", "0%"] }}
-        transition={{
-          x: { repeat: Infinity, repeatType: "loop", duration: adjustedSpeed, ease: "linear" },
-        }}
-        style={{ willChange: "transform" }}
-      >
-        {items.map((item, i) => (
-          <TechCard key={`${item.name}-${i}`} item={item} index={i} />
-        ))}
-      </motion.div>
-    </div>
-  );
-}
+import React from "react";
+import { 
+  Cpu, Cloud, Box, Zap, Database, Eye,
+  GitBranch, Network, Code, Layers, Hexagon, Shield,
+  Link, Sparkles, Smartphone, Settings, Layout, Monitor
+} from "lucide-react";
 
 export default function TechStream() {
-  const [mounted, setMounted] = useState(false);
-  const [isPaused, setIsPaused] = useState(false);
-  const sectionRef = useRef<HTMLElement>(null);
-
-  useEffect(() => {
-    setMounted(true);
-    const observer = new IntersectionObserver(
-      ([entry]) => setIsPaused(!entry.isIntersecting),
-      { threshold: 0.1 }
-    );
-    if (sectionRef.current) observer.observe(sectionRef.current);
-    return () => observer.disconnect();
-  }, []);
-
-  if (!mounted) return null;
+  const techRows = [
+    [
+      { name: "Machine Learning", icon: <Cpu className="w-6 h-6 text-blue-400" /> },
+      { name: "Cloud Solutions", icon: <Cloud className="w-6 h-6 text-sky-400" /> },
+      { name: "Custom Software", icon: <Box className="w-6 h-6 text-indigo-400" /> },
+      { name: "Digital Transformation", icon: <Zap className="w-6 h-6 text-yellow-400" /> },
+      { name: "Data Analytics", icon: <Database className="w-6 h-6 text-cyan-400" /> },
+      { name: "Computer Vision", icon: <Eye className="w-6 h-6 text-teal-400" /> }
+    ],
+    [
+      { name: "AI Integration", icon: <GitBranch className="w-6 h-6 text-purple-400" /> },
+      { name: "Neural Networks", icon: <Network className="w-6 h-6 text-pink-400" /> },
+      { name: "API Development", icon: <Code className="w-6 h-6 text-blue-500" /> },
+      { name: "System Architecture", icon: <Layers className="w-6 h-6 text-sky-500" /> },
+      { name: "Web3 Infrastructure", icon: <Hexagon className="w-6 h-6 text-indigo-500" /> },
+      { name: "Cybersecurity", icon: <Shield className="w-6 h-6 text-red-400" /> }
+    ],
+    [
+      { name: "Blockchain", icon: <Link className="w-6 h-6 text-yellow-500" /> },
+      { name: "Generative AI", icon: <Sparkles className="w-6 h-6 text-amber-400" /> },
+      { name: "Mobile Development", icon: <Smartphone className="w-6 h-6 text-green-400" /> },
+      { name: "Process Automation", icon: <Settings className="w-6 h-6 text-gray-300" /> },
+      { name: "UI/UX Design", icon: <Layout className="w-6 h-6 text-fuchsia-400" /> },
+      { name: "Edge Computing", icon: <Monitor className="w-6 h-6 text-orange-400" /> }
+    ]
+  ];
 
   return (
-    <section 
-      ref={sectionRef}
-      id="capabilities"
-      className="w-full min-h-screen flex flex-col justify-center items-center bg-transparent relative overflow-hidden py-32 md:py-64 border-t border-white/10"
-    >
-      <div className="w-full max-w-[1920px] mx-auto z-10 flex flex-col justify-center h-full">
-        
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 1.2, ease: [0.16, 1, 0.3, 1] }}
-          className="px-6 md:px-24 mb-24 md:mb-48"
-        >
-          <div className="flex items-center gap-4 mb-8">
-            <div className="w-20 h-[3px] bg-white shadow-[0_0_15px_rgba(255,255,255,0.8)]" />
-            <span className="text-[14px] font-mono font-bold tracking-[0.5em] text-white uppercase drop-shadow-[0_2px_10px_rgba(0,0,0,1)]">Expertise</span>
-          </div>
-          <h2 className="text-5xl md:text-9xl font-bold tracking-tighter uppercase text-white leading-none drop-shadow-[0_0_50px_rgba(255,255,255,0.3)]">
-            Neural <span className="text-white/60 italic">Ecosystem</span>
-          </h2>
-        </motion.div>
-
-        <div className="relative w-full flex flex-col gap-4">
-          <MarqueeRow direction={-1} speed={50} isPaused={isPaused} />
-          <MarqueeRow direction={1} speed={45} isPaused={isPaused} />
-        </div>
+    <section className="relative w-full py-32 overflow-hidden bg-[#050505]">
+      {/* Glow Edges */}
+      <div className="absolute top-0 left-0 w-full h-[1px] bg-gradient-to-r from-transparent via-blue-500/20 to-transparent" />
+      <div className="absolute bottom-0 left-0 w-full h-[1px] bg-gradient-to-r from-transparent via-yellow-500/20 to-transparent" />
+      
+      <div className="max-w-7xl mx-auto px-6 relative z-10 mb-20">
+        <h2 className="text-4xl md:text-5xl text-white text-center mb-4 tracking-tight drop-shadow-md" style={{ fontFamily: "var(--font-playfair), Georgia, serif" }}>
+          The Tech Stream
+        </h2>
+        <p className="text-white/40 text-center text-sm md:text-base font-light tracking-[0.1em] uppercase" style={{ fontFamily: "var(--font-inter), sans-serif" }}>
+          Engineered for peak performance
+        </p>
       </div>
 
-      {/* Decorative Accents */}
-      <div className="absolute inset-0 z-0 pointer-events-none">
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full h-full bg-[radial-gradient(circle_at_center,_var(--tw-gradient-stops))] from-white/10 via-transparent to-transparent blur-3xl opacity-50" />
+      {/* 3 Infinite Scrolling Ticker Layers */}
+      <div className="relative flex flex-col gap-6 overflow-hidden w-full group py-4">
+        {/* Left/Right Fade Out masks across all rows */}
+        <div className="absolute top-0 left-0 w-32 h-full bg-gradient-to-r from-[#050505] to-transparent z-10 pointer-events-none" />
+        <div className="absolute top-0 right-0 w-32 h-full bg-gradient-to-l from-[#050505] to-transparent z-10 pointer-events-none" />
+
+        {techRows.map((row, rowIndex) => (
+          <div key={rowIndex} className={`flex items-center gap-6 whitespace-nowrap pl-6 ${rowIndex % 2 === 0 ? 'animate-scrolling-pills-left' : 'animate-scrolling-pills-right'}`} style={{ animationDuration: `${15 + rowIndex * 4}s` }}>
+            {[...row, ...row, ...row, ...row].map((tech, i) => (
+              <div 
+                key={`${rowIndex}-${i}`} 
+                className="inline-flex items-center gap-3 px-8 py-4 rounded-full border border-white/5 bg-white/[0.03] backdrop-blur-md text-white/80 hover:bg-white/[0.08] hover:border-white/20 hover:-translate-y-1 transition-all duration-300 font-sans shadow-[0_0_20px_rgba(0,0,0,0.3)] cursor-default"
+              >
+                <div className="drop-shadow-[0_0_8px_currentColor] opacity-90">{tech.icon}</div>
+                <span className="text-sm md:text-base font-medium tracking-wide drop-shadow-sm">{tech.name}</span>
+              </div>
+            ))}
+          </div>
+        ))}
       </div>
 
       <style jsx global>{`
-        .mask-gradient {
-          mask-image: linear-gradient(to right, transparent, black 15%, black 85%, transparent);
-          -webkit-mask-image: linear-gradient(to right, transparent, black 15%, black 85%, transparent);
+        @keyframes scroll-pills-left {
+          0% { transform: translateX(0); }
+          100% { transform: translateX(calc(-100% / 4)); }
+        }
+        @keyframes scroll-pills-right {
+          0% { transform: translateX(calc(-100% / 4)); }
+          100% { transform: translateX(0); }
+        }
+        .animate-scrolling-pills-left {
+          animation-name: scroll-pills-left;
+          animation-timing-function: linear;
+          animation-iteration-count: infinite;
+        }
+        .animate-scrolling-pills-right {
+          animation-name: scroll-pills-right;
+          animation-timing-function: linear;
+          animation-iteration-count: infinite;
+        }
+        .group:hover .animate-scrolling-pills-left,
+        .group:hover .animate-scrolling-pills-right {
+          animation-play-state: paused;
         }
       `}</style>
     </section>
