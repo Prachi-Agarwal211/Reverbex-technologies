@@ -54,26 +54,26 @@ export default function ContactSection() {
           </p>
         </motion.div>
 
-        <div className="flex flex-col md:flex-row gap-6 w-full lg:w-[60%] pointer-events-auto">
+        <div className="flex flex-col md:flex-row gap-4 md:gap-6 w-full lg:w-[60%] pointer-events-auto">
           {/* Contact Card */}
           <motion.div 
             initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, margin: "-50px" }}
             transition={{ duration: 0.8, delay: 0.1, ease: [0.16, 1, 0.3, 1] }}
-            className="flex-[1.5] p-6 md:p-8 rounded-2xl border border-white/10 bg-black/40 backdrop-blur-xl hover:bg-black/60 hover:border-blue-500/40 transition-all duration-500 shadow-xl group relative overflow-hidden flex flex-col gap-4 justify-between"
+            className="flex-[1.5] p-6 md:p-8 rounded-2xl border border-white/10 bg-black/80 md:bg-black/40 md:backdrop-blur-xl hover:bg-black/90 md:hover:bg-black/60 hover:border-blue-500/40 transition-all duration-500 shadow-xl group relative overflow-hidden flex flex-col gap-4 justify-between"
           >
-            <div className="absolute inset-0 bg-gradient-to-br from-blue-500/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none" />
-            <p className="text-white/40 text-xs md:text-sm uppercase tracking-widest font-semibold group-hover:text-blue-400/50 transition-colors">Contact</p>
+            <div className="hidden md:block absolute inset-0 bg-gradient-to-br from-blue-500/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none" />
+            <p className="text-white/40 text-[10px] md:text-xs uppercase tracking-widest font-semibold group-hover:text-blue-400/50 transition-colors">Contact</p>
             
-            <div className="flex flex-col gap-2 relative z-10 font-light text-base md:text-lg">
+            <div className="flex flex-col gap-2 md:gap-3 relative z-10 font-light text-sm md:text-lg">
               <a href="mailto:15anuragsingh2003@gmail.com" className="text-white hover:text-blue-400 transition-colors truncate">
                 15anuragsingh2003@gmail.com
               </a>
               <a href="mailto:prachiagarwal211@gmail.com" className="text-white hover:text-blue-400 transition-colors truncate">
                 prachiagarwal211@gmail.com
               </a>
-              <div className="h-px w-full bg-white/10 my-2" />
+              <div className="h-px w-full bg-white/10 my-1 md:my-2" />
               <a href="tel:+919929986743" className="text-white hover:text-blue-400 transition-colors">
                 +91 99299 86743
               </a>
@@ -89,11 +89,11 @@ export default function ContactSection() {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, margin: "-50px" }}
             transition={{ duration: 0.8, delay: 0.2, ease: [0.16, 1, 0.3, 1] }}
-            className="flex-1 p-6 md:p-8 rounded-2xl border border-white/10 bg-black/40 backdrop-blur-xl hover:bg-black/60 hover:border-yellow-500/40 transition-all duration-500 shadow-xl group relative overflow-hidden flex flex-col justify-between"
+            className="flex-1 p-6 md:p-8 rounded-2xl border border-white/10 bg-black/80 md:bg-black/40 md:backdrop-blur-xl hover:bg-black/90 md:hover:bg-black/60 hover:border-yellow-500/40 transition-all duration-500 shadow-xl group relative overflow-hidden flex flex-col justify-between min-h-[160px] md:min-h-0"
           >
-            <div className="absolute inset-0 bg-gradient-to-bl from-yellow-500/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none" />
-            <p className="text-white/40 text-xs md:text-sm uppercase tracking-widest mb-2 font-semibold group-hover:text-yellow-400/50 transition-colors">Headquarters</p>
-            <p className="text-lg md:text-xl text-white relative z-10 font-light">
+            <div className="hidden md:block absolute inset-0 bg-gradient-to-bl from-yellow-500/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none" />
+            <p className="text-white/40 text-[10px] md:text-xs uppercase tracking-widest mb-2 md:mb-4 font-semibold group-hover:text-yellow-400/50 transition-colors">Headquarters</p>
+            <p className="text-base md:text-xl text-white relative z-10 font-light">
               India / Remote-First
             </p>
           </motion.div>
