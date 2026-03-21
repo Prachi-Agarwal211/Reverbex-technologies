@@ -5,7 +5,7 @@ import Lenis from "lenis";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 
-// Register ScrollTrigger once globally at module level
+// Register ScrollTrigger once globally at module level (ONLY place in the app)
 gsap.registerPlugin(ScrollTrigger);
 
 export default function SmoothScroll({
@@ -23,7 +23,6 @@ export default function SmoothScroll({
     );
 
     if (isTouchDevice) {
-      console.log("SmoothScroll: Touch device detected - skipping Lenis initialization");
       // On touch devices, GSAP ScrollTrigger still works natively
       // Just refresh after fonts load to ensure correct positions
       document.fonts.ready.then(() => {
@@ -31,8 +30,6 @@ export default function SmoothScroll({
       });
       return;
     }
-
-    console.log("SmoothScroll mounted - initializing Lenis for pointer device");
 
     const lenis = new Lenis({
       duration: 1.2,
@@ -52,10 +49,12 @@ export default function SmoothScroll({
     // Sync Lenis with GSAP ScrollTrigger
     lenis.on("scroll", ScrollTrigger.update);
 
+    // CRITICAL FIX: Store the callback function in a variable
+    // This ensures the same reference is passed to both add() and remove()
+    const gsapTickerCb = (time: number) => lenis.raf(time * 1000);
+
     // Add Lenis to GSAP's ticker
-    gsap.ticker.add((time) => {
-      lenis.raf(time * 1000);
-    });
+    gsap.ticker.add(gsapTickerCb);
 
     // Disable GSAP's default lag smoothing for smoother animations
     gsap.ticker.lagSmoothing(0);
@@ -73,8 +72,8 @@ export default function SmoothScroll({
 
     return () => {
       lenis.destroy();
-      gsap.ticker.remove(lenis.raf);
-      console.log("SmoothScroll unmounted - Lenis destroyed");
+      // Use the same callback reference for removal
+      gsap.ticker.remove(gsapTickerCb);
     };
   }, []);
 

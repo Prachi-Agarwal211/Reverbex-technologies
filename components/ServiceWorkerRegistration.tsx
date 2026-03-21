@@ -14,8 +14,6 @@ export default function ServiceWorkerRegistration() {
             scope: "/",
           });
 
-          console.log("[SW] Service Worker registered:", registration.scope);
-
           // Update service worker when new version available
           registration.addEventListener("updatefound", () => {
             const newWorker = registration.installing;
@@ -23,14 +21,13 @@ export default function ServiceWorkerRegistration() {
               newWorker.addEventListener("statechange", () => {
                 if (newWorker.state === "installed" && navigator.serviceWorker.controller) {
                   // New content available - show non-blocking notification
-                  console.log("[SW] New content available");
                   setUpdateAvailable(true);
                 }
               });
             }
           });
         } catch (error) {
-          console.error("[SW] Service Worker registration failed:", error);
+          // Service Worker registration failed
         }
       };
 

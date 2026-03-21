@@ -1,22 +1,26 @@
 import type { Metadata, Viewport } from "next";
-import { Playfair_Display, Inter } from "next/font/google";
+import { Syne, DM_Sans } from "next/font/google";
 import "./globals.css";
 import ServiceWorkerRegistration from "../components/ServiceWorkerRegistration";
 import SmoothScroll from "../components/SmoothScroll";
+import CustomCursor from "../components/CustomCursor";
 
-const playfair = Playfair_Display({
+const syne = Syne({
   subsets: ["latin"],
-  variable: "--font-playfair",
+  variable: "--font-syne",
+  weight: ["400", "500", "600", "700", "800"],
   display: "swap",
 });
 
-const inter = Inter({
+const dmSans = DM_Sans({
   subsets: ["latin"],
-  variable: "--font-inter",
+  variable: "--font-dm-sans",
+  weight: ["300", "400", "500", "600"],
   display: "swap",
 });
 
 export const metadata: Metadata = {
+  metadataBase: new URL('https://reverbex.com'),
   title: {
     default: "Reverbex Technologies",
     template: "%s | Reverbex Technologies",
@@ -29,6 +33,9 @@ export const metadata: Metadata = {
   robots: {
     index: true,
     follow: true,
+  },
+  alternates: {
+    canonical: 'https://reverbex.com',
   },
   openGraph: {
     type: "website",
@@ -70,17 +77,40 @@ export const viewport: Viewport = {
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en" className={`${playfair.variable} ${inter.variable}`} suppressHydrationWarning>
+    <html lang="en" className={`${syne.variable} ${dmSans.variable}`} suppressHydrationWarning>
       <head>
         <link rel="preconnect" href="/" />
         <link rel="preload" as="image" href="/hero-poster.jpg" fetchPriority="high" />
         <link rel="preload" as="video" href="/hero-video.webm" type="video/webm; codecs=vp9,opus" fetchPriority="high" />
-        <link rel="preload" as="video" href="/hero-video.mp4" type="video/mp4" />
+        <link rel="preload" as="video" href="/hero-video.mp4" type="video/mp4" fetchPriority="high" />
         <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
         <link rel="apple-touch-icon" href="/favicon.svg" />
         <link rel="manifest" href="/site.webmanifest" />
+        {/* JSON-LD Structured Data for SEO */}
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify({
+              "@context": "https://schema.org",
+              "@type": "Organization",
+              "name": "Reverbex Technologies",
+              "url": "https://reverbex.com",
+              "description": "We architect autonomous systems. Premium AI automation, web development, and intelligent solutions for modern enterprises.",
+              "contactPoint": {
+                "@type": "ContactPoint",
+                "email": "15anuragsingh2003@gmail.com",
+                "contactType": "customer service"
+              }
+            })
+          }}
+        />
       </head>
-      <body className={`${inter.className} overflow-x-hidden antialiased bg-black text-white`}>
+      <body className={`${dmSans.className} overflow-x-hidden antialiased bg-black text-white`}>
+        {/* Skip to Content Link for Accessibility */}
+        <a href="#main-content" className="skip-to-content">
+          Skip to main content
+        </a>
+        <CustomCursor />
         <main id="main-content" tabIndex={-1}>
           <SmoothScroll>{children}</SmoothScroll>
         </main>

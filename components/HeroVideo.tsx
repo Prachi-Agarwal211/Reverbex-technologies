@@ -3,55 +3,107 @@
 import React, { useState, useRef, useEffect } from "react";
 import { useGSAP } from "@gsap/react";
 import gsap from "gsap";
-import SplitHeading from "./SplitHeading";
+
+// SplitChars - Pure render component (no animation logic)
+interface SplitCharsProps {
+  text: string;
+  className?: string;
+  style?: React.CSSProperties;
+}
+
+function SplitChars({ text, className = "", style }: SplitCharsProps) {
+  const words = text.split(" ");
+
+  return (
+    <h2 className={className} style={style}>
+      {words.map((word, wordIndex) => (
+        <span
+          key={wordIndex}
+          className="inline-block whitespace-nowrap mr-[0.3em] overflow-hidden p-1 -m-1"
+        >
+          {word.split("").map((char, charIndex) => (
+            <span
+              key={`${wordIndex}-${charIndex}`}
+              className="hero-char inline-block"
+            >
+              {char}
+            </span>
+          ))}
+        </span>
+      ))}
+    </h2>
+  );
+}
+
+// Category label component with yellow line
+interface CategoryLabelProps {
+  label: string;
+}
+
+function CategoryLabel({ label }: CategoryLabelProps) {
+  return (
+    <div className="flex items-center gap-3 mb-3">
+      <div className="w-8 h-[1px] bg-yellow-500 shrink-0" />
+      <span
+        className="text-yellow-500 text-[clamp(0.65rem,1.5vw,0.85rem)] font-light tracking-[0.2em] uppercase"
+        style={{ fontFamily: "var(--font-dm-sans), sans-serif" }}
+      >
+        {label}
+      </span>
+    </div>
+  );
+}
 
 export default function HeroVideo() {
   const [currentIndex, setCurrentIndex] = useState(0);
-  const [isVideoLoaded, setIsVideoLoaded] = useState(false);
   const containerRef = useRef<HTMLElement>(null);
   const videoRef = useRef<HTMLVideoElement>(null);
   const videoWrapRef = useRef<HTMLDivElement>(null);
   const textContainerRef = useRef<HTMLDivElement>(null);
   const videoOverlayRef = useRef<HTMLDivElement>(null);
+  const radialVignetteRef = useRef<HTMLDivElement>(null);
+  const sideVignetteRef = useRef<HTMLDivElement>(null);
+  const progressLineRef = useRef<HTMLDivElement>(null);
+  const counterRef = useRef<HTMLDivElement>(null);
+  const scrollCueRef = useRef<HTMLDivElement>(null);
+  const exitTlRef = useRef<gsap.core.Timeline | null>(null);
+  const progressTlRef = useRef<gsap.core.Timeline | null>(null);
 
+  const DWELL_MS = 5000; // 5 seconds per statement
+
+  // Statements with label field
   const statements = [
-    { text: "Agentic Workflows", subtext: "Automating complex processes so your business can scale infinitely" },
-    { text: "System Orchestration", subtext: "Connecting disparate data to unlock new enterprise revenue" },
-    { text: "Enterprise Intelligence", subtext: "Deploying secure models that reason, execute, and drive growth" },
-    { text: "Autonomous Infrastructure", subtext: "We engineer self-sustaining systems that build your bottom line" },
+    {
+      label: "Agentic Workflows",
+      text: "Agentic Workflows",
+      subtext: "Automating complex processes so your business can scale infinitely",
+    },
+    {
+      label: "System Orchestration",
+      text: "System Orchestration",
+      subtext: "Connecting disparate data to unlock new enterprise revenue",
+    },
+    {
+      label: "Enterprise Intelligence",
+      text: "Enterprise Intelligence",
+      subtext: "Deploying secure models that reason, execute, and drive growth",
+    },
+    {
+      label: "Autonomous Infrastructure",
+      text: "Autonomous Infrastructure",
+      subtext: "We engineer self-sustaining systems that build your bottom line",
+    },
   ];
 
-  // Handle video loading
-  useEffect(() => {
-    const video = videoRef.current;
-    if (!video) return;
-
-    const handleLoadedData = () => setIsVideoLoaded(true);
-    const handleCanPlay = () => setIsVideoLoaded(true);
-
-    video.addEventListener("loadeddata", handleLoadedData);
-    video.addEventListener("canplay", handleCanPlay);
-    video.addEventListener("canplaythrough", handleCanPlay);
-
-    const fallbackTimer = setTimeout(() => setIsVideoLoaded(true), 3000);
-
-    return () => {
-      video.removeEventListener("loadeddata", handleLoadedData);
-      video.removeEventListener("canplay", handleCanPlay);
-      video.removeEventListener("canplaythrough", handleCanPlay);
-      clearTimeout(fallbackTimer);
-    };
-  }, []);
-
-  // Entrance animation - runs once on mount
+  // Hook 1: Entrance animation - runs once on mount (no deps, no scope needed for container-level)
   useGSAP(() => {
     const mm = gsap.matchMedia();
 
     mm.add("(min-width: 768px)", () => {
-      // Desktop: Subtle parallax/darkening effect on video overlay
+      // Desktop: Subtle parallax/darkening effect on main overlay (scrubbed with scroll)
       if (videoOverlayRef.current) {
         gsap.to(videoOverlayRef.current, {
-          opacity: 0.85,
+          opacity: 0.88,
           ease: "none",
           scrollTrigger: {
             trigger: containerRef.current,
@@ -64,15 +116,70 @@ export default function HeroVideo() {
     });
 
     return () => mm.revert();
-  }, { scope: containerRef });
+  }, {});
 
-  // Entry animation for text when currentIndex changes
+  // Hook 2: Entry animation for text when currentIndex changes
   useGSAP(() => {
+    // Kill previous timelines before creating new ones
+    if (exitTlRef.current) exitTlRef.current.kill();
+    if (progressTlRef.current) progressTlRef.current.kill();
+
     const subtext = textContainerRef.current?.querySelector(".hero-subtext");
     const mm = gsap.matchMedia();
 
+    // Animate progress line
+    if (progressLineRef.current) {
+      gsap.fromTo(
+        progressLineRef.current,
+        { scaleX: 0, opacity: 0 },
+        {
+          scaleX: 1,
+          opacity: 1,
+          duration: 0.8,
+          ease: "power2.out",
+          transformOrigin: "left",
+        }
+      );
+    }
+
+    // Animate counter bounce
+    if (counterRef.current) {
+      gsap.fromTo(
+        counterRef.current,
+        { scale: 0.8, opacity: 0 },
+        {
+          scale: 1,
+          opacity: 1,
+          duration: 0.5,
+          ease: "back.out(1.7)",
+          delay: 0.2,
+        }
+      );
+    }
+
     mm.add("(min-width: 768px)", () => {
-      // Desktop: SplitHeading handles character animation
+      // Desktop: Character entrance animation
+      const chars = textContainerRef.current?.querySelectorAll(".hero-char");
+      if (chars && chars.length > 0) {
+        gsap.fromTo(
+          chars,
+          {
+            y: 80,
+            opacity: 0,
+            clipPath: "polygon(0 100%, 100% 100%, 100% 100%, 0% 100%)",
+            rotateX: -45,
+          },
+          {
+            y: 0,
+            opacity: 1,
+            clipPath: "polygon(0 0, 100% 0, 100% 100%, 0% 100%)",
+            rotateX: 0,
+            stagger: 0.03,
+            duration: 0.8,
+            ease: "power4.out",
+          }
+        );
+      }
       if (subtext) {
         gsap.fromTo(
           subtext,
@@ -86,44 +193,126 @@ export default function HeroVideo() {
       // Mobile: Simple fade up
       const heading = textContainerRef.current?.querySelector("h2");
       if (heading) {
-        gsap.fromTo(heading, { opacity: 0, y: 30 }, { opacity: 1, y: 0, duration: 0.8, ease: "power2.out" });
+        gsap.fromTo(
+          heading,
+          { opacity: 0, y: 30 },
+          { opacity: 1, y: 0, duration: 0.8, ease: "power2.out" }
+        );
       }
       if (subtext) {
-        gsap.fromTo(subtext, { opacity: 0, y: 15 }, { opacity: 1, y: 0, duration: 0.8, delay: 0.3, ease: "power2.out" });
+        gsap.fromTo(
+          subtext,
+          { opacity: 0, y: 15 },
+          { opacity: 1, y: 0, duration: 0.8, delay: 0.3, ease: "power2.out" }
+        );
       }
     });
+
+    // Fade in scroll cue after entrance
+    if (scrollCueRef.current) {
+      gsap.to(scrollCueRef.current, {
+        opacity: 1,
+        duration: 0.5,
+        delay: 1.5,
+      });
+    }
 
     return () => mm.revert();
   }, { scope: textContainerRef, dependencies: [currentIndex] });
 
-  // Exit animation with cycleStatement callback
+  // Hook 3: Exit animation with cycling - uses useEffect for setInterval
+  useEffect(() => {
+    const mm = gsap.matchMedia();
+
+    const setupExitAnimation = () => {
+      // Kill previous timeline before creating new one
+      if (exitTlRef.current) exitTlRef.current.kill();
+
+      mm.add("(min-width: 768px)", () => {
+        const chars = textContainerRef.current?.querySelectorAll(".hero-char");
+        if (chars && chars.length > 0) {
+          exitTlRef.current = gsap.timeline({
+            onComplete: () => {
+              setCurrentIndex((prev) => (prev + 1) % statements.length);
+            },
+          });
+
+          exitTlRef.current.to(chars, {
+            y: -80,
+            opacity: 0,
+            clipPath: "polygon(0 0%, 100% 0%, 100% 0%, 0% 0%)",
+            rotateX: 45,
+            stagger: 0.02,
+            duration: 0.6,
+            ease: "power4.in",
+            delay: DWELL_MS / 1000 - 1, // Wait then exit
+          });
+        }
+      });
+    };
+
+    setupExitAnimation();
+
+    // Fade out scroll cue on cycle
+    if (scrollCueRef.current) {
+      gsap.to(scrollCueRef.current, {
+        opacity: 0,
+        duration: 0.5,
+        delay: DWELL_MS / 1000 - 1.5,
+      });
+    }
+
+    return () => {
+      mm.revert();
+      if (exitTlRef.current) exitTlRef.current.kill();
+    };
+  }, [currentIndex, statements.length]);
+
+  // Hook 4: Progress line animation timeline
+  useEffect(() => {
+    if (progressTlRef.current) progressTlRef.current.kill();
+
+    progressTlRef.current = gsap.timeline({
+      repeat: -1,
+      delay: 0,
+    });
+
+    if (progressLineRef.current) {
+      progressTlRef.current.to(progressLineRef.current, {
+        scaleX: 1,
+        duration: DWELL_MS / 1000,
+        ease: "none",
+        transformOrigin: "left",
+      });
+    }
+
+    return () => {
+      if (progressTlRef.current) progressTlRef.current.kill();
+    };
+  }, [currentIndex]);
+
+  // Hook 5: Remove CSS animation on desktop and let GSAP handle marquee
   useGSAP(() => {
     const mm = gsap.matchMedia();
 
     mm.add("(min-width: 768px)", () => {
-      const chars = textContainerRef.current?.querySelectorAll(".hero-char");
-      if (chars && chars.length > 0) {
-        const tl = gsap.timeline({
-          onComplete: () => {
-            setCurrentIndex((prev) => (prev + 1) % statements.length);
-          },
-        });
+      const marqueeElement = document.querySelector(".animate-marquee-left");
+      if (marqueeElement) {
+        // Remove CSS animation class - GSAP will handle it
+        gsap.set(marqueeElement, { clearProps: "animation" });
 
-        tl.to(chars, {
-          y: -80,
-          opacity: 0,
-          clipPath: "polygon(0 0%, 100% 0%, 100% 0%, 0% 0%)",
-          rotateX: 45,
-          stagger: 0.02,
-          duration: 0.6,
-          ease: "power4.in",
-          delay: 4, // Wait 4 seconds before exiting
+        // GSAP marquee animation
+        gsap.to(marqueeElement, {
+          xPercent: -50,
+          duration: 25,
+          ease: "none",
+          repeat: -1,
         });
       }
     });
 
     return () => mm.revert();
-  }, { scope: textContainerRef, dependencies: [currentIndex] });
+  }, {});
 
   const currentStatement = statements[currentIndex];
 
@@ -142,14 +331,22 @@ export default function HeroVideo() {
     <section
       id="home"
       ref={containerRef}
-      className="relative w-full h-screen flex flex-col justify-between bg-black overflow-hidden"
+      className="relative w-full h-[100dvh] flex flex-col justify-between bg-black overflow-hidden overflow-x-hidden"
+      aria-label="Hero section"
     >
+      {/* Screen reader only heading for accessibility */}
+      <h1 className="sr-only">Reverbex Technologies — Intelligent Architecture</h1>
+      
       {/* Video Background - Optimized for performance */}
-      <div ref={videoWrapRef} className="absolute inset-0 w-full h-full z-0">
-        {/* Loading Placeholder */}
-        {!isVideoLoaded && (
-          <div className="absolute inset-0 bg-gradient-to-br from-blue-950/30 via-black to-yellow-950/20 animate-pulse" />
-        )}
+      {/* will-change only on videoWrapRef */}
+      <div
+        ref={videoWrapRef}
+        className="absolute inset-0 w-full h-full z-0"
+        style={{ willChange: "transform, opacity" }}
+        aria-hidden="true"
+      >
+        {/* Loading Placeholder - removed isVideoLoaded state, using poster only */}
+        <div className="absolute inset-0 bg-gradient-to-br from-blue-950/30 via-black to-yellow-950/20" />
 
         <video
           ref={videoRef}
@@ -159,19 +356,54 @@ export default function HeroVideo() {
           playsInline
           preload="auto"
           disablePictureInPicture
-          onLoadedData={() => setIsVideoLoaded(true)}
-          className={`w-full h-full object-cover hw-accelerated transition-opacity duration-1000 ${
-            isVideoLoaded ? "opacity-100" : "opacity-0"
-          }`}
+          poster="/hero-poster.webp"
+          className="w-full h-full object-cover hw-accelerated"
+          aria-hidden="true"
         >
           {/* WebM first for Chrome/Firefox, MP4 fallback for Safari */}
           <source src="/hero-video.webm" type="video/webm; codecs=vp9,opus" />
           <source src="/hero-video.mp4" type="video/mp4" />
         </video>
 
-        {/* Subtle contrast overlay */}
-        <div ref={videoOverlayRef} className="absolute inset-0 bg-black/25 md:bg-black/20 pointer-events-none" />
+        {/* Film grain overlay */}
+        <div className="hero-grain" aria-hidden="true" />
       </div>
+
+      {/* Three-layer overlay system */}
+      {/* Layer 1: Radial corner vignette (static) */}
+      <div
+        ref={radialVignetteRef}
+        className="absolute inset-0 z-[5] pointer-events-none"
+        style={{
+          background: `
+            radial-gradient(circle at 0% 0%, rgba(0,0,0,0.4) 0%, transparent 60%),
+            radial-gradient(circle at 100% 0%, rgba(0,0,0,0.4) 0%, transparent 60%),
+            radial-gradient(circle at 100% 100%, rgba(0,0,0,0.4) 0%, transparent 60%),
+            radial-gradient(circle at 0% 100%, rgba(0,0,0,0.4) 0%, transparent 60%)
+          `,
+        }}
+        aria-hidden="true"
+      />
+
+      {/* Layer 2: Side vignettes (static) */}
+      <div
+        ref={sideVignetteRef}
+        className="absolute inset-0 z-[6] pointer-events-none"
+        style={{
+          background: `
+            linear-gradient(90deg, rgba(0,0,0,0.3) 0%, transparent 20%, transparent 80%, rgba(0,0,0,0.3) 100%),
+            linear-gradient(180deg, rgba(0,0,0,0.2) 0%, transparent 15%, transparent 85%, rgba(0,0,0,0.2) 100%)
+          `,
+        }}
+        aria-hidden="true"
+      />
+
+      {/* Layer 3: Main overlay (GSAP scrubs opacity 0.25→0.88) */}
+      <div
+        ref={videoOverlayRef}
+        className="absolute inset-0 z-[7] bg-black/25 pointer-events-none"
+        aria-hidden="true"
+      />
 
       {/* Top Navbar Spacer */}
       <div className="h-20 md:h-28 w-full shrink-0 z-10 pointer-events-none" />
@@ -182,30 +414,69 @@ export default function HeroVideo() {
         className="relative z-10 flex-1 flex flex-col justify-center pb-12 md:pb-24 px-6 md:px-16 xl:px-24 pointer-events-none w-full mx-auto max-w-[1400px]"
       >
         <div className="flex flex-col w-full items-start text-left max-w-lg">
-          {/* Desktop: SplitHeading for character-split animation */}
-          <SplitHeading
+          {/* Category label with yellow line */}
+          <CategoryLabel label={currentStatement.label} />
+
+          {/* Desktop: SplitChars for character-split animation */}
+          <SplitChars
             text={currentStatement.text}
-            className="text-[clamp(2rem,4vw,4rem)] md:text-[clamp(2.5rem,5vw,5rem)] text-white mb-2 md:mb-3 tracking-tight leading-[1.15] pt-2 pb-3 drop-shadow-xl font-medium"
+            className="text-[clamp(3rem,6.5vw,7.8rem)] md:text-[clamp(3rem,6.5vw,7.8rem)] text-white mb-2 md:mb-3 tracking-tight leading-[1.15] pt-2 pb-3 drop-shadow-xl font-medium"
             style={{
-              fontFamily: "var(--font-playfair), Georgia, serif",
+              fontFamily: "var(--font-syne), sans-serif",
               perspective: "1000px",
             }}
           />
           <p
             className="hero-subtext text-white/70 text-[clamp(0.65rem,1.5vw,0.85rem)] font-light tracking-[0.15em] uppercase mt-1 drop-shadow-md pb-2"
-            style={{ fontFamily: "var(--font-inter), sans-serif" }}
+            style={{ fontFamily: "var(--font-dm-sans), sans-serif" }}
           >
             {currentStatement.subtext}
           </p>
+
+          {/* Progress line - 1px line at bottom that GSAP animates */}
+          <div className="w-full h-[1px] bg-white/10 mt-4 overflow-hidden">
+            <div
+              ref={progressLineRef}
+              className="h-full bg-yellow-500"
+              style={{ transformOrigin: "left" }}
+            />
+          </div>
+
+          {/* Statement counter - "01 / 04" in bottom-right with bounce */}
+          <div className="flex justify-end w-full mt-2">
+            <div
+              ref={counterRef}
+              className="text-white/40 text-[clamp(0.65rem,1.5vw,0.85rem)] font-light tracking-[0.15em] uppercase"
+              style={{ fontFamily: "var(--font-dm-sans), sans-serif" }}
+            >
+              {String(currentIndex + 1).padStart(2, "0")} /{" "}
+              {String(statements.length).padStart(2, "0")}
+            </div>
+          </div>
         </div>
       </div>
 
-      {/* Infinite Scrolling Marquee - Pure CSS */}
+      {/* Scroll cue - Vertical line with CSS animation */}
+      <div
+        ref={scrollCueRef}
+        className="absolute bottom-8 left-1/2 -translate-x-1/2 z-10 opacity-0"
+      >
+        <div className="flex flex-col items-center gap-2">
+          <span className="text-white/40 text-[10px] tracking-[0.2em] uppercase">
+            Scroll
+          </span>
+          <div className="w-[1px] h-12 bg-gradient-to-b from-yellow-500 to-transparent animate-bounce-slow" />
+        </div>
+      </div>
+
+      {/* Infinite Scrolling Marquee - Pure CSS on mobile, GSAP on desktop */}
       <div
         className="relative z-10 w-full overflow-hidden py-4 md:py-6 bg-transparent"
         style={{
-          WebkitMaskImage: "linear-gradient(to right, transparent, black 15%, black 85%, transparent)",
-          maskImage: "linear-gradient(to right, transparent, black 15%, black 85%, transparent)",
+          WebkitMaskImage:
+            "linear-gradient(to right, transparent, black 15%, black 85%, transparent)",
+          maskImage:
+            "linear-gradient(to right, transparent, black 15%, black 85%, transparent)",
         }}
       >
         <div className="w-[200%] md:w-max">
@@ -219,11 +490,13 @@ export default function HeroVideo() {
                   <div key={`${loopIndex}-${index}`} className="flex items-center mx-6 md:mx-10">
                     <span
                       className="text-white/70 text-xs md:text-sm font-semibold tracking-[0.15em] uppercase"
-                      style={{ fontFamily: "var(--font-inter), sans-serif" }}
+                      style={{ fontFamily: "var(--font-dm-sans), sans-serif" }}
                     >
                       {item}
                     </span>
-                    <span className="text-yellow-500/60 mx-6 md:mx-10 text-lg md:text-xl font-light">✦</span>
+                    <span className="text-yellow-500/60 mx-6 md:mx-10 text-lg md:text-xl font-light">
+                      ✦
+                    </span>
                   </div>
                 ))}
               </React.Fragment>

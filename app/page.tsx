@@ -18,19 +18,18 @@ export default function Home() {
   // Hide loading state after preloader completes
   useEffect(() => {
     if (!isLoading) {
-      document.body.style.overflow = 'auto';
-      // Ensure body scroll is restored
-      document.documentElement.style.overflow = 'auto';
+      document.body.classList.add("loaded");
+      document.documentElement.classList.remove("preloader-active");
     } else {
-      document.body.style.overflow = 'hidden';
-      document.documentElement.style.overflow = 'hidden';
+      document.body.classList.remove("loaded");
+      document.documentElement.classList.add("preloader-active");
     }
   }, [isLoading]);
 
   return (
     <>
       {isLoading && <Preloader onComplete={() => setIsLoading(false)} />}
-      <main 
+      <main
         className="w-full relative text-white selection:bg-white/30 min-h-screen"
         aria-hidden={isLoading}
         inert={isLoading ? true : undefined}
