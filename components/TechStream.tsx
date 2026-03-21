@@ -74,17 +74,19 @@ export default function TechStream() {
 
       // Ticker items fade up on scroll entry
       const tickerItems = tickerRef.current?.querySelectorAll('.ticker-item');
-      gsap.fromTo(tickerItems,
-        { opacity: 0, scale: 0.9 },
-        {
-          opacity: 1, scale: 1, duration: 0.6, stagger: 0.02, ease: "power2.out",
-          scrollTrigger: {
-            trigger: containerRef.current,
-            start: "top 70%",
-            toggleActions: "play none none reverse",
+      if (tickerItems) {
+        gsap.fromTo(tickerItems,
+          { opacity: 0, scale: 0.9 },
+          {
+            opacity: 1, scale: 1, duration: 0.6, stagger: 0.02, ease: "power2.out",
+            scrollTrigger: {
+              trigger: containerRef.current,
+              start: "top 70%",
+              toggleActions: "play none none reverse",
+            }
           }
-        }
-      );
+        );
+      }
 
       // Parallax effect restricted to desktop via matchMedia inside context
       const mm = gsap.matchMedia();
