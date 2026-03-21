@@ -1,148 +1,116 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import gsap from "gsap";
 
-/**
- * CustomCursor - Awwwards-style custom cursor with magnetic effects
- * - Small dot that follows mouse with smooth interpolation
- * - Expands on hoverable elements
- * - Hidden on touch devices
- * - GPU-accelerated for 60fps performance
- */
 export default function CustomCursor() {
   const cursorRef = useRef<HTMLDivElement>(null);
   const cursorDotRef = useRef<HTMLDivElement>(null);
-  const [isHovering, setIsHovering] = useState(false);
-  const [isTouchDevice, setIsTouchDevice] = useState(false);
-  const [isVisible, setIsVisible] = useState(true);
+  const [isDesktop, setIsDesktop] = useState(false);
 
   useEffect(() => {
-    // Detect touch devices
-    const isTouch =
-      "ontouchstart" in window ||
-      navigator.maxTouchPoints > 0 ||
-      (navigator as any).msMaxTouchPoints > 0;
-    setIsTouchDevice(isTouch);
+    if (typeof window !== "undefined") {
+      setIsDesktop(window.innerWidth >= 768 && !window.matchMedia("(pointer: coarse)").matches);
+    }
+  }, []);
 
-    if (isTouch) return;
+  useEffect(() => {
+    if (!isDesktop || !cursorRef.current || !cursorDotRef.current) return;
 
-    // Cursor state
-    let cursorX = 0;
-    let cursorY = 0;
-    let dotX = 0;
-    let dotY = 0;
+    const cursor = cursorRef.current;
+    const dot = cursorDotRef.current;
 
-    // Mouse move handler
-    const handleMouseMove = (e: MouseEvent) => {
-      cursorX = e.clientX;
-      cursorY = e.clientY;
-      setIsVisible(true);
+    let mouseX = window.innerWidth / 2;
+    let mouseY = window.innerHeight / 2;
+    
+    let isHovering = false;
+    let activeTarget: HTMLElement | null = null;
 
-      // Immediate dot movement
-      gsap.to(cursorDotRef.current, {
-        x: cursorX - 8,
-        y: cursorY - 8,
-        duration: 0.1,
-        ease: "power2.out",
-      });
-    };
+    gsap.set(cursor, { xPercent: -50, yPercent: -50 });
+    gsap.set(dot, { xPercent: -50, yPercent: -50 });
 
-    // Hide cursor when leaving window
-    const handleMouseLeave = () => {
-      setIsVisible(false);
-    };
+    const mouseMove = (e: MouseEvent) => {
+      mouseX = e.clientX;
+      mouseY = e.clientY;
 
-    // Show cursor when entering window
-    const handleMouseEnter = () => {
-      setIsVisible(true);
-    };
+      if (!isHovering) {
+        gsap.to(cursor, { x: mouseX, y: mouseY, duration: 0.6, ease: "power3.out", overwrite: "auto" });
+        gsap.to(dot, { x: mouseX, y: mouseY, duration: 0.1, overwrite: "auto" });
+      } else if (activeTarget) {
+        const rect = activeTarget.getBoundingClientRect();
+        const targetX = rect.left + rect.width / 2;
+        const targetY = rect.top + rect.height / 2;
 
-    // Detect hoverable elements
-    const handleMouseOver = (e: MouseEvent) => {
-      const target = e.target as HTMLElement;
-      const isHoverable =
-        target.closest("a") ||
-        target.closest("button") ||
-        target.closest("[data-cursor-hover]") ||
-        target.closest("input") ||
-        target.closest("textarea") ||
-        target.closest(".cursor-pointer");
+        const distanceX = mouseX - targetX;
+        const distanceY = mouseY - targetY;
 
-      setIsHovering(!!isHoverable);
-    };
-
-    // Attach event listeners
-    window.addEventListener("mousemove", handleMouseMove);
-    window.addEventListener("mouseleave", handleMouseLeave);
-    window.addEventListener("mouseenter", handleMouseEnter);
-    window.addEventListener("mouseover", handleMouseOver);
-
-    // Animate outer cursor with lag
-    const animateCursor = () => {
-      if (cursorRef.current) {
-        const scale = isHovering ? 2.5 : 1;
-        const opacity = isHovering ? 0.5 : 1;
-
-        gsap.to(cursorRef.current, {
-          x: cursorX - 20,
-          y: cursorY - 20,
-          scale,
-          opacity,
-          duration: 0.3,
-          ease: "power3.out",
-        });
+        // Snap cursor to center of element with slight pull
+        gsap.to(cursor, { x: targetX + distanceX * 0.1, y: targetY + distanceY * 0.1, duration: 0.4, ease: "power2.out", overwrite: "auto" });
+        gsap.to(dot, { x: targetX + distanceX * 0.05, y: targetY + distanceY * 0.05, duration: 0.2, overwrite: "auto" });
+        
+        // Pull the element itself using hardware acceleration
+        gsap.to(activeTarget, { x: distanceX * 0.2, y: distanceY * 0.2, duration: 0.4, ease: "power2.out", overwrite: "auto" });
       }
-      requestAnimationFrame(animateCursor);
     };
 
-    animateCursor();
+    const mouseEnter = (e: MouseEvent) => {
+      const target = (e.target as HTMLElement).closest('a, button, .magnetic') as HTMLElement;
+      if (target) {
+        isHovering = true;
+        activeTarget = target;
+        gsap.to(cursor, { scale: 2.5, backgroundColor: "rgba(255,255,255,0.1)", borderColor: "transparent", duration: 0.3 });
+        gsap.to(dot, { scale: 0, duration: 0.3 });
+      }
+    };
+
+    const mouseLeave = (e: MouseEvent) => {
+      const target = (e.target as HTMLElement).closest('a, button, .magnetic') as HTMLElement;
+      if (target && activeTarget === target) {
+        isHovering = false;
+        gsap.to(cursor, { scale: 1, backgroundColor: "transparent", borderColor: "rgba(255,255,255,0.4)", duration: 0.3 });
+        gsap.to(dot, { scale: 1, duration: 0.3 });
+        
+        // Reset element position
+        gsap.to(activeTarget, { x: 0, y: 0, duration: 0.6, ease: "elastic.out(1, 0.3)", overwrite: "auto" });
+        activeTarget = null;
+      }
+    };
+
+    const mouseDown = () => {
+       if(!isHovering) gsap.to(cursor, { scale: 0.8, duration: 0.2 });
+    }
+    const mouseUp = () => {
+       if(!isHovering) gsap.to(cursor, { scale: 1, duration: 0.2 });
+    }
+
+    window.addEventListener("mousemove", mouseMove);
+    document.addEventListener("mouseover", mouseEnter);
+    document.addEventListener("mouseout", mouseLeave);
+    document.addEventListener("mousedown", mouseDown);
+    document.addEventListener("mouseup", mouseUp);
 
     return () => {
-      window.removeEventListener("mousemove", handleMouseMove);
-      window.removeEventListener("mouseleave", handleMouseLeave);
-      window.removeEventListener("mouseenter", handleMouseEnter);
-      window.removeEventListener("mouseover", handleMouseOver);
+      window.removeEventListener("mousemove", mouseMove);
+      document.removeEventListener("mouseover", mouseEnter);
+      document.removeEventListener("mouseout", mouseLeave);
+      document.removeEventListener("mousedown", mouseDown);
+      document.removeEventListener("mouseup", mouseUp);
     };
-  }, [isHovering]);
+  }, [isDesktop]);
 
-  // Don't render on touch devices
-  if (isTouchDevice) return null;
+  if (!isDesktop) return null;
 
   return (
     <>
-      <style jsx global>{`
-        /* Hide default cursor on desktop */
-        @media (hover: hover) {
-          body {
-            cursor: none !important;
-          }
-          body * {
-            cursor: none !important;
-          }
-        }
-      `}</style>
-
-      {/* Outer cursor ring */}
-      <div
-        ref={cursorRef}
-        className={`fixed top-0 left-0 w-10 h-10 rounded-full border border-white/40 pointer-events-none z-[9999] mix-blend-difference transition-colors duration-300 ${
-          isHovering ? "bg-white/20 border-white/60" : "bg-transparent"
-        }`}
-        style={{
-          willChange: "transform, opacity",
-          transform: "translateZ(0)",
-        }}
+      <div 
+        ref={cursorRef} 
+        className="fixed top-0 left-0 w-8 h-8 border border-white/40 rounded-full pointer-events-none z-[100] mix-blend-exclusion flex items-center justify-center hw-accelerated"
+        style={{ transform: "translate3d(0,0,0)" }}
       />
-
-      {/* Inner cursor dot */}
-      <div
-        ref={cursorDotRef}
-        className="fixed top-0 left-0 w-4 h-4 rounded-full bg-white pointer-events-none z-[9999] mix-blend-difference"
-        style={{
-          willChange: "transform",
-          transform: "translateZ(0)",
-        }}
+      <div 
+        ref={cursorDotRef} 
+        className="fixed top-0 left-0 w-1.5 h-1.5 bg-white rounded-full pointer-events-none z-[100] mix-blend-exclusion hw-accelerated"
+        style={{ transform: "translate3d(0,0,0)" }}
       />
     </>
   );

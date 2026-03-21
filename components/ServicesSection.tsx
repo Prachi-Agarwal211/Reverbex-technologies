@@ -1,205 +1,204 @@
 "use client";
 
 import React, { useRef, useEffect } from "react";
-import { motion, useScroll, useTransform } from "framer-motion";
 import Image from "next/image";
+import { ArrowRight } from "lucide-react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 
-if (typeof window !== "undefined") {
-  gsap.registerPlugin(ScrollTrigger);
-}
-
 const services = [
-  { 
-    title: "AI Agents", 
-    desc: "Intelligent autonomous agents that handle complex business processes 24/7, from customer support to data processing.",
-    icon: "🤖",
-    img: "https://images.unsplash.com/photo-1620712943543-bcc4688e7485?q=80&w=1600&auto=format&fit=crop"
+  {
+    title: "AI Development",
+    category: "01",
+    desc: "Custom large language models, autonomous agents, and intelligent workflows tailored precisely to your enterprise requirements.",
+    image: "https://images.unsplash.com/photo-1620712943543-bcc4688e7485?auto=format&fit=crop&q=80&w=1200",
+    tags: ["LLMs", "Neural Networks", "Computer Vision"]
   },
-  { 
-    title: "AI Automations", 
-    desc: "Streamline operations with intelligent workflows that learn and adapt to your business needs.",
-    icon: "⚡",
-    img: "https://images.unsplash.com/photo-1485827404703-89b55fcc595e?q=80&w=1600&auto=format&fit=crop"
+  {
+    title: "System Architecture",
+    category: "02",
+    desc: "Scalable, high-performance distributed systems designed to handle immense data loads with zero downtime.",
+    image: "https://images.unsplash.com/photo-1451187580459-43490279c0fa?auto=format&fit=crop&q=80&w=1200",
+    tags: ["Microservices", "Cloud Native", "DevOps"]
   },
-  { 
-    title: "CRM Systems", 
-    desc: "Custom CRM solutions built for your unique business requirements with automation and analytics.",
-    icon: "💎",
-    img: "https://images.unsplash.com/photo-1551288049-bebda4e38f71?q=80&w=1600&auto=format&fit=crop"
-  },
-  { 
-    title: "Custom Software", 
-    desc: "Tailored software solutions from frontend to backend, built with modern technologies.",
-    icon: "✦",
-    img: "https://images.unsplash.com/photo-1498050108023-c5249f4df085?q=80&w=1600&auto=format&fit=crop"
-  },
+  {
+    title: "Data Intelligence",
+    category: "03",
+    desc: "Advanced analytics and predictive modeling pipelines that transform raw data into actionable strategic insights.",
+    image: "https://images.unsplash.com/photo-1550751827-4bd374c3f58b?auto=format&fit=crop&q=80&w=1200",
+    tags: ["Data Pipelines", "Machine Learning", "Analytics"]
+  }
 ];
 
 export default function ServicesSection() {
   const containerRef = useRef<HTMLDivElement>(null);
   const cardsRef = useRef<HTMLDivElement>(null);
-  const { scrollYProgress } = useScroll({
-    target: containerRef,
-    offset: ["start end", "end start"],
-  });
 
-  const yBg1 = useTransform(scrollYProgress, [0, 1], ["-10%", "10%"]);
-  const yBg2 = useTransform(scrollYProgress, [0, 1], ["10%", "-10%"]);
-
-  // GSAP Effects
   useEffect(() => {
-    if (!cardsRef.current) return;
+    gsap.registerPlugin(ScrollTrigger);
+    if (!containerRef.current || !cardsRef.current) return;
 
     const ctx = gsap.context(() => {
-      // Service cards with image reveal animations
+      // Header animation
+      gsap.fromTo('.services-header',
+        { opacity: 0, y: 40 },
+        {
+          opacity: 1, y: 0, duration: 0.8, ease: "power3.out",
+          scrollTrigger: {
+            trigger: containerRef.current,
+            start: "top 80%",
+            toggleActions: "play none none reverse",
+          }
+        }
+      );
+
+      // Card Stagger & Image Reveal
       const cards = cardsRef.current?.querySelectorAll('.service-card');
-      cards?.forEach((card, i) => {
-        const image = card.querySelector('.service-image');
-        
-        // Initial state for image
-        gsap.set(image, { scale: 1.2, filter: "blur(5px)" });
+      
+      const mm = gsap.matchMedia();
+      mm.add("(min-width: 768px)", () => {
+         // Desktop animations
+         cards?.forEach((card) => {
+           const image = card.querySelector('.service-image');
+           const overlay = card.querySelector('.image-overlay');
+           const textContent = card.querySelector('.service-text-content');
+           const serviceIcon = card.querySelector('.service-icon');
+           
+           // Reveal Animation
+           gsap.fromTo(overlay, 
+             { clipPath: "polygon(0 0, 100% 0, 100% 100%, 0% 100%)" }, 
+             {
+               clipPath: "polygon(0 0, 100% 0, 100% 0%, 0% 0%)",
+               duration: 1.2, ease: "power3.inOut",
+               scrollTrigger: { trigger: card, start: "top 75%", toggleActions: "play none none reverse" }
+             }
+           );
+           
+           gsap.fromTo(image, 
+             { scale: 1.2 }, 
+             {
+               scale: 1, duration: 1.2, ease: "power3.out",
+               scrollTrigger: { trigger: card, start: "top 75%", toggleActions: "play none none reverse" }
+             }
+           );
 
-        // Scroll-triggered image reveal
-        gsap.fromTo(image,
-          { scale: 1.2, filter: "blur(5px)", opacity: 0.6 },
-          {
-            scale: 1,
-            filter: "blur(0px)",
-            opacity: 1,
-            duration: 1.2,
-            ease: "power2.out",
-            scrollTrigger: {
-              trigger: card,
-              start: "top 80%",
-              end: "top 40%",
-              scrub: 1,
-            }
-          }
-        );
+           gsap.fromTo(textContent,
+             { opacity: 0, x: -40 },
+             {
+               opacity: 1, x: 0, duration: 0.8, ease: "power3.out",
+               scrollTrigger: { trigger: card, start: "top 75%", toggleActions: "play none none reverse" }
+             }
+           );
 
-        // Card entrance animation
-        gsap.fromTo(card,
-          { 
-            opacity: 0, 
-            y: 80,
-            scale: 0.95,
-          },
-          {
-            opacity: 1,
-            y: 0,
-            scale: 1,
-            duration: 0.8,
-            ease: "power3.out",
-            scrollTrigger: {
-              trigger: card,
-              start: "top 85%",
-              toggleActions: "play none none reverse",
-            }
-          }
-        );
+           // Hover Effects via standard event listeners since it's dynamic
+           const onEnter = () => {
+             gsap.to(image, { scale: 1.05, duration: 0.8, ease: "power2.out", overwrite: "auto" });
+             gsap.to(serviceIcon, { x: 10, duration: 0.4, ease: "power2.out", overwrite: "auto" });
+           };
+           const onLeave = () => {
+             gsap.to(image, { scale: 1, duration: 0.8, ease: "power2.out", overwrite: "auto" });
+             gsap.to(serviceIcon, { x: 0, duration: 0.4, ease: "power2.out", overwrite: "auto" });
+           };
+           card.addEventListener("mouseenter", onEnter);
+           card.addEventListener("mouseleave", onLeave);
 
-        // Hover effects
-        card.addEventListener('mouseenter', () => {
-          gsap.to(image, { scale: 1.1, duration: 0.5, ease: "power2.out" });
-        });
-        
-        card.addEventListener('mouseleave', () => {
-          gsap.to(image, { scale: 1, duration: 0.5, ease: "power2.out" });
-        });
+           return () => {
+             card.removeEventListener("mouseenter", onEnter);
+             card.removeEventListener("mouseleave", onLeave);
+           }
+         });
       });
 
-    }, cardsRef);
+      mm.add("(max-width: 767px)", () => {
+         // Mobile animations: simpler fade up
+         cards?.forEach((card) => {
+           gsap.fromTo(card, 
+             { opacity: 0, y: 30 }, 
+             {
+               opacity: 1, y: 0, duration: 0.6, ease: "power2.out",
+               scrollTrigger: { trigger: card, start: "top 85%", toggleActions: "play none none reverse" }
+             }
+           );
+           
+           // Hide overlay immediately on mobile
+           const overlay = card.querySelector('.image-overlay');
+           if (overlay) gsap.set(overlay, { display: "none" });
+         });
+      });
 
+    }, containerRef);
     return () => ctx.revert();
   }, []);
 
   return (
-    <section id="services" ref={containerRef} className="relative w-full py-16 md:py-32 overflow-hidden bg-gradient-to-b from-[#050505] via-black to-[#050505]">
-      {/* Continuous Moving Gradient Orbs */}
-      <div className="absolute inset-0 pointer-events-none overflow-hidden">
-        <div className="ambient-orb w-[300px] h-[300px] md:w-[600px] md:h-[600px] bg-gradient-to-r from-blue-600/20 to-cyan-500/20" style={{ top: '0%', left: '-10%' }} />
-        <div className="ambient-orb w-[250px] h-[250px] md:w-[500px] md:h-[500px] bg-gradient-to-r from-cyan-500/15 to-yellow-500/15" style={{ top: '40%', right: '-10%', animationDelay: '-7s' }} />
-        <div className="ambient-orb w-[200px] h-[200px] md:w-[400px] md:h-[400px] bg-gradient-to-r from-blue-500/15 to-cyan-500/15" style={{ bottom: '10%', left: '20%', animationDelay: '-14s' }} />
-        <div className="ambient-orb w-[250px] h-[250px] md:w-[450px] md:h-[450px] bg-gradient-to-r from-yellow-500/15 to-amber-500/15" style={{ top: '60%', left: '40%', animationDelay: '-10s' }} />
-        <div className="absolute inset-0 mesh-gradient opacity-30" />
+    <section ref={containerRef} id="services" className="relative w-full py-24 md:py-48 bg-[#020202] overflow-hidden">
+      {/* Background static meshes */}
+      <div className="absolute inset-0 pointer-events-none">
+        <div className="absolute w-[800px] h-[800px] bg-blue-600/5 blur-[120px] rounded-full top-[-20%] right-[-10%]" />
+        <div className="absolute w-[600px] h-[600px] bg-indigo-600/5 blur-[120px] rounded-full bottom-[-10%] left-[-10%]" />
+        <div className="absolute inset-0 mesh-gradient-static opacity-20" />
       </div>
 
-      {/* Dynamic Scroll-Linked Background Glows */}
-      <motion.div 
-        style={{ y: yBg1 }}
-        className="hidden md:block absolute top-1/4 left-1/4 w-[40rem] h-[40rem] bg-indigo-500/10 rounded-full blur-[100px] pointer-events-none" 
-      />
-      <motion.div 
-        style={{ y: yBg2 }}
-        className="hidden md:block absolute bottom-1/4 right-1/4 w-[30rem] h-[30rem] bg-yellow-500/10 rounded-full blur-[100px] pointer-events-none" 
-      />
-
-      <div className="max-w-7xl mx-auto px-6 relative z-10 w-full flex flex-col items-center">
-        <motion.div
-           initial={{ opacity: 0, y: 30 }}
-           whileInView={{ opacity: 1, y: 0 }}
-           viewport={{ once: true, margin: "-100px" }}
-           transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
-           className="text-center mb-16 md:mb-20"
-        >
-          <h2 className="text-4xl md:text-6xl text-gradient-animated text-center mb-4 tracking-tight drop-shadow-md" style={{ fontFamily: "var(--font-playfair), Georgia, serif" }}>
-            What We Build
+      <div className="max-w-7xl mx-auto px-6 relative z-10">
+        <div className="services-header text-center md:text-left mb-16 md:mb-32">
+          <h2 className="text-[clamp(2.5rem,6vw,5.5rem)] text-white mb-4 tracking-tight leading-tight max-w-4xl" style={{ fontFamily: "var(--font-playfair), Georgia, serif" }}>
+            Uncompromising Digital Engineering
           </h2>
-          <p className="text-white/50 text-center text-sm md:text-lg max-w-xl mx-auto font-light tracking-[0.1em] uppercase" style={{ fontFamily: "var(--font-inter), sans-serif" }}>
-            AI Agents, Automations & Custom Software
+          <p className="text-white/50 text-[clamp(0.75rem,2vw,1rem)] uppercase tracking-[0.2em] font-light">
+            Our specialized disciplines
           </p>
-        </motion.div>
-        
-        <div ref={cardsRef} className="grid grid-cols-1 md:grid-cols-2 gap-6 lg:gap-12 w-full">
+        </div>
+
+        <div ref={cardsRef} className="flex flex-col gap-12 md:gap-24">
           {services.map((service, i) => (
-            <motion.div 
-              initial={{ opacity: 0, y: 40, scale: 0.98 }}
-              whileInView={{ opacity: 1, y: 0, scale: 1 }}
-              viewport={{ once: true, margin: "-100px" }}
-              transition={{ duration: 0.8, delay: i * 0.1, ease: [0.16, 1, 0.3, 1] }}
+            <div 
               key={i} 
-              className="service-card group relative rounded-2xl md:rounded-3xl border border-white/5 bg-[#0a0a0a] md:bg-white/[0.03] md:backdrop-blur-xl hover:bg-[#111] md:hover:bg-white/[0.08] hover:border-white/10 transition-all duration-500 overflow-hidden shadow-xl flex flex-col"
+              className="service-card group relative grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-16 items-center"
             >
-              {/* Internal subtle glow on hover */}
-              <div className="hidden md:block absolute inset-0 bg-gradient-to-br from-white/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none z-0" />
-              
-              {/* Card Image Header with reveal animation */}
-              <div className="relative w-full h-48 md:h-72 overflow-hidden z-10">
-                <div className="absolute inset-0 bg-black/40 group-hover:bg-black/20 transition-colors duration-500 z-10" />
-                <Image
-                  src={service.img}
+              <div className={`order-2 ${i % 2 === 1 ? 'md:order-1' : 'md:order-2'} relative w-full aspect-[4/3] md:aspect-video rounded-3xl overflow-hidden hw-accelerated`}>
+                <div className="image-overlay absolute inset-0 bg-[#050505] z-10" />
+                <Image 
+                  src={service.image}
                   alt={service.title}
                   fill
-                  sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-                  className="service-image w-full h-full object-cover"
-                  priority={i < 2}
-                  loading={i < 2 ? "eager" : "lazy"}
+                  className="service-image object-cover hw-accelerated"
                 />
-                
-                {/* Floating Icon over the image */}
-                <div className="absolute bottom-4 left-4 md:left-6 z-20 w-10 h-10 md:w-12 md:h-12 rounded-xl bg-black/50 border border-white/20 flex items-center justify-center backdrop-blur-md shadow-lg md:group-hover:-translate-y-2 group-hover:border-yellow-500/50 transition-all duration-500">
-                  <span className="text-lg md:text-xl text-yellow-500">{service.icon}</span>
-                </div>
+                <div className="absolute inset-0 bg-gradient-to-t from-[#020202]/80 via-transparent to-transparent z-0" />
               </div>
 
-              {/* Card Body */}
-              <div className="relative z-10 p-6 md:p-10 flex-1 flex flex-col justify-center">
-                <h3 className="text-2xl md:text-3xl text-white mb-3 md:mb-4 tracking-tight group-hover:text-yellow-400 transition-colors duration-300" style={{ fontFamily: "var(--font-playfair), Georgia, serif" }}>
+              <div className={`service-text-content order-1 ${i % 2 === 1 ? 'md:order-2' : 'md:order-1'} flex flex-col justify-center`}>
+                <div className="flex items-center gap-4 mb-6">
+                  <span className="text-yellow-500 font-semibold tracking-[0.2em] text-sm md:text-base">
+                    {service.category}
+                  </span>
+                  <div className="h-[1px] w-12 bg-yellow-500/30" />
+                </div>
+                
+                <h3 className="text-[clamp(2rem,4vw,3.5rem)] text-white mb-6 tracking-tight leading-tight group-hover:text-yellow-400 transition-colors duration-500" style={{ fontFamily: "var(--font-playfair), Georgia, serif" }}>
                   {service.title}
                 </h3>
-                <p className="text-white/60 text-sm md:text-base leading-relaxed font-light font-sans">
+                
+                <p className="text-white/60 text-base md:text-xl font-light leading-relaxed mb-8 max-w-xl">
                   {service.desc}
                 </p>
-                
-                {/* Learn More link appearance */}
-                <div className="mt-6 md:mt-8 flex items-center gap-2 md:gap-3 text-xs md:text-sm font-semibold text-yellow-500/80 group-hover:text-yellow-400 transition-colors uppercase tracking-widest cursor-pointer w-max">
-                  <span className="md:group-hover:translate-x-1 transition-transform">Explore</span>
-                  <span className="text-base md:text-lg leading-none md:group-hover:translate-x-2 transition-transform">→</span>
+
+                <div className="flex flex-wrap gap-3 mb-10">
+                  {service.tags.map((tag, j) => (
+                    <span 
+                      key={j}
+                      className="px-4 py-2 rounded-full border border-white/10 bg-white/5 text-white/70 text-sm tracking-wide font-medium"
+                    >
+                      {tag}
+                    </span>
+                  ))}
+                </div>
+
+                <div className="flex items-center gap-4 text-white hover:text-yellow-400 transition-colors duration-300 w-max cursor-pointer magnetic">
+                  <span className="uppercase tracking-[0.15em] font-semibold text-sm">Explore Expertise</span>
+                  <ArrowRight className="service-icon w-5 h-5" />
                 </div>
               </div>
-            </motion.div>
+            </div>
           ))}
         </div>
       </div>

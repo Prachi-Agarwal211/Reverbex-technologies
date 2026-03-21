@@ -1,83 +1,46 @@
 "use client";
 
 import React, { useEffect, useState, useRef } from "react";
-import { motion, AnimatePresence } from "framer-motion";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 
-if (typeof window !== "undefined") {
-  gsap.registerPlugin(ScrollTrigger);
-}
-
-const statements = [
-  { 
-    text: "AI Agents", 
-    subtext: "Autonomous agents for your business",
-    align: "left" 
-  },
-  { 
-    text: "AI Automations", 
-    subtext: "Intelligent workflow automation",
-    align: "left" 
-  },
-  { 
-    text: "CRM Systems", 
-    subtext: "Custom customer relationship management",
-    align: "left" 
-  },
-  { 
-    text: "Custom Software", 
-    subtext: "Tailored software solutions",
-    align: "left" 
-  },
-];
-
 export default function HeroVideo() {
   const [currentIndex, setCurrentIndex] = useState(0);
-  const videoRef = useRef<HTMLVideoElement>(null);
   const containerRef = useRef<HTMLElement>(null);
-  const textRef = useRef<HTMLDivElement>(null);
+  const textContainerRef = useRef<HTMLDivElement>(null);
   const videoOverlayRef = useRef<HTMLDivElement>(null);
   const marqueeRef = useRef<HTMLDivElement>(null);
 
+  const statements = [
+    { text: "Agentic Workflows", subtext: "Orchestrating autonomous logic across enterprise silos" },
+    { text: "System Orchestration", subtext: "Connecting disparate data via Model Context Protocol (MCP)" },
+    { text: "Enterprise Intelligence", subtext: "Deploying secure, localized models that reason and execute" },
+    { text: "Autonomous Infrastructure", subtext: "Beyond software. We engineer self-sustaining systems" },
+  ];
+
+  // Auto-rotate statements
   useEffect(() => {
-    const video = videoRef.current;
-    if (video) {
-      video.play().catch(e => console.log("Autoplay prevented:", e));
-    }
-    
     const interval = setInterval(() => {
       setCurrentIndex((prev) => (prev + 1) % statements.length);
     }, 4500);
     return () => clearInterval(interval);
-  }, []);
+  }, [statements.length]);
 
-  // GSAP ScrollTrigger Effects
+  // Scroll animations and marquee
   useEffect(() => {
-    if (!containerRef.current || !videoOverlayRef.current) return;
+    gsap.registerPlugin(ScrollTrigger);
+    const mm = gsap.matchMedia();
 
-    const ctx = gsap.context(() => {
-      // Video scale and opacity on scroll - creates distortion effect
-      gsap.fromTo(videoRef.current, 
-        { scale: 1, filter: "blur(0px)" },
-        {
-          scale: 1.15,
-          filter: "blur(4px)",
-          ease: "none",
-          scrollTrigger: {
-            trigger: containerRef.current,
-            start: "top top",
-            end: "bottom top",
-            scrub: 1,
-          }
-        }
-      );
+    mm.add({
+      isDesktop: "(min-width: 768px)",
+      isMobile: "(max-width: 767px)"
+    }, (context) => {
+      let { isDesktop } = context.conditions as { isDesktop: boolean };
 
-      // Video overlay opacity linked to scroll
-      gsap.fromTo(videoOverlayRef.current,
-        { opacity: 0.4 },
-        {
-          opacity: 0.8,
+      // Add a slight parallax/darkening effect only on desktop
+      if (isDesktop && videoOverlayRef.current) {
+        gsap.to(videoOverlayRef.current, {
+          opacity: 0.85,
           ease: "none",
           scrollTrigger: {
             trigger: containerRef.current,
@@ -85,156 +48,161 @@ export default function HeroVideo() {
             end: "center top",
             scrub: true,
           }
-        }
-      );
+        });
+      }
+    });
 
-      // Text reveal animation on scroll
-      if (textRef.current) {
-        const textElements = textRef.current.querySelectorAll('.hero-text-char');
-        gsap.fromTo(textElements,
-          { opacity: 0.3, y: 20, rotateX: -30 },
+    // Seamless Infinite Loop Marquee (works on both mobile & desktop)
+    if (marqueeRef.current) {
+      gsap.to(marqueeRef.current, {
+        x: "-50%", // Moving half its width since we double the items
+        ease: "none",
+        duration: 25,
+        repeat: -1,
+      });
+    }
+
+    return () => mm.revert();
+  }, []);
+
+  // Text Reveal Animation whenever statement changes
+  useEffect(() => {
+    if (!textContainerRef.current) return;
+
+    const mm = gsap.matchMedia();
+    const subtext = textContainerRef.current.querySelector('.hero-subtext');
+
+    mm.add("(min-width: 768px)", () => {
+      const chars = textContainerRef.current?.querySelectorAll('.hero-text-char');
+      if (chars && chars.length > 0) {
+        gsap.fromTo(chars,
           {
-            opacity: 1,
+            y: 80,
+            opacity: 0,
+            clipPath: "polygon(0 100%, 100% 100%, 100% 100%, 0% 100%)",
+            rotateX: -45
+          },
+          {
             y: 0,
+            opacity: 1,
+            clipPath: "polygon(0 0, 100% 0, 100% 100%, 0 100%)",
             rotateX: 0,
-            stagger: 0.02,
+            stagger: 0.03,
             duration: 0.8,
-            ease: "power3.out",
-            scrollTrigger: {
-              trigger: containerRef.current,
-              start: "top 80%",
-              end: "top 30%",
-              scrub: 1,
-            }
+            ease: "power4.out"
           }
         );
       }
 
-      // Marquee parallax
-      if (marqueeRef.current) {
-        gsap.to(marqueeRef.current, {
-          x: "-25%",
-          ease: "none",
-          scrollTrigger: {
-            trigger: containerRef.current,
-            start: "bottom 80%",
-            end: "bottom top",
-            scrub: 1,
-          }
-        });
-      }
-    }, containerRef);
+      gsap.fromTo(subtext,
+        { opacity: 0, y: 15 },
+        { opacity: 1, y: 0, duration: 0.8, delay: 0.5, ease: "power2.out" }
+      );
+    });
 
-    return () => ctx.revert();
-  }, []);
+    mm.add("(max-width: 767px)", () => {
+      const heading = textContainerRef.current?.querySelector('h2');
+      if (heading) {
+        gsap.fromTo(heading,
+          { opacity: 0, y: 30 },
+          { opacity: 1, y: 0, duration: 0.8, ease: "power2.out" }
+        );
+      }
+      gsap.fromTo(subtext,
+        { opacity: 0, y: 15 },
+        { opacity: 1, y: 0, duration: 0.8, delay: 0.3, ease: "power2.out" }
+      );
+    });
+
+    return () => mm.revert();
+  }, [currentIndex]);
 
   const currentStatement = statements[currentIndex];
 
-  // Split text into characters for scroll animation
+  // Helper to split text into words, then characters, avoiding clipping
   const splitText = (text: string) => {
-    return text.split('').map((char, i) => (
-      <span 
-        key={i} 
-        className="hero-text-char inline-block"
-        style={{ display: 'inline-block' }}
-      >
-        {char === ' ' ? '\u00A0' : char}
+    return text.split(' ').map((word, wordIndex) => (
+      <span key={wordIndex} className="inline-block whitespace-nowrap mr-[0.3em] overflow-hidden p-1 -m-1">
+        {word.split('').map((char, charIndex) => (
+          <span
+            key={charIndex}
+            className="hero-text-char inline-block hw-accelerated"
+          >
+            {char}
+          </span>
+        ))}
       </span>
     ));
   };
 
+  const marqueeItems = [
+    "MULTI-AGENT SYSTEMS", "MCP INTEGRATION", "WORKFLOW ORCHESTRATION", "LOCALIZED LLMS",
+    "AUTONOMOUS INFRASTRUCTURE", "DATA PIPELINES", "API ABSTRACTION", "ENTERPRISE AI"
+  ];
+
   return (
-    <section id="home" ref={containerRef} className="relative w-full h-screen flex flex-col justify-between overflow-hidden bg-[#050505]">
-      {/* Continuous Moving Gradient Orbs */}
-      <div className="absolute inset-0 z-0 pointer-events-none overflow-hidden">
-        {/* Orb 1 - Primary blue gradient */}
-        <div 
-          className="ambient-orb w-[500px] h-[500px] bg-gradient-to-r from-blue-600/30 to-cyan-500/30"
-          style={{ top: '10%', left: '10%', animationDelay: '0s' }}
-        />
-        {/* Orb 2 - Blue to yellow */}
-        <div 
-          className="ambient-orb w-[400px] h-[400px] bg-gradient-to-r from-cyan-500/25 to-yellow-500/25"
-          style={{ top: '50%', right: '15%', animationDelay: '-5s' }}
-        />
-        {/* Orb 3 - Blue accent */}
-        <div 
-          className="ambient-orb w-[350px] h-[350px] bg-gradient-to-r from-blue-500/20 to-cyan-500/20"
-          style={{ bottom: '20%', left: '30%', animationDelay: '-10s' }}
-        />
-        {/* Orb 4 - Yellow warm */}
-        <div 
-          className="ambient-orb w-[450px] h-[450px] bg-gradient-to-r from-yellow-500/20 to-amber-500/20"
-          style={{ top: '30%', right: '40%', animationDelay: '-15s' }}
-        />
-        {/* Mesh gradient overlay */}
-        <div className="absolute inset-0 mesh-gradient opacity-50" />
-      </div>
-      
-      {/* Absolute Video Background only for Hero */}
-      <div className="absolute inset-0 w-full h-full z-0 pointer-events-none overflow-hidden">
+    <section id="home" ref={containerRef} className="relative w-full h-screen flex flex-col justify-between bg-black overflow-hidden">
+      {/* Video Background - Optimized for performance */}
+      <div className="absolute inset-0 w-full h-full z-0">
         <video
-          ref={videoRef}
           autoPlay
           loop
           muted
           playsInline
-          preload="metadata"
-          className="w-full h-full object-cover"
+          preload="auto"
+          disablePictureInPicture
+          className="w-full h-full object-cover hw-accelerated"
         >
           <source src="/hero-video.mp4" type="video/mp4" />
         </video>
-        <div ref={videoOverlayRef} className="absolute inset-0 bg-black/40" />
-      </div>
-      
-      {/* Top Spacer to account for Navbar */}
-      <div className="h-24 md:h-32 w-full shrink-0 z-10" />
 
-      {/* Middle Content - All Left, Positioned slightly lower than center */}
-      <div ref={textRef} className="relative z-10 flex-1 flex flex-col justify-end pb-12 md:pb-24 px-6 md:px-16 xl:px-24 pointer-events-none w-full mx-auto max-w-[1400px]">
-        <AnimatePresence mode="wait">
-          <motion.div
-            key={currentIndex}
-            initial={{ opacity: 0, x: -50, filter: "blur(8px)" }}
-            animate={{ opacity: 1, x: 0, filter: "blur(0px)" }}
-            exit={{ opacity: 0, x: 50, filter: "blur(8px)" }}
-            transition={{ duration: 0.8, ease: "easeOut" }}
-            className="flex flex-col w-full md:w-[70%] lg:w-[60%] items-start text-left mr-auto"
+        {/* Subtle contrast overlay - lighter to showcase video */}
+        <div ref={videoOverlayRef} className="absolute inset-0 bg-black/25 md:bg-black/20 pointer-events-none" />
+      </div>
+
+      {/* Top Navbar Spacer */}
+      <div className="h-20 md:h-28 w-full shrink-0 z-10 pointer-events-none" />
+
+      {/* Main Hero Content Area - Left aligned for video visibility */}
+      <div className="relative z-10 flex-1 flex flex-col justify-center pb-12 md:pb-24 px-6 md:px-16 xl:px-24 pointer-events-none w-full mx-auto max-w-[1400px]">
+        <div ref={textContainerRef} className="flex flex-col w-full items-start text-left max-w-lg">
+          <h2
+            className="text-[clamp(2rem,4vw,4rem)] md:text-[clamp(2.5rem,5vw,5rem)] text-white mb-2 md:mb-3 tracking-tight leading-[1.15] pt-2 pb-3 drop-shadow-xl font-medium"
+            style={{ fontFamily: "var(--font-playfair), Georgia, serif", perspective: "1000px" }}
           >
-            <h2 
-              className="text-4xl sm:text-5xl md:text-6xl lg:text-[5.5rem] text-gradient-animated mb-4 tracking-tight leading-[1.1] drop-shadow-lg" 
-              style={{ fontFamily: "var(--font-playfair), Georgia, serif", perspective: "1000px" }}
-            >
-              {splitText(currentStatement.text)}
-            </h2>
-            <p className="text-white/70 text-xs md:text-sm lg:text-base font-light tracking-[0.2em] uppercase mt-2 drop-shadow-md" style={{ fontFamily: "var(--font-inter), sans-serif" }}>
-              {currentStatement.subtext}
-            </p>
-          </motion.div>
-        </AnimatePresence>
-      </div>
-
-      {/* Footer Running Services Bar with GSAP parallax */}
-      <div ref={marqueeRef} className="relative z-10 w-[200%] overflow-hidden py-4 md:py-6 border-t border-white/5 bg-black/40 backdrop-blur-md">
-        <div className="flex whitespace-nowrap items-center">
-          {[...Array(4)].map((_, i) => (
-            <React.Fragment key={i}>
-              {["AI AGENTS", "AI AUTOMATIONS", "CRM SYSTEMS", "CUSTOM SOFTWARE", "PROCESS AUTOMATION", "WEB APPLICATIONS", "API INTEGRATION", "SYSTEM DESIGN"].map((item, j) => (
-                <div key={`${i}-${j}`} className="flex items-center mx-6 md:mx-10">
-                  <span className="text-white/70 text-xs md:text-sm font-semibold tracking-[0.15em] uppercase" style={{ fontFamily: "var(--font-inter), sans-serif" }}>
-                    {item}
-                  </span>
-                  <span className="text-yellow-500/60 mx-6 md:mx-10 text-lg md:text-xl font-light">✦</span>
-                </div>
-              ))}
-            </React.Fragment>
-          ))}
+            {splitText(currentStatement.text)}
+          </h2>
+          <p className="hero-subtext text-white/70 text-[clamp(0.65rem,1.5vw,0.85rem)] font-light tracking-[0.15em] uppercase mt-1 drop-shadow-md pb-2" style={{ fontFamily: "var(--font-inter), sans-serif" }}>
+            {currentStatement.subtext}
+          </p>
         </div>
       </div>
 
-      <style jsx global>{`
-        @keyframes marquee { 0% { transform: translateX(0); } 100% { transform: translateX(-25%); } }
-      `}</style>
+      {/* GSAP Infinite Scrolling Marquee */}
+      <div
+        className="relative z-10 w-full overflow-hidden py-4 md:py-6 bg-transparent"
+        style={{
+          WebkitMaskImage: 'linear-gradient(to right, transparent, black 15%, black 85%, transparent)',
+          maskImage: 'linear-gradient(to right, transparent, black 15%, black 85%, transparent)'
+        }}
+      >
+        <div className="w-[200%] md:w-max">
+          <div ref={marqueeRef} className="flex whitespace-nowrap items-center hw-accelerated opacity-40">
+            {[...Array(2)].map((_, loopIndex) => (
+              <React.Fragment key={loopIndex}>
+                {marqueeItems.map((item, index) => (
+                  <div key={`${loopIndex}-${index}`} className="flex items-center mx-6 md:mx-10">
+                    <span className="text-white/70 text-xs md:text-sm font-semibold tracking-[0.15em] uppercase" style={{ fontFamily: "var(--font-inter), sans-serif" }}>
+                      {item}
+                    </span>
+                    <span className="text-yellow-500/60 mx-6 md:mx-10 text-lg md:text-xl font-light">✦</span>
+                  </div>
+                ))}
+              </React.Fragment>
+            ))}
+          </div>
+        </div>
+      </div>
     </section>
   );
 }

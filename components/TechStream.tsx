@@ -2,16 +2,12 @@
 
 import React, { useRef, useEffect } from "react";
 import { 
-  Cpu, Cloud, Box, Zap, Database, Eye,
-  GitBranch, Network, Code, Layers, Hexagon, Shield,
-  Link, Sparkles, Smartphone, Settings, Layout, Monitor
+  Cpu, Cloud, Box, Zap, Database,
+  GitBranch, Network, Code, Layers, Shield,
+  Link, Sparkles, Smartphone, Settings, Layout
 } from "lucide-react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
-
-if (typeof window !== "undefined") {
-  gsap.registerPlugin(ScrollTrigger);
-}
 
 export default function TechStream() {
   const containerRef = useRef<HTMLDivElement>(null);
@@ -46,6 +42,7 @@ export default function TechStream() {
 
   // GSAP Effects
   useEffect(() => {
+    gsap.registerPlugin(ScrollTrigger);
     if (!containerRef.current || !tickerRef.current) return;
 
     const ctx = gsap.context(() => {
@@ -53,10 +50,7 @@ export default function TechStream() {
       gsap.fromTo('.tech-header',
         { opacity: 0, y: 40 },
         {
-          opacity: 1,
-          y: 0,
-          duration: 0.8,
-          ease: "power3.out",
+          opacity: 1, y: 0, duration: 0.8, ease: "power3.out",
           scrollTrigger: {
             trigger: containerRef.current,
             start: "top 80%",
@@ -65,27 +59,35 @@ export default function TechStream() {
         }
       );
 
-      // Ticker items stagger animation
-      const tickerItems = tickerRef.current?.querySelectorAll('.ticker-item');
-      tickerItems?.forEach((item, i) => {
-        gsap.fromTo(item,
-          { opacity: 0, x: i % 2 === 0 ? -50 : 50 },
-          {
-            opacity: 1,
-            x: 0,
-            duration: 0.6,
-            ease: "power2.out",
-            scrollTrigger: {
-              trigger: containerRef.current,
-              start: "top 70%",
-              toggleActions: "play none none reverse",
-            }
-          }
-        );
+      // Infinite GSAP Marquees instead of heavy CSS keyframes
+      const rows = tickerRef.current?.querySelectorAll('.ticker-row');
+      rows?.forEach((row, rowIndex) => {
+        // We duplicated items 4 times in render, moving by 25% loops seamlessly
+        if (rowIndex % 2 === 0) {
+          gsap.to(row, { x: "-25%", ease: "none", duration: 15 + rowIndex * 2, repeat: -1 });
+        } else {
+          // Right-moving row
+          gsap.set(row, { x: "-25%" }); // Start offset
+          gsap.to(row, { x: "0%", ease: "none", duration: 15 + rowIndex * 2, repeat: -1 });
+        }
       });
 
-      // Parallax effect on scroll - restricted to desktop to prevent mobile jitter
-      let mm = gsap.matchMedia();
+      // Ticker items fade up on scroll entry
+      const tickerItems = tickerRef.current?.querySelectorAll('.ticker-item');
+      gsap.fromTo(tickerItems,
+        { opacity: 0, scale: 0.9 },
+        {
+          opacity: 1, scale: 1, duration: 0.6, stagger: 0.02, ease: "power2.out",
+          scrollTrigger: {
+            trigger: containerRef.current,
+            start: "top 70%",
+            toggleActions: "play none none reverse",
+          }
+        }
+      );
+
+      // Parallax effect restricted to desktop via matchMedia inside context
+      const mm = gsap.matchMedia();
       mm.add("(min-width: 768px)", () => {
         gsap.to(tickerRef.current, {
           y: -30,
@@ -105,13 +107,12 @@ export default function TechStream() {
   }, []);
 
   return (
-    <section ref={containerRef} className="relative w-full py-16 md:py-32 overflow-hidden bg-gradient-to-b from-[#050505] via-[#020202] to-[#050505]">
-      {/* Continuous Moving Gradient Orbs */}
+    <section ref={containerRef} className="relative w-full py-16 md:py-32 overflow-hidden bg-gradient-to-b from-[#050505] via-[#050a15] to-[#050505]">
+      {/* Static Gradient Orbs */}
       <div className="absolute inset-0 pointer-events-none overflow-hidden">
-        <div className="ambient-orb w-[300px] h-[300px] md:w-[600px] md:h-[600px] bg-gradient-to-r from-blue-600/10 to-cyan-500/10" style={{ top: '0%', left: '-10%' }} />
-        <div className="ambient-orb w-[250px] h-[250px] md:w-[500px] md:h-[500px] bg-gradient-to-r from-cyan-500/10 to-yellow-500/10" style={{ top: '30%', right: '-5%', animationDelay: '-8s' }} />
-        <div className="ambient-orb w-[200px] h-[200px] md:w-[400px] md:h-[400px] bg-gradient-to-r from-blue-500/10 to-cyan-500/10" style={{ bottom: '20%', left: '30%', animationDelay: '-15s' }} />
-        <div className="absolute inset-0 mesh-gradient opacity-25" />
+        <div className="absolute w-[600px] h-[600px] bg-blue-600/10 blur-[100px] rounded-full" style={{ top: '0%', left: '-10%' }} />
+        <div className="absolute w-[500px] h-[500px] bg-cyan-500/10 blur-[100px] rounded-full" style={{ top: '30%', right: '-5%' }} />
+        <div className="absolute inset-0 mesh-gradient-static opacity-25" />
       </div>
 
       {/* Glow Edges */}
@@ -119,18 +120,18 @@ export default function TechStream() {
       <div className="absolute bottom-0 left-0 w-full h-[1px] bg-gradient-to-r from-transparent via-yellow-500/20 to-transparent" />
       
       <div className="max-w-7xl mx-auto px-6 relative z-10 mb-20">
-        <div className="tech-header">
-          <h2 className="text-4xl md:text-5xl text-gradient-animated text-center mb-4 tracking-tight drop-shadow-md" style={{ fontFamily: "var(--font-playfair), Georgia, serif" }}>
+        <div className="tech-header text-center">
+          <h2 className="text-[clamp(2.5rem,5vw,4.5rem)] text-white mb-2 md:mb-4 tracking-tight drop-shadow-md leading-tight" style={{ fontFamily: "var(--font-playfair), Georgia, serif" }}>
             Tech Stream
           </h2>
-          <p className="text-white/40 text-center text-sm md:text-base font-light tracking-[0.1em] uppercase" style={{ fontFamily: "var(--font-inter), sans-serif" }}>
+          <p className="text-white/50 text-[clamp(0.75rem,2vw,1rem)] font-light tracking-[0.2em] uppercase" style={{ fontFamily: "var(--font-inter), sans-serif" }}>
             Built with modern technologies
           </p>
         </div>
       </div>
 
       {/* 3 Infinite Scrolling Ticker Layers with GSAP */}
-      <div ref={tickerRef} className="relative flex flex-col gap-6 overflow-hidden w-full group py-4">
+      <div ref={tickerRef} className="relative flex flex-col gap-6 overflow-hidden w-[400%] md:w-[200%] mx-auto group py-4">
         {/* Left/Right Fade Out masks across all rows */}
         <div className="absolute top-0 left-0 w-32 h-full bg-gradient-to-r from-[#050505] to-transparent z-10 pointer-events-none" />
         <div className="absolute top-0 right-0 w-32 h-full bg-gradient-to-l from-[#050505] to-transparent z-10 pointer-events-none" />
@@ -138,13 +139,12 @@ export default function TechStream() {
         {techRows.map((row, rowIndex) => (
           <div 
             key={rowIndex} 
-            className={`flex items-center gap-6 whitespace-nowrap pl-6 ${rowIndex % 2 === 0 ? 'animate-scrolling-pills-left' : 'animate-scrolling-pills-right'}`} 
-            style={{ animationDuration: `${15 + rowIndex * 4}s` }}
+            className="ticker-row flex items-center gap-6 whitespace-nowrap pl-6 hw-accelerated" 
           >
             {[...row, ...row, ...row, ...row].map((tech, i) => (
               <div 
                 key={`${rowIndex}-${i}`} 
-                className="ticker-item inline-flex items-center gap-3 px-8 py-4 rounded-full border border-white/5 bg-white/[0.03] backdrop-blur-md text-white/80 hover:bg-white/[0.08] hover:border-white/20 hover:-translate-y-1 transition-all duration-300 font-sans shadow-[0_0_20px_rgba(0,0,0,0.3)] cursor-default"
+                className="ticker-item inline-flex items-center gap-3 px-8 py-4 rounded-full border border-white/5 bg-[#0a0a0a] md:bg-white/[0.03] text-white/80 hover:bg-[#111] md:hover:bg-white/[0.08] md:hover:-translate-y-1 transition-all duration-300 font-sans shadow-lg cursor-default"
               >
                 <div className="drop-shadow-[0_0_8px_currentColor] opacity-90">{tech.icon}</div>
                 <span className="text-sm md:text-base font-medium tracking-wide drop-shadow-sm">{tech.name}</span>
@@ -153,31 +153,6 @@ export default function TechStream() {
           </div>
         ))}
       </div>
-
-      <style jsx global>{`
-        @keyframes scroll-pills-left {
-          0% { transform: translateX(0); }
-          100% { transform: translateX(calc(-100% / 4)); }
-        }
-        @keyframes scroll-pills-right {
-          0% { transform: translateX(calc(-100% / 4)); }
-          100% { transform: translateX(0); }
-        }
-        .animate-scrolling-pills-left {
-          animation-name: scroll-pills-left;
-          animation-timing-function: linear;
-          animation-iteration-count: infinite;
-        }
-        .animate-scrolling-pills-right {
-          animation-name: scroll-pills-right;
-          animation-timing-function: linear;
-          animation-iteration-count: infinite;
-        }
-        .group:hover .animate-scrolling-pills-left,
-        .group:hover .animate-scrolling-pills-right {
-          animation-play-state: paused;
-        }
-      `}</style>
     </section>
   );
 }

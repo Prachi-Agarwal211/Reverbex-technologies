@@ -79,9 +79,6 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <link rel="manifest" href="/site.webmanifest" />
       </head>
       <body className={`${inter.className} overflow-x-hidden antialiased bg-black text-white`}>
-        <a href="#main-content" className="skip-to-content">
-          Skip to main content
-        </a>
         <main id="main-content" tabIndex={-1}>
           <SmoothScroll>{children}</SmoothScroll>
         </main>

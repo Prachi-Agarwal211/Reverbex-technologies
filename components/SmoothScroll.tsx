@@ -27,15 +27,7 @@ export default function SmoothScroll({
       gestureOrientation: "vertical",
       smoothWheel: true,
       wheelMultiplier: 1,
-      touchMultiplier: 1.5,
-      infinite: false,
-      prevent: (node: HTMLElement) => {
-        // Prevent smooth scroll on specific elements
-        if (node.closest("[data-lenis-prevent]")) {
-          return true;
-        }
-        return false;
-      },
+      touchMultiplier: 2,
     });
 
     lenisRef.current = lenis;
@@ -54,13 +46,9 @@ export default function SmoothScroll({
     // Disable GSAP's default lag smoothing for smoother animations
     gsap.ticker.lagSmoothing(0);
 
-    // Add class to html element for Lenis styles
-    document.documentElement.classList.add("lenis");
-
     return () => {
       lenis.destroy();
       gsap.ticker.remove(lenis.raf);
-      document.documentElement.classList.remove("lenis");
       console.log("SmoothScroll unmounted - Lenis destroyed");
     };
   }, []);
