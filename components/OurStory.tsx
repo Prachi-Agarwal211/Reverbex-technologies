@@ -44,19 +44,19 @@ export default function OurStory() {
       <div className="max-w-5xl mx-auto px-6 relative z-10 w-full flex flex-col gap-16 md:gap-24">
         <div className="story-paragraph">
           <p className="text-[clamp(1.75rem,4vw,3.5rem)] text-white/60 font-light leading-[1.3] tracking-tight" style={{ fontFamily: "var(--font-playfair), Georgia, serif" }}>
-            For the past 12 months, we operated in stealth. We weren&apos;t just building applications; we were engineering the <span className="text-white font-medium italic">connective tissue</span> for autonomous enterprises.
+            For the past 12 months, we operated in stealth. We weren&apos;t just building applications; we were engineering the <span className="text-white font-medium italic">connective tissue</span> that allows modern enterprises to scale without friction.
           </p>
         </div>
 
         <div className="story-paragraph">
           <p className="text-[clamp(1.75rem,4vw,3.5rem)] text-white/60 font-light leading-[1.3] tracking-tight" style={{ fontFamily: "var(--font-playfair), Georgia, serif" }}>
-            We obsessed over multi-agent workflows, Model Context Protocol (MCP), and secure data pipelines. We didn&apos;t want models that just chat—we built infrastructures where AI <span className="text-white font-medium italic">reasons, integrates, and executes</span>.
+            We obsessed over multi-agent workflows and secure data pipelines. Because true digital transformation isn&apos;t about shiny tools—it&apos;s about deploying AI that drives <span className="text-white font-medium italic">measurable business growth</span> and operational autonomy.
           </p>
         </div>
 
         <div className="story-paragraph">
           <p className="text-[clamp(1.75rem,4vw,3.5rem)] text-white/60 font-light leading-[1.3] tracking-tight" style={{ fontFamily: "var(--font-playfair), Georgia, serif" }}>
-            Our foundational projects—from complex institutional databases to headless commerce—were the proving grounds for this architecture. Now, we are deploying <span className="text-white font-medium italic">production-grade orchestration</span>. Welcome to the new standard.
+            Our foundational projects—from institutional databases to headless commerce—proved our architecture. Now, we are partnering with forward-thinking leaders to integrate <span className="text-white font-medium italic">production-grade intelligence</span> into their core business. Let&apos;s build your unfair advantage.
           </p>
         </div>
       </div>

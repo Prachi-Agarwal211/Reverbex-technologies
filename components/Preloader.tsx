@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect, useState, useRef } from "react";
+import React, { useEffect, useRef } from "react";
 import gsap from "gsap";
 
 interface PreloaderProps {
@@ -8,7 +8,6 @@ interface PreloaderProps {
 }
 
 export default function Preloader({ onComplete }: PreloaderProps) {
-  const [progress, setProgress] = useState(0);
   const containerRef = useRef<HTMLDivElement>(null);
   const coreRef = useRef<HTMLDivElement>(null);
   const ring1Ref = useRef<HTMLDivElement>(null);
@@ -17,24 +16,10 @@ export default function Preloader({ onComplete }: PreloaderProps) {
   const percentageRef = useRef<HTMLDivElement>(null);
   const brandRef = useRef<HTMLDivElement>(null);
   const taglineRef = useRef<HTMLDivElement>(null);
+  const hasCompletedRef = useRef(false);
+  const progressRef = useRef(0);
 
-  // Progress simulation
-  useEffect(() => {
-    const interval = setInterval(() => {
-      setProgress((prev) => {
-        if (prev >= 100) {
-          clearInterval(interval);
-          return 100;
-        }
-        const increment = Math.max(1, Math.floor(Math.random() * 15));
-        return Math.min(prev + increment, 100);
-      });
-    }, 100);
-
-    return () => clearInterval(interval);
-  }, []);
-
-  // GSAP animations
+  // GSAP animations - runs ONCE on mount
   useEffect(() => {
     const ctx = gsap.context(() => {
       // Initial setup
@@ -90,40 +75,62 @@ export default function Preloader({ onComplete }: PreloaderProps) {
         ease: "none"
       });
 
-      // Progress bar animation
-      gsap.to(progressFillRef.current, {
-        width: `${progress}%`,
-        duration: 0.3,
-        ease: "power2.out"
-      });
+      // Progress simulation with GSAP
+      let currentProgress = 0;
+      const progressInterval = setInterval(() => {
+        if (currentProgress >= 100) {
+          clearInterval(progressInterval);
+          
+          // Only trigger exit once
+          if (!hasCompletedRef.current) {
+            hasCompletedRef.current = true;
+            
+            // Small delay to show 100% before exiting
+            setTimeout(() => {
+              const exitTl = gsap.timeline({
+                onComplete: () => {
+                  // Ensure visibility is hidden after animation
+                  if (containerRef.current) {
+                    containerRef.current.style.visibility = 'hidden';
+                    containerRef.current.style.pointerEvents = 'none';
+                  }
+                  onComplete();
+                }
+              });
 
-      // Update percentage text
-      gsap.to(percentageRef.current, {
-        innerText: Math.round(progress),
-        duration: 0.3,
-        snap: { innerText: 1 },
-        onUpdate: function() {
-          this.targets()[0].innerText = Math.round(progress) + "%";
+              exitTl.to(containerRef.current, {
+                y: -50,
+                opacity: 0,
+                duration: 0.6,
+                ease: "power4.inOut"
+              });
+            }, 300);
+          }
+          return;
         }
-      });
-
-      // Exit animation when progress reaches 100
-      if (progress >= 100) {
-        const exitTl = gsap.timeline({
-          onComplete: onComplete
+        
+        const increment = Math.max(1, Math.floor(Math.random() * 15));
+        currentProgress = Math.min(currentProgress + increment, 100);
+        progressRef.current = currentProgress;
+        
+        // Animate progress bar
+        gsap.to(progressFillRef.current, {
+          width: `${currentProgress}%`,
+          duration: 0.15,
+          ease: "power2.out"
         });
 
-        exitTl.to(containerRef.current, {
-          y: -50,
-          opacity: 0,
-          duration: 0.6,
-          ease: "power4.inOut" as any
-        });
-      }
+        // Update percentage text
+        percentageRef.current!.innerText = Math.round(currentProgress) + "%";
+      }, 100);
+
+      return () => {
+        clearInterval(progressInterval);
+      };
     }, containerRef);
 
     return () => ctx.revert();
-  }, [progress, onComplete]);
+  }, [onComplete]);
 
   return (
     <div

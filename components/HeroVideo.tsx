@@ -14,10 +14,10 @@ export default function HeroVideo() {
   const videoRef = useRef<HTMLVideoElement>(null);
 
   const statements = [
-    { text: "Agentic Workflows", subtext: "Orchestrating autonomous logic across enterprise silos" },
-    { text: "System Orchestration", subtext: "Connecting disparate data via Model Context Protocol (MCP)" },
-    { text: "Enterprise Intelligence", subtext: "Deploying secure, localized models that reason and execute" },
-    { text: "Autonomous Infrastructure", subtext: "Beyond software. We engineer self-sustaining systems" },
+    { text: "Agentic Workflows", subtext: "Automating complex processes so your business can scale infinitely" },
+    { text: "System Orchestration", subtext: "Connecting disparate data to unlock new enterprise revenue" },
+    { text: "Enterprise Intelligence", subtext: "Deploying secure models that reason, execute, and drive growth" },
+    { text: "Autonomous Infrastructure", subtext: "We engineer self-sustaining systems that build your bottom line" },
   ];
 
   // Auto-rotate statements

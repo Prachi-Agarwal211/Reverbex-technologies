@@ -19,12 +19,24 @@ body {
   font-family: var(--font-inter), -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
   letter-spacing: -0.01em;
   background: #000;
-  /* Removed overflow-x: hidden for deep Lenis/ScrollTrigger compatibility */
+  /* Prevent scroll during preloader */
+  overflow: hidden;
+}
+
+/* Once preloader is done, allow scroll */
+body.loaded {
+  overflow: auto;
 }
 
 h1, h2, h3, h4, h5, h6 {
   font-family: var(--font-playfair), Georgia, serif;
   letter-spacing: -0.02em;
+}
+
+/* Prevent flash of unstyled content */
+main[aria-hidden="true"] {
+  visibility: hidden;
+  pointer-events: none;
 }
 
 /* Lenis Settings */
@@ -58,7 +70,7 @@ html.lenis, html.lenis body {
 /* Static Mesh Gradient - high performance */
 .mesh-gradient-static {
   background-color: #050505;
-  background-image: 
+  background-image:
     radial-gradient(at 40% 20%, hsla(217, 91%, 60%, 0.1) 0px, transparent 50%),
     radial-gradient(at 80% 0%, hsla(187, 100%, 45%, 0.1) 0px, transparent 50%),
     radial-gradient(at 0% 50%, hsla(45, 93%, 47%, 0.05) 0px, transparent 50%),

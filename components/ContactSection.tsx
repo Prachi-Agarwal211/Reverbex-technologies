@@ -81,24 +81,29 @@ export default function ContactSection() {
 
       {/* Content strictly positioned at the bottom */}
       <div className="relative z-20 w-full max-w-7xl mx-auto px-6 pb-12 md:pb-20 flex flex-col items-start justify-end pointer-events-none">
-        
+
         {/* Massive Minimalist Heading */}
-        <div className="w-full mb-16 md:mb-32 flex flex-wrap gap-4 md:gap-8 pointer-events-auto">
-           {("Let's Build.").split(" ").map((word, i) => (
+        <div className="w-full mb-16 md:mb-32 flex flex-col gap-6 pointer-events-auto">
+           <div className="flex flex-wrap gap-4 md:gap-8">
+           {("Ready to scale?").split(" ").map((word, i) => (
              <div key={i} className="overflow-hidden mobile-reveal pb-2">
-               <h2 
-                 className="contact-title-word text-[clamp(4.5rem,14vw,14rem)] text-white tracking-tighter leading-none inline-block hw-accelerated pr-2 md:pr-4" 
+               <h2
+                 className="contact-title-word text-[clamp(4.5rem,14vw,14rem)] text-white tracking-tighter leading-none inline-block hw-accelerated pr-2 md:pr-4"
                  style={{ fontFamily: "var(--font-playfair), Georgia, serif", perspective: "800px" }}
                >
                  {word}
                </h2>
              </div>
            ))}
+           </div>
+           <p className="hero-subtext text-white/70 text-[clamp(0.65rem,1.5vw,0.85rem)] font-light tracking-[0.15em] uppercase mt-1 drop-shadow-md pb-2 mobile-reveal max-w-2xl" style={{ fontFamily: "var(--font-inter), sans-serif" }}>
+              Partner with us to deploy intelligent architecture that reduces overhead, automates workflows, and accelerates your business growth.
+           </p>
         </div>
 
         {/* Clean CSS Grid for contact info */}
         <div className="w-full grid grid-cols-1 md:grid-cols-3 gap-12 md:gap-6 border-t border-white/10 pt-10 md:pt-16 pointer-events-auto">
-           
+
            <div className="contact-link-group mobile-reveal flex flex-col items-start gap-4">
               <span className="text-white/40 text-[10px] md:text-xs uppercase tracking-[0.2em] font-medium">Inquiries</span>
               <div className="flex flex-col gap-3">
@@ -146,8 +151,8 @@ export default function ContactSection() {
           <p className="text-white/30 text-[10px] md:text-xs tracking-[0.2em] uppercase">
             © 2026 Reverbex Technologies • Redefining Operations
           </p>
-          <a 
-            href="#home" 
+          <a
+            href="#home"
             className="text-white/40 hover:text-white text-[10px] md:text-xs tracking-[0.2em] uppercase transition-colors"
           >
             Back to Top

@@ -1,19 +1,16 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
-import dynamic from "next/dynamic";
-
-// Dynamically import components for better performance
-const Navbar = dynamic(() => import("../components/Navbar"), { ssr: false });
-const HeroVideo = dynamic(() => import("../components/HeroVideo"), { ssr: false });
-const OurStory = dynamic(() => import("../components/OurStory"), { ssr: false });
-const ServicesSection = dynamic(() => import("../components/ServicesSection"), { ssr: false });
-const FeaturedArchitectures = dynamic(() => import("../components/FeaturedArchitectures"), { ssr: false });
-const Methodology = dynamic(() => import("../components/Methodology"), { ssr: false });
-const TechStream = dynamic(() => import("../components/TechStream"), { ssr: false });
-const Founders = dynamic(() => import("../components/Founders"), { ssr: false });
-const ContactSection = dynamic(() => import("../components/ContactSection"), { ssr: false });
-const Preloader = dynamic(() => import("../components/Preloader"), { ssr: false });
+import Navbar from "../components/Navbar";
+import HeroVideo from "../components/HeroVideo";
+import OurStory from "../components/OurStory";
+import ServicesSection from "../components/ServicesSection";
+import FeaturedArchitectures from "../components/FeaturedArchitectures";
+import Methodology from "../components/Methodology";
+import TechStream from "../components/TechStream";
+import Founders from "../components/Founders";
+import ContactSection from "../components/ContactSection";
+import Preloader from "../components/Preloader";
 
 export default function Home() {
   const [isLoading, setIsLoading] = useState(true);
@@ -22,17 +19,22 @@ export default function Home() {
   useEffect(() => {
     if (!isLoading) {
       document.body.style.overflow = 'auto';
+      // Ensure body scroll is restored
+      document.documentElement.style.overflow = 'auto';
     } else {
       document.body.style.overflow = 'hidden';
+      document.documentElement.style.overflow = 'hidden';
     }
   }, [isLoading]);
 
   return (
     <>
-      <Preloader onComplete={() => setIsLoading(false)} />
-      <main className={`w-full relative text-white selection:bg-white/30 min-h-screen ${
-        isLoading ? 'invisible' : 'visible'
-      }`}>
+      {isLoading && <Preloader onComplete={() => setIsLoading(false)} />}
+      <main 
+        className="w-full relative text-white selection:bg-white/30 min-h-screen"
+        aria-hidden={isLoading}
+        inert={isLoading ? true : undefined}
+      >
         <Navbar />
         <HeroVideo />
         <OurStory />
