@@ -9,7 +9,6 @@ export default function OurStory() {
   const containerRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    gsap.registerPlugin(ScrollTrigger);
     if (!containerRef.current) return;
 
     const ctx = gsap.context(() => {

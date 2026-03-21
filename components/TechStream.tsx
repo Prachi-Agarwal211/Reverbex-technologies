@@ -42,7 +42,6 @@ export default function TechStream() {
 
   // GSAP Effects
   useEffect(() => {
-    gsap.registerPlugin(ScrollTrigger);
     if (!containerRef.current || !tickerRef.current) return;
 
     const ctx = gsap.context(() => {
@@ -54,26 +53,15 @@ export default function TechStream() {
           scrollTrigger: {
             trigger: containerRef.current,
             start: "top 80%",
-            toggleActions: "play none none reverse",
+            toggleActions: "play none none none",
           }
         }
       );
 
-      // Use CSS marquees for mobile (compositor thread), GSAP only for desktop
+      // Desktop parallax - mobile uses CSS only
       const mm = gsap.matchMedia();
-      
-      mm.add("(min-width: 768px)", () => {
-        const rows = tickerRef.current?.querySelectorAll('.ticker-row');
-        rows?.forEach((row, rowIndex) => {
-          if (rowIndex % 2 === 0) {
-            gsap.to(row, { x: "-25%", ease: "none", duration: 15 + rowIndex * 2, repeat: -1 });
-          } else {
-            gsap.set(row, { x: "-25%" });
-            gsap.to(row, { x: "0%", ease: "none", duration: 15 + rowIndex * 2, repeat: -1 });
-          }
-        });
 
-        // Desktop parallax
+      mm.add("(min-width: 768px)", () => {
         gsap.to(tickerRef.current, {
           y: -30,
           ease: "none",
@@ -86,11 +74,6 @@ export default function TechStream() {
         });
       });
 
-      mm.add("(max-width: 767px)", () => {
-        // Mobile: CSS animations handle marquees (compositor thread)
-        // No GSAP needed - CSS .animate-marquee-left/right classes handle it
-      });
-
       // Ticker items fade up on scroll entry
       const tickerItems = tickerRef.current?.querySelectorAll('.ticker-item');
       if (tickerItems) {
@@ -101,7 +84,7 @@ export default function TechStream() {
             scrollTrigger: {
               trigger: containerRef.current,
               start: "top 70%",
-              toggleActions: "play none none reverse",
+              toggleActions: "play none none none",
             }
           }
         );

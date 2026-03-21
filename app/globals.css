@@ -178,3 +178,100 @@ html.lenis, html.lenis body {
   animation: subtle-shimmer 30s linear infinite;
   will-change: background-position;
 }
+
+/* FractalGlassBackground - Desktop */
+.fractal-glass-desktop {
+  background-color: #050505;
+  background-image:
+    url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.15' style='mix-blend-mode: overlay;'/%3E%3C/svg%3E"),
+    repeating-linear-gradient(90deg,
+      rgba(0,0,0,0.15) 0px,
+      rgba(0,0,0,0.15) 2px,
+      transparent 2px,
+      transparent 6px
+    ),
+    repeating-linear-gradient(90deg,
+      rgba(255,255,255,0.03) 0px,
+      rgba(255,255,255,0.01) 2px,
+      transparent 2px,
+      transparent 12px
+    ),
+    radial-gradient(ellipse 80% 150% at 20% -10%, rgba(6, 182, 212, 0.45) 0%, transparent 70%),
+    radial-gradient(ellipse 80% 150% at 80% 110%, rgba(234, 179, 8, 0.35) 0%, transparent 70%);
+  background-blend-mode: overlay, normal, normal, screen, screen;
+  background-size: 150px 150px, 100% 100%, 100% 100%, 100% 100%, 100% 100%;
+}
+
+@keyframes subtle-pan {
+  0% { background-position: 0 0, 0 0, 0 0, 0 0, 0 0; }
+  100% { background-position: 150px 150px, 0 0, 0 0, 0 0, 0 0; }
+}
+
+.animate-shimmer {
+  animation: subtle-pan 20s linear infinite;
+  will-change: background-position;
+}
+
+/* FractalGlassBackground - Mobile */
+.fractal-glass-mobile {
+  background:
+    linear-gradient(180deg, #050505 0%, #050a15 50%, #050505 100%),
+    radial-gradient(ellipse 100% 80% at 20% -10%, rgba(6, 182, 212, 0.25) 0%, transparent 60%),
+    radial-gradient(ellipse 100% 80% at 80% 110%, rgba(234, 179, 8, 0.15) 0%, transparent 60%);
+  background-blend-mode: normal, screen, screen;
+}
+
+/* Font Utility Classes */
+.font-playfair {
+  font-family: var(--font-playfair), Georgia, serif;
+}
+
+.font-inter {
+  font-family: var(--font-inter), -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+}
+
+/* ============================================ */
+/* Hero Video Optimizations */
+/* ============================================ */
+
+/* Film grain overlay for hero video */
+.hero-grain {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 5;
+  opacity: 0.03;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+  animation: grain-shift 0.5s steps(4) infinite;
+}
+
+@keyframes grain-shift {
+  0%, 100% { transform: translate(0, 0); }
+  25% { transform: translate(-5%, -5%); }
+  50% { transform: translate(5%, 5%); }
+  75% { transform: translate(-5%, 5%); }
+}
+
+/* Scroll progress line animation */
+@keyframes scroll-line {
+  0% { transform: scaleX(0); opacity: 0; }
+  10% { opacity: 1; }
+  100% { transform: scaleX(1); opacity: 1; }
+}
+
+.animate-scroll-line {
+  animation: scroll-line 0.8s ease-out forwards;
+  transform-origin: left;
+}
+
+/* Pause marquee on desktop - GSAP handles animation */
+@media (min-width: 768px) {
+  .animate-marquee-left {
+    animation-play-state: paused;
+  }
+}
+
+/* Hero character class for SplitHeading */
+.hero-char {
+  backface-visibility: hidden;
+}

@@ -35,7 +35,6 @@ export default function ServicesSection() {
   const cardsRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    gsap.registerPlugin(ScrollTrigger);
     if (!containerRef.current || !cardsRef.current) return;
 
     const ctx = gsap.context(() => {

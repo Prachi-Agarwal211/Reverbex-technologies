@@ -73,7 +73,9 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     <html lang="en" className={`${playfair.variable} ${inter.variable}`} suppressHydrationWarning>
       <head>
         <link rel="preconnect" href="/" />
-        <link rel="preload" as="video" href="/hero-video.mp4" type="video/mp4" crossOrigin="anonymous" />
+        <link rel="preload" as="image" href="/hero-poster.jpg" fetchPriority="high" />
+        <link rel="preload" as="video" href="/hero-video.webm" type="video/webm; codecs=vp9,opus" fetchPriority="high" />
+        <link rel="preload" as="video" href="/hero-video.mp4" type="video/mp4" />
         <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
         <link rel="apple-touch-icon" href="/favicon.svg" />
         <link rel="manifest" href="/site.webmanifest" />

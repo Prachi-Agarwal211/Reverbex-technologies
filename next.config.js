@@ -4,9 +4,6 @@ const nextConfig = {
   
   // Enable streaming - faster initial page load
   experimental: {
-    // Optimize package imports - tree shaking
-    optimizePackageImports: ['framer-motion', 'react-icons'],
-    
     // Optimize SSR
     serverActions: {
       bodySizeLimit: '2mb',
@@ -51,12 +48,6 @@ const nextConfig = {
       maxAsyncRequests: 30,
       maxInitialRequests: 30,
       cacheGroups: {
-        framer: {
-          test: /[\\/]node_modules[\\/]framer-motion[\\/]/,
-          name: 'framer-vendor',
-          chunks: 'all',
-          priority: 10,
-        },
         gsap: {
           test: /[\\/]node_modules[\\/]gsap[\\/]/,
           name: 'gsap-vendor',
@@ -70,12 +61,12 @@ const nextConfig = {
         },
       },
     };
-    
+
     // Reduce source maps in production
     if (!dev && !isServer) {
       config.devtool = false;
     }
-    
+
     return config;
   },
   

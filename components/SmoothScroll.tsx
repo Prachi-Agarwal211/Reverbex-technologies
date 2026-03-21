@@ -5,9 +5,8 @@ import Lenis from "lenis";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 
-if (typeof window !== "undefined") {
-  gsap.registerPlugin(ScrollTrigger);
-}
+// Register ScrollTrigger once globally at module level
+gsap.registerPlugin(ScrollTrigger);
 
 export default function SmoothScroll({
   children,
@@ -25,6 +24,11 @@ export default function SmoothScroll({
 
     if (isTouchDevice) {
       console.log("SmoothScroll: Touch device detected - skipping Lenis initialization");
+      // On touch devices, GSAP ScrollTrigger still works natively
+      // Just refresh after fonts load to ensure correct positions
+      document.fonts.ready.then(() => {
+        ScrollTrigger.refresh();
+      });
       return;
     }
 
@@ -55,6 +59,17 @@ export default function SmoothScroll({
 
     // Disable GSAP's default lag smoothing for smoother animations
     gsap.ticker.lagSmoothing(0);
+
+    // CRITICAL: Refresh ScrollTrigger after fonts and images load
+    document.fonts.ready.then(() => {
+      ScrollTrigger.refresh();
+    });
+
+    window.addEventListener('load', () => {
+      ScrollTrigger.refresh();
+      // Extra refresh after 300ms for late assets
+      setTimeout(() => ScrollTrigger.refresh(), 300);
+    });
 
     return () => {
       lenis.destroy();

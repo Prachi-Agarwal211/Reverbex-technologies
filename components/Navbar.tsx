@@ -1,7 +1,6 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { Link as ScrollLink } from "react-scroll";
 import Image from "next/image";
 
 const navLinks = [
@@ -11,6 +10,18 @@ const navLinks = [
   { name: "Founders", to: "founders" },
   { name: "Contact", to: "contact" },
 ];
+
+const scrollToSection = (sectionId: string) => {
+  const element = document.getElementById(sectionId);
+  if (element) {
+    const offset = 80;
+    const elementPosition = element.getBoundingClientRect().top + window.scrollY;
+    window.scrollTo({
+      top: elementPosition - offset,
+      behavior: "smooth",
+    });
+  }
+};
 
 export default function Navbar() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
@@ -26,10 +37,8 @@ export default function Navbar() {
     <>
       <nav className="fixed top-0 left-0 w-full z-50">
         <div className="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
-          <ScrollLink
-            to="home"
-            smooth={true}
-            duration={500}
+          <button
+            onClick={() => scrollToSection("home")}
             className="flex items-center gap-2 cursor-pointer"
             aria-label="Reverbex Technologies - Home"
           >
@@ -47,21 +56,18 @@ export default function Navbar() {
             >
               Reverbex
             </span>
-          </ScrollLink>
+          </button>
 
           <div className="hidden md:flex items-center gap-8" role="navigation" aria-label="Main navigation">
             {navLinks.map((link) => (
-              <ScrollLink
+              <button
                 key={link.name}
-                to={link.to}
-                smooth={true}
-                duration={500}
-                offset={-80}
+                onClick={() => scrollToSection(link.to)}
                 className="text-white/80 hover:text-white text-sm font-medium cursor-pointer transition-colors"
                 aria-label={`Navigate to ${link.name} section`}
               >
                 {link.name}
-              </ScrollLink>
+              </button>
             ))}
           </div>
 
@@ -80,24 +86,23 @@ export default function Navbar() {
       </nav>
 
       {mobileMenuOpen && (
-        <div 
+        <div
           className="fixed inset-0 z-40 bg-black flex flex-col items-center justify-center gap-8 md:hidden"
           role="dialog"
           aria-label="Mobile navigation menu"
           aria-modal="true"
         >
           {navLinks.map((link) => (
-            <ScrollLink
+            <button
               key={link.name}
-              to={link.to}
-              smooth={true}
-              duration={500}
-              offset={-80}
-              onClick={() => setMobileMenuOpen(false)}
+              onClick={() => {
+                scrollToSection(link.to);
+                setMobileMenuOpen(false);
+              }}
               className="text-white text-2xl font-medium cursor-pointer"
             >
               {link.name}
-            </ScrollLink>
+            </button>
           ))}
         </div>
       )}

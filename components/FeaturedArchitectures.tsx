@@ -36,8 +36,6 @@ export default function FeaturedArchitectures() {
   const horizontalRef = useRef<HTMLDivElement>(null);
 
   useGSAP(() => {
-    gsap.registerPlugin(ScrollTrigger);
-
     // Header Animation
     gsap.fromTo('.cases-header',
       { opacity: 0, y: 40 },

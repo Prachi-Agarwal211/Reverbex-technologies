@@ -19,8 +19,6 @@ export default function ContactSection() {
   }, []);
 
   useGSAP(() => {
-    gsap.registerPlugin(ScrollTrigger);
-    
     const mm = gsap.matchMedia();
     
     mm.add("(min-width: 768px)", () => {
