@@ -66,13 +66,13 @@ export default function OurStory() {
       <div className="max-w-5xl mx-auto px-6 relative z-10 w-full flex flex-col md:block h-full md:h-[50vh]" ref={textWrapRef}>
         <div className="story-paragraph md:absolute md:top-1/2 md:left-6 md:right-6 md:transform md:-translate-y-1/2 mb-16 md:mb-0 hw-accelerated">
           <p className="text-[clamp(1.75rem,4vw,3.5rem)] text-white/60 font-light leading-[1.3] tracking-tight" style={{ fontFamily: "var(--font-playfair), Georgia, serif" }}>
-            For the past 12 months, we operated in stealth. We weren't just building applications; we were engineering the <span className="text-white font-medium italic">connective tissue</span> for autonomous enterprises.
+            For the past 12 months, we operated in stealth. We weren&apos;t just building applications; we were engineering the <span className="text-white font-medium italic">connective tissue</span> for autonomous enterprises.
           </p>
         </div>
         
         <div className="story-paragraph md:absolute md:top-1/2 md:left-6 md:right-6 md:transform md:-translate-y-1/2 mb-16 md:mb-0 hw-accelerated">
           <p className="text-[clamp(1.75rem,4vw,3.5rem)] text-white/60 font-light leading-[1.3] tracking-tight" style={{ fontFamily: "var(--font-playfair), Georgia, serif" }}>
-            We obsessed over multi-agent workflows, Model Context Protocol (MCP), and secure data pipelines. We didn't want models that just chat—we built infrastructures where AI <span className="text-white font-medium italic">reasons, integrates, and executes</span>.
+            We obsessed over multi-agent workflows, Model Context Protocol (MCP), and secure data pipelines. We didn&apos;t want models that just chat—we built infrastructures where AI <span className="text-white font-medium italic">reasons, integrates, and executes</span>.
           </p>
         </div>
 
