@@ -70,11 +70,32 @@ const nextConfig = {
     return config;
   },
   
-  // Headers for better caching
+  // Headers for better caching and security
   async headers() {
     if (process.env.NODE_ENV !== 'production') return [];
-    
+
     return [
+      {
+        source: '/:path*',
+        headers: [
+          {
+            key: 'X-Content-Type-Options',
+            value: 'nosniff',
+          },
+          {
+            key: 'X-Frame-Options',
+            value: 'DENY',
+          },
+          {
+            key: 'X-XSS-Protection',
+            value: '1; mode=block',
+          },
+          {
+            key: 'Referrer-Policy',
+            value: 'strict-origin-when-cross-origin',
+          },
+        ],
+      },
       {
         source: '/:path*',
         headers: [
@@ -103,6 +124,19 @@ const nextConfig = {
           {
             key: 'Cache-Control',
             value: 'public, max-age=2592000, immutable',
+          },
+        ],
+      },
+      {
+        source: '/hero-video.:path*',
+        headers: [
+          {
+            key: 'Cache-Control',
+            value: 'public, max-age=2592000',
+          },
+          {
+            key: 'Content-Type',
+            value: 'video/mp4',
           },
         ],
       },

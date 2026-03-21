@@ -156,7 +156,7 @@ export default function ContactSection() {
            {("Ready to scale?").split(" ").map((word, i) => (
              <div key={i} className="overflow-hidden mobile-reveal pb-2">
                <h2
-                 className="contact-title-word text-[clamp(4.5rem,14vw,14rem)] text-white tracking-tighter leading-none inline-block hw-accelerated pr-2 md:pr-4"
+                 className="contact-title-word text-[clamp(4.5rem,14vw,14rem)] text-white tracking-tighter leading-none inline-block pr-2 md:pr-4"
                  style={{ fontFamily: "var(--font-syne), sans-serif", perspective: "800px" }}
                >
                  {word}
@@ -214,7 +214,7 @@ export default function ContactSection() {
               </div>
               {/* Toast notification */}
               {copiedEmail && (
-                <div className="fixed bottom-24 left-1/2 -translate-x-1/2 px-4 py-2 bg-white/10 backdrop-blur-md border border-white/20 rounded-full text-white text-sm font-medium animate-in fade-in slide-in-from-bottom-4 duration-300 z-50">
+                <div className="fixed bottom-6 left-1/2 -translate-x-1/2 px-4 py-2 bg-white/10 backdrop-blur-md border border-white/20 rounded-full text-white text-sm font-medium animate-in fade-in slide-in-from-bottom-4 duration-300 z-50">
                   ✓ Copied
                 </div>
               )}

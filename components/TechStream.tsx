@@ -128,8 +128,8 @@ export default function TechStream() {
         {techRows.map((row, rowIndex) => (
           <div
             key={rowIndex}
-            className={`ticker-row flex items-center gap-6 whitespace-nowrap pl-6 hw-accelerated ${
-              rowIndex % 2 === 0 ? 'animate-marquee-left' : 'animate-marquee-right'
+            className={`ticker-row flex items-center gap-6 whitespace-nowrap pl-6 ${
+              rowIndex % 2 === 0 ? 'ticker-animate-left' : 'ticker-animate-right'
             }`}
             style={{ animationDuration: `${15 + rowIndex * 2}s` }}
           >

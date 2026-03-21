@@ -120,7 +120,7 @@ export default function Founders() {
           {founders.map((founder, i) => (
             <div
               key={i}
-              className="founder-card group relative bg-[#0a0a0a] border border-white/5 rounded-3xl overflow-hidden hw-accelerated shadow-[0_4px_30px_rgba(0,0,0,0.5)] hover:border-white/15 transition-colors duration-500"
+              className="founder-card group relative bg-[#0a0a0a] border border-white/5 rounded-3xl overflow-hidden shadow-[0_4px_30px_rgba(0,0,0,0.5)] hover:border-white/15 transition-colors duration-500"
             >
               <div className="absolute inset-0 bg-gradient-to-br from-white/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none" />
 
@@ -130,7 +130,7 @@ export default function Founders() {
                     src={founder.image}
                     alt={founder.name}
                     fill
-                    className="founder-image object-cover grayscale opacity-80 group-hover:grayscale-0 group-hover:opacity-100 transition-all duration-700 hw-accelerated"
+                    className="founder-image object-cover grayscale opacity-80 group-hover:grayscale-0 group-hover:opacity-100 transition-all duration-700"
                     sizes="(max-width: 768px) 100vw, 50vw"
                   />
 

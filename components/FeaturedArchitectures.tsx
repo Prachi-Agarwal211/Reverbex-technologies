@@ -217,17 +217,17 @@ export default function FeaturedArchitectures() {
       </div>
 
       {/* Horizontal Scroll Container */}
-      <div ref={horizontalRef} className="w-full md:h-screen md:flex md:items-center bg-[#050505]" data-lenis-prevent>
+      <div ref={horizontalRef} className="w-full md:h-screen md:flex md:items-center bg-[#050505]">
          <div className="horizontal-cards-wrap flex flex-col md:flex-row md:h-full md:items-center px-6 md:px-0 md:pl-24 pb-24 md:pb-0 gap-16 md:gap-0 md:w-max">
            {cases.map((item, i) => (
-             <div key={i} className="case-card flex-shrink-0 w-full md:w-[70vw] lg:w-[60vw] h-[65vh] md:h-[80vh] md:mr-32 relative flex flex-col justify-end p-6 md:p-16 rounded-2xl md:rounded-[2.5rem] overflow-hidden shadow-[0_30px_60px_-15px_rgba(0,0,0,0.8)] border border-white/5 hw-accelerated">
-               <div className="absolute inset-0 z-0 overflow-hidden hw-accelerated">
+             <div key={i} className="case-card flex-shrink-0 w-full md:w-[70vw] lg:w-[60vw] h-[65vh] md:h-[80vh] md:mr-32 relative flex flex-col justify-end p-6 md:p-16 rounded-2xl md:rounded-[2.5rem] overflow-hidden shadow-[0_30px_60px_-15px_rgba(0,0,0,0.8)] border border-white/5">
+               <div className="absolute inset-0 z-0 overflow-hidden">
                  <div className="case-overlay absolute inset-0 bg-[#000] z-20 pointer-events-none" />
                  <Image
                     src={item.image}
                     alt={item.title}
                     fill
-                    className="case-image object-cover opacity-60 z-0 hw-accelerated"
+                    className="case-image object-cover opacity-60 z-0"
                     sizes="(max-width: 768px) 100vw, 65vw"
                  />
                  <div className="absolute inset-0 bg-gradient-to-t from-black/95 via-black/60 to-black/10 z-10 pointer-events-none" />

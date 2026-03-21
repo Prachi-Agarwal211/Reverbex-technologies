@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useRef } from "react";
 import gsap from "gsap";
 
 type CursorVariant = "DEFAULT" | "HOVER" | "VIDEO" | "LINK" | "TEXT";
@@ -11,17 +11,10 @@ export default function CustomCursor() {
   const ringRef = useRef<HTMLDivElement>(null);
   const currentVariantRef = useRef<CursorVariant>("DEFAULT");
   const isMountedRef = useRef(false);
-  const [isClient, setIsClient] = useState(false);
-
-  // Check if we should render - only on fine pointer devices
-  const shouldRender = isClient && !window.matchMedia("(pointer: coarse)").matches;
 
   useEffect(() => {
-    setIsClient(true);
-  }, []);
-
-  useEffect(() => {
-    if (!shouldRender) return;
+    // Check if we should render - only on fine pointer devices
+    if (window.matchMedia("(pointer: coarse)").matches) return;
 
     const cursor = cursorRef.current;
     const dot = dotRef.current;
@@ -31,8 +24,8 @@ export default function CustomCursor() {
 
     isMountedRef.current = true;
 
-    // Initial setup
-    gsap.set(cursor, { xPercent: -50, yPercent: -50 });
+    // Initial setup - avoid hydration flash
+    gsap.set(cursor, { xPercent: -50, yPercent: -50, display: "block" });
     gsap.set(ring, { scale: 1 });
     gsap.set(dot, { scale: 1 });
 
@@ -50,15 +43,15 @@ export default function CustomCursor() {
 
     document.addEventListener("mousemove", moveCursor);
 
-    // Cursor variant detection - only for elements with specific classes/data attributes
+    // Cursor variant detection
     const handleMouseOver = (e: MouseEvent) => {
       if (!isMountedRef.current) return;
-      
+
       const target = e.target as HTMLElement;
-      
+
       // Check for data-cursor attribute
       const cursorType = target.closest("[data-cursor]")?.getAttribute("data-cursor");
-      
+
       // Check for specific classes
       const isMagnetic = target.closest(".magnetic");
       const isVideo = target.closest("[data-cursor-video]");
@@ -95,65 +88,52 @@ export default function CustomCursor() {
 
       switch (variant) {
         case "DEFAULT":
-          // 4px dot + 32px ring with border
           gsap.to(dot, { scale: 1, duration: 0.3, ease: "power2.out" });
-          gsap.to(ring, { 
-            scale: 1, 
+          gsap.to(ring, {
+            scale: 1,
             backgroundColor: "transparent",
             borderColor: "rgba(255, 255, 255, 0.3)",
-            duration: 0.3, 
-            ease: "power2.out" 
+            duration: 0.3,
+            ease: "power2.out"
           });
           break;
 
         case "HOVER":
-          // Ring expands to 56px, fills with rgba(255,255,255,0.08), dot shrinks to 0
           gsap.to(dot, { scale: 0, duration: 0.3, ease: "power2.out" });
-          gsap.to(ring, { 
-            scale: 1.75, // 32px * 1.75 = 56px
+          gsap.to(ring, {
+            scale: 1.75,
             backgroundColor: "rgba(255, 255, 255, 0.08)",
             borderColor: "rgba(255, 255, 255, 0.2)",
-            duration: 0.3, 
-            ease: "power2.out" 
+            duration: 0.3,
+            ease: "power2.out"
           });
           break;
 
         case "VIDEO":
-          // Ring expands to 80px
           gsap.to(dot, { scale: 0.5, duration: 0.3, ease: "power2.out" });
-          gsap.to(ring, { 
-            scale: 2.5, // 32px * 2.5 = 80px
+          gsap.to(ring, {
+            scale: 2.5,
             backgroundColor: "transparent",
             borderColor: "rgba(255, 255, 255, 0.15)",
-            duration: 0.3, 
-            ease: "power2.out" 
+            duration: 0.3,
+            ease: "power2.out"
           });
           break;
 
         case "LINK":
-          // Ring gets yellow border
           gsap.to(dot, { scale: 0, duration: 0.3, ease: "power2.out" });
-          gsap.to(ring, { 
+          gsap.to(ring, {
             scale: 1.75,
             backgroundColor: "rgba(255, 255, 255, 0.08)",
             borderColor: "rgba(234, 179, 8, 0.6)",
-            duration: 0.3, 
-            ease: "power2.out" 
+            duration: 0.3,
+            ease: "power2.out"
           });
           break;
 
         case "TEXT":
-          // Vertical bar cursor (2px × 24px)
-          gsap.to(dot, { 
-            scale: 0, 
-            duration: 0.2, 
-            ease: "power2.out" 
-          });
-          gsap.to(ring, { 
-            scale: 0,
-            duration: 0.2, 
-            ease: "power2.out" 
-          });
+          gsap.to(dot, { scale: 0, duration: 0.2, ease: "power2.out" });
+          gsap.to(ring, { scale: 0, duration: 0.2, ease: "power2.out" });
           break;
       }
     }
@@ -164,16 +144,14 @@ export default function CustomCursor() {
       document.removeEventListener("mouseover", handleMouseOver);
       document.removeEventListener("mouseout", handleMouseOut);
     };
-  }, [shouldRender]);
+  }, []);
 
-  // Don't render on coarse pointer devices (mobile/touch)
-  if (!shouldRender) return null;
-
+  // Use display:none/block instead of conditional render to avoid hydration flash
   return (
     <div
       ref={cursorRef}
       className="fixed top-0 left-0 z-[9999] pointer-events-none mix-blend-difference"
-      style={{ willChange: "transform" }}
+      style={{ willChange: "transform", display: "none" }}
     >
       {/* 4px center dot */}
       <div
@@ -185,7 +163,7 @@ export default function CustomCursor() {
       <div
         ref={ringRef}
         className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-8 h-8 rounded-full border border-white/30"
-        style={{ 
+        style={{
           transformOrigin: "center",
           willChange: "transform, background-color, border-color"
         }}

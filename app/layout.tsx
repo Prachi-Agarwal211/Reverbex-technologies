@@ -67,6 +67,12 @@ export const metadata: Metadata = {
     apple: "/favicon.svg",
   },
   manifest: "/site.webmanifest",
+  other: {
+    'geo.region': 'IN',
+    'geo.placename': 'India',
+    'geo.position': '20.5937;78.9629',
+    'ICBM': '20.5937, 78.9629',
+  },
 };
 
 export const viewport: Viewport = {
@@ -95,12 +101,44 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
               "@type": "Organization",
               "name": "Reverbex Technologies",
               "url": "https://reverbex.com",
+              "logo": "https://reverbex.com/logo.PNG",
               "description": "We architect autonomous systems. Premium AI automation, web development, and intelligent solutions for modern enterprises.",
-              "contactPoint": {
-                "@type": "ContactPoint",
-                "email": "15anuragsingh2003@gmail.com",
-                "contactType": "customer service"
-              }
+              "foundingDate": "2024",
+              "founders": [
+                {
+                  "@type": "Person",
+                  "name": "Anurag Singh",
+                  "jobTitle": "Founder & Lead Architect"
+                },
+                {
+                  "@type": "Person",
+                  "name": "Prachi Agarwal",
+                  "jobTitle": "Co-Founder & Strategy Lead"
+                }
+              ],
+              "contactPoint": [
+                {
+                  "@type": "ContactPoint",
+                  "email": "15anuragsingh2003@gmail.com",
+                  "contactType": "customer service",
+                  "availableLanguage": "English"
+                },
+                {
+                  "@type": "ContactPoint",
+                  "email": "prachiagarwal211@gmail.com",
+                  "contactType": "customer service",
+                  "availableLanguage": "English"
+                }
+              ],
+              "telephone": "+91-9929986743",
+              "areaServed": {
+                "@type": "Country",
+                "name": "India"
+              },
+              "sameAs": [
+                "https://linkedin.com/company/reverbex",
+                "https://twitter.com/reverbex"
+              ]
             })
           }}
         />

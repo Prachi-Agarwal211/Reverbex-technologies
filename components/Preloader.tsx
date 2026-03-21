@@ -27,7 +27,8 @@ export default function Preloader({ onComplete }: PreloaderProps) {
   // GSAP animations - runs ONCE on mount
   useEffect(() => {
     const ctx = gsap.context(() => {
-      // Initial setup
+      // Initial setup with clipPath
+      gsap.set(containerRef.current, { clipPath: "circle(150% at 50% 50%)" });
       gsap.set(innerPathRef.current, { strokeDashoffset: 80 });
       gsap.set(progressFillRef.current, { width: 0 });
       gsap.set(percentageRef.current, { opacity: 0 });

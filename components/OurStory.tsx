@@ -6,12 +6,12 @@ import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { useGSAP } from "@gsap/react";
 import FractalGlassBackground from "./FractalGlassBackground";
 
-const StoryParagraph = ({ 
-  children, 
-  highlightIndices 
-}: { 
-  children: React.ReactNode; 
-  highlightIndices: number[] 
+const StoryParagraph = ({
+  children,
+  highlightIndices
+}: {
+  children: React.ReactNode;
+  highlightIndices: number[]
 }) => {
   const paragraphRef = useRef<HTMLDivElement>(null);
 
@@ -109,15 +109,15 @@ const StoryParagraph = ({
 
 const WordRevealText = ({ text, highlightIndices }: { text: string; highlightIndices: number[] }) => {
   const words = text.split(' ');
-  
+
   return (
-    <p 
-      className="text-[clamp(1.6rem,3.5vw,3.2rem)] text-white/60 font-light leading-[1.3] tracking-tight" 
+    <p
+      className="text-[clamp(1.6rem,3.5vw,3.2rem)] text-white/60 font-light leading-[1.3] tracking-tight"
       style={{ fontFamily: "var(--font-syne), sans-serif" }}
     >
       {words.map((word, i) => {
         const isHighlighted = highlightIndices.includes(i);
-        
+
         return (
           <span key={i} className="story-word inline-block overflow-hidden mr-[0.25em] align-top">
             <span className={`inline-block ${isHighlighted ? 'highlight-span px-1 rounded' : ''}`}>

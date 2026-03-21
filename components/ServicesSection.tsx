@@ -170,7 +170,7 @@ export default function ServicesSection() {
               key={i}
               className="service-card group relative grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-16 items-center"
             >
-              <div className={`order-2 ${i % 2 === 1 ? 'md:order-1' : 'md:order-2'} relative w-full aspect-[4/3] md:aspect-video rounded-3xl overflow-hidden hw-accelerated`}>
+              <div className={`order-2 ${i % 2 === 1 ? 'md:order-1' : 'md:order-2'} relative w-full aspect-[4/3] md:aspect-video rounded-3xl overflow-hidden`}>
                 <div className="image-overlay absolute inset-0 bg-[#050505] z-10" />
                 <div className="scanline-overlay absolute inset-0 z-20 pointer-events-none opacity-0"
                   style={{
@@ -181,7 +181,7 @@ export default function ServicesSection() {
                   src={service.image}
                   alt={service.title}
                   fill
-                  className="service-image object-cover hw-accelerated"
+                  className="service-image object-cover"
                   sizes="(max-width: 768px) 100vw, 50vw"
                   priority={i === 0}
                 />

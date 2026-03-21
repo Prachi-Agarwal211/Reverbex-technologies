@@ -41,7 +41,6 @@ export default function Navbar() {
   const [isMounted, setIsMounted] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
   const [activeSection, setActiveSection] = useState("home");
-  const mobileMenuTlRef = useRef<gsap.core.Timeline | null>(null);
   const navRef = useRef<HTMLElement>(null);
 
   // Mount check
@@ -82,19 +81,20 @@ export default function Navbar() {
     return () => validSections.forEach((section) => observer.unobserve(section));
   }, []);
 
-  // Mobile menu GSAP animation
-  useGSAP(() => {
+  // Mobile menu animation with useEffect
+  useEffect(() => {
+    const items = document.querySelectorAll(".mobile-nav-item");
+    const overlay = document.querySelector(".mobile-menu-overlay");
+
     if (!mobileMenuOpen) {
       // Animate out
-      if (mobileMenuTlRef.current) mobileMenuTlRef.current.kill();
-      mobileMenuTlRef.current = gsap.timeline({
+      const tl = gsap.timeline({
         onComplete: () => {
           // Cleanup happens in return
         },
       });
 
-      const items = document.querySelectorAll(".mobile-nav-item");
-      mobileMenuTlRef.current.to(items, {
+      tl.to(items, {
         y: -30,
         opacity: 0,
         stagger: 0.05,
@@ -102,8 +102,8 @@ export default function Navbar() {
         ease: "power3.in",
       });
 
-      mobileMenuTlRef.current.to(
-        ".mobile-menu-overlay",
+      tl.to(
+        overlay,
         {
           opacity: 0,
           backdropFilter: "blur(0px)",
@@ -114,22 +114,19 @@ export default function Navbar() {
       );
     } else {
       // Animate in with stagger
-      if (mobileMenuTlRef.current) mobileMenuTlRef.current.kill();
-      mobileMenuTlRef.current = gsap.timeline();
-
-      const items = document.querySelectorAll(".mobile-nav-item");
+      const tl = gsap.timeline();
 
       // Reset items
       gsap.set(items, { y: 30, opacity: 0 });
 
-      mobileMenuTlRef.current.to(".mobile-menu-overlay", {
+      tl.to(overlay, {
         opacity: 1,
         backdropFilter: "blur(24px)",
         duration: 0.6,
         ease: "power3.out",
       });
 
-      mobileMenuTlRef.current.to(
+      tl.to(
         items,
         {
           y: 0,
@@ -143,9 +140,10 @@ export default function Navbar() {
     }
 
     return () => {
-      if (mobileMenuTlRef.current) mobileMenuTlRef.current.kill();
+      gsap.killTweensOf(items);
+      gsap.killTweensOf(overlay);
     };
-  }, { dependencies: [mobileMenuOpen] });
+  }, [mobileMenuOpen]);
 
   if (!isMounted) return null;
 

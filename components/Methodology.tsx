@@ -27,31 +27,38 @@ export default function Methodology() {
   const containerRef = useRef<HTMLDivElement>(null);
 
   useGSAP(() => {
-    // Header Animation
-    gsap.fromTo('.method-header',
-      { opacity: 0, y: 40 },
-      {
-        opacity: 1, y: 0, duration: 1, ease: "power3.out",
-        scrollTrigger: {
-          trigger: containerRef.current,
-          start: "top 80%",
-          toggleActions: "play none none reverse"
-        }
-      }
-    );
+    const methodSectionNumber = containerRef.current?.querySelector('.method-section-number');
+    const methodHeader = containerRef.current?.querySelector('.method-header');
 
-    // Section number animation
-    gsap.fromTo('.section-number',
-      { opacity: 0, scale: 0.8 },
-      {
-        opacity: 1, scale: 1, duration: 1.2, ease: "power3.out",
-        scrollTrigger: {
-          trigger: containerRef.current,
-          start: "top 80%",
-          toggleActions: "play none none reverse"
+    // Header Animation (with null check)
+    if (methodHeader) {
+      gsap.fromTo(methodHeader,
+        { opacity: 0, y: 40 },
+        {
+          opacity: 1, y: 0, duration: 1, ease: "power3.out",
+          scrollTrigger: {
+            trigger: containerRef.current,
+            start: "top 80%",
+            toggleActions: "play none none reverse"
+          }
         }
-      }
-    );
+      );
+    }
+
+    // Section number animation (scoped)
+    if (methodSectionNumber) {
+      gsap.fromTo(methodSectionNumber,
+        { opacity: 0, scale: 0.8 },
+        {
+          opacity: 1, scale: 1, duration: 1.2, ease: "power3.out",
+          scrollTrigger: {
+            trigger: containerRef.current,
+            start: "top 80%",
+            toggleActions: "play none none reverse"
+          }
+        }
+      );
+    }
 
     const items = containerRef.current?.querySelectorAll('.method-item');
 
@@ -156,7 +163,7 @@ export default function Methodology() {
       <div className="max-w-5xl mx-auto px-6 relative z-10 w-full">
         <div className="method-header text-center mb-16 md:mb-32 relative">
           {/* Section number */}
-          <span className="section-number absolute -right-4 -top-12 md:-right-16 md:-top-20 text-[6rem] md:text-[8rem] text-white/[0.04] font-bold leading-none select-none pointer-events-none">
+          <span className="method-section-number absolute -right-4 -top-12 md:-right-16 md:-top-20 text-[6rem] md:text-[8rem] text-white/[0.04] font-bold leading-none select-none pointer-events-none">
             03
           </span>
           {/* Header lines with yellow accent */}
