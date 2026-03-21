@@ -31,6 +31,7 @@ export default function Navbar() {
             smooth={true}
             duration={500}
             className="flex items-center gap-2 cursor-pointer"
+            aria-label="Reverbex Technologies - Home"
           >
             <Image
               src="/logo.PNG"
@@ -40,7 +41,7 @@ export default function Navbar() {
               className="h-9 w-auto object-contain"
               style={{ filter: "brightness(0) invert(1)" }}
             />
-            <span 
+            <span
               className="text-2xl text-white font-bold"
               style={{ fontFamily: "var(--font-playfair), Georgia, serif" }}
             >
@@ -48,7 +49,7 @@ export default function Navbar() {
             </span>
           </ScrollLink>
 
-          <div className="hidden md:flex items-center gap-8">
+          <div className="hidden md:flex items-center gap-8" role="navigation" aria-label="Main navigation">
             {navLinks.map((link) => (
               <ScrollLink
                 key={link.name}
@@ -57,6 +58,7 @@ export default function Navbar() {
                 duration={500}
                 offset={-80}
                 className="text-white/80 hover:text-white text-sm font-medium cursor-pointer transition-colors"
+                aria-label={`Navigate to ${link.name} section`}
               >
                 {link.name}
               </ScrollLink>
@@ -66,7 +68,7 @@ export default function Navbar() {
           <button
             className="md:hidden p-2"
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-            aria-label="Menu"
+            aria-label={mobileMenuOpen ? "Close menu" : "Open menu"}
           >
             <div className="w-6 h-4 flex flex-col justify-between">
               <span className={`block h-0.5 bg-white transition-all ${mobileMenuOpen ? "rotate-45 translate-y-2" : ""}`} />
@@ -78,7 +80,12 @@ export default function Navbar() {
       </nav>
 
       {mobileMenuOpen && (
-        <div className="fixed inset-0 z-40 bg-black flex flex-col items-center justify-center gap-8 md:hidden">
+        <div 
+          className="fixed inset-0 z-40 bg-black flex flex-col items-center justify-center gap-8 md:hidden"
+          role="dialog"
+          aria-label="Mobile navigation menu"
+          aria-modal="true"
+        >
           {navLinks.map((link) => (
             <ScrollLink
               key={link.name}

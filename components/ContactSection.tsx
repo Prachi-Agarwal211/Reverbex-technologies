@@ -16,7 +16,7 @@ export default function ContactSection() {
   }, []);
 
   return (
-    <section id="contact" className="relative w-full h-screen overflow-hidden bg-[#050505] flex flex-col justify-end">
+    <section id="contact" className="relative w-full min-h-[100dvh] overflow-hidden bg-gradient-to-b from-[#050505] to-black flex flex-col justify-end">
       {/* Absolute Video Background */}
       <div className="absolute inset-0 w-full h-full z-0 pointer-events-none">
         <video
@@ -46,7 +46,7 @@ export default function ContactSection() {
           transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
           className="pointer-events-auto"
         >
-          <h2 className="text-5xl md:text-7xl lg:text-[6rem] text-white mb-4 tracking-tight drop-shadow-2xl leading-none" style={{ fontFamily: "var(--font-playfair), Georgia, serif" }}>
+          <h2 className="text-5xl md:text-7xl lg:text-[6rem] text-gradient-animated mb-4 tracking-tight drop-shadow-2xl leading-none" style={{ fontFamily: "var(--font-playfair), Georgia, serif" }}>
             Get in Touch
           </h2>
           <p className="text-white/70 text-sm md:text-lg mb-10 tracking-[0.1em] font-light max-w-2xl" style={{ fontFamily: "var(--font-inter), sans-serif" }}>
