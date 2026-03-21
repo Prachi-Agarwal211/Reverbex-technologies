@@ -6,10 +6,12 @@ import { ScrollTrigger } from "gsap/ScrollTrigger";
 
 export default function HeroVideo() {
   const [currentIndex, setCurrentIndex] = useState(0);
+  const [isVideoLoaded, setIsVideoLoaded] = useState(false);
   const containerRef = useRef<HTMLElement>(null);
   const textContainerRef = useRef<HTMLDivElement>(null);
   const videoOverlayRef = useRef<HTMLDivElement>(null);
   const marqueeRef = useRef<HTMLDivElement>(null);
+  const videoRef = useRef<HTMLVideoElement>(null);
 
   const statements = [
     { text: "Agentic Workflows", subtext: "Orchestrating autonomous logic across enterprise silos" },
@@ -119,6 +121,36 @@ export default function HeroVideo() {
 
   const currentStatement = statements[currentIndex];
 
+  // Handle video loading
+  useEffect(() => {
+    const video = videoRef.current;
+    if (!video) return;
+
+    const handleLoadedData = () => {
+      setIsVideoLoaded(true);
+    };
+
+    const handleCanPlay = () => {
+      setIsVideoLoaded(true);
+    };
+
+    video.addEventListener('loadeddata', handleLoadedData);
+    video.addEventListener('canplay', handleCanPlay);
+    video.addEventListener('canplaythrough', handleCanPlay);
+
+    // Fallback timeout in case events don't fire
+    const fallbackTimer = setTimeout(() => {
+      setIsVideoLoaded(true);
+    }, 3000);
+
+    return () => {
+      video.removeEventListener('loadeddata', handleLoadedData);
+      video.removeEventListener('canplay', handleCanPlay);
+      video.removeEventListener('canplaythrough', handleCanPlay);
+      clearTimeout(fallbackTimer);
+    };
+  }, []);
+
   // Helper to split text into words, then characters, avoiding clipping
   const splitText = (text: string) => {
     return text.split(' ').map((word, wordIndex) => (
@@ -144,14 +176,23 @@ export default function HeroVideo() {
     <section id="home" ref={containerRef} className="relative w-full h-screen flex flex-col justify-between bg-black overflow-hidden">
       {/* Video Background - Optimized for performance */}
       <div className="absolute inset-0 w-full h-full z-0">
+        {/* Loading Placeholder - Show before video loads */}
+        {!isVideoLoaded && (
+          <div className="absolute inset-0 bg-gradient-to-br from-blue-950/30 via-black to-yellow-950/20 animate-pulse" />
+        )}
+        
         <video
+          ref={videoRef}
           autoPlay
           loop
           muted
           playsInline
           preload="auto"
           disablePictureInPicture
-          className="w-full h-full object-cover hw-accelerated"
+          onLoadedData={() => setIsVideoLoaded(true)}
+          className={`w-full h-full object-cover hw-accelerated transition-opacity duration-1000 ${
+            isVideoLoaded ? 'opacity-100' : 'opacity-0'
+          }`}
         >
           <source src="/hero-video.mp4" type="video/mp4" />
         </video>
