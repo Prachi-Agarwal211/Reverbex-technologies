@@ -32,17 +32,19 @@ export default function Founders() {
 
     const ctx = gsap.context(() => {
       const headerTitle = containerRef.current?.querySelector('.founders-header');
-      gsap.fromTo(headerTitle,
-        { opacity: 0, y: 30 },
-        {
-          opacity: 1, y: 0, duration: 0.8, ease: "power3.out",
-          scrollTrigger: {
-            trigger: containerRef.current,
-            start: "top 80%",
-            toggleActions: "play none none reverse"
+      if (headerTitle) {
+        gsap.fromTo(headerTitle,
+          { opacity: 0, y: 30 },
+          {
+            opacity: 1, y: 0, duration: 0.8, ease: "power3.out",
+            scrollTrigger: {
+              trigger: containerRef.current,
+              start: "top 80%",
+              toggleActions: "play none none reverse"
+            }
           }
-        }
-      );
+        );
+      }
 
       const cards = containerRef.current?.querySelectorAll('.founder-card');
 
