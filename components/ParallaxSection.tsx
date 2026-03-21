@@ -93,17 +93,19 @@ export default function ParallaxSection() {
       if (isMobile) {
         // Mobile: simple fade up for horizontal section, disable hijacking
         const horizCards = horizontalSection?.querySelectorAll('.horizontal-card');
-        gsap.fromTo(horizCards, 
-          { opacity: 0, y: 40 },
-          {
-             opacity: 1, y: 0, duration: 0.6, stagger: 0.1,
-             scrollTrigger: {
-                trigger: horizontalSection,
-                start: "top 80%",
-                toggleActions: "play none none reverse"
-             }
-          }
-        );
+        if (horizontalSection && horizCards && horizCards.length > 0) {
+          gsap.fromTo(horizCards as unknown as Element, 
+            { opacity: 0, y: 40 },
+            {
+               opacity: 1, y: 0, duration: 0.6, stagger: 0.1,
+               scrollTrigger: {
+                  trigger: horizontalSection,
+                  start: "top 80%",
+                  toggleActions: "play none none reverse"
+               }
+            }
+          );
+        }
       }
     });
 
