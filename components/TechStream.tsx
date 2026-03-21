@@ -59,17 +59,36 @@ export default function TechStream() {
         }
       );
 
-      // Infinite GSAP Marquees instead of heavy CSS keyframes
-      const rows = tickerRef.current?.querySelectorAll('.ticker-row');
-      rows?.forEach((row, rowIndex) => {
-        // We duplicated items 4 times in render, moving by 25% loops seamlessly
-        if (rowIndex % 2 === 0) {
-          gsap.to(row, { x: "-25%", ease: "none", duration: 15 + rowIndex * 2, repeat: -1 });
-        } else {
-          // Right-moving row
-          gsap.set(row, { x: "-25%" }); // Start offset
-          gsap.to(row, { x: "0%", ease: "none", duration: 15 + rowIndex * 2, repeat: -1 });
-        }
+      // Use CSS marquees for mobile (compositor thread), GSAP only for desktop
+      const mm = gsap.matchMedia();
+      
+      mm.add("(min-width: 768px)", () => {
+        const rows = tickerRef.current?.querySelectorAll('.ticker-row');
+        rows?.forEach((row, rowIndex) => {
+          if (rowIndex % 2 === 0) {
+            gsap.to(row, { x: "-25%", ease: "none", duration: 15 + rowIndex * 2, repeat: -1 });
+          } else {
+            gsap.set(row, { x: "-25%" });
+            gsap.to(row, { x: "0%", ease: "none", duration: 15 + rowIndex * 2, repeat: -1 });
+          }
+        });
+
+        // Desktop parallax
+        gsap.to(tickerRef.current, {
+          y: -30,
+          ease: "none",
+          scrollTrigger: {
+            trigger: containerRef.current,
+            start: "top bottom",
+            end: "bottom top",
+            scrub: 1,
+          }
+        });
+      });
+
+      mm.add("(max-width: 767px)", () => {
+        // Mobile: CSS animations handle marquees (compositor thread)
+        // No GSAP needed - CSS .animate-marquee-left/right classes handle it
       });
 
       // Ticker items fade up on scroll entry
@@ -88,20 +107,7 @@ export default function TechStream() {
         );
       }
 
-      // Parallax effect restricted to desktop via matchMedia inside context
-      const mm = gsap.matchMedia();
-      mm.add("(min-width: 768px)", () => {
-        gsap.to(tickerRef.current, {
-          y: -30,
-          ease: "none",
-          scrollTrigger: {
-            trigger: containerRef.current,
-            start: "top bottom",
-            end: "bottom top",
-            scrub: 1,
-          }
-        });
-      });
+
 
     }, containerRef);
 
@@ -141,7 +147,10 @@ export default function TechStream() {
         {techRows.map((row, rowIndex) => (
           <div 
             key={rowIndex} 
-            className="ticker-row flex items-center gap-6 whitespace-nowrap pl-6 hw-accelerated" 
+            className={`ticker-row flex items-center gap-6 whitespace-nowrap pl-6 hw-accelerated ${
+              rowIndex % 2 === 0 ? 'animate-marquee-left' : 'animate-marquee-right'
+            }`}
+            style={{ animationDuration: `${15 + rowIndex * 2}s` }}
           >
             {[...row, ...row, ...row, ...row].map((tech, i) => (
               <div 

@@ -54,15 +54,21 @@ export default function HeroVideo() {
       }
     });
 
-    // Seamless Infinite Loop Marquee (works on both mobile & desktop)
-    if (marqueeRef.current) {
-      gsap.to(marqueeRef.current, {
-        x: "-50%", // Moving half its width since we double the items
-        ease: "none",
-        duration: 25,
-        repeat: -1,
-      });
-    }
+    // Seamless Infinite Loop Marquee - CSS for mobile, GSAP for desktop
+    mm.add("(min-width: 768px)", () => {
+      if (marqueeRef.current) {
+        gsap.to(marqueeRef.current, {
+          x: "-50%",
+          ease: "none",
+          duration: 25,
+          repeat: -1,
+        });
+      }
+    });
+
+    mm.add("(max-width: 767px)", () => {
+      // Mobile: CSS handles marquee (compositor thread) - no GSAP needed
+    });
 
     return () => mm.revert();
   }, []);
@@ -219,7 +225,7 @@ export default function HeroVideo() {
         </div>
       </div>
 
-      {/* GSAP Infinite Scrolling Marquee */}
+      {/* Infinite Scrolling Marquee - CSS for mobile, GSAP for desktop */}
       <div
         className="relative z-10 w-full overflow-hidden py-4 md:py-6 bg-transparent"
         style={{
@@ -228,7 +234,11 @@ export default function HeroVideo() {
         }}
       >
         <div className="w-[200%] md:w-max">
-          <div ref={marqueeRef} className="flex whitespace-nowrap items-center hw-accelerated opacity-40">
+          <div 
+            ref={marqueeRef}
+            className="flex whitespace-nowrap items-center hw-accelerated opacity-40 md:animate-marquee-left"
+            style={{ animationDuration: '25s' }}
+          >
             {[...Array(2)].map((_, loopIndex) => (
               <React.Fragment key={loopIndex}>
                 {marqueeItems.map((item, index) => (

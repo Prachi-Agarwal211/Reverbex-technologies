@@ -134,3 +134,47 @@ html.lenis, html.lenis body {
   outline: 2px solid #fff;
   outline-offset: 2px;
 }
+
+/* CSS Marquee Animations - Compositor Thread (Mobile-Friendly) */
+@keyframes marquee-left {
+  0% { transform: translate3d(0%, 0, 0); }
+  100% { transform: translate3d(-50%, 0, 0); }
+}
+
+@keyframes marquee-right {
+  0% { transform: translate3d(-50%, 0, 0); }
+  100% { transform: translate3d(0%, 0, 0); }
+}
+
+.animate-marquee-left {
+  animation: marquee-left 20s linear infinite;
+  will-change: transform;
+}
+
+.animate-marquee-right {
+  animation: marquee-right 20s linear infinite;
+  will-change: transform;
+}
+
+/* Ken Burns slow-pan for mobile video fallbacks */
+@keyframes ken-burns-pan {
+  0% { transform: scale(1) translate(0, 0); }
+  50% { transform: scale(1.05) translate(-1%, -1%); }
+  100% { transform: scale(1) translate(0, 0); }
+}
+
+.animate-ken-burns {
+  animation: ken-burns-pan 20s ease-in-out infinite;
+  will-change: transform;
+}
+
+/* Subtle shimmer for baked noise backgrounds */
+@keyframes subtle-shimmer {
+  0% { background-position: 0% 0%; }
+  100% { background-position: 100% 100%; }
+}
+
+.animate-subtle-shimmer {
+  animation: subtle-shimmer 30s linear infinite;
+  will-change: background-position;
+}

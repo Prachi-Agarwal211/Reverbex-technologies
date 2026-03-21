@@ -61,8 +61,9 @@ export default function ContactSection() {
 
   return (
     <section ref={containerRef} id="contact" className="relative w-full min-h-[100dvh] overflow-hidden bg-black flex flex-col justify-end">
-      {/* Absolute Video Background */}
+      {/* Absolute Video Background - Desktop only, static image for mobile */}
       <div className="absolute inset-0 w-full h-full z-0 pointer-events-none">
+        {/* Desktop: Video */}
         <video
           ref={videoRef}
           autoPlay
@@ -70,13 +71,24 @@ export default function ContactSection() {
           muted
           playsInline
           preload="metadata"
-          className="w-full h-full object-cover opacity-50 hw-accelerated"
+          className="w-full h-full object-cover opacity-50 hw-accelerated hidden md:block"
         >
           <source src="/hero-video.mp4" type="video/mp4" />
         </video>
-        {/* Extremely heavy dark overlay for minimal readable look */}
+        
+        {/* Mobile: Static Ken Burns image fallback */}
+        <div 
+          className="absolute inset-0 w-full h-full md:hidden animate-ken-burns"
+          style={{
+            backgroundImage: 'url(/contact-fallback.webp)',
+            backgroundSize: 'cover',
+            backgroundPosition: 'center'
+          }}
+        />
+        
+        {/* Dark overlay for minimal readable look */}
         <div className="absolute inset-0 bg-gradient-to-t from-black via-black/90 to-black/40 z-10 pointer-events-none" /> 
-        <div className="absolute inset-0 bg-[#050505]/30 z-10 pointer-events-none mix-blend-multiply" />
+        <div className="absolute inset-0 bg-[#050505]/30 z-10 pointer-events-none hidden md:block mix-blend-multiply" />
       </div>
 
       {/* Content strictly positioned at the bottom */}

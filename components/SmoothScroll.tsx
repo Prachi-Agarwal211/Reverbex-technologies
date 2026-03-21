@@ -17,9 +17,19 @@ export default function SmoothScroll({
   const lenisRef = useRef<Lenis | null>(null);
 
   useEffect(() => {
-    console.log("SmoothScroll mounted - initializing Lenis");
+    const isTouchDevice = typeof window !== "undefined" && (
+      window.matchMedia("(pointer: coarse)").matches ||
+      "ontouchstart" in window ||
+      navigator.maxTouchPoints > 0
+    );
 
-    // Initialize Lenis with optimized settings
+    if (isTouchDevice) {
+      console.log("SmoothScroll: Touch device detected - skipping Lenis initialization");
+      return;
+    }
+
+    console.log("SmoothScroll mounted - initializing Lenis for pointer device");
+
     const lenis = new Lenis({
       duration: 1.2,
       easing: (t: number) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),

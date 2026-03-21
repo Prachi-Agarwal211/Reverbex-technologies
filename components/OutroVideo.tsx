@@ -27,7 +27,6 @@ export default function OutroVideo() {
   useEffect(() => {
     const video = videoRef.current;
     if (video) {
-        // Lower playback rate for majestic feeling
       video.playbackRate = 0.8;
       video.play().catch(e => console.log("Autoplay prevented:", e));
     }
@@ -98,10 +97,10 @@ export default function OutroVideo() {
 
   return (
     <section ref={containerRef} className="relative w-full h-[70vh] md:h-[90vh] overflow-hidden bg-black flex items-center justify-center">
-      {/* Parallax Video Background with GSAP effects */}
+      {/* Parallax Video Background with GSAP effects - Desktop only */}
       <motion.div 
         style={{ scale: scaleVideo }}
-        className="absolute inset-0 w-full h-full z-0 transform-origin-center pointer-events-none"
+        className="absolute inset-0 w-full h-full z-0 transform-origin-center pointer-events-none hidden md:block"
       >
         <motion.div style={{ filter: blurVideo }}>
           <video
@@ -117,6 +116,16 @@ export default function OutroVideo() {
           </video>
         </motion.div>
       </motion.div>
+
+      {/* Mobile: Static Ken Burns fallback */}
+      <div 
+        className="absolute inset-0 w-full h-full z-0 md:hidden animate-ken-burns"
+        style={{
+          backgroundImage: 'url(/outro-fallback.webp)',
+          backgroundSize: 'cover',
+          backgroundPosition: 'center'
+        }}
+      />
       
       {/* Dynamic Overlay */}
       <motion.div 
