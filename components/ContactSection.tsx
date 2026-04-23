@@ -5,6 +5,7 @@ import gsap from "gsap";
 import { useGSAP } from "@gsap/react";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { Copy, Check } from "lucide-react";
+import { CONTACT } from "@/lib/config";
 
 export default function ContactSection() {
   const containerRef = useRef<HTMLElement>(null);
@@ -140,7 +141,7 @@ export default function ContactSection() {
       </div>
 
       {/* Content strictly positioned at the bottom */}
-      <div className="relative z-20 w-full max-w-7xl mx-auto px-6 pb-12 md:pb-20 pb-safe flex flex-col items-start justify-end pointer-events-none">
+      <div className="relative z-20 w-full max-w-7xl mx-auto px-6 pb-28 md:pb-20 pb-safe flex flex-col items-start justify-end pointer-events-none pt-24 md:pt-0">
 
         {/* Massive Minimalist Heading */}
         <div className="w-full mb-16 md:mb-32 flex flex-col gap-6 pointer-events-auto">
@@ -176,35 +177,17 @@ export default function ContactSection() {
               <span className="text-white/40 text-[10px] md:text-xs uppercase tracking-[0.2em] font-medium">Inquiries</span>
               <div className="flex flex-col gap-3">
                  <div className="flex items-center gap-3 group">
-                    <a href="mailto:15anuragsingh2003@gmail.com" className="text-white text-lg md:text-2xl font-light hover:text-white transition-colors relative inline-block w-max">
-                       <span className="relative z-10">15anuragsingh2003@gmail.com</span>
+                    <a href={`mailto:${CONTACT.email}`} className="text-white text-lg md:text-2xl font-light hover:text-white transition-colors relative inline-block w-max">
+                       <span className="relative z-10">{CONTACT.emailDisplay}</span>
                        <span className="absolute left-0 bottom-0 w-full h-[1px] bg-blue-500 scale-x-0 origin-left group-hover:scale-x-100 transition-transform duration-500 ease-out" />
                     </a>
                     {/* Separate copy button */}
                     <button
-                      onClick={() => handleCopyEmail("15anuragsingh2003@gmail.com")}
+                      onClick={() => handleCopyEmail(CONTACT.email)}
                       className="w-8 h-8 rounded-full bg-white/5 border border-white/10 flex items-center justify-center text-white/50 hover:text-white hover:bg-white/10 hover:border-white/20 transition-all duration-300"
                       aria-label="Copy email"
                     >
-                      {copiedEmail === "15anuragsingh2003@gmail.com" ? (
-                        <Check className="w-4 h-4 text-green-400" />
-                      ) : (
-                        <Copy className="w-4 h-4" />
-                      )}
-                    </button>
-                 </div>
-                 <div className="flex items-center gap-3 group">
-                    <a href="mailto:prachiagarwal211@gmail.com" className="text-white text-lg md:text-2xl font-light hover:text-white transition-colors relative inline-block w-max">
-                       <span className="relative z-10">prachiagarwal211@gmail.com</span>
-                       <span className="absolute left-0 bottom-0 w-full h-[1px] bg-blue-500 scale-x-0 origin-left group-hover:scale-x-100 transition-transform duration-500 ease-out" />
-                    </a>
-                    {/* Separate copy button */}
-                    <button
-                      onClick={() => handleCopyEmail("prachiagarwal211@gmail.com")}
-                      className="w-8 h-8 rounded-full bg-white/5 border border-white/10 flex items-center justify-center text-white/50 hover:text-white hover:bg-white/10 hover:border-white/20 transition-all duration-300"
-                      aria-label="Copy email"
-                    >
-                      {copiedEmail === "prachiagarwal211@gmail.com" ? (
+                      {copiedEmail === CONTACT.email ? (
                         <Check className="w-4 h-4 text-green-400" />
                       ) : (
                         <Copy className="w-4 h-4" />
@@ -223,12 +206,8 @@ export default function ContactSection() {
            <div className="contact-link-group mobile-reveal flex flex-col items-start gap-4 md:pl-12">
               <span className="text-white/40 text-[10px] md:text-xs uppercase tracking-[0.2em] font-medium">Phone</span>
               <div className="flex flex-col gap-3">
-                 <a href="tel:+919929986743" className="group text-white text-lg md:text-2xl font-light hover:text-white transition-colors relative inline-block w-max">
-                    <span className="relative z-10">+91 99299 86743</span>
-                    <span className="absolute left-0 bottom-0 w-full h-[1px] bg-yellow-500 scale-x-0 origin-left group-hover:scale-x-100 transition-transform duration-500 ease-out" />
-                 </a>
-                 <a href="tel:+919155804490" className="group text-white text-lg md:text-2xl font-light hover:text-white transition-colors relative inline-block w-max">
-                    <span className="relative z-10">+91 91558 04490</span>
+                 <a href={CONTACT.phoneHref} className="group text-white text-lg md:text-2xl font-light hover:text-white transition-colors relative inline-block w-max">
+                    <span className="relative z-10">{CONTACT.phone}</span>
                     <span className="absolute left-0 bottom-0 w-full h-[1px] bg-yellow-500 scale-x-0 origin-left group-hover:scale-x-100 transition-transform duration-500 ease-out" />
                  </a>
               </div>
@@ -238,7 +217,7 @@ export default function ContactSection() {
               <span className="text-white/40 text-[10px] md:text-xs uppercase tracking-[0.2em] font-medium">Location</span>
               <div className="flex flex-col gap-3">
                  <p className="text-white text-lg md:text-2xl font-light">
-                    India / Remote-First
+                    {CONTACT.location}
                  </p>
                  <div className="flex items-center gap-2 text-white/60 text-sm md:text-base font-light max-w-xs mt-1">
                     {/* Live indicator with animated green dot */}

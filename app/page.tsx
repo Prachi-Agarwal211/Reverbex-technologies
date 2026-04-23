@@ -3,6 +3,7 @@
 import React, { useState, useEffect } from "react";
 import Navbar from "../components/Navbar";
 import HeroVideo from "../components/HeroVideo";
+import WhatWeOffer from "../components/WhatWeOffer";
 import OurStory from "../components/OurStory";
 import ServicesSection from "../components/ServicesSection";
 import FeaturedArchitectures from "../components/FeaturedArchitectures";
@@ -11,6 +12,7 @@ import TechStream from "../components/TechStream";
 import Founders from "../components/Founders";
 import ContactSection from "../components/ContactSection";
 import Preloader from "../components/Preloader";
+import SectionCounter from "../components/SectionCounter";
 
 export default function Home() {
   const [isLoading, setIsLoading] = useState(true);
@@ -35,7 +37,9 @@ export default function Home() {
         inert={isLoading ? true : undefined}
       >
         <Navbar />
+        <SectionCounter />
         <HeroVideo />
+        <WhatWeOffer />
         <OurStory />
         <ServicesSection />
         <FeaturedArchitectures />

@@ -1,18 +1,10 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   reactStrictMode: true,
-  
-  // Enable streaming - faster initial page load
-  experimental: {
-    // Optimize SSR
-    serverActions: {
-      bodySizeLimit: '2mb',
-    },
-  },
 
   // Enable compression
   compress: true,
-  
+
   // Image optimization
   images: {
     formats: ['image/avif', 'image/webp'],
@@ -31,12 +23,12 @@ const nextConfig = {
       },
     ],
   },
-  
+
   // Remove console in production
   compiler: {
     removeConsole: process.env.NODE_ENV === 'production',
   },
-  
+
   // Webpack optimizations
   webpack: (config, { dev, isServer }) => {
     // Only customize splitChunks, don't override entire optimization
@@ -69,15 +61,17 @@ const nextConfig = {
 
     return config;
   },
-  
+
   // Headers for better caching and security
   async headers() {
     if (process.env.NODE_ENV !== 'production') return [];
 
     return [
       {
+        // Merged headers for all paths - single source of truth
         source: '/:path*',
         headers: [
+          // Security headers
           {
             key: 'X-Content-Type-Options',
             value: 'nosniff',
@@ -87,25 +81,21 @@ const nextConfig = {
             value: 'DENY',
           },
           {
-            key: 'X-XSS-Protection',
-            value: '1; mode=block',
-          },
-          {
             key: 'Referrer-Policy',
             value: 'strict-origin-when-cross-origin',
           },
-        ],
-      },
-      {
-        source: '/:path*',
-        headers: [
+          {
+            key: 'Content-Security-Policy',
+            value: "default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval'; style-src 'self' 'unsafe-inline'; img-src 'self' https://images.unsplash.com data: blob:; media-src 'self' blob:; font-src 'self' data:; connect-src 'self' https://images.unsplash.com;",
+          },
+          {
+            key: 'Permissions-Policy',
+            value: 'camera=(), microphone=(), geolocation=()',
+          },
+          // Caching headers
           {
             key: 'Cache-Control',
             value: 'public, max-age=31536000, immutable',
-          },
-          {
-            key: 'X-Device-Type',
-            value: 'desktop',
           },
         ],
       },

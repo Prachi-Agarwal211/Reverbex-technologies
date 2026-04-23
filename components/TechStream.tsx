@@ -88,7 +88,7 @@ export default function TechStream() {
   }, { scope: containerRef });
 
   return (
-    <section ref={containerRef} className="relative w-full py-16 md:py-32 overflow-hidden bg-gradient-to-b from-[#050505] via-[#050a15] to-[#050505]">
+    <section id="techstream" ref={containerRef} className="relative w-full pt-16 pb-32 md:py-32 overflow-hidden bg-gradient-to-b from-[#050505] via-[#050a15] to-[#050505]">
       {/* Static Gradient Orbs */}
       <div className="absolute inset-0 pointer-events-none overflow-hidden">
         <div className="absolute w-[600px] h-[600px] bg-blue-600/10 blur-[100px] rounded-full" style={{ top: '0%', left: '-10%' }} />
@@ -146,6 +146,11 @@ export default function TechStream() {
           </div>
         ))}
       </div>
+
+      <div
+        className="absolute bottom-0 left-0 right-0 h-32 pointer-events-none z-10"
+        style={{ background: 'linear-gradient(to bottom, transparent, #050505)' }}
+      />
     </section>
   );
 }

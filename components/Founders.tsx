@@ -6,6 +6,7 @@ import { Linkedin, Twitter, Mail } from "lucide-react";
 import gsap from "gsap";
 import { useGSAP } from "@gsap/react";
 import Magnetic from "./Magnetic";
+import { CONTACT, SOCIALS } from "@/lib/config";
 
 const founders = [
   {
@@ -13,14 +14,14 @@ const founders = [
     role: "Founder & Lead Architect",
     image: "https://images.unsplash.com/photo-1556157382-97eda2d62296?auto=format&fit=crop&q=80&w=800",
     bio: "Spearheading enterprise AI architecture, Model Context Protocol (MCP) integrations, and scalable autonomous systems.",
-    socials: { linkedin: "#", twitter: "#", email: "mailto:15anuragsingh2003@gmail.com" }
+    socials: { linkedin: SOCIALS.linkedin, twitter: SOCIALS.twitter, email: `mailto:${CONTACT.email}` }
   },
   {
     name: "Prachi Agarwal",
     role: "Co-Founder & Strategy Lead",
     image: "https://images.unsplash.com/photo-1573497019940-1c28c88b4f3e?auto=format&fit=crop&q=80&w=800",
     bio: "Driving operational excellence, high-level workflow orchestration, and strategic enterprise partnerships.",
-    socials: { linkedin: "#", twitter: "#", email: "mailto:prachiagarwal211@gmail.com" }
+    socials: { linkedin: SOCIALS.linkedin, twitter: SOCIALS.twitter }
   }
 ];
 
@@ -84,7 +85,7 @@ export default function Founders() {
           { opacity: 0, y: 30 },
           {
             opacity: 1, y: 0, duration: 0.6, ease: "power2.out",
-            scrollTrigger: { trigger: card, start: "top 85%", toggleActions: "play none none none" }
+            scrollTrigger: { trigger: card, start: "top 85%", toggleActions: "play none none reverse" }
           }
         );
       });
@@ -93,7 +94,7 @@ export default function Founders() {
   }, { scope: containerRef });
 
   return (
-    <section ref={containerRef} id="founders" className="relative w-full py-24 md:py-40 bg-[#020202] overflow-hidden overflow-x-hidden">
+    <section ref={containerRef} id="founders" className="relative w-full pt-24 pb-40 md:py-40 bg-[#020202] overflow-hidden overflow-x-hidden">
       <div className="absolute inset-0 pointer-events-none">
         <div className="absolute w-[500px] h-[500px] bg-indigo-500/10 blur-[100px] rounded-full top-0 right-0" />
       </div>
@@ -116,11 +117,11 @@ export default function Founders() {
           </p>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-12 max-w-5xl mx-auto">
+        <div className="flex flex-row md:grid md:grid-cols-2 gap-6 md:gap-12 overflow-x-auto snap-x snap-mandatory hide-scrollbar md:h-full md:items-center px-6 md:px-0 w-[calc(100%+3rem)] -ml-6 md:w-auto md:ml-auto max-w-5xl mx-auto">
           {founders.map((founder, i) => (
             <div
               key={i}
-              className="founder-card group relative bg-[#0a0a0a] border border-white/5 rounded-3xl overflow-hidden shadow-[0_4px_30px_rgba(0,0,0,0.5)] hover:border-white/15 transition-colors duration-500"
+              className="founder-card snap-center shrink-0 w-[85vw] md:w-auto mx-2 md:mx-0 first:ml-6 md:first:ml-0 last:mr-6 md:last:mr-0 group relative bg-[#0a0a0a] border border-white/5 rounded-[2rem] md:rounded-3xl overflow-hidden shadow-[0_4px_30px_rgba(0,0,0,0.5)] hover:border-white/15 transition-colors duration-500"
             >
               <div className="absolute inset-0 bg-gradient-to-br from-white/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none" />
 
@@ -183,6 +184,11 @@ export default function Founders() {
           ))}
         </div>
       </div>
+
+      <div
+        className="absolute bottom-0 left-0 right-0 h-32 pointer-events-none z-10"
+        style={{ background: 'linear-gradient(to bottom, transparent, #020202)' }}
+      />
     </section>
   )
 }

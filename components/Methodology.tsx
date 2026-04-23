@@ -132,39 +132,28 @@ export default function Methodology() {
     });
 
     mm.add("(max-width: 767px)", () => {
-       // Simpler mobile view - opacity + y reveals only
+       // Simpler mobile view - CSS reveals only
        items?.forEach((item, i) => {
-          const content = item.querySelector('.timeline-content');
-          const phaseNumber = item.querySelector('.phase-number');
-          
-          const tl = gsap.timeline({
-            scrollTrigger: {
-              trigger: item,
-              start: "top 85%",
-              toggleActions: "play none none reverse"
+          item.setAttribute('data-reveal', 'fade-up');
+          const observer = new IntersectionObserver(([e]) => {
+            if (e.isIntersecting) {
+              item.setAttribute('data-visible', 'true');
+              observer.disconnect();
             }
-          });
-
-          tl.fromTo(phaseNumber, 
-            { opacity: 0, scale: 0.8 }, 
-            { opacity: 1, scale: 1, duration: 0.5, ease: "power2.out" }
-          )
-          .fromTo(content,
-            { opacity: 0, y: 20 },
-            { opacity: 1, y: 0, duration: 0.6, ease: "power2.out" }, "-=0.3"
-          );
+          }, { threshold: 0.1 });
+          observer.observe(item);
        });
     });
 
   }, { scope: containerRef });
 
   return (
-    <section ref={containerRef} id="methodology" className="relative w-full py-24 md:py-40 bg-[#050505] overflow-hidden">
+    <section ref={containerRef} id="methodology" className="relative w-full pt-24 pb-36 md:py-40 bg-[#050505] overflow-hidden">
       <div className="max-w-5xl mx-auto px-6 relative z-10 w-full">
         <div className="method-header text-center mb-16 md:mb-32 relative">
           {/* Section number */}
           <span className="method-section-number absolute -right-4 -top-12 md:-right-16 md:-top-20 text-[6rem] md:text-[8rem] text-white/[0.04] font-bold leading-none select-none pointer-events-none">
-            03
+            05
           </span>
           {/* Header lines with yellow accent */}
           <div className="flex items-center gap-4 mb-6 justify-center md:justify-start">
@@ -188,9 +177,9 @@ export default function Methodology() {
           <div className="progress-line hidden md:block absolute left-8 top-0 bottom-0 w-[1px] bg-yellow-500 origin-top" />
           <div className="progress-line-glow hidden md:block absolute left-8 top-0 bottom-0 w-[2px] bg-yellow-500/50 blur-sm origin-top" />
 
-          <div className="flex flex-col gap-12 md:gap-32 w-full">
+          <div className="flex flex-col gap-6 md:gap-32 w-full">
             {steps.map((item, i) => (
-              <div key={i} className="method-item relative flex flex-col md:flex-row items-start outline-none">
+              <div key={i} className="method-item relative flex flex-col md:flex-row items-start outline-none bg-white/[0.02] md:bg-transparent p-6 rounded-[2rem] md:p-0 border border-white/5 md:border-transparent">
                  {/* Desktop Node */}
                  <div className="hidden md:flex absolute left-0 -translate-x-1/2 w-6 h-6 items-center justify-center bg-[#050505] z-10 mt-[0.3em]">
                     <div className="timeline-dot w-3 h-3 rounded-full border border-white/30 bg-[#111] transition-colors" />
@@ -220,6 +209,11 @@ export default function Methodology() {
           </div>
         </div>
       </div>
+
+      <div
+        className="absolute bottom-0 left-0 right-0 h-32 pointer-events-none z-10"
+        style={{ background: 'linear-gradient(to bottom, transparent, #050505)' }}
+      />
     </section>
   );
 }

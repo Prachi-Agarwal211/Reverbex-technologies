@@ -4,11 +4,13 @@ import { useState, useEffect, useRef, useCallback } from "react";
 import Image from "next/image";
 import { useGSAP } from "@gsap/react";
 import gsap from "gsap";
+import MobileBottomNav from "./MobileBottomNav";
 
 const navLinks = [
   { name: "Home", to: "home" },
-  { name: "Services", to: "services" },
   { name: "Capabilities", to: "capabilities" },
+  { name: "Services", to: "services" },
+  { name: "Work", to: "architectures" },
   { name: "Founders", to: "founders" },
   { name: "Contact", to: "contact" },
 ];
@@ -212,7 +214,7 @@ export default function Navbar() {
             {/* CTA Button */}
             <button
               onClick={() => scrollToSection("contact")}
-              className="ml-4 px-5 py-2.5 bg-yellow-500 hover:bg-yellow-400 text-black text-sm font-semibold rounded-full transition-all duration-300 hover:scale-105 hover:shadow-[0_0_20px_rgba(234,179,8,0.4)] active:scale-95"
+              className="ml-4 px-5 py-2.5 bg-white hover:bg-gray-100 text-black text-sm font-semibold rounded-full transition-all duration-300 hover:scale-105 hover:shadow-[0_0_20px_rgba(255,255,255,0.3)] active:scale-95 active:bg-gray-200"
             >
               Get in touch
             </button>
@@ -220,7 +222,7 @@ export default function Navbar() {
 
           {/* Mobile Menu Button */}
           <button
-            className="md:hidden p-2 relative z-50"
+            className="hidden p-2 relative z-50"
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
             aria-label={mobileMenuOpen ? "Close menu" : "Open menu"}
             aria-expanded={mobileMenuOpen}
@@ -304,6 +306,7 @@ export default function Navbar() {
           </div>
         </div>
       )}
+      <MobileBottomNav />
     </>
   );
 }

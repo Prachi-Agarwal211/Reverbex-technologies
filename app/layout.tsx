@@ -4,6 +4,7 @@ import "./globals.css";
 import ServiceWorkerRegistration from "../components/ServiceWorkerRegistration";
 import SmoothScroll from "../components/SmoothScroll";
 import CustomCursor from "../components/CustomCursor";
+import { CONTACT, COMPANY, SOCIALS } from "@/lib/config";
 
 const syne = Syne({
   subsets: ["latin"],
@@ -86,12 +87,15 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     <html lang="en" className={`${syne.variable} ${dmSans.variable}`} suppressHydrationWarning>
       <head>
         <link rel="preconnect" href="/" />
-        <link rel="preload" as="image" href="/hero-poster.jpg" fetchPriority="high" />
-        <link rel="preload" as="video" href="/hero-video.webm" type="video/webm; codecs=vp9,opus" fetchPriority="high" />
         <link rel="preload" as="video" href="/hero-video.mp4" type="video/mp4" fetchPriority="high" />
         <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
         <link rel="apple-touch-icon" href="/favicon.svg" />
         <link rel="manifest" href="/site.webmanifest" />
+        <style dangerouslySetInnerHTML={{ __html: `
+          [data-reveal] { opacity: 0; }
+          [data-reveal="fade-up"] { transform: translateY(40px); transition: transform 0.8s cubic-bezier(0.16,1,0.3,1), opacity 0.8s ease; }
+          [data-reveal="fade-up"][data-visible="true"] { transform: translateY(0); opacity: 1; }
+        ` }} />
         {/* JSON-LD Structured Data for SEO */}
         <script
           type="application/ld+json"
@@ -99,11 +103,11 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
             __html: JSON.stringify({
               "@context": "https://schema.org",
               "@type": "Organization",
-              "name": "Reverbex Technologies",
-              "url": "https://reverbex.com",
-              "logo": "https://reverbex.com/logo.PNG",
+              "name": COMPANY.name,
+              "url": COMPANY.url,
+              "logo": `${COMPANY.url}/logo.PNG`,
               "description": "We architect autonomous systems. Premium AI automation, web development, and intelligent solutions for modern enterprises.",
-              "foundingDate": "2024",
+              "foundingDate": String(COMPANY.foundingYear),
               "founders": [
                 {
                   "@type": "Person",
@@ -119,25 +123,29 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
               "contactPoint": [
                 {
                   "@type": "ContactPoint",
-                  "email": "15anuragsingh2003@gmail.com",
-                  "contactType": "customer service",
-                  "availableLanguage": "English"
-                },
-                {
-                  "@type": "ContactPoint",
-                  "email": "prachiagarwal211@gmail.com",
+                  "email": CONTACT.email,
                   "contactType": "customer service",
                   "availableLanguage": "English"
                 }
               ],
-              "telephone": "+91-9929986743",
+              "telephone": CONTACT.phone.replace(/\s/g, ""),
               "areaServed": {
                 "@type": "Country",
                 "name": "India"
               },
               "sameAs": [
-                "https://linkedin.com/company/reverbex",
-                "https://twitter.com/reverbex"
+                SOCIALS.linkedin,
+                SOCIALS.twitter
+              ],
+              "knowsAbout": [
+                "AI Automation",
+                "Web Development",
+                "Mobile Applications",
+                "AI Agents",
+                "Digital Transformation",
+                "Enterprise Solutions",
+                "Model Context Protocol",
+                "Multi-Agent Systems"
               ]
             })
           }}

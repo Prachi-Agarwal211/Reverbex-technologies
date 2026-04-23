@@ -16,21 +16,7 @@ export default function SmoothScroll({
   const lenisRef = useRef<Lenis | null>(null);
 
   useEffect(() => {
-    const isTouchDevice = typeof window !== "undefined" && (
-      window.matchMedia("(pointer: coarse)").matches ||
-      "ontouchstart" in window ||
-      navigator.maxTouchPoints > 0
-    );
-
-    if (isTouchDevice) {
-      // On touch devices, GSAP ScrollTrigger still works natively
-      // Just refresh after fonts load to ensure correct positions
-      document.fonts.ready.then(() => {
-        ScrollTrigger.refresh();
-      });
-      return;
-    }
-
+    // Initialize Lenis for ALL devices (including mobile)
     const lenis = new Lenis({
       duration: 1.2,
       easing: (t: number) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
@@ -39,6 +25,7 @@ export default function SmoothScroll({
       smoothWheel: true,
       wheelMultiplier: 1,
       touchMultiplier: 2,
+      infinite: false,
     });
 
     lenisRef.current = lenis;

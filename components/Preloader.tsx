@@ -113,14 +113,18 @@ export default function Preloader({ onComplete }: PreloaderProps) {
         progressRef.current = currentProgress;
 
         // Animate progress bar
-        gsap.to(progressFillRef.current, {
-          width: `${currentProgress}%`,
-          duration: 0.15,
-          ease: "power2.out"
-        });
+        if (progressFillRef.current) {
+          gsap.to(progressFillRef.current, {
+            width: `${currentProgress}%`,
+            duration: 0.15,
+            ease: "power2.out"
+          });
+        }
 
         // Update percentage text
-        percentageRef.current!.innerText = Math.round(currentProgress) + "%";
+        if (percentageRef.current) {
+          percentageRef.current.innerText = Math.round(currentProgress) + "%";
+        }
       };
 
       const progressInterval = setInterval(simulateProgress, 100);
@@ -134,13 +138,15 @@ export default function Preloader({ onComplete }: PreloaderProps) {
           duration: 0.4,
           ease: "power2.inOut",
           onComplete: () => {
-            taglineRef.current!.innerText = TAGLINES[nextIndex];
-            taglineIndexRef.current = nextIndex;
-            gsap.to(taglineRef.current, {
-              opacity: 1,
-              duration: 0.4,
-              ease: "power2.out"
-            });
+            if (taglineRef.current) {
+              taglineRef.current.innerText = TAGLINES[nextIndex];
+              taglineIndexRef.current = nextIndex;
+              gsap.to(taglineRef.current, {
+                opacity: 1,
+                duration: 0.4,
+                ease: "power2.out"
+              });
+            }
           }
         });
       };

@@ -35,7 +35,7 @@ function SplitChars({ text, className = "", style }: SplitCharsProps) {
   );
 }
 
-// Category label component with yellow line
+// Category label component with white line
 interface CategoryLabelProps {
   label: string;
 }
@@ -43,9 +43,9 @@ interface CategoryLabelProps {
 function CategoryLabel({ label }: CategoryLabelProps) {
   return (
     <div className="flex items-center gap-3 mb-3">
-      <div className="w-8 h-[1px] bg-yellow-500 shrink-0" />
+      <div className="w-8 h-[1px] bg-white shrink-0" />
       <span
-        className="text-yellow-500 text-[clamp(0.65rem,1.5vw,0.85rem)] font-light tracking-[0.2em] uppercase"
+        className="text-white/90 text-[clamp(0.65rem,1.5vw,0.85rem)] font-light tracking-[0.2em] uppercase"
         style={{ fontFamily: "var(--font-dm-sans), sans-serif" }}
       >
         {label}
@@ -133,7 +133,7 @@ export default function HeroVideo() {
         {
           scaleX: 1,
           opacity: 1,
-          duration: 0.8,
+          duration: 0.6,
           ease: "power2.out",
           transformOrigin: "left",
         }
@@ -148,41 +148,37 @@ export default function HeroVideo() {
         {
           scale: 1,
           opacity: 1,
-          duration: 0.5,
+          duration: 0.4,
           ease: "back.out(1.7)",
-          delay: 0.2,
+          delay: 0.15,
         }
       );
     }
 
     mm.add("(min-width: 768px)", () => {
-      // Desktop: Character entrance animation
+      // Desktop: Cleaner text entrance - simpler animation
       const chars = textContainerRef.current?.querySelectorAll(".hero-char");
       if (chars && chars.length > 0) {
         gsap.fromTo(
           chars,
           {
-            y: 80,
+            y: 40,
             opacity: 0,
-            clipPath: "polygon(0 100%, 100% 100%, 100% 100%, 0% 100%)",
-            rotateX: -45,
           },
           {
             y: 0,
             opacity: 1,
-            clipPath: "polygon(0 0, 100% 0, 100% 100%, 0% 100%)",
-            rotateX: 0,
-            stagger: 0.03,
-            duration: 0.8,
-            ease: "power4.out",
+            stagger: 0.02,
+            duration: 0.5,
+            ease: "power2.out",
           }
         );
       }
       if (subtext) {
         gsap.fromTo(
           subtext,
-          { opacity: 0, y: 15 },
-          { opacity: 1, y: 0, duration: 0.8, delay: 0.5, ease: "power2.out" }
+          { opacity: 0, y: 10 },
+          { opacity: 1, y: 0, duration: 0.5, delay: 0.2, ease: "power2.out" }
         );
       }
     });
@@ -193,15 +189,15 @@ export default function HeroVideo() {
       if (heading) {
         gsap.fromTo(
           heading,
-          { opacity: 0, y: 30 },
-          { opacity: 1, y: 0, duration: 0.8, ease: "power2.out" }
+          { opacity: 0, y: 20 },
+          { opacity: 1, y: 0, duration: 0.6, ease: "power2.out" }
         );
       }
       if (subtext) {
         gsap.fromTo(
           subtext,
-          { opacity: 0, y: 15 },
-          { opacity: 1, y: 0, duration: 0.8, delay: 0.3, ease: "power2.out" }
+          { opacity: 0, y: 10 },
+          { opacity: 1, y: 0, duration: 0.5, delay: 0.15, ease: "power2.out" }
         );
       }
     });
@@ -211,72 +207,29 @@ export default function HeroVideo() {
       gsap.to(scrollCueRef.current, {
         opacity: 1,
         duration: 0.5,
-        delay: 1.5,
+        delay: 1,
       });
     }
 
     return () => mm.revert();
   }, { scope: textContainerRef, dependencies: [currentIndex] });
 
-  // Hook 3: Exit animation with cycling - single setInterval
+  // Hook 3: Combined Exit & Progress animation
   useEffect(() => {
-    const mm = gsap.matchMedia();
-
-    const setupExitAnimation = () => {
-      // Kill previous timeline before creating new one
-      if (exitTlRef.current) exitTlRef.current.kill();
-
-      mm.add("(min-width: 768px)", () => {
-        const chars = textContainerRef.current?.querySelectorAll(".hero-char");
-        if (chars && chars.length > 0) {
-          exitTlRef.current = gsap.timeline({
-            onComplete: () => {
-              setCurrentIndex((prev) => (prev + 1) % statements.length);
-            },
-          });
-
-          exitTlRef.current.to(chars, {
-            y: -80,
-            opacity: 0,
-            clipPath: "polygon(0 0%, 100% 0%, 100% 0%, 0% 0%)",
-            rotateX: 45,
-            stagger: 0.02,
-            duration: 0.6,
-            ease: "power4.in",
-            delay: DWELL_MS / 1000 - 1,
-          });
-        }
-      });
-    };
-
-    setupExitAnimation();
-
-    // Fade out scroll cue on cycle
-    if (scrollCueRef.current) {
-      gsap.to(scrollCueRef.current, {
-        opacity: 0,
-        duration: 0.5,
-        delay: DWELL_MS / 1000 - 1.5,
-      });
+    if (exitTlRef.current) {
+      exitTlRef.current.kill();
+      exitTlRef.current = null;
     }
 
-    return () => {
-      mm.revert();
-      if (exitTlRef.current) exitTlRef.current.kill();
-    };
-  }, [currentIndex, statements.length]);
+    let progressTween: gsap.core.Tween | null = null;
+    let cycleTimer: NodeJS.Timeout | null = null;
 
-  // Hook 4: Progress line animation - single timeline with proper cleanup
-  useEffect(() => {
-    if (exitTlRef.current) exitTlRef.current.kill();
+    const mm = gsap.matchMedia();
 
-    const progressTl = gsap.timeline({
-      repeat: -1,
-      delay: 0,
-    });
-
+    // Animate progress line fresh for this statement
     if (progressLineRef.current) {
-      progressTl.to(progressLineRef.current, {
+      gsap.set(progressLineRef.current, { scaleX: 0 });
+      progressTween = gsap.to(progressLineRef.current, {
         scaleX: 1,
         duration: DWELL_MS / 1000,
         ease: "none",
@@ -284,10 +237,45 @@ export default function HeroVideo() {
       });
     }
 
+    // Schedule exit after DWELL_MS - 600ms
+    mm.add("(min-width: 768px)", () => {
+      const chars = textContainerRef.current?.querySelectorAll(".hero-char");
+
+      cycleTimer = setTimeout(() => {
+        if (chars && chars.length > 0) {
+          exitTlRef.current = gsap.timeline({
+            onComplete: () => setCurrentIndex((prev) => (prev + 1) % statements.length),
+          });
+          exitTlRef.current.to(chars, {
+            y: -40,
+            opacity: 0,
+            stagger: 0.015,
+            duration: 0.4,
+            ease: "power2.in",
+          });
+        } else {
+          setCurrentIndex((prev) => (prev + 1) % statements.length);
+        }
+      }, DWELL_MS - 600);
+    });
+
+    mm.add("(max-width: 767px)", () => {
+      // Mobile: simple cycle, no exit animation needed
+      cycleTimer = setTimeout(() => {
+        setCurrentIndex((prev) => (prev + 1) % statements.length);
+      }, DWELL_MS);
+    });
+
     return () => {
-      progressTl.kill();
+      mm.revert();
+      if (progressTween) progressTween.kill();
+      if (cycleTimer) clearTimeout(cycleTimer);
+      if (exitTlRef.current) {
+        exitTlRef.current.kill();
+        exitTlRef.current = null;
+      }
     };
-  }, [currentIndex]);
+  }, [currentIndex, statements.length]);
 
   // Hook 5: GSAP marquee on desktop
   useGSAP(() => {
@@ -325,12 +313,27 @@ export default function HeroVideo() {
 
   return (
     <section
-      id="home"
+      id="hero"
       ref={containerRef}
-      className="relative w-full h-[100dvh] flex flex-col justify-between bg-black overflow-hidden overflow-x-hidden"
+      className="relative w-full h-[100dvh] flex flex-col overflow-hidden bg-[#020202]"
       aria-label="Hero section"
     >
       <h1 className="sr-only">Reverbex Technologies — Intelligent Architecture</h1>
+
+      {/* Mobile ambient layer — pure CSS, zero JS */}
+      <div className="absolute inset-0 pointer-events-none z-[1] md:hidden overflow-hidden">
+        <div className="mobile-orb-1 absolute w-64 h-64 rounded-full"
+          style={{ top: '10%', right: '-20%', background: 'radial-gradient(circle, rgba(6,182,212,0.15) 0%, transparent 70%)' }} />
+        <div className="mobile-orb-2 absolute w-48 h-48 rounded-full"
+          style={{ bottom: '20%', left: '-15%', background: 'radial-gradient(circle, rgba(255,255,255,0.08) 0%, transparent 70%)' }} />
+        <div className="mobile-orb-3 absolute w-32 h-32 rounded-full"
+          style={{ top: '50%', right: '10%', background: 'radial-gradient(circle, rgba(59,130,246,0.1) 0%, transparent 70%)' }} />
+        {/* Enhanced dark overlay for better text readability on mobile */}
+        <div className="absolute inset-0 bg-gradient-to-b from-black/80 via-black/60 to-black/90" />
+      </div>
+
+      {/* Desktop dark overlay for text contrast */}
+      <div className="absolute inset-0 bg-gradient-to-b from-black/40 via-black/20 to-black/60 z-[2] md:block hidden" aria-hidden="true" />
 
       {/* Video Background - will-change only on videoWrapRef (transform only) */}
       <div
@@ -347,11 +350,9 @@ export default function HeroVideo() {
           playsInline
           preload="auto"
           disablePictureInPicture
-          poster="/hero-poster.webp"
           className="w-full h-full object-cover"
           aria-hidden="true"
         >
-          <source src="/hero-video.webm" type="video/webm; codecs=vp9,opus" />
           <source src="/hero-video.mp4" type="video/mp4" />
         </video>
       </div>
@@ -361,42 +362,60 @@ export default function HeroVideo() {
       {/* Top Navbar Spacer */}
       <div className="h-20 md:h-28 w-full shrink-0 z-10 pointer-events-none" />
 
-      {/* Main Hero Content - MUCH SMALLER TEXT, MIDDLE-BOTTOM POSITION */}
+      {/* Main Hero Content - ALIGNED LEFT, BOTTOM POSITION */}
       <div
         ref={textContainerRef}
-        className="relative z-10 flex flex-col justify-end pb-16 md:pb-24 px-6 md:px-16 xl:px-24 pointer-events-none w-full"
+        className="relative z-[5] flex flex-col justify-end pb-20 md:pb-20 px-4 md:px-16 xl:px-24 pointer-events-none w-full flex-grow"
       >
-        <div className="flex flex-col w-full items-start text-left max-w-xl">
+        <div className="flex flex-col w-full items-start text-left max-w-2xl">
           <CategoryLabel label={currentStatement.label} />
 
           <SplitChars
             text={currentStatement.text}
-            className="text-left text-[clamp(1.5rem,3vw,3rem)] md:text-[clamp(1.75rem,3.5vw,3.5rem)] text-white mb-2 tracking-tight leading-[1.15] font-medium"
+            className="text-left text-[clamp(1.8rem,5vw,2.8rem)] md:text-[clamp(3.5rem,5.5vw,5.5rem)] text-white mb-2 tracking-tight leading-[1.1] font-semibold drop-shadow-lg"
             style={{
               fontFamily: "var(--font-syne), sans-serif",
               perspective: "1000px",
+              textShadow: '0 2px 30px rgba(0,0,0,0.9), 0 0 60px rgba(0,0,0,0.5)'
             }}
           />
           <p
-            className="hero-subtext text-white/90 text-[clamp(0.65rem,1vw,0.8rem)] font-light tracking-[0.1em] uppercase mt-1 text-left"
-            style={{ fontFamily: "var(--font-dm-sans), sans-serif" }}
+            className="hero-subtext text-white text-[clamp(0.7rem,1.5vw,0.85rem)] md:text-[clamp(0.85rem,1.2vw,1rem)] font-light tracking-[0.15em] uppercase mt-2 text-left drop-shadow-md"
+            style={{
+              fontFamily: "var(--font-dm-sans), sans-serif",
+              textShadow: '0 1px 15px rgba(0,0,0,0.9), 0 0 30px rgba(0,0,0,0.5)'
+            }}
           >
             {currentStatement.subtext}
           </p>
 
-          <div className="w-full max-w-md h-[1px] bg-white/20 mt-4 overflow-hidden">
+          <div className="w-[100px] md:w-[200px] h-[2px] bg-white/20 mt-4 md:mt-6 overflow-hidden">
             <div
               ref={progressLineRef}
-              className="h-full bg-yellow-500/70"
+              className="h-full bg-white"
               style={{ transformOrigin: "left" }}
             />
           </div>
 
-          <div className="flex justify-start w-full mt-2">
+          {/* Progress dots */}
+          <div className="flex items-center justify-start gap-2 mt-3 md:mt-4">
+            {statements.map((_, i) => (
+              <div
+                key={i}
+                className="rounded-full transition-all duration-500"
+                style={{
+                  width: i === currentIndex ? '20px' : '5px',
+                  height: '3px',
+                  background: i === currentIndex ? '#ffffff' : 'rgba(255,255,255,0.2)',
+                }}
+              />
+            ))}
+          </div>
+
+          <div className="flex justify-start w-full mt-2 md:mt-3">
             <div
               ref={counterRef}
-              className="text-white/60 text-[clamp(0.65rem,1vw,0.8rem)] font-light tracking-[0.1em]"
-              style={{ fontFamily: "var(--font-dm-sans), sans-serif" }}
+              className="text-white/70 text-[clamp(0.65rem,1.2vw,0.85rem)] font-mono tracking-[0.2em]"
             >
               {String(currentIndex + 1).padStart(2, "0")} /{" "}
               {String(statements.length).padStart(2, "0")}
@@ -414,36 +433,36 @@ export default function HeroVideo() {
           <span className="text-white/40 text-[10px] tracking-[0.2em] uppercase">
             Scroll
           </span>
-          <div className="w-[1px] h-12 bg-gradient-to-b from-yellow-500 to-transparent animate-bounce-slow" />
+          <div className="w-[1px] h-12 bg-gradient-to-b from-white to-transparent animate-bounce-slow" />
         </div>
       </div>
 
-      {/* Infinite Scrolling Marquee */}
+      {/* Infinite Scrolling Marquee - Balanced visibility */}
       <div
-        className="relative z-10 w-full overflow-hidden py-4 md:py-6 bg-transparent"
+        className="relative z-[5] w-full overflow-hidden py-3 md:py-5 bg-gradient-to-t from-black/70 to-black/40 backdrop-blur-md"
         style={{
           WebkitMaskImage:
-            "linear-gradient(to right, transparent, black 15%, black 85%, transparent)",
+            "linear-gradient(to right, transparent, black 10%, black 90%, transparent)",
           maskImage:
-            "linear-gradient(to right, transparent, black 15%, black 85%, transparent)",
+            "linear-gradient(to right, transparent, black 10%, black 90%, transparent)",
         }}
       >
         <div className="w-[200%] md:w-max">
           <div
-            className="flex whitespace-nowrap items-center opacity-40 animate-marquee-left"
+            className="flex whitespace-nowrap items-center opacity-55 md:opacity-45 animate-marquee-left"
             style={{ animationDuration: "25s" }}
           >
             {[...Array(2)].map((_, loopIndex) => (
               <React.Fragment key={loopIndex}>
                 {marqueeItems.map((item, index) => (
-                  <div key={`${loopIndex}-${index}`} className="flex items-center mx-6 md:mx-10">
+                  <div key={`${loopIndex}-${index}`} className="flex items-center mx-4 md:mx-10">
                     <span
-                      className="text-white/70 text-xs md:text-sm font-semibold tracking-[0.15em] uppercase"
+                      className="text-white md:text-white/85 text-[10px] md:text-sm font-semibold tracking-[0.15em] uppercase drop-shadow-md"
                       style={{ fontFamily: "var(--font-dm-sans), sans-serif" }}
                     >
                       {item}
                     </span>
-                    <span className="text-yellow-500/60 mx-6 md:mx-10 text-lg md:text-xl font-light">
+                    <span className="text-white/60 md:text-white/50 mx-4 md:mx-10 text-sm md:text-lg font-light">
                       ✦
                     </span>
                   </div>
@@ -453,6 +472,11 @@ export default function HeroVideo() {
           </div>
         </div>
       </div>
+
+      <div
+        className="absolute bottom-0 left-0 right-0 h-32 pointer-events-none z-10"
+        style={{ background: 'linear-gradient(to bottom, transparent, #020202)' }}
+      />
     </section>
   );
 }
