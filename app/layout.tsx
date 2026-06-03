@@ -87,7 +87,9 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     <html lang="en" className={`${syne.variable} ${dmSans.variable}`} suppressHydrationWarning>
       <head>
         <link rel="preconnect" href="/" />
-        <link rel="preload" as="video" href="/hero-video.mp4" type="video/mp4" fetchPriority="high" />
+        <link rel="preload" as="video" href="/hero-video-mobile.mp4" type="video/mp4" fetchPriority="high" media="(max-width: 768px)" />
+        <link rel="preload" as="video" href="/hero-video-desktop.mp4" type="video/mp4" fetchPriority="high" media="(min-width: 769px)" />
+        <link rel="preload" as="image" href="/hero-poster.jpg" fetchPriority="high" />
         <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
         <link rel="apple-touch-icon" href="/favicon.svg" />
         <link rel="manifest" href="/site.webmanifest" />

@@ -68,7 +68,12 @@ export default function HeroVideo() {
   const scrollCueRef = useRef<HTMLDivElement>(null);
   const exitTlRef = useRef<gsap.core.Timeline | null>(null);
 
-  const DWELL_MS = 5000; // 5 seconds per statement
+  // Check for reduced motion preference
+  const prefersReducedMotion = typeof window !== 'undefined'
+    ? window.matchMedia('(prefers-reduced-motion: reduce)').matches
+    : false;
+
+  const DWELL_MS = prefersReducedMotion ? 2000 : 5000; // Faster cycling for reduced motion
 
   // Statements with label field
   const statements = [
@@ -222,7 +227,7 @@ export default function HeroVideo() {
     }
 
     let progressTween: gsap.core.Tween | null = null;
-    let cycleTimer: NodeJS.Timeout | null = null;
+    let cycleTimer: ReturnType<typeof setTimeout> | null = null;
 
     const mm = gsap.matchMedia();
 
@@ -352,7 +357,20 @@ export default function HeroVideo() {
           disablePictureInPicture
           className="w-full h-full object-cover"
           aria-hidden="true"
+          poster="/hero-poster.jpg"
         >
+          <source
+            srcSet="/hero-video-mobile.mp4"
+            type="video/mp4"
+            media="(max-width: 768px)"
+          />
+          <source
+            srcSet="/hero-video-desktop.mp4"
+            type="video/mp4"
+            media="(min-width: 769px)"
+          />
+          <source srcSet="/hero-video.webm" type="video/webm" />
+          {/* Fallback to original for older browsers */}
           <source src="/hero-video.mp4" type="video/mp4" />
         </video>
       </div>
