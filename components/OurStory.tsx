@@ -1,186 +1,152 @@
 "use client";
 
-import React, { useRef, useEffect } from "react";
-import gsap from "gsap";
-import { ScrollTrigger } from "gsap/ScrollTrigger";
+import React, { useRef } from "react";
 import { useGSAP } from "@gsap/react";
+import gsap from "gsap";
+import { MessageSquare, Eye, TrendingUp, Zap } from "lucide-react";
 import FractalGlassBackground from "./FractalGlassBackground";
 
-const StoryParagraph = ({
-  children,
-  highlightIndices
-}: {
-  children: React.ReactNode;
-  highlightIndices: number[]
-}) => {
-  const paragraphRef = useRef<HTMLDivElement>(null);
-
-  useGSAP(() => {
-    if (!paragraphRef.current) return;
-
-    const mm = gsap.matchMedia();
-
-    // Desktop: word-by-word reveal
-    mm.add("(min-width: 768px)", () => {
-      const words = paragraphRef.current?.querySelectorAll('.story-word > span');
-      if (!words || words.length === 0) return;
-
-      gsap.set(words, { yPercent: 110 });
-
-      gsap.to(words, {
-        yPercent: 0,
-        duration: 0.7,
-        stagger: 0.04,
-        ease: "power3.out",
-        scrollTrigger: {
-          trigger: paragraphRef.current,
-          start: "top 80%",
-          toggleActions: "play none none reverse",
-        },
-      });
-
-      // Highlighted spans fade effect
-      const highlights = paragraphRef.current?.querySelectorAll('.highlight-span');
-      if (highlights && highlights.length > 0) {
-        gsap.fromTo(highlights,
-          { backgroundColor: "rgba(234, 179, 8, 0.2)" },
-          {
-            backgroundColor: "rgba(234, 179, 8, 0)",
-            duration: 1.5,
-            ease: "power2.out",
-            scrollTrigger: {
-              trigger: paragraphRef.current,
-              start: "top 80%",
-              toggleActions: "play none none reverse",
-            },
-          }
-        );
-      }
-
-      // Left border accent
-      const borderAccent = paragraphRef.current?.querySelector('.border-accent');
-      if (borderAccent) {
-        gsap.fromTo(borderAccent,
-          { scaleY: 0 },
-          {
-            scaleY: 1,
-            duration: 1,
-            ease: "power3.out",
-            scrollTrigger: {
-              trigger: paragraphRef.current,
-              start: "top 80%",
-              toggleActions: "play none none reverse",
-            },
-          }
-        );
-      }
-    });
-  }, { scope: paragraphRef });
-
-  // Mobile: use CSS data-reveal system (same as other sections)
-  useEffect(() => {
-    if (!paragraphRef.current) return;
-    
-    // Set data-reveal attribute for mobile
-    paragraphRef.current.setAttribute('data-reveal', 'fade-up');
-    
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting) {
-          paragraphRef.current?.setAttribute('data-visible', 'true');
-          observer.disconnect();
-        }
-      },
-      { threshold: 0.1, rootMargin: "0px 0px -50px 0px" }
-    );
-    
-    observer.observe(paragraphRef.current);
-    return () => observer.disconnect();
-  }, []);
-
-  return (
-    <div ref={paragraphRef} className="story-paragraph relative">
-      <div className="border-accent absolute left-0 top-0 bottom-0 w-px bg-white/8 origin-top hidden md:block" />
-      <div className="pl-0 md:pl-6">
-        {children}
-      </div>
-    </div>
-  );
-};
-
-const WordRevealText = ({ text, highlightIndices }: { text: string; highlightIndices: number[] }) => {
-  const words = text.split(' ');
-
-  return (
-    <p
-      className="text-[clamp(1.3rem,4vw,2.2rem)] md:text-[clamp(1.6rem,3.5vw,3.2rem)] text-white/80 md:text-white/60 font-light leading-[1.35] md:leading-[1.3] tracking-tight"
-      style={{ fontFamily: "var(--font-syne), sans-serif" }}
-    >
-      {words.map((word, i) => {
-        const isHighlighted = highlightIndices.includes(i);
-
-        return (
-          <span key={i} className="story-word inline-block overflow-hidden mr-[0.25em] align-top">
-            <span className={`inline-block ${isHighlighted ? 'highlight-span px-0.5 md:px-1 rounded bg-yellow-500/10' : ''}`}>
-              {word}
-            </span>
-          </span>
-        );
-      })}
-    </p>
-  );
-};
+const pillars = [
+  {
+    icon: MessageSquare,
+    title: "Daily Availability",
+    desc: "Need help? Message us on WhatsApp. We respond within hours, not days. No ticketing systems — direct access to the team that built your system."
+  },
+  {
+    icon: Eye,
+    title: "Proactive Optimization",
+    desc: "We don't wait for you to tell us something is wrong. We monitor your performance weekly and suggest improvements before you ask."
+  },
+  {
+    icon: TrendingUp,
+    title: "Growth Partnership",
+    desc: "As your business grows, your digital systems grow with it. New features, new pages, new campaigns — we're your long-term digital partner."
+  },
+  {
+    icon: Zap,
+    title: "Fast Problem Solving",
+    desc: "Website issue? Fixed within hours. Ad not performing? Optimized immediately. Need a change? Done. No 2-week turnaround."
+  }
+];
 
 export default function OurStory() {
   const containerRef = useRef<HTMLDivElement>(null);
+  const gridRef = useRef<HTMLDivElement>(null);
 
-  const paragraphs = [
-    {
-      text: "For the past 12 months, we operated in stealth. We weren't just building applications; we were engineering the connective tissue that allows modern enterprises to scale without friction.",
-      highlights: [13, 14]
-    },
-    {
-      text: "We obsessed over multi-agent workflows and secure data pipelines. Because true digital transformation isn't about shiny tools—it's about deploying AI that drives measurable business growth and operational autonomy.",
-      highlights: [24, 25, 26]
-    },
-    {
-      text: "Our foundational projects—from institutional databases to headless commerce—proved our architecture. Now, we are partnering with forward-thinking leaders to integrate production-grade intelligence into their core business. Let's build your unfair advantage.",
-      highlights: [21, 22]
+  useGSAP(() => {
+    gsap.fromTo(
+      ".bond-reveal",
+      { opacity: 0, y: 30 },
+      {
+        opacity: 1,
+        y: 0,
+        stagger: 0.1,
+        duration: 0.6,
+        ease: "power2.out",
+        scrollTrigger: {
+          trigger: containerRef.current,
+          start: "top 85%",
+          toggleActions: "play none none reverse",
+        },
+      }
+    );
+
+    const cards = gridRef.current?.querySelectorAll(".bond-card");
+    if (cards && cards.length > 0) {
+      gsap.fromTo(
+        cards,
+        { opacity: 0, y: 30 },
+        {
+          opacity: 1,
+          y: 0,
+          stagger: 0.1,
+          duration: 0.6,
+          ease: "power3.out",
+          scrollTrigger: {
+            trigger: gridRef.current,
+            start: "top 85%",
+            toggleActions: "play none none reverse",
+          },
+        }
+      );
     }
-  ];
+  }, { scope: containerRef });
 
   return (
-    <section 
-      ref={containerRef} 
-      id="story" 
-      className="relative w-full bg-[#020202] text-white pt-32 pb-24 md:py-48 overflow-hidden"
+    <section
+      ref={containerRef}
+      id="reverbexbond"
+      className="relative w-full bg-[#050505] text-white py-24 md:py-32 overflow-hidden border-b border-[#1A1A1A]"
     >
-      {/* Gradient overlay at top for section transition */}
-      <div className="absolute top-0 left-0 right-0 h-32 bg-gradient-to-b from-black to-transparent pointer-events-none z-20" />
-      
-      {/* Colored ambient orbs for mobile */}
-      <div className="absolute inset-0 pointer-events-none overflow-hidden md:hidden">
-        <div className="absolute top-20 right-0 w-64 h-64 bg-blue-600/20 blur-[100px] rounded-full" />
-        <div className="absolute top-40 left-10 w-48 h-48 bg-cyan-600/15 blur-[80px] rounded-full" />
-        <div className="absolute bottom-20 right-10 w-56 h-56 bg-purple-600/15 blur-[90px] rounded-full" />
-      </div>
-
       <FractalGlassBackground />
 
-      <div className="max-w-5xl mx-auto px-4 md:px-6 relative z-10 w-full flex flex-col gap-12 md:gap-24">
-        {/* Section header */}
-        <div className="flex items-center gap-4 mb-4 md:mb-8">
-          <div className="h-px bg-white/10 flex-1 max-w-[60px]" />
-          <span className="text-yellow-500 text-[clamp(0.65rem,1.5vw,0.85rem)] font-light tracking-[0.2em] uppercase tabular">
-            Our Story
+      <div className="max-w-7xl mx-auto px-6 relative z-10 w-full">
+        {/* Section Header */}
+        <div className="text-left mb-16 md:mb-24 max-w-3xl">
+          <span
+            className="bond-reveal text-[#EAB308] text-xs font-semibold tracking-[0.25em] uppercase mb-4 block"
+            style={{ fontFamily: "var(--font-dm-sans), sans-serif" }}
+          >
+            The Reverbex Bond
           </span>
-          <div className="h-px bg-white/10 flex-1 max-w-[60px]" />
+          <h2
+            className="bond-reveal text-white text-[clamp(2.2rem,5vw,4.5rem)] font-black tracking-tighter leading-[1.0] mb-6"
+            style={{ fontFamily: "var(--font-syne), sans-serif" }}
+          >
+            We Don&apos;t Disappear After Launch.
+          </h2>
+          <p
+            className="bond-reveal text-[#A0A0A0] text-lg font-normal leading-relaxed"
+            style={{ fontFamily: "var(--font-dm-sans), sans-serif" }}
+          >
+            Most agencies build your website and leave. We build long-term relationships to support your business expansion every single day.
+          </p>
         </div>
-        {paragraphs.map((para, index) => (
-          <StoryParagraph key={index} highlightIndices={para.highlights}>
-            <WordRevealText text={para.text} highlightIndices={para.highlights} />
-          </StoryParagraph>
-        ))}
+
+        {/* 4 Pillars Grid */}
+        <div
+          ref={gridRef}
+          className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-16"
+        >
+          {pillars.map((item, index) => {
+            const Icon = item.icon;
+            return (
+              <div
+                key={index}
+                className="bond-card flex gap-6 p-8 bg-[#0A0A0A] border border-[#1A1A1A] rounded-xl hover:border-[#EAB308]/20 transition-all duration-300"
+              >
+                <div className="p-3 bg-[#050505] border border-[#1A1A1A] rounded-lg shrink-0 h-max">
+                  <Icon className="w-6 h-6 text-[#EAB308]" />
+                </div>
+                <div>
+                  <h3
+                    className="text-white text-xl font-bold tracking-tight mb-3"
+                    style={{ fontFamily: "var(--font-syne), sans-serif" }}
+                  >
+                    {item.title}
+                  </h3>
+                  <p
+                    className="text-[#A0A0A0] text-sm leading-relaxed"
+                    style={{ fontFamily: "var(--font-dm-sans), sans-serif" }}
+                  >
+                    {item.desc}
+                  </p>
+                </div>
+              </div>
+            );
+          })}
+        </div>
+
+        {/* Trust Line footer */}
+        <div className="bond-reveal w-full pt-8 border-t border-[#1A1A1A] text-center">
+          <p
+            className="text-[#666666] text-xs md:text-sm tracking-wider uppercase font-semibold"
+            style={{ fontFamily: "var(--font-dm-sans), sans-serif" }}
+          >
+            ✓ Daily availability • ✓ Proactive monitoring • ✓ Fast problem solving • ✓ Long-term partnership • ✓ No surprise charges
+          </p>
+        </div>
+
       </div>
     </section>
   );

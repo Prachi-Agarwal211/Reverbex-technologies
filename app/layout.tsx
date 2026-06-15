@@ -4,6 +4,7 @@ import "./globals.css";
 import ServiceWorkerRegistration from "../components/ServiceWorkerRegistration";
 import SmoothScroll from "../components/SmoothScroll";
 import CustomCursor from "../components/CustomCursor";
+import WhatsAppButton from "../components/shared/WhatsAppButton";
 import { CONTACT, COMPANY, SOCIALS } from "@/lib/config";
 
 const syne = Syne({
@@ -21,13 +22,13 @@ const dmSans = DM_Sans({
 });
 
 export const metadata: Metadata = {
-  metadataBase: new URL('https://reverbex.com'),
+  metadataBase: new URL('https://reverbex.in'),
   title: {
-    default: "Reverbex Technologies",
+    default: "Reverbex Technologies | Websites, Ads & Automation",
     template: "%s | Reverbex Technologies",
   },
-  description: "We architect autonomous systems. Premium AI automation, web development, and intelligent solutions for modern enterprises.",
-  keywords: ["AI automation", "web development", "mobile apps", "AI agents", "digital transformation", "enterprise solutions"],
+  description: "Websites. Ads. Automation. Built To Grow Businesses. We build custom Next.js websites, run performance Meta/Google Ads, and engineer operations automation systems.",
+  keywords: ["custom website development", "nextjs development", "meta ads management", "facebook ads agency", "google ads expert", "lead generation company", "custom erp software", "whatsapp automation", "business automation", "rebranding services"],
   authors: [{ name: "Reverbex Technologies" }],
   creator: "Reverbex Technologies",
   publisher: "Reverbex Technologies",
@@ -36,15 +37,15 @@ export const metadata: Metadata = {
     follow: true,
   },
   alternates: {
-    canonical: 'https://reverbex.com',
+    canonical: 'https://reverbex.in',
   },
   openGraph: {
     type: "website",
     locale: "en_US",
-    url: "https://reverbex.com",
+    url: "https://reverbex.in",
     siteName: "Reverbex Technologies",
-    title: "Reverbex Technologies - Intelligent Architecture for Modern Enterprises",
-    description: "We architect autonomous systems. Premium AI automation, web development, and intelligent solutions for modern enterprises.",
+    title: "Reverbex Technologies | Websites, Ads & Automation for Business Growth",
+    description: "Websites. Ads. Automation. Built To Grow Businesses. High-performance custom web systems, advertising campaigns, and operational automations.",
     images: [
       {
         url: "/og-image.jpg",
@@ -56,8 +57,8 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: "Reverbex Technologies - Intelligent Architecture",
-    description: "We architect autonomous systems. Premium AI automation, web development, and intelligent solutions.",
+    title: "Reverbex Technologies | Custom Web Systems, Ads & Automation",
+    description: "Websites. Ads. Automation. Built To Grow Businesses. High-performance custom websites, Meta/Google ads management, and process automation.",
     images: ["/twitter-image.jpg"],
   },
   icons: {
@@ -106,15 +107,15 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
               "@context": "https://schema.org",
               "@type": "Organization",
               "name": COMPANY.name,
-              "url": COMPANY.url,
-              "logo": `${COMPANY.url}/logo.PNG`,
-              "description": "We architect autonomous systems. Premium AI automation, web development, and intelligent solutions for modern enterprises.",
+              "url": "https://reverbex.in",
+              "logo": `https://reverbex.in/logo.PNG`,
+              "description": "Websites. Ads. Automation. Built To Grow Businesses. We build custom Next.js websites, run performance Meta/Google Ads, and engineer operations automation systems.",
               "foundingDate": String(COMPANY.foundingYear),
               "founders": [
                 {
                   "@type": "Person",
                   "name": "Anurag Singh",
-                  "jobTitle": "Founder & Lead Architect"
+                  "jobTitle": "Founder & Lead Developer"
                 },
                 {
                   "@type": "Person",
@@ -140,14 +141,18 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
                 SOCIALS.twitter
               ],
               "knowsAbout": [
-                "AI Automation",
-                "Web Development",
-                "Mobile Applications",
-                "AI Agents",
-                "Digital Transformation",
-                "Enterprise Solutions",
-                "Model Context Protocol",
-                "Multi-Agent Systems"
+                "Custom Website Development",
+                "E-Commerce Development",
+                "Meta Ads Management",
+                "Google Ads Management",
+                "Lead Generation",
+                "ERP System Development",
+                "Mobile App Development",
+                "AI Solutions",
+                "WhatsApp Automation",
+                "Logo Design & Branding",
+                "Complete Rebranding",
+                "SEO Services"
               ]
             })
           }}
@@ -162,6 +167,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <main id="main-content" tabIndex={-1}>
           <SmoothScroll>{children}</SmoothScroll>
         </main>
+        <WhatsAppButton />
         <ServiceWorkerRegistration />
       </body>
     </html>

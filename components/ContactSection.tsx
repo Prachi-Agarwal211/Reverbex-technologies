@@ -166,7 +166,7 @@ export default function ContactSection() {
            ))}
            </div>
            <p className="hero-subtext text-white/70 text-[clamp(0.65rem,1.5vw,0.85rem)] font-light tracking-[0.15em] uppercase mt-1 drop-shadow-md pb-2 mobile-reveal max-w-2xl" style={{ fontFamily: "var(--font-dm-sans), sans-serif" }}>
-              Partner with us to deploy intelligent architecture that reduces overhead, automates workflows, and accelerates your business growth.
+              Partner with us to deploy high-performance custom websites, Meta/Google ads campaigns, and operational automations built to grow your business.
            </p>
         </div>
 

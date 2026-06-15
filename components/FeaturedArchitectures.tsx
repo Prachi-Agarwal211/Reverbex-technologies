@@ -3,31 +3,36 @@
 import React, { useRef } from "react";
 import Image from "next/image";
 import gsap from "gsap";
-import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { useGSAP } from "@gsap/react";
 import FractalGlassBackground from "./FractalGlassBackground";
 
 const cases = [
   {
-    title: "High-Volume AI E-Commerce Infrastructure",
-    tagline: "Decoupled Architecture & Intelligent Scaling",
-    desc: "Headless commerce platform with Next.js frontend and FastAPI backend. Advanced logistics APIs, custom payment routing, and microservices containerized via Docker with Cloudflare R2 acceleration.",
-    image: "https://images.unsplash.com/photo-1558494949-ef010cbdcc31?auto=format&fit=crop&q=80&w=1600",
-    stack: ["Next.js", "FastAPI", "Docker", "Cloudflare"]
+    title: "MAAC Animation Jaipur",
+    tagline: "Education • Web Design • Ads",
+    problem: "No online lead generation",
+    result: "500+ leads generated in weeks",
+    image: "https://images.unsplash.com/photo-1516321318423-f06f85e504b3?auto=format&fit=crop&q=80&w=1600",
+    link: "/work/maac-animation",
+    stack: ["Next.js", "Meta Ads", "Lead Gen"]
   },
   {
-    title: "Institutional Workflow Automation",
-    tagline: "University-Scale Administrative Portals",
-    desc: "Digital clearance system eliminating manual bottlenecks. Complex relational database with role-based access control. Automated generation of verified digital certificates.",
-    image: "https://images.unsplash.com/photo-1518770660439-4636190af475?auto=format&fit=crop&q=80&w=1600",
-    stack: ["Supabase", "PostgreSQL", "Next.js"]
+    title: "Aarya Clothing",
+    tagline: "E-Commerce • Full Stack • Payments",
+    problem: "No scalable online sales system",
+    result: "₹3+ lakh revenue generated",
+    image: "https://images.unsplash.com/photo-1441986300917-64674bd600d8?auto=format&fit=crop&q=80&w=1600",
+    link: "/work/aarya-clothing",
+    stack: ["Custom Commerce", "Stripe API", "Meta Ads"]
   },
   {
-    title: "Private Autonomous AI Systems",
-    tagline: "Localized Intelligence & Secure Compute",
-    desc: "Privacy-first AI running on optimized small LLMs. Localized assistants that understand enterprise codebases with zero external data leakage on bare-metal infrastructure.",
-    image: "https://images.unsplash.com/photo-1526374965328-7f61d4dc18c5?auto=format&fit=crop&q=80&w=1600",
-    stack: ["Python", "Local LLMs", "FastAPI"]
+    title: "Khemji Wire Company",
+    tagline: "Corporate • Catalogue • Rebranding",
+    problem: "Outdated digital presence",
+    result: "Complete professional transformation",
+    image: "https://images.unsplash.com/photo-1504307651254-35680f356dfd?auto=format&fit=crop&q=80&w=1600",
+    link: "/work/khemji-wire",
+    stack: ["Next.js (SSR)", "Logo Design", "SEO Services"]
   }
 ];
 
@@ -40,7 +45,10 @@ export default function FeaturedArchitectures() {
     gsap.fromTo('.cases-header',
       { opacity: 0, y: 40 },
       {
-        opacity: 1, y: 0, duration: 0.8, ease: "power3.out",
+        opacity: 1,
+        y: 0,
+        duration: 0.8,
+        ease: "power3.out",
         scrollTrigger: {
           trigger: containerRef.current,
           start: "top 85%",
@@ -53,7 +61,11 @@ export default function FeaturedArchitectures() {
     gsap.fromTo('.section-number',
       { opacity: 0, scale: 0.8 },
       {
-        opacity: 1, scale: 1, duration: 1, ease: "power3.out", delay: 0.2,
+        opacity: 1,
+        scale: 1,
+        duration: 1,
+        ease: "power3.out",
+        delay: 0.2,
         scrollTrigger: {
           trigger: containerRef.current,
           start: "top 85%",
@@ -64,7 +76,7 @@ export default function FeaturedArchitectures() {
 
     const mm = gsap.matchMedia();
 
-    // Desktop: Horizontal scroll with better pinning
+    // Desktop: Horizontal scroll
     mm.add("(min-width: 768px)", () => {
       const cards = cardsContainerRef.current?.querySelectorAll('.case-card');
       
@@ -89,15 +101,13 @@ export default function FeaturedArchitectures() {
         });
 
         // Card reveal animations
-        cards.forEach((card, i) => {
+        cards.forEach((card) => {
           const image = card.querySelector('.case-image');
           const overlay = card.querySelector('.case-overlay');
           
-          // Initial state
           gsap.set(image, { scale: 1.1 });
           gsap.set(overlay, { clipPath: "polygon(0 0, 100% 0, 100% 100%, 0% 100%)" });
           
-          // Animate on scroll
           gsap.to(overlay, {
             clipPath: "polygon(0 0, 100% 0, 100% 0%, 0% 0%)",
             duration: 1.2,
@@ -125,7 +135,7 @@ export default function FeaturedArchitectures() {
       }
     });
 
-    // Mobile: Simple vertical scroll
+    // Mobile: Simple vertical reveal
     mm.add("(max-width: 767px)", () => {
       const cards = cardsContainerRef.current?.querySelectorAll('.case-card');
       
@@ -157,23 +167,23 @@ export default function FeaturedArchitectures() {
       <div className="max-w-7xl mx-auto px-6 relative z-10 w-full shrink-0 mb-12 md:mb-16">
         <div className="cases-header text-center md:text-left relative">
           <span className="section-number absolute -right-4 -top-12 md:-right-16 md:-top-20 text-[6rem] md:text-[8rem] text-white/[0.04] font-bold leading-none select-none pointer-events-none">
-            04
+            05
           </span>
           
           <div className="flex items-center gap-4 mb-6 justify-center md:justify-start">
             <div className="h-px bg-white/10 flex-1 max-w-[60px]" />
-            <span className="text-yellow-500 text-[clamp(0.65rem,1.5vw,0.85rem)] font-light tracking-[0.2em] uppercase tabular">
+            <span className="text-[#EAB308] text-[clamp(0.65rem,1.5vw,0.85rem)] font-light tracking-[0.2em] uppercase tabular">
               Case Studies
             </span>
             <div className="h-px bg-white/10 flex-1 max-w-[60px]" />
           </div>
           
           <h2 className="text-[clamp(2.2rem,5vw,5rem)] text-white mb-4 tracking-tight leading-tight" style={{ fontFamily: "var(--font-syne), sans-serif" }}>
-            Engineered Case Studies
+            Our Work.
           </h2>
           
-          <p className="text-white/50 text-[clamp(0.75rem,2vw,1rem)] uppercase tracking-[0.2em] font-light">
-            Architectural Highlights
+          <p className="text-[#A0A0A0] text-[clamp(0.75rem,2vw,1rem)] uppercase tracking-[0.2em] font-light">
+            See how we help businesses grow
           </p>
         </div>
       </div>
@@ -187,7 +197,7 @@ export default function FeaturedArchitectures() {
           {cases.map((item, i) => (
             <div 
               key={i} 
-              className="case-card snap-center flex-shrink-0 w-[85vw] md:w-[65vw] lg:w-[55vw] h-[65vh] md:h-[60vh] md:mr-32 relative flex flex-col justify-end p-6 md:p-12 rounded-[2rem] overflow-hidden border border-white/5"
+              className="case-card snap-center flex-shrink-0 w-[85vw] md:w-[65vw] lg:w-[55vw] h-[65vh] md:h-[60vh] md:mr-32 relative flex flex-col justify-end p-6 md:p-12 rounded-[2rem] overflow-hidden border border-white/5 bg-[#0A0A0A]"
             >
               {/* Image & Overlay */}
               <div className="absolute inset-0 z-0 overflow-hidden rounded-[2rem]">
@@ -211,7 +221,7 @@ export default function FeaturedArchitectures() {
               {/* Content */}
               <div className="relative z-30 max-w-3xl">
                 {/* Tagline */}
-                <p className="text-yellow-500 font-semibold tracking-[0.2em] uppercase text-[11px] md:text-xs mb-4">
+                <p className="text-[#EAB308] font-semibold tracking-[0.2em] uppercase text-[11px] md:text-xs mb-4">
                   {item.tagline}
                 </p>
 
@@ -220,17 +230,24 @@ export default function FeaturedArchitectures() {
                   {item.title}
                 </h3>
 
-                {/* Description - Shorter */}
-                <p className="text-white/70 font-light text-[13px] md:text-base leading-relaxed mb-6 max-w-2xl">
-                  {item.desc}
-                </p>
+                {/* Problem vs Result Grid */}
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-6">
+                  <div>
+                    <span className="text-[#666666] text-xs font-semibold tracking-wider uppercase block mb-1">Challenge</span>
+                    <p className="text-white/80 font-normal text-sm md:text-base">{item.problem}</p>
+                  </div>
+                  <div>
+                    <span className="text-[#EAB308] text-xs font-semibold tracking-wider uppercase block mb-1">Result</span>
+                    <p className="text-white font-bold text-sm md:text-base">{item.result}</p>
+                  </div>
+                </div>
 
                 {/* Tech Stack */}
                 <div className="flex flex-wrap gap-2">
                   {item.stack.map((tech, j) => (
                     <span 
                       key={j}
-                      className="px-3 py-1.5 md:px-4 md:py-2 rounded-full border border-white/15 bg-white/5 text-white/80 text-[11px] md:text-sm tracking-wide font-medium backdrop-blur-md hover:bg-white/10 hover:border-white/25 transition-all duration-300"
+                      className="px-3 py-1.5 md:px-4 md:py-2 rounded-full border border-white/15 bg-white/5 text-white/85 text-[11px] md:text-sm tracking-wide font-medium backdrop-blur-md hover:bg-white/10 hover:border-white/25 transition-all duration-300"
                     >
                       {tech}
                     </span>

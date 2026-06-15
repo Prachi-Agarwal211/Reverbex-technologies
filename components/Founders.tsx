@@ -11,16 +11,16 @@ import { CONTACT, SOCIALS } from "@/lib/config";
 const founders = [
   {
     name: "Anurag Singh",
-    role: "Founder & Lead Architect",
+    role: "Founder & Lead Developer",
     image: "https://images.unsplash.com/photo-1556157382-97eda2d62296?auto=format&fit=crop&q=80&w=800",
-    bio: "Spearheading enterprise AI architecture, Model Context Protocol (MCP) integrations, and scalable autonomous systems.",
+    bio: "Specializing in custom Next.js engineering, performance PageSpeed optimization, and custom ERP systems designed to grow business revenue.",
     socials: { linkedin: SOCIALS.linkedin, twitter: SOCIALS.twitter, email: `mailto:${CONTACT.email}` }
   },
   {
     name: "Prachi Agarwal",
-    role: "Co-Founder & Strategy Lead",
+    role: "Co-Founder & Business Strategist",
     image: "https://images.unsplash.com/photo-1573497019940-1c28c88b4f3e?auto=format&fit=crop&q=80&w=800",
-    bio: "Driving operational excellence, high-level workflow orchestration, and strategic enterprise partnerships.",
+    bio: "Directing client growth frameworks, Meta/Google ad campaigns, and long-term customer relationships.",
     socials: { linkedin: SOCIALS.linkedin, twitter: SOCIALS.twitter }
   }
 ];

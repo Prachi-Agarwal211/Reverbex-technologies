@@ -8,6 +8,7 @@ import { MOBILE_NAV_ITEMS } from "@/lib/config";
 const iconMap: Record<string, React.ElementType> = {
   hero: Home,
   story: BookOpen,
+  reverbexbond: BookOpen,
   capabilities: Layers,
   services: Cpu,
   architectures: BookMarked,

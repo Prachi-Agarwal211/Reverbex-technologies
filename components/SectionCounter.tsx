@@ -4,18 +4,23 @@ import React, { useState, useEffect } from "react";
 
 export default function SectionCounter() {
   const [currentSection, setCurrentSection] = useState(1);
-  const totalSections = 9; // Hero, WhatWeOffer, Story, Services, Architectures, Methodology, TechStream, Founders, Contact
+  const totalSections = 14; 
 
   useEffect(() => {
     // Array of section IDs in order
     const sections = [
       "hero",
+      "trustedby",
       "capabilities",
-      "story",
-      "services",
+      "results",
       "architectures",
+      "whyreverbex",
+      "premiumpositioning",
+      "reverbexbond",
       "methodology",
-      "techstream",
+      "industries",
+      "testimonials",
+      "faq",
       "founders",
       "contact"
     ];

@@ -6,14 +6,9 @@ import { useGSAP } from "@gsap/react";
 import gsap from "gsap";
 import MobileBottomNav from "./MobileBottomNav";
 
-const navLinks = [
-  { name: "Home", to: "home" },
-  { name: "Capabilities", to: "capabilities" },
-  { name: "Services", to: "services" },
-  { name: "Work", to: "architectures" },
-  { name: "Founders", to: "founders" },
-  { name: "Contact", to: "contact" },
-];
+import { DESKTOP_NAV_ITEMS, CONTACT } from "../lib/config";
+
+const navLinks = DESKTOP_NAV_ITEMS.map(item => ({ name: item.label, to: item.to }));
 
 // Enhanced scrollToSection with Lenis support
 const scrollToSection = (sectionId: string) => {
@@ -162,7 +157,7 @@ export default function Navbar() {
         <div className="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
           {/* Logo with Version Tag */}
           <button
-            onClick={() => scrollToSection("home")}
+            onClick={() => scrollToSection("hero")}
             className="flex items-center gap-2 cursor-pointer group"
             aria-label="Reverbex Technologies - Home"
           >

@@ -15,38 +15,41 @@ export const SOCIALS = {
 
 export const SECTIONS = [
   "hero",
-  "capabilities",
-  "story",
-  "services",
-  "architectures",
-  "methodology",
-  "techstream",
-  "founders",
+  "trustedby",
+  "capabilities", // What We Do
+  "results", // Results Dashboard
+  "architectures", // Case Studies Preview
+  "whyreverbex", // Why choose custom
+  "premiumpositioning", // Premium beats cheap
+  "reverbexbond", // Reverbex Bond
+  "methodology", // Process + Next.js
+  "industries", // Industries Serve
+  "testimonials", // Client Reviews
+  "faq", // FAQs
+  "founders", // Team/Founders
   "contact",
 ] as const;
 
 export const MOBILE_NAV_ITEMS = [
   { label: "Home", to: "hero" as const },
-  { label: "Story", to: "story" as const },
-  { label: "Offerings", to: "capabilities" as const },
-  { label: "Services", to: "services" as const },
+  { label: "Services", to: "capabilities" as const },
   { label: "Work", to: "architectures" as const },
-  { label: "Founders", to: "founders" as const },
+  { label: "About", to: "reverbexbond" as const },
   { label: "Contact", to: "contact" as const },
 ];
 
 export const DESKTOP_NAV_ITEMS = [
   { label: "Home", to: "hero" as const },
-  { label: "Capabilities", to: "capabilities" as const },
-  { label: "Services", to: "services" as const },
+  { label: "Services", to: "capabilities" as const },
   { label: "Work", to: "architectures" as const },
-  { label: "Founders", to: "founders" as const },
+  { label: "About", to: "reverbexbond" as const },
   { label: "Contact", to: "contact" as const },
 ];
 
 export const COMPANY = {
   name: "Reverbex Technologies",
-  tagline: "Intelligent Architecture for Modern Enterprises",
+  tagline: "Websites. Ads. Automation. Built To Grow Businesses.",
   url: "https://reverbex.com",
   foundingYear: 2024,
 };
+
