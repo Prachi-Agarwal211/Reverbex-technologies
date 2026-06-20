@@ -1,6 +1,5 @@
 "use client";
 
-import React from "react";
 import Magnetic from "../Magnetic";
 
 export default function WhatsAppButton() {
@@ -10,21 +9,23 @@ export default function WhatsAppButton() {
   const whatsappUrl = `https://wa.me/${whatsappNumber}?text=${encodedMessage}`;
 
   return (
-    <div className="fixed bottom-6 right-6 z-50 pointer-events-auto md:bottom-10 md:right-10">
+    <div 
+      className="fixed z-50 pointer-events-auto"
+      style={{
+        bottom: "calc(5.5rem + var(--sab, 0px))",
+        right: "calc(1.5rem + var(--sar, 0px))",
+      }}
+    >
       <Magnetic>
         <a
           href={whatsappUrl}
           target="_blank"
           rel="noopener noreferrer"
-          className="relative flex items-center justify-center w-14 h-14 md:w-16 md:h-16 bg-[#25D366] rounded-full shadow-[0_4px_20px_rgba(37,211,102,0.4)] hover:shadow-[0_4px_30px_rgba(37,211,102,0.6)] text-white hover:scale-105 active:scale-95 transition-all duration-300 group"
+          className="relative flex items-center justify-center w-12 h-12 md:w-14 md:h-14 bg-[#1a1a1a] hover:bg-[#222] rounded-full border border-white/10 hover:border-[#EAB308]/30 text-white/70 hover:text-[#EAB308] transition-all duration-300 group"
           aria-label="Contact Reverbex via WhatsApp"
         >
-          {/* Pulsing Outer Ring */}
-          <span className="absolute inset-0 rounded-full bg-[#25D366]/40 animate-ping pointer-events-none" />
-
-          {/* SVG WhatsApp Logo */}
           <svg
-            className="w-7 h-7 md:w-8 md:h-8 fill-current transition-transform duration-300 group-hover:scale-110"
+            className="w-5 h-5 md:w-6 md:h-6 fill-current transition-transform duration-300 group-hover:scale-110"
             viewBox="0 0 24 24"
             xmlns="http://www.w3.org/2000/svg"
           >

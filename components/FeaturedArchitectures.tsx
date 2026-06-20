@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useRef } from "react";
+import { useRef } from "react";
 import Image from "next/image";
 import gsap from "gsap";
 import { useGSAP } from "@gsap/react";
@@ -178,7 +178,7 @@ export default function FeaturedArchitectures() {
             <div className="h-px bg-white/10 flex-1 max-w-[60px]" />
           </div>
           
-          <h2 className="text-[clamp(2.2rem,5vw,5rem)] text-white mb-4 tracking-tight leading-tight" style={{ fontFamily: "var(--font-syne), sans-serif" }}>
+          <h2 className="text-[clamp(2.2rem,5vw,5rem)] text-white mb-4 tracking-tight leading-tight" style={{ fontFamily: "var(--font-heading), sans-serif" }}>
             Our Work.
           </h2>
           
@@ -226,7 +226,7 @@ export default function FeaturedArchitectures() {
                 </p>
 
                 {/* Title */}
-                <h3 className="text-2xl md:text-4xl lg:text-5xl text-white tracking-tight leading-none mb-6" style={{ fontFamily: "var(--font-syne), sans-serif" }}>
+                <h3 className="text-2xl md:text-4xl lg:text-5xl text-white tracking-tight leading-none mb-6" style={{ fontFamily: "var(--font-heading), sans-serif" }}>
                   {item.title}
                 </h3>
 

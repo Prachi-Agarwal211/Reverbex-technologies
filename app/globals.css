@@ -5,17 +5,18 @@
 :root {
   background: #000000;
   color: #ffffff;
-  --font-display: var(--font-syne), 'Syne', ui-sans-serif, system-ui, sans-serif;
-  --font-body: var(--font-dm-sans), 'DM Sans', ui-sans-serif, system-ui, sans-serif;
+  /* Safe area insets for notched devices */
+  --sat: env(safe-area-inset-top, 0px);
+  --sar: env(safe-area-inset-right, 0px);
+  --sab: env(safe-area-inset-bottom, 0px);
+  --sal: env(safe-area-inset-left, 0px);
 }
 
 html {
   scroll-behavior: initial;
-}
-
-/* Preloader active state - prevents scroll during loading */
-html.preloader-active {
-  overflow: hidden;
+  -webkit-text-size-adjust: 100%;
+  -moz-text-size-adjust: 100%;
+  text-size-adjust: 100%;
 }
 
 body {
@@ -23,20 +24,27 @@ body {
   padding: 0;
   width: 100%;
   min-height: 100vh;
-  font-family: var(--font-dm-sans), -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  min-height: 100dvh;
+  font-family: var(--font-body), -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
   letter-spacing: -0.01em;
   background: #000;
-  /* Prevent scroll during preloader */
-  overflow: hidden;
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
 }
 
-/* Once preloader is done, allow scroll */
+/* Prevent horizontal scroll */
+html {
+  overflow-x: hidden;
+}
+
 body.loaded {
-  overflow: auto;
+  overflow-y: auto;
 }
 
 h1, h2, h3, h4, h5, h6 {
-  font-family: var(--font-syne), sans-serif;
+  font-family: var(--font-heading), sans-serif;
   letter-spacing: -0.025em;
 }
 
@@ -54,10 +62,6 @@ main[aria-hidden="true"] {
 /* Safe area padding for mobile devices with notches */
 .pb-safe {
   padding-bottom: max(1rem, env(safe-area-inset-bottom));
-}
-
-.pt-safe {
-  padding-top: max(1rem, env(safe-area-inset-top));
 }
 
 /* Lenis Settings */
@@ -81,13 +85,6 @@ html.lenis, html.lenis body {
   pointer-events: none;
 }
 
-/* Hardware Acceleration Utility */
-.hw-accelerated {
-  transform: translate3d(0, 0, 0);
-  will-change: transform;
-  backface-visibility: hidden;
-}
-
 /* Static Mesh Gradient - high performance */
 .mesh-gradient-static {
   background-color: #050505;
@@ -100,7 +97,7 @@ html.lenis, html.lenis body {
 
 /* Custom Selection */
 ::selection {
-  background-color: rgba(34, 211, 238, 0.3);
+  background-color: rgba(234, 179, 8, 0.3);
   color: white;
 }
 
@@ -162,18 +159,8 @@ html.lenis, html.lenis body {
   100% { transform: translate3d(-50%, 0, 0); }
 }
 
-@keyframes marquee-right {
-  0% { transform: translate3d(-50%, 0, 0); }
-  100% { transform: translate3d(0%, 0, 0); }
-}
-
 .animate-marquee-left {
   animation: marquee-left 20s linear infinite;
-  will-change: transform;
-}
-
-.animate-marquee-right {
-  animation: marquee-right 20s linear infinite;
   will-change: transform;
 }
 
@@ -263,21 +250,6 @@ html.lenis, html.lenis body {
   background-blend-mode: normal, screen, screen;
 }
 
-/* Font Utility Classes */
-.font-display {
-  font-family: var(--font-display);
-}
-
-.font-body {
-  font-family: var(--font-body);
-}
-
-/* Noise Texture Utility - SVG data URI for film grain effect */
-.noise-texture {
-  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.15'/%3E%3C/svg%3E");
-  background-size: 256px 256px;
-}
-
 /* Preloader Iris Clip - for exit animation */
 .preloader-clip {
   clip-path: circle(150% at 50% 50%);
@@ -308,8 +280,7 @@ html.lenis, html.lenis body {
 
   /* Pause marquees instead of stopping */
   .animate-marquee-left,
-  .animate-marquee-right,
-  .ticker-row {
+  .animate-marquee-right {
     animation-play-state: paused !important;
   }
 
@@ -337,16 +308,6 @@ html.lenis, html.lenis body {
   border: 0;
 }
 
-/* Scrollbar None Utility - Hide scrollbar but keep functionality */
-.scrollbar-none {
-  -ms-overflow-style: none;
-  scrollbar-width: none;
-}
-
-.scrollbar-none::-webkit-scrollbar {
-  display: none;
-}
-
 /* Hide scrollbar for horizontal scroll containers */
 .hide-scrollbar {
   -ms-overflow-style: none;
@@ -355,21 +316,6 @@ html.lenis, html.lenis body {
 
 .hide-scrollbar::-webkit-scrollbar {
   display: none;
-}
-
-/* ============================================ */
-/* Typography Utilities - Award-Winning Details */
-/* ============================================ */
-
-/* Tabular Nums - For consistent number widths */
-.tabular {
-  font-variant-numeric: tabular-nums;
-}
-
-/* Tracking Caps - For uppercase labels */
-.tracking-caps {
-  letter-spacing: 0.22em;
-  word-spacing: 0.08em;
 }
 
 /* ============================================ */
@@ -385,7 +331,6 @@ html.lenis, html.lenis body {
   opacity: 0.03;
   mix-blend-mode: overlay;
   background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
-  animation: grain-shift 0.18s steps(8) infinite;
 }
 
 @keyframes grain-shift {
@@ -399,17 +344,6 @@ html.lenis, html.lenis body {
   87.5% { transform: translate(0, 5%); }
 }
 
-/* Scroll progress line animation - vertical drop */
-@keyframes scroll-line-drop {
-  0% { transform: translateY(-100%); opacity: 0; }
-  10% { opacity: 1; }
-  100% { transform: translateY(0); opacity: 1; }
-}
-
-.animate-scroll-line {
-  animation: scroll-line-drop 0.8s ease-out forwards;
-}
-
 /* Slow bounce for scroll cue */
 @keyframes bounce-slow {
   0%, 100% { transform: translateY(0); opacity: 0.4; }
@@ -418,54 +352,6 @@ html.lenis, html.lenis body {
 
 .animate-bounce-slow {
   animation: bounce-slow 2s ease-in-out infinite;
-}
-
-/* Slow pulse for ambient orbs */
-@keyframes pulse-slow {
-  0%, 100% { opacity: 0.4; transform: scale(1); }
-  50% { opacity: 0.6; transform: scale(1.05); }
-}
-
-.animate-pulse-slow {
-  animation: pulse-slow 4s ease-in-out infinite;
-}
-
-/* Scanning line animation for cards */
-@keyframes scan-down {
-  0% { transform: translateY(-100%); }
-  100% { transform: translateY(100%); }
-}
-
-.animate-scan-down {
-  animation: scan-down 3s linear infinite;
-}
-
-/* Hero character class for SplitHeading */
-.hero-char {
-  backface-visibility: hidden;
-}
-
-/* ============================================ */
-/* MOBILE SCROLL-SNAP SYSTEM */
-/* ============================================ */
-
-@media (max-width: 767px) {
-  /* Opt-in snap container — add class="mobile-snap-page" to page wrapper */
-  .mobile-snap-page {
-    scroll-snap-type: y mandatory;
-    overflow-y: scroll;
-    height: 100dvh;
-    overscroll-behavior-y: contain;
-    -webkit-overflow-scrolling: touch;
-  }
-
-  /* Every direct section child snaps */
-  .mobile-snap-page > section,
-  .mobile-snap-section {
-    scroll-snap-align: start;
-    scroll-snap-stop: always;
-    min-height: 100dvh;
-  }
 }
 
 /* ============================================ */
@@ -525,232 +411,61 @@ html.lenis, html.lenis body {
 }
 
 /* ============================================ */
-/* MOBILE AMBIENT FLOATING ORBS */
-/* Pure CSS — zero JS cost */
-/* ============================================ */
-
-@keyframes orb-float-1 {
-  0%, 100% { transform: translate(0, 0) scale(1); }
-  33% { transform: translate(20px, -30px) scale(1.05); }
-  66% { transform: translate(-15px, 15px) scale(0.97); }
-}
-
-@keyframes orb-float-2 {
-  0%, 100% { transform: translate(0, 0) scale(1); }
-  40% { transform: translate(-25px, 20px) scale(1.08); }
-  70% { transform: translate(30px, -10px) scale(0.95); }
-}
-
-@keyframes orb-float-3 {
-  0%, 100% { transform: translate(0, 0); }
-  50% { transform: translate(15px, 25px); }
-}
-
-.mobile-orb-1 {
-  animation: orb-float-1 12s ease-in-out infinite;
-  will-change: transform;
-}
-
-.mobile-orb-2 {
-  animation: orb-float-2 16s ease-in-out infinite;
-  will-change: transform;
-}
-
-.mobile-orb-3 {
-  animation: orb-float-3 20s ease-in-out infinite;
-  will-change: transform;
-}
-
-/* ============================================ */
-/* SECTION TRANSITION WIPES */
-/* clip-path morphs between sections */
-/* ============================================ */
-
-.section-wipe-enter {
-  clip-path: polygon(0 100%, 100% 100%, 100% 100%, 0 100%);
-  animation: wipe-reveal 1.2s cubic-bezier(0.16, 1, 0.3, 1) forwards;
-}
-
-@keyframes wipe-reveal {
-  to { clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%); }
-}
-
-/* Diagonal wipe variant */
-.section-wipe-diagonal {
-  clip-path: polygon(0 100%, 100% 100%, 100% 100%, 100% 100%);
-  animation: wipe-diagonal 1.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
-}
-
-@keyframes wipe-diagonal {
-  to { clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%); }
-}
-
-/* ============================================ */
-/* MOBILE CARD SWIPE SYSTEM */
-/* For case studies on mobile */
-/* ============================================ */
-
-.mobile-swipe-container {
-  display: flex;
-  overflow-x: auto;
-  scroll-snap-type: x mandatory;
-  -webkit-overflow-scrolling: touch;
-  scrollbar-width: none;
-  gap: 16px;
-  padding: 0 24px 24px;
-  cursor: grab;
-}
-
-.mobile-swipe-container::-webkit-scrollbar { display: none; }
-.mobile-swipe-container:active { cursor: grabbing; }
-
-.mobile-swipe-card {
-  flex-shrink: 0;
-  width: 85vw;
-  scroll-snap-align: start;
-  scroll-snap-stop: always;
-}
-
-/* ============================================ */
-/* STAGGER SYSTEM — for lists of items */
-/* ============================================ */
-
-.stagger-children > *:nth-child(1) { --reveal-delay: 0ms; }
-.stagger-children > *:nth-child(2) { --reveal-delay: 80ms; }
-.stagger-children > *:nth-child(3) { --reveal-delay: 160ms; }
-.stagger-children > *:nth-child(4) { --reveal-delay: 240ms; }
-.stagger-children > *:nth-child(5) { --reveal-delay: 320ms; }
-.stagger-children > *:nth-child(6) { --reveal-delay: 400ms; }
-
-/* ============================================ */
-/* TYPEWRITER CURSOR */
-/* ============================================ */
-
-@keyframes cursor-blink {
-  0%, 100% { opacity: 1; }
-  50% { opacity: 0; }
-}
-
-.cursor-blink::after {
-  content: '|';
-  animation: cursor-blink 1.2s ease-in-out infinite;
-  color: #ffffff;
-  margin-left: 2px;
-}
-
-/* ============================================ */
-/* MOBILE HERO SPECIFIC */
-/* ============================================ */
-
-@media (max-width: 767px) {
-  @keyframes mobile-hero-text-in {
-    from {
-      opacity: 0;
-      transform: translateY(20px);
-      clip-path: polygon(0 100%, 100% 100%, 100% 100%, 0 100%);
-    }
-    to {
-      opacity: 1;
-      transform: translateY(0);
-      clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%);
-    }
-  }
-
-  .mobile-hero-animate {
-    animation: mobile-hero-text-in 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
-    animation-delay: var(--hero-delay, 0ms);
-    opacity: 0;
-  }
-}
-
-/* ============================================ */
-/* SCROLL-DRIVEN ANIMATIONS (Chrome 115+ / CSS only) */
-/* Fallback: IntersectionObserver handles same classes */
-/* ============================================ */
-
-@supports (animation-timeline: scroll()) {
-  .scroll-driven-reveal {
-    animation: scroll-fade-up linear both;
-    animation-timeline: view();
-    animation-range: entry 0% entry 40%;
-  }
-
-  @keyframes scroll-fade-up {
-    from {
-      opacity: 0;
-      transform: translateY(30px);
-    }
-    to {
-      opacity: 1;
-      transform: translateY(0);
-    }
-  }
-}
-
-/* ============================================ */
 /* MOBILE NAVIGATION BOTTOM BAR */
-/* Replace top hamburger with bottom dock on mobile */
 /* ============================================ */
 
 @media (max-width: 767px) {
-  .mobile-bottom-nav {
-    position: fixed;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    z-index: 50;
-    padding: 12px 24px max(16px, env(safe-area-inset-bottom));
-    background: rgba(0, 0, 0, 0.85);
-    backdrop-filter: blur(20px);
-    -webkit-backdrop-filter: blur(20px);
-    border-top: 1px solid rgba(255, 255, 255, 0.08);
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 8px;
+  body {
+    padding-bottom: 72px;
   }
-
-  .mobile-bottom-nav-item {
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 4px;
-    cursor: pointer;
-    padding: 8px 4px;
-    border-radius: 12px;
-    transition: background 0.2s ease;
-    -webkit-tap-highlight-color: transparent;
+  
+  /* Ensure hero content doesn't hide behind nav */
+  #hero {
+    padding-bottom: 0;
   }
+}
 
-  .mobile-bottom-nav-item:active {
-    background: rgba(255, 255, 255, 0.08);
-    transform: scale(0.95);
+/* ============================================ */
+/* TOUCH DEVICE OPTIMIZATIONS */
+/* ============================================ */
+
+/* Hide custom cursor on touch devices */
+@media (hover: none) and (pointer: coarse) {
+  .custom-cursor,
+  .cursor-dot,
+  .cursor-outline {
+    display: none !important;
   }
-
-  .mobile-bottom-nav-icon {
-    width: 20px;
-    height: 20px;
-    color: rgba(255, 255, 255, 0.4);
-    transition: color 0.2s, transform 0.2s;
+  
+  * {
+    cursor: auto !important;
   }
+}
 
-  .mobile-bottom-nav-item.active .mobile-bottom-nav-icon {
-    color: #ffffff;
-    transform: translateY(-2px);
+/* Better tap targets on touch */
+@media (hover: none) and (pointer: coarse) {
+  button, a, [role="button"] {
+    min-height: 44px;
+    min-width: 44px;
   }
+}
 
-  .mobile-bottom-nav-label {
-    font-size: 9px;
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
-    color: rgba(255, 255, 255, 0.35);
-    font-family: var(--font-dm-sans), sans-serif;
-    transition: color 0.2s;
-  }
+/* ============================================ */
+/* HEIGHT FALLBACKS FOR OLDER BROWSERS */
+/* ============================================ */
 
-  .mobile-bottom-nav-item.active .mobile-bottom-nav-label {
-    color: #ffffff;
+.hero-height {
+  height: 100vh;
+  height: 100dvh;
+}
+
+/* ============================================ */
+/* iOS SAFARI SPECIFIC FIXES */
+/* ============================================ */
+
+@supports (-webkit-touch-callout: none) {
+  .h-dvh {
+    height: -webkit-fill-available;
   }
 }
 
@@ -766,17 +481,5 @@ html.lenis, html.lenis body {
   }
   [data-reveal][data-visible="true"] {
     opacity: 1;
-  }
-  .mobile-orb-1,
-  .mobile-orb-2,
-  .mobile-orb-3 {
-    animation: none !important;
-  }
-  @supports (animation-timeline: scroll()) {
-    .scroll-driven-reveal {
-      animation: none;
-      opacity: 1;
-      transform: none;
-    }
   }
 }

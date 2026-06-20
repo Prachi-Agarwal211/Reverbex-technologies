@@ -135,6 +135,9 @@ export default function ContactSection() {
           }}
         />
 
+        {/* Yellow gradient bleed from MorphingMenu */}
+        <div className="absolute top-0 left-0 w-full h-24 z-30 pointer-events-none bg-gradient-to-b from-[#FDE68A] via-[#EAB308]/30 to-transparent" />
+
         {/* Dark overlay for minimal readable look */}
         <div className="absolute inset-0 bg-gradient-to-t from-black via-black/90 to-black/40 z-10 pointer-events-none" />
         <div className="absolute inset-0 bg-[#050505]/30 z-10 pointer-events-none hidden md:block mix-blend-multiply" />
@@ -148,7 +151,7 @@ export default function ContactSection() {
           {/* Header lines with yellow accent */}
           <div className="flex items-center gap-4 mb-4">
             <div className="h-px bg-white/10 flex-1 max-w-[60px]" />
-            <span className="text-yellow-500 text-[clamp(0.65rem,1.5vw,0.85rem)] font-light tracking-[0.2em] uppercase tabular">
+            <span className="text-[#EAB308] text-[clamp(0.65rem,1.5vw,0.85rem)] font-light tracking-[0.2em] uppercase tabular">
               Get In Touch
             </span>
             <div className="h-px bg-white/10 flex-1 max-w-[60px]" />
@@ -158,90 +161,88 @@ export default function ContactSection() {
              <div key={i} className="overflow-hidden mobile-reveal pb-2">
                <h2
                  className="contact-title-word text-[clamp(4.5rem,14vw,14rem)] text-white tracking-tighter leading-none inline-block pr-2 md:pr-4"
-                 style={{ fontFamily: "var(--font-syne), sans-serif", perspective: "800px" }}
+                 style={{ fontFamily: "var(--font-heading), sans-serif", perspective: "800px" }}
                >
                  {word}
                </h2>
              </div>
            ))}
            </div>
-           <p className="hero-subtext text-white/70 text-[clamp(0.65rem,1.5vw,0.85rem)] font-light tracking-[0.15em] uppercase mt-1 drop-shadow-md pb-2 mobile-reveal max-w-2xl" style={{ fontFamily: "var(--font-dm-sans), sans-serif" }}>
+           <p className="hero-subtext text-white/70 text-[clamp(0.65rem,1.5vw,0.85rem)] font-light tracking-[0.15em] uppercase mt-1 drop-shadow-md pb-2 mobile-reveal max-w-2xl" style={{ fontFamily: "var(--font-body), sans-serif" }}>
               Partner with us to deploy high-performance custom websites, Meta/Google ads campaigns, and operational automations built to grow your business.
            </p>
         </div>
 
-        {/* Clean CSS Grid for contact info */}
-        <div className="w-full grid grid-cols-1 md:grid-cols-3 gap-12 md:gap-6 border-t border-white/10 pt-10 md:pt-16 pointer-events-auto">
+        {/* Clean CSS Grid for contact info and Form */}
+        <div className="w-full grid grid-cols-1 md:grid-cols-2 gap-12 md:gap-16 border-t border-white/10 pt-10 md:pt-16 pointer-events-auto">
 
-           <div className="contact-link-group mobile-reveal flex flex-col items-start gap-4">
-              <span className="text-white/40 text-[10px] md:text-xs uppercase tracking-[0.2em] font-medium">Inquiries</span>
-              <div className="flex flex-col gap-3">
-                 <div className="flex items-center gap-3 group">
-                    <a href={`mailto:${CONTACT.email}`} className="text-white text-lg md:text-2xl font-light hover:text-white transition-colors relative inline-block w-max">
-                       <span className="relative z-10">{CONTACT.emailDisplay}</span>
-                       <span className="absolute left-0 bottom-0 w-full h-[1px] bg-blue-500 scale-x-0 origin-left group-hover:scale-x-100 transition-transform duration-500 ease-out" />
-                    </a>
-                    {/* Separate copy button */}
-                    <button
-                      onClick={() => handleCopyEmail(CONTACT.email)}
-                      className="w-8 h-8 rounded-full bg-white/5 border border-white/10 flex items-center justify-center text-white/50 hover:text-white hover:bg-white/10 hover:border-white/20 transition-all duration-300"
-                      aria-label="Copy email"
-                    >
-                      {copiedEmail === CONTACT.email ? (
-                        <Check className="w-4 h-4 text-green-400" />
-                      ) : (
-                        <Copy className="w-4 h-4" />
-                      )}
-                    </button>
-                 </div>
-              </div>
-              {/* Toast notification */}
-              {copiedEmail && (
-                <div className="fixed bottom-6 left-1/2 -translate-x-1/2 px-4 py-2 bg-white/10 backdrop-blur-md border border-white/20 rounded-full text-white text-sm font-medium animate-in fade-in slide-in-from-bottom-4 duration-300 z-50">
-                  ✓ Copied
-                </div>
-              )}
-           </div>
-
-           <div className="contact-link-group mobile-reveal flex flex-col items-start gap-4 md:pl-12">
-              <span className="text-white/40 text-[10px] md:text-xs uppercase tracking-[0.2em] font-medium">Phone</span>
-              <div className="flex flex-col gap-3">
-                 <a href={CONTACT.phoneHref} className="group text-white text-lg md:text-2xl font-light hover:text-white transition-colors relative inline-block w-max">
-                    <span className="relative z-10">{CONTACT.phone}</span>
-                    <span className="absolute left-0 bottom-0 w-full h-[1px] bg-yellow-500 scale-x-0 origin-left group-hover:scale-x-100 transition-transform duration-500 ease-out" />
+           {/* Left: WhatsApp CTA & Info */}
+           <div className="contact-link-group mobile-reveal flex flex-col items-start gap-8">
+              <div className="flex flex-col gap-4">
+                 <p className="text-white/70 text-lg md:text-xl font-light">
+                   Stop losing customers to slow websites and bad ads. Partner with us today.
+                 </p>
+                 <a 
+                   href="https://wa.me/919929986743" 
+                   target="_blank"
+                   rel="noopener noreferrer"
+                   className="mt-4 group relative inline-flex items-center justify-center gap-3 bg-[#EAB308] text-black px-8 py-4 rounded-full font-bold text-lg overflow-hidden transition-transform hover:scale-105"
+                 >
+                   <span className="relative z-10 flex items-center gap-2">
+                     Message Us on WhatsApp
+                     <svg className="w-5 h-5 group-hover:translate-x-1 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14 5l7 7m0 0l-7 7m7-7H3" />
+                     </svg>
+                   </span>
+                   <div className="absolute inset-0 bg-white/20 translate-y-full group-hover:translate-y-0 transition-transform duration-300 ease-out" />
                  </a>
               </div>
+
+              <div className="grid grid-cols-2 gap-8 mt-4 w-full">
+                <div className="flex flex-col items-start gap-2">
+                  <span className="text-white/50 text-[10px] md:text-xs uppercase tracking-[0.2em] font-medium">Email</span>
+                  <a href={`mailto:${CONTACT.email}`} className="text-white text-base md:text-lg font-light hover:text-[#EAB308] transition-colors">
+                     {CONTACT.emailDisplay}
+                  </a>
+                </div>
+                <div className="flex flex-col items-start gap-2">
+                  <span className="text-white/50 text-[10px] md:text-xs uppercase tracking-[0.2em] font-medium">Location</span>
+                  <p className="text-white text-base md:text-lg font-light">
+                     {CONTACT.location}
+                  </p>
+                </div>
+              </div>
            </div>
 
-           <div className="contact-link-group mobile-reveal flex flex-col items-start gap-4 md:pl-12">
-              <span className="text-white/40 text-[10px] md:text-xs uppercase tracking-[0.2em] font-medium">Location</span>
-              <div className="flex flex-col gap-3">
-                 <p className="text-white text-lg md:text-2xl font-light">
-                    {CONTACT.location}
-                 </p>
-                 <div className="flex items-center gap-2 text-white/60 text-sm md:text-base font-light max-w-xs mt-1">
-                    {/* Live indicator with animated green dot */}
-                    <span className="relative flex h-2 w-2">
-                      <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></span>
-                      <span className="relative inline-flex rounded-full h-2 w-2 bg-green-500"></span>
-                    </span>
-                    Available — Remote
-                 </div>
-              </div>
+           {/* Right: Contact Form */}
+           <div className="contact-link-group mobile-reveal flex flex-col items-start gap-6 bg-white/5 backdrop-blur-md p-8 rounded-2xl border border-white/10">
+              <span className="text-white/90 text-xl font-medium tracking-tight mb-2">Send us a message</span>
+              <form className="w-full flex flex-col gap-4" onSubmit={(e) => e.preventDefault()}>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <input type="text" placeholder="Your Name" className="w-full bg-black/50 border border-white/10 rounded-lg px-4 py-3 text-white placeholder-white/30 focus:outline-none focus:border-[#EAB308] transition-colors" />
+                  <input type="tel" placeholder="Phone Number" className="w-full bg-black/50 border border-white/10 rounded-lg px-4 py-3 text-white placeholder-white/30 focus:outline-none focus:border-[#EAB308] transition-colors" />
+                </div>
+                <input type="url" placeholder="Business URL (Optional)" className="w-full bg-black/50 border border-white/10 rounded-lg px-4 py-3 text-white placeholder-white/30 focus:outline-none focus:border-[#EAB308] transition-colors" />
+                <textarea placeholder="Tell us about your needs..." rows={4} className="w-full bg-black/50 border border-white/10 rounded-lg px-4 py-3 text-white placeholder-white/30 focus:outline-none focus:border-[#EAB308] transition-colors resize-none"></textarea>
+                <button type="submit" className="w-full bg-white text-black font-bold py-3 rounded-lg hover:bg-[#EAB308] transition-colors mt-2">
+                  Submit Inquiry
+                </button>
+              </form>
            </div>
 
         </div>
 
         {/* Bottom Footer Credits Line */}
         <div className="contact-footer mobile-reveal w-full mt-16 md:mt-24 flex flex-col sm:flex-row items-start sm:items-center justify-between pointer-events-auto gap-4">
-          <p className="text-white/30 text-[10px] md:text-xs tracking-[0.2em] uppercase">
-            {/* Auto year */}
-            © {new Date().getFullYear()} Reverbex Technologies • Redefining Operations
+          <p className="text-white/50 text-[10px] md:text-xs tracking-[0.2em] uppercase flex flex-col md:flex-row gap-2 md:gap-6">
+            <span>© {new Date().getFullYear()} Reverbex Technologies</span>
+            <span className="hidden md:inline text-white/30">|</span>
+            <span className="text-[#EAB308]">Made in Jaipur, Built for the World.</span>
           </p>
           {/* Back to top with lenis.scrollTo */}
           <button
             onClick={handleBackToTop}
-            className="text-white/40 hover:text-white text-[10px] md:text-xs tracking-[0.2em] uppercase transition-colors cursor-pointer"
+            className="text-white/50 hover:text-white text-[10px] md:text-xs tracking-[0.2em] uppercase transition-colors cursor-pointer"
           >
             Back to Top
           </button>

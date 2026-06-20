@@ -6,33 +6,43 @@ export default function ServiceWorkerRegistration() {
   const [updateAvailable, setUpdateAvailable] = useState(false);
 
   useEffect(() => {
-    // Only register service worker in production
-    if (typeof window !== "undefined" && "serviceWorker" in navigator) {
-      const registerSW = async () => {
-        try {
-          const registration = await navigator.serviceWorker.register("/sw.js", {
-            scope: "/",
-          });
-
-          // Update service worker when new version available
-          registration.addEventListener("updatefound", () => {
-            const newWorker = registration.installing;
-            if (newWorker) {
-              newWorker.addEventListener("statechange", () => {
-                if (newWorker.state === "installed" && navigator.serviceWorker.controller) {
-                  // New content available - show non-blocking notification
-                  setUpdateAvailable(true);
-                }
-              });
-            }
-          });
-        } catch (error) {
-          // Service Worker registration failed
-        }
-      };
-
-      registerSW();
+    if (
+      typeof window === "undefined" ||
+      !("serviceWorker" in navigator) ||
+      process.env.NODE_ENV !== "production"
+    ) {
+      // Unregister any stale service worker in dev
+      navigator.serviceWorker?.getRegistrations().then((regs) => {
+        regs.forEach((reg) => reg.unregister());
+      });
+      caches?.keys?.().then((keys) => {
+        keys.forEach((key) => caches.delete(key));
+      });
+      return;
     }
+
+    const registerSW = async () => {
+      try {
+        const registration = await navigator.serviceWorker.register("/sw.js", {
+          scope: "/",
+        });
+
+        registration.addEventListener("updatefound", () => {
+          const newWorker = registration.installing;
+          if (newWorker) {
+            newWorker.addEventListener("statechange", () => {
+              if (newWorker.state === "installed" && navigator.serviceWorker.controller) {
+                setUpdateAvailable(true);
+              }
+            });
+          }
+        });
+      } catch {
+        // Service Worker registration failed
+      }
+    };
+
+    registerSW();
   }, []);
 
   const handleRefresh = () => {

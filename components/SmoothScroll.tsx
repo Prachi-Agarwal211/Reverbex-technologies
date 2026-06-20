@@ -16,7 +16,11 @@ export default function SmoothScroll({
   const lenisRef = useRef<Lenis | null>(null);
 
   useEffect(() => {
-    // Initialize Lenis for ALL devices (including mobile)
+    // Skip Lenis on mobile — native momentum scrolling is better
+    const isMobile = window.matchMedia("(pointer: coarse)").matches || window.innerWidth < 768;
+    if (isMobile) return;
+
+    // Initialize Lenis for desktop only
     const lenis = new Lenis({
       duration: 1.2,
       easing: (t: number) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),

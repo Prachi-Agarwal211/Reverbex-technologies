@@ -1,54 +1,43 @@
-import React from "react";
+import type { Metadata } from "next";
 import Navbar from "../../components/Navbar";
+import StickyProjects from "../../components/StickyProjects";
 
-const cases = [
-  { slug: "maac-animation", name: "MAAC Animation Jaipur", metric: "500+ leads generated" },
-  { slug: "aarya-clothing", name: "Aarya Clothing", metric: "₹3+ lakh revenue generated" },
-  { slug: "khemji-wire", name: "Khemji Wire Company", metric: "Complete digital rebranding" }
-];
+export const metadata: Metadata = {
+  title: "Our Work & Case Studies | Reverbex Technologies",
+  description: "Real numbers. Real businesses. Real impact. See how we've engineered growth for our clients.",
+  openGraph: {
+    title: "Our Work & Case Studies | Reverbex Technologies",
+    description: "Real numbers. Real businesses. Real impact. See how we've engineered growth for our clients.",
+    type: "website",
+    url: "https://reverbex.in/work",
+  }
+};
 
-export default function WorkPage() {
+export default function WorkIndexPage() {
   return (
-    <main className="w-full bg-[#050505] text-white min-h-screen pt-32 pb-24 selection:bg-[#EAB308]/30">
+    <main className="w-full bg-[#050505] text-white min-h-screen pt-32 pb-0 selection:bg-[#EAB308]/30">
       <Navbar />
-      <div className="max-w-7xl mx-auto px-6">
-        <span
-          className="text-[#EAB308] text-xs font-semibold tracking-[0.25em] uppercase mb-4 block"
-          style={{ fontFamily: "var(--font-dm-sans), sans-serif" }}
-        >
-          Case Studies Portfolio
-        </span>
-        <h1
-          className="text-white text-[clamp(2.5rem,6vw,5.5rem)] font-black tracking-tighter leading-tight mb-16"
-          style={{ fontFamily: "var(--font-syne), sans-serif" }}
-        >
-          Our Work.
-        </h1>
-
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 border-t border-[#1A1A1A] pt-12">
-          {cases.map((item, idx) => (
-            <a
-              key={idx}
-              href={`/work/${item.slug}`}
-              className="group flex flex-col justify-between p-8 bg-[#0A0A0A] border border-[#1A1A1A] rounded-xl hover:border-[#EAB308] transition-colors duration-300"
-            >
-              <div>
-                <span className="text-[#EAB308] text-xs font-semibold tracking-widest uppercase block mb-4">
-                  Outcome: {item.metric}
-                </span>
-                <h3
-                  className="text-white text-3xl font-bold group-hover:text-[#EAB308] transition-colors duration-300 mb-2"
-                  style={{ fontFamily: "var(--font-syne), sans-serif" }}
-                >
-                  {item.name}
-                </h3>
-              </div>
-              <div className="text-[#666666] group-hover:text-white transition-colors duration-300 text-xs font-semibold uppercase tracking-wider mt-12">
-                Read documentary story →
-              </div>
-            </a>
-          ))}
+      
+      <div className="max-w-7xl mx-auto px-6 lg:px-12 mb-12">
+        <div className="text-center md:text-left">
+          <span className="text-[#EAB308] text-xs font-semibold tracking-[0.25em] uppercase mb-4 block" style={{ fontFamily: "var(--font-body), sans-serif" }}>
+            The Portfolio
+          </span>
+          <h1 className="text-5xl md:text-7xl font-black tracking-tighter leading-[1.0] mb-6" style={{ fontFamily: "var(--font-heading), sans-serif" }}>
+            Results That Speak.
+          </h1>
+          <p className="text-[#A0A0A0] text-xl font-light leading-relaxed max-w-2xl mx-auto md:mx-0" style={{ fontFamily: "var(--font-body), sans-serif" }}>
+            We don't count visitors or lines of code. We count leads generated, costs reduced, and revenue increased.
+          </p>
         </div>
+      </div>
+
+      {/* The 3D Sticky Peeling Cards Section */}
+      <StickyProjects />
+
+      {/* Outro section to allow scrolling past the pinned cards */}
+      <div className="w-full h-[50vh] flex items-center justify-center border-t border-[#1A1A1A] bg-[#0A0A0A]">
+        <h2 className="text-[#A0A0A0] text-2xl font-light tracking-widest uppercase">End of Portfolio</h2>
       </div>
     </main>
   );

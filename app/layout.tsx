@@ -1,23 +1,24 @@
 import type { Metadata, Viewport } from "next";
-import { Syne, DM_Sans } from "next/font/google";
+import { Space_Grotesk, Inter } from "next/font/google";
 import "./globals.css";
 import ServiceWorkerRegistration from "../components/ServiceWorkerRegistration";
 import SmoothScroll from "../components/SmoothScroll";
 import CustomCursor from "../components/CustomCursor";
 import WhatsAppButton from "../components/shared/WhatsAppButton";
+import MorphingMenu from "../components/MorphingMenu";
 import { CONTACT, COMPANY, SOCIALS } from "@/lib/config";
 
-const syne = Syne({
+const spaceGrotesk = Space_Grotesk({
   subsets: ["latin"],
-  variable: "--font-syne",
-  weight: ["400", "500", "600", "700", "800"],
+  variable: "--font-heading",
+  weight: ["400", "500", "600", "700"],
   display: "swap",
 });
 
-const dmSans = DM_Sans({
+const inter = Inter({
   subsets: ["latin"],
-  variable: "--font-dm-sans",
-  weight: ["300", "400", "500", "600"],
+  variable: "--font-body",
+  weight: ["400", "500", "600"],
   display: "swap",
 });
 
@@ -81,24 +82,21 @@ export const viewport: Viewport = {
   themeColor: "#000000",
   width: "device-width",
   initialScale: 1,
+  maximumScale: 5,
+  userScalable: true,
+  viewportFit: "cover",
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en" className={`${syne.variable} ${dmSans.variable}`} suppressHydrationWarning>
+    <html lang="en" className={`${spaceGrotesk.variable} ${inter.variable}`} suppressHydrationWarning>
       <head>
-        <link rel="preconnect" href="/" />
+        <link rel="preconnect" href="https://images.unsplash.com" crossOrigin="anonymous" />
         <link rel="preload" as="video" href="/hero-video-mobile.mp4" type="video/mp4" fetchPriority="high" media="(max-width: 768px)" />
-        <link rel="preload" as="video" href="/hero-video-desktop.mp4" type="video/mp4" fetchPriority="high" media="(min-width: 769px)" />
         <link rel="preload" as="image" href="/hero-poster.jpg" fetchPriority="high" />
         <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
         <link rel="apple-touch-icon" href="/favicon.svg" />
         <link rel="manifest" href="/site.webmanifest" />
-        <style dangerouslySetInnerHTML={{ __html: `
-          [data-reveal] { opacity: 0; }
-          [data-reveal="fade-up"] { transform: translateY(40px); transition: transform 0.8s cubic-bezier(0.16,1,0.3,1), opacity 0.8s ease; }
-          [data-reveal="fade-up"][data-visible="true"] { transform: translateY(0); opacity: 1; }
-        ` }} />
         {/* JSON-LD Structured Data for SEO */}
         <script
           type="application/ld+json"
@@ -158,12 +156,13 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           }}
         />
       </head>
-      <body className={`${dmSans.className} overflow-x-hidden antialiased bg-black text-white`}>
+      <body className={`${inter.className} overflow-x-hidden antialiased bg-black text-white`}>
         {/* Skip to Content Link for Accessibility */}
         <a href="#main-content" className="skip-to-content">
           Skip to main content
         </a>
         <CustomCursor />
+        <MorphingMenu />
         <main id="main-content" tabIndex={-1}>
           <SmoothScroll>{children}</SmoothScroll>
         </main>

@@ -1,5 +1,10 @@
-import React from "react";
+import type { Metadata } from "next";
 import Navbar from "../../components/Navbar";
+
+export const metadata: Metadata = {
+  title: "Services",
+  description: "Explore Reverbex Technologies services — custom websites, e-commerce, mobile apps, Meta/Google Ads, lead generation, ERP systems, AI solutions, and more.",
+};
 
 const services = [
   { slug: "website-development", name: "Custom Website Development" },
@@ -23,13 +28,13 @@ export default function ServicesPage() {
       <div className="max-w-7xl mx-auto px-6">
         <span
           className="text-[#EAB308] text-xs font-semibold tracking-[0.25em] uppercase mb-4 block"
-          style={{ fontFamily: "var(--font-dm-sans), sans-serif" }}
+          style={{ fontFamily: "var(--font-body), sans-serif" }}
         >
           Capabilities Catalog
         </span>
         <h1
           className="text-white text-[clamp(2.5rem,6vw,5.5rem)] font-black tracking-tighter leading-tight mb-16"
-          style={{ fontFamily: "var(--font-syne), sans-serif" }}
+          style={{ fontFamily: "var(--font-heading), sans-serif" }}
         >
           Our Services.
         </h1>
@@ -47,7 +52,7 @@ export default function ServicesPage() {
                 </span>
                 <h3
                   className="text-white text-2xl font-bold group-hover:text-[#EAB308] transition-colors duration-300 mb-2"
-                  style={{ fontFamily: "var(--font-syne), sans-serif" }}
+                  style={{ fontFamily: "var(--font-heading), sans-serif" }}
                 >
                   {service.name}
                 </h3>

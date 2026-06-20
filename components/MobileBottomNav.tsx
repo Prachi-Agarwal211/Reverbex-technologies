@@ -1,45 +1,38 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { Home, BookOpen, Layers, Cpu, BookMarked, Users, Mail } from "lucide-react";
+import Link from "next/link";
+import { usePathname } from "next/navigation";
+import { Home, Layers, Briefcase, Heart } from "lucide-react";
 import { MOBILE_NAV_ITEMS } from "@/lib/config";
+import { scrollToSection } from "@/lib/scrollToSection";
 
-// Map section IDs to icons
 const iconMap: Record<string, React.ElementType> = {
   hero: Home,
-  story: BookOpen,
-  reverbexbond: BookOpen,
   capabilities: Layers,
-  services: Cpu,
-  architectures: BookMarked,
-  founders: Users,
-  contact: Mail,
+  architectures: Briefcase,
+  reverbexbond: Heart,
 };
 
-const scrollToSection = (id: string) => {
-  const el = document.getElementById(id);
-  if (!el) return;
-  const target = el.getBoundingClientRect().top + window.scrollY;
-  if ((window as any).lenis) {
-    (window as any).lenis.scrollTo(target, { duration: 1, easing: (t: number) => Math.min(1, 1.001 - Math.pow(2, -10 * t)) });
-  } else {
-    window.scrollTo({ top: target, behavior: "smooth" });
-  }
+const sectionToRoute: Record<string, string> = {
+  hero: "/",
+  capabilities: "/services",
+  architectures: "/work",
+  reverbexbond: "/about",
 };
 
 export default function MobileBottomNav() {
   const [active, setActive] = useState("hero");
   const [visible, setVisible] = useState(false);
+  const pathname = usePathname();
+  const isHomepage = pathname === "/";
 
-  // Event-based visibility: listen for 'loaded' class on body
   useEffect(() => {
-    // Check if already loaded
     if (document.body.classList.contains("loaded")) {
       setVisible(true);
       return;
     }
 
-    // Use MutationObserver to detect when preloader completes
     const observer = new MutationObserver((mutations) => {
       for (const mutation of mutations) {
         if (mutation.type === "attributes" && mutation.attributeName === "class") {
@@ -54,7 +47,6 @@ export default function MobileBottomNav() {
 
     observer.observe(document.body, { attributes: true, attributeFilter: ["class"] });
 
-    // Fallback timeout in case MutationObserver doesn't fire
     const fallbackTimer = setTimeout(() => {
       setVisible(true);
       observer.disconnect();
@@ -66,8 +58,10 @@ export default function MobileBottomNav() {
     };
   }, []);
 
-  // Track active section
+  // Track active section only on homepage
   useEffect(() => {
+    if (!isHomepage) return;
+
     const sections = MOBILE_NAV_ITEMS.map((n) => document.getElementById(n.to)).filter(Boolean) as HTMLElement[];
 
     const observer = new IntersectionObserver(
@@ -81,36 +75,92 @@ export default function MobileBottomNav() {
 
     sections.forEach((s) => observer.observe(s));
     return () => sections.forEach((s) => observer.unobserve(s));
-  }, []);
+  }, [isHomepage]);
+
+  // Set active based on current route on sub-pages
+  useEffect(() => {
+    if (!isHomepage) {
+      const match = Object.entries(sectionToRoute).find(([, route]) => route === pathname);
+      if (match) setActive(match[0]);
+    }
+  }, [pathname, isHomepage]);
 
   if (!visible) return null;
 
   return (
     <nav
-      className="md:hidden mobile-bottom-nav"
+      className="md:hidden fixed bottom-0 left-0 right-0 z-50"
       style={{
         transform: visible ? "translateY(0)" : "translateY(100%)",
         transition: "transform 0.5s cubic-bezier(0.16, 1, 0.3, 1)",
+        paddingBottom: "env(safe-area-inset-bottom, 0px)",
       }}
       aria-label="Mobile bottom navigation"
     >
-      {MOBILE_NAV_ITEMS.map(({ label, to }) => {
-        const Icon = iconMap[to] || Home;
-        return (
-          <button
-            key={to}
-            onClick={() => {
-              setActive(to);
-              scrollToSection(to);
-            }}
-            className={`mobile-bottom-nav-item ${active === to ? "active" : ""}`}
-            aria-label={`Go to ${label}`}
-          >
-            <Icon className="mobile-bottom-nav-icon" style={{ width: 20, height: 20 }} />
-            <span className="mobile-bottom-nav-label">{label}</span>
-          </button>
-        );
-      })}
+      <div className="bg-black/90 backdrop-blur-xl border-t border-white/10 px-2 pt-2 pb-2">
+        <div className="flex items-center justify-around">
+          {MOBILE_NAV_ITEMS.map(({ label, to }) => {
+            const Icon = iconMap[to] || Home;
+            const isActive = active === to;
+            const route = sectionToRoute[to];
+
+            if (isHomepage) {
+              return (
+                <button
+                  key={to}
+                  onClick={() => {
+                    setActive(to);
+                    scrollToSection(to);
+                  }}
+                  className={`flex flex-col items-center gap-1 py-2 px-3 rounded-xl transition-all duration-200 ${
+                    isActive ? "bg-white/5" : "active:bg-white/5"
+                  }`}
+                  aria-label={`Go to ${label}`}
+                  aria-current={isActive ? "page" : undefined}
+                >
+                  <Icon
+                    className={`w-5 h-5 transition-colors duration-200 ${
+                      isActive ? "text-[#EAB308]" : "text-white/40"
+                    }`}
+                  />
+                  <span
+                    className={`text-[9px] font-medium tracking-wider uppercase transition-colors duration-200 ${
+                      isActive ? "text-[#EAB308]" : "text-white/40"
+                    }`}
+                  >
+                    {label}
+                  </span>
+                </button>
+              );
+            }
+
+            return (
+              <Link
+                key={to}
+                href={route || "/"}
+                className={`flex flex-col items-center gap-1 py-2 px-3 rounded-xl transition-all duration-200 ${
+                  isActive ? "bg-white/5" : "active:bg-white/5"
+                }`}
+                aria-label={`Go to ${label}`}
+                aria-current={isActive ? "page" : undefined}
+              >
+                <Icon
+                  className={`w-5 h-5 transition-colors duration-200 ${
+                    isActive ? "text-[#EAB308]" : "text-white/40"
+                  }`}
+                />
+                <span
+                  className={`text-[9px] font-medium tracking-wider uppercase transition-colors duration-200 ${
+                    isActive ? "text-[#EAB308]" : "text-white/40"
+                  }`}
+                >
+                  {label}
+                </span>
+              </Link>
+            );
+          })}
+        </div>
+      </div>
     </nav>
   );
 }

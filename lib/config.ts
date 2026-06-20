@@ -13,43 +13,25 @@ export const SOCIALS = {
   twitter: "https://twitter.com/reverbex",
 };
 
-export const SECTIONS = [
-  "hero",
-  "trustedby",
-  "capabilities", // What We Do
-  "results", // Results Dashboard
-  "architectures", // Case Studies Preview
-  "whyreverbex", // Why choose custom
-  "premiumpositioning", // Premium beats cheap
-  "reverbexbond", // Reverbex Bond
-  "methodology", // Process + Next.js
-  "industries", // Industries Serve
-  "testimonials", // Client Reviews
-  "faq", // FAQs
-  "founders", // Team/Founders
-  "contact",
-] as const;
-
 export const MOBILE_NAV_ITEMS = [
   { label: "Home", to: "hero" as const },
   { label: "Services", to: "capabilities" as const },
   { label: "Work", to: "architectures" as const },
+  { label: "Industries", to: "industries" as const },
   { label: "About", to: "reverbexbond" as const },
-  { label: "Contact", to: "contact" as const },
 ];
 
 export const DESKTOP_NAV_ITEMS = [
   { label: "Home", to: "hero" as const },
   { label: "Services", to: "capabilities" as const },
   { label: "Work", to: "architectures" as const },
+  { label: "Industries", to: "industries" as const },
   { label: "About", to: "reverbexbond" as const },
   { label: "Contact", to: "contact" as const },
 ];
 
 export const COMPANY = {
   name: "Reverbex Technologies",
-  tagline: "Websites. Ads. Automation. Built To Grow Businesses.",
-  url: "https://reverbex.com",
   foundingYear: 2024,
 };
 

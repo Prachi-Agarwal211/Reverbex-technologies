@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useRef } from "react";
+import { useRef } from "react";
 import { useGSAP } from "@gsap/react";
 import gsap from "gsap";
 import { MessageSquare, Eye, TrendingUp, Zap } from "lucide-react";
@@ -85,19 +85,19 @@ export default function OurStory() {
         <div className="text-left mb-16 md:mb-24 max-w-3xl">
           <span
             className="bond-reveal text-[#EAB308] text-xs font-semibold tracking-[0.25em] uppercase mb-4 block"
-            style={{ fontFamily: "var(--font-dm-sans), sans-serif" }}
+            style={{ fontFamily: "var(--font-body), sans-serif" }}
           >
             The Reverbex Bond
           </span>
           <h2
             className="bond-reveal text-white text-[clamp(2.2rem,5vw,4.5rem)] font-black tracking-tighter leading-[1.0] mb-6"
-            style={{ fontFamily: "var(--font-syne), sans-serif" }}
+            style={{ fontFamily: "var(--font-heading), sans-serif" }}
           >
             We Don&apos;t Disappear After Launch.
           </h2>
           <p
             className="bond-reveal text-[#A0A0A0] text-lg font-normal leading-relaxed"
-            style={{ fontFamily: "var(--font-dm-sans), sans-serif" }}
+            style={{ fontFamily: "var(--font-body), sans-serif" }}
           >
             Most agencies build your website and leave. We build long-term relationships to support your business expansion every single day.
           </p>
@@ -121,13 +121,13 @@ export default function OurStory() {
                 <div>
                   <h3
                     className="text-white text-xl font-bold tracking-tight mb-3"
-                    style={{ fontFamily: "var(--font-syne), sans-serif" }}
+                    style={{ fontFamily: "var(--font-heading), sans-serif" }}
                   >
                     {item.title}
                   </h3>
                   <p
                     className="text-[#A0A0A0] text-sm leading-relaxed"
-                    style={{ fontFamily: "var(--font-dm-sans), sans-serif" }}
+                    style={{ fontFamily: "var(--font-body), sans-serif" }}
                   >
                     {item.desc}
                   </p>
@@ -141,7 +141,7 @@ export default function OurStory() {
         <div className="bond-reveal w-full pt-8 border-t border-[#1A1A1A] text-center">
           <p
             className="text-[#666666] text-xs md:text-sm tracking-wider uppercase font-semibold"
-            style={{ fontFamily: "var(--font-dm-sans), sans-serif" }}
+            style={{ fontFamily: "var(--font-body), sans-serif" }}
           >
             ✓ Daily availability • ✓ Proactive monitoring • ✓ Fast problem solving • ✓ Long-term partnership • ✓ No surprise charges
           </p>

@@ -1,76 +1,69 @@
 "use client";
 
-import React, { useRef, useState } from "react";
+import { useRef, useState } from "react";
 import { useGSAP } from "@gsap/react";
 import gsap from "gsap";
 import { Plus, Minus } from "lucide-react";
 
 const faqs = [
   {
-    question: "What does Reverbex Technologies do?",
-    answer: "We help businesses grow through custom Next.js websites, Meta (Facebook/Instagram) advertising, Google advertising, CRM/ERP lead integration systems, mobile apps, and automated digital operations."
+    question: "What does Reverbex do?",
+    answer: "We help businesses grow through custom websites, Meta & Google Ads, lead generation, ERP systems, mobile apps, AI automation, WhatsApp integration, and complete branding solutions."
   },
   {
-    question: "Why should I choose Reverbex over a cheap template-based agency?",
-    answer: "Template sites are bloated, load in 3-5 seconds, have security holes from plugins, and are hard to customize. Reverbex builds custom code tailored to your exact business. You own the code forever, it loads under 1 second, and it is built strictly around conversions and lead capture."
+    question: "Why should I choose Reverbex over a template-based agency?",
+    answer: "We build custom solutions, not templates. Our websites load 5x faster, rank higher on Google, and are built specifically for your business. You also own everything — no monthly fees, no vendor lock-in."
   },
   {
-    question: "Are there transaction fees or monthly platform fees for custom e-commerce?",
-    answer: "No. Unlike platforms like Shopify that take 2-3% on every sale on top of subscription fees, our custom e-commerce platforms charge 0% in platform fees. You only pay standard payment gateway charges (like Razorpay or Stripe)."
+    question: "How much does a website cost?",
+    answer: "It depends on your requirements. Contact us for a free consultation and we'll provide a custom quote based on your needs."
   },
   {
-    question: "How do you guarantee 100/100 PageSpeed scores?",
-    answer: "We develop websites using Next.js and React with Server-Side Rendering (SSR) and advanced asset loading. There are no heavy plugins, useless scripts, or unoptimized images slowing down our build architectures."
+    question: "Can you run ads for my business?",
+    answer: "Yes. We manage Meta (Facebook/Instagram) and Google Ads campaigns. We've generated 500+ leads for businesses in weeks."
   },
   {
-    question: "Do you disappear after the website is launched?",
-    answer: "No. The 'Reverbex Bond' guarantees direct daily availability via WhatsApp, weekly performance reviews, proactive optimization of your ad campaigns, and quick troubleshooting support. We act as your ongoing digital growth partner."
+    question: "Do you provide WhatsApp automation?",
+    answer: "Yes. We integrate WhatsApp Business API for automated messages, order confirmations, lead capture, and customer support."
   },
   {
-    question: "Do I own the source code of my website or ERP?",
-    answer: "Yes, 100%. Once project milestones are complete, the entire source code repository is handed over to you. There is no vendor lock-in or forced licenses."
+    question: "Do you work with businesses outside Jaipur?",
+    answer: "Yes. We're based in Jaipur but work with businesses across India and globally. We're remote-first."
   },
   {
-    question: "Do you run ad campaigns and design ad creatives?",
-    answer: "Yes. We manage both Meta Ads and Google Ads campaigns. This includes audience research, campaign setups, performance monitoring, copywriting, and ad creative designing."
+    question: "How long does a project take?",
+    answer: "A typical website takes 2-6 weeks. Ads campaigns can start generating leads within the first week."
   },
   {
-    question: "How much does a custom project cost?",
-    answer: "Custom websites generally range from ₹1,00,000 to ₹5,00,000 depending on features and scope. While this is more expensive than standard templates upfront, our speed and conversion optimization means the system pays for itself quickly through increased sales and leads."
+    question: "What industries do you work with?",
+    answer: "Education, manufacturing, e-commerce, logistics, retail, startups, and more. If your business needs a digital presence, we can help."
   }
 ];
 
 function FAQItem({ question, answer }: { question: string; answer: string }) {
   const [isOpen, setIsOpen] = useState(false);
-  const contentRef = useRef<HTMLDivElement>(null);
 
   return (
     <div className="border-b border-[#1A1A1A]">
       <button
         onClick={() => setIsOpen(!isOpen)}
         className="w-full py-6 flex items-center justify-between text-left group"
+        aria-expanded={isOpen}
       >
-        <span
-          className="text-white text-base md:text-lg font-bold group-hover:text-[#EAB308] transition-colors duration-300"
-          style={{ fontFamily: "var(--font-syne), sans-serif" }}
-        >
+        <span className="text-white text-base md:text-lg font-medium group-hover:text-[#EAB308] transition-colors duration-300 pr-8">
           {question}
         </span>
-        <span className="p-2 ml-4 shrink-0 text-[#666666] group-hover:text-white transition-colors duration-300">
+        <span className="p-2 shrink-0 text-[#666666] group-hover:text-white transition-colors duration-300">
           {isOpen ? <Minus className="w-5 h-5" /> : <Plus className="w-5 h-5" />}
         </span>
       </button>
       
       <div
-        ref={contentRef}
-        className={`overflow-hidden transition-all duration-300 ${
-          isOpen ? "max-h-96 pb-6" : "max-h-0"
-        }`}
+        className="overflow-hidden transition-[max-height] duration-300 ease-in-out"
+        style={{ maxHeight: isOpen ? '1000px' : '0px' }}
+        role="region"
       >
-        <p
-          className="text-[#A0A0A0] text-sm md:text-base leading-relaxed"
-          style={{ fontFamily: "var(--font-dm-sans), sans-serif" }}
-        >
+        <p className="text-[#A0A0A0] text-sm md:text-base leading-relaxed pb-6">
           {answer}
         </p>
       </div>
@@ -106,25 +99,14 @@ export default function FAQSection() {
       id="faq"
       className="w-full py-24 bg-[#050505] border-b border-[#1A1A1A] relative"
     >
-      <div className="max-w-4xl mx-auto px-6 relative z-10">
+      <div className="max-w-3xl mx-auto px-6 relative z-10">
         
-        {/* Header */}
         <div className="text-left mb-16 md:mb-20">
-          <span
-            className="faq-reveal text-[#EAB308] text-xs font-semibold tracking-[0.25em] uppercase mb-4 block"
-            style={{ fontFamily: "var(--font-dm-sans), sans-serif" }}
-          >
-            FAQ
-          </span>
-          <h2
-            className="faq-reveal text-white text-[clamp(2.2rem,5vw,4.5rem)] font-black tracking-tighter leading-[1.0] mb-6"
-            style={{ fontFamily: "var(--font-syne), sans-serif" }}
-          >
+          <h2 className="faq-reveal text-white text-[clamp(2.2rem,5vw,4.5rem)] font-bold tracking-tight leading-[1.0] mb-6">
             Frequently Asked Questions.
           </h2>
         </div>
 
-        {/* FAQ List */}
         <div className="faq-reveal flex flex-col w-full border-t border-[#1A1A1A]">
           {faqs.map((item, index) => (
             <FAQItem

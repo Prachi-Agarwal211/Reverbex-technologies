@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useRef } from "react";
+import { useRef } from "react";
 import {
   Globe, ShoppingCart, Smartphone, Megaphone,
   Search, Users, Database, MessageSquare,
@@ -8,6 +8,7 @@ import {
 } from "lucide-react";
 import { useGSAP } from "@gsap/react";
 import gsap from "gsap";
+import Link from "next/link";
 
 const services = [
   {
@@ -141,19 +142,19 @@ export default function WhatWeOffer() {
         <div className="text-left mb-16 md:mb-24 max-w-3xl">
           <span
             className="offer-reveal-item text-[#EAB308] text-xs font-semibold tracking-[0.25em] uppercase mb-4 block"
-            style={{ fontFamily: "var(--font-dm-sans), sans-serif" }}
+            style={{ fontFamily: "var(--font-body), sans-serif" }}
           >
             Capabilities
           </span>
           <h2
             className="offer-reveal-item text-white text-[clamp(2.2rem,5vw,4.5rem)] font-black tracking-tighter leading-[1.0] mb-6"
-            style={{ fontFamily: "var(--font-syne), sans-serif" }}
+            style={{ fontFamily: "var(--font-heading), sans-serif" }}
           >
             What We Do.
           </h2>
           <p
             className="offer-reveal-item text-[#A0A0A0] text-lg font-normal leading-relaxed"
-            style={{ fontFamily: "var(--font-dm-sans), sans-serif" }}
+            style={{ fontFamily: "var(--font-body), sans-serif" }}
           >
             Everything your business needs to attract customers, streamline operations, and increase revenue — engineered custom under one roof.
           </p>
@@ -167,10 +168,11 @@ export default function WhatWeOffer() {
           {services.map((service, index) => {
             const IconComponent = service.icon;
             return (
-              <a
+              <Link
                 key={index}
                 href={service.link}
                 className="service-card group block p-8 bg-[#0A0A0A] border border-[#1A1A1A] rounded-xl hover:border-[#EAB308] hover:bg-[#111111] transition-all duration-300 relative overflow-hidden"
+                aria-label={service.title}
               >
                 {/* Accent light indicator */}
                 <div className="absolute top-0 left-0 w-full h-[2px] bg-[#EAB308] scale-x-0 group-hover:scale-x-100 transition-transform duration-500 origin-left" />
@@ -187,18 +189,18 @@ export default function WhatWeOffer() {
 
                 <h3
                   className="text-white text-xl font-bold tracking-tight mb-3 group-hover:text-[#EAB308] transition-colors duration-300"
-                  style={{ fontFamily: "var(--font-syne), sans-serif" }}
+                  style={{ fontFamily: "var(--font-heading), sans-serif" }}
                 >
                   {service.title}
                 </h3>
                 
                 <p
                   className="text-[#A0A0A0] text-sm leading-relaxed font-normal"
-                  style={{ fontFamily: "var(--font-dm-sans), sans-serif" }}
+                  style={{ fontFamily: "var(--font-body), sans-serif" }}
                 >
                   {service.desc}
                 </p>
-              </a>
+              </Link>
             );
           })}
         </div>

@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useRef, useEffect, useState } from "react";
+import { useRef, useEffect, useState } from "react";
 import { useGSAP } from "@gsap/react";
 import gsap from "gsap";
 
@@ -24,23 +24,23 @@ function CounterItem({
     const observer = new IntersectionObserver(
       ([entry]) => {
         if (entry.isIntersecting) {
-          let start = 0;
-          const end = value;
-          if (start === end) return;
+          const duration = 1500;
+          const startTime = performance.now();
 
-          const duration = 1.5;
-          const stepTime = Math.abs(Math.floor(duration * 1000 / end));
-          
-          const timer = setInterval(() => {
-            start += Math.ceil(end / 40);
-            if (start >= end) {
-              clearInterval(timer);
-              setCount(end);
+          const animate = (currentTime: number) => {
+            const elapsed = currentTime - startTime;
+            const progress = Math.min(elapsed / duration, 1);
+            const eased = 1 - Math.pow(1 - progress, 3);
+            setCount(Math.floor(eased * value));
+
+            if (progress < 1) {
+              requestAnimationFrame(animate);
             } else {
-              setCount(start);
+              setCount(value);
             }
-          }, Math.max(stepTime, 25));
+          };
 
+          requestAnimationFrame(animate);
           observer.disconnect();
         }
       },
@@ -61,19 +61,19 @@ function CounterItem({
     >
       <span
         className="text-[#EAB308] text-5xl md:text-6xl font-black mb-3 tracking-tighter tabular-nums"
-        style={{ fontFamily: "var(--font-syne), sans-serif" }}
+        style={{ fontFamily: "var(--font-heading), sans-serif" }}
       >
         {prefix}{count.toLocaleString()}{suffix}
       </span>
       <h3
         className="text-white text-lg font-bold mb-1"
-        style={{ fontFamily: "var(--font-syne), sans-serif" }}
+        style={{ fontFamily: "var(--font-heading), sans-serif" }}
       >
         {label}
       </h3>
       <p
         className="text-[#666666] text-sm font-medium"
-        style={{ fontFamily: "var(--font-dm-sans), sans-serif" }}
+        style={{ fontFamily: "var(--font-body), sans-serif" }}
       >
         {subtext}
       </p>
@@ -115,19 +115,19 @@ export default function LiveResults() {
         <div className="text-left mb-16 md:mb-20 max-w-2xl">
           <span
             className="results-reveal text-[#EAB308] text-xs font-semibold tracking-[0.25em] uppercase mb-4 block"
-            style={{ fontFamily: "var(--font-dm-sans), sans-serif" }}
+            style={{ fontFamily: "var(--font-body), sans-serif" }}
           >
             Proof
           </span>
           <h2
             className="results-reveal text-white text-[clamp(2.2rem,5vw,4.5rem)] font-black tracking-tighter leading-[1.0] mb-6"
-            style={{ fontFamily: "var(--font-syne), sans-serif" }}
+            style={{ fontFamily: "var(--font-heading), sans-serif" }}
           >
             Real Results. Real Numbers.
           </h2>
           <p
             className="results-reveal text-[#A0A0A0] text-lg font-normal leading-relaxed"
-            style={{ fontFamily: "var(--font-dm-sans), sans-serif" }}
+            style={{ fontFamily: "var(--font-body), sans-serif" }}
           >
             Updated monthly. No vanity metrics. Just direct business impact generated for our clients.
           </p>
@@ -155,19 +155,19 @@ export default function LiveResults() {
           <div className="flex flex-col items-start p-8 bg-[#0A0A0A] border border-[#1A1A1A] rounded-xl hover:border-[#EAB308]/20 transition-all duration-300">
             <span
               className="text-[#EAB308] text-5xl md:text-6xl font-black mb-3 tracking-tighter"
-              style={{ fontFamily: "var(--font-syne), sans-serif" }}
+              style={{ fontFamily: "var(--font-heading), sans-serif" }}
             >
               Complete
             </span>
             <h3
               className="text-white text-lg font-bold mb-1"
-              style={{ fontFamily: "var(--font-syne), sans-serif" }}
+              style={{ fontFamily: "var(--font-heading), sans-serif" }}
             >
               Digital Transformation
             </h3>
             <p
               className="text-[#666666] text-sm font-medium"
-              style={{ fontFamily: "var(--font-dm-sans), sans-serif" }}
+              style={{ fontFamily: "var(--font-body), sans-serif" }}
             >
               For Khemji Wire Company
             </p>
@@ -184,19 +184,19 @@ export default function LiveResults() {
           <div className="flex flex-col items-start p-8 bg-[#0A0A0A] border border-[#1A1A1A] rounded-xl hover:border-[#EAB308]/20 transition-all duration-300">
             <span
               className="text-[#EAB308] text-5xl md:text-6xl font-black mb-3 tracking-tighter"
-              style={{ fontFamily: "var(--font-syne), sans-serif" }}
+              style={{ fontFamily: "var(--font-heading), sans-serif" }}
             >
               100%
             </span>
             <h3
               className="text-white text-lg font-bold mb-1"
-              style={{ fontFamily: "var(--font-syne), sans-serif" }}
+              style={{ fontFamily: "var(--font-heading), sans-serif" }}
             >
               PageSpeed Scores
             </h3>
             <p
               className="text-[#666666] text-sm font-medium"
-              style={{ fontFamily: "var(--font-dm-sans), sans-serif" }}
+              style={{ fontFamily: "var(--font-body), sans-serif" }}
             >
               Always 100/100 performance
             </p>
@@ -205,19 +205,19 @@ export default function LiveResults() {
           <div className="flex flex-col items-start p-8 bg-[#0A0A0A] border border-[#1A1A1A] rounded-xl hover:border-[#EAB308]/20 transition-all duration-300">
             <span
               className="text-[#EAB308] text-5xl md:text-6xl font-black mb-3 tracking-tighter"
-              style={{ fontFamily: "var(--font-syne), sans-serif" }}
+              style={{ fontFamily: "var(--font-heading), sans-serif" }}
             >
               24/7
             </span>
             <h3
               className="text-white text-lg font-bold mb-1"
-              style={{ fontFamily: "var(--font-syne), sans-serif" }}
+              style={{ fontFamily: "var(--font-heading), sans-serif" }}
             >
               WhatsApp Support
             </h3>
             <p
               className="text-[#666666] text-sm font-medium"
-              style={{ fontFamily: "var(--font-dm-sans), sans-serif" }}
+              style={{ fontFamily: "var(--font-body), sans-serif" }}
             >
               Direct founder availability
             </p>
