@@ -134,17 +134,17 @@ export default function Methodology() {
       className="relative w-full py-24 md:py-32 bg-transparent overflow-hidden border-b border-[#1A1A1A]"
     >
       <div className="max-w-5xl mx-auto px-6 md:px-12 relative z-10 w-full">
-        {/* Header — left-aligned */}
+        {/* Header — left-aligned, MASSIVE */}
         <div className="method-header text-left mb-16 md:mb-24 relative">
-          <span className="text-[#EAB308] text-xs font-semibold tracking-[0.25em] uppercase mb-4 block">
+          <span className="text-[#EAB308] text-xs font-semibold tracking-[0.25em] uppercase mb-6 block">
             Process
           </span>
-          <h2 className="text-white text-[clamp(2.2rem,5vw,4.5rem)] font-black tracking-[-0.04em] leading-[1.0] mb-6">
+          <h2 className="display-text text-white mb-6">
             From Idea to
             <br />
             <span className="text-[#EAB308]">Revenue.</span>
           </h2>
-          <p className="text-[#A0A0A0] text-lg font-normal leading-relaxed max-w-2xl">
+          <p className="text-[#A0A0A0] text-base md:text-lg font-normal leading-relaxed max-w-xl">
             Five phases. Each one moves a specific metric. No wasted steps.
           </p>
         </div>
@@ -166,10 +166,10 @@ export default function Methodology() {
                 key={i}
                 className="method-step relative flex flex-col md:flex-row items-start gap-4 md:gap-8"
               >
-                {/* Number dot */}
-                <div className="hidden md:flex absolute left-0 -translate-x-1/2 w-8 h-8 items-center justify-center bg-[#050505] z-10">
-                  <div className="step-number w-4 h-4 rounded-full bg-[#EAB308] flex items-center justify-center">
-                    <span className="text-[#050505] text-[8px] font-bold">
+                {/* Number dot — MASSIVE */}
+                <div className="hidden md:flex absolute left-0 -translate-x-1/2 w-10 h-10 items-center justify-center bg-[#050505] z-10">
+                  <div className="step-number w-6 h-6 rounded-full bg-[#EAB308] flex items-center justify-center">
+                    <span className="text-[#050505] text-[10px] font-black">
                       {item.num}
                     </span>
                   </div>

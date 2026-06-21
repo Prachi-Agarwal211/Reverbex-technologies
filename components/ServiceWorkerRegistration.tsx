@@ -70,7 +70,7 @@ export default function ServiceWorkerRegistration() {
           </button>
           <button
             onClick={handleRefresh}
-            className="text-xs bg-blue-600 hover:bg-blue-500 text-white font-medium px-3 py-1.5 rounded transition-colors"
+            className="text-xs bg-[#EAB308] hover:bg-[#d4a007] text-black font-medium px-3 py-1.5 rounded transition-colors"
             aria-label="Refresh to update"
           >
             Refresh

@@ -41,12 +41,11 @@ export default function Navbar() {
           aria-label="Reverbex Technologies - Home"
         >
           <Image
-            src="/logo.PNG"
+            src="/reverbex logo.png"
             alt="Reverbex"
-            width={32}
-            height={32}
-            className="h-8 w-auto object-contain transition-transform duration-300 group-hover:scale-105"
-            style={{ filter: "brightness(0) invert(1)" }}
+            width={140}
+            height={40}
+            className="h-8 md:h-9 w-auto object-contain transition-transform duration-300 group-hover:scale-105"
           />
           <span
             className="text-lg text-white font-semibold tracking-tight"

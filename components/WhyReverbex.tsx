@@ -123,17 +123,17 @@ export default function WhyReverbex() {
       className="w-full py-24 md:py-32 bg-transparent border-b border-[#1A1A1A] relative"
     >
       <div className="max-w-6xl mx-auto px-6 md:px-12 relative z-10">
-        {/* Section Header — left-aligned */}
-        <div className="why-header text-left mb-16 md:mb-24 max-w-3xl">
-          <span className="text-[#EAB308] text-xs font-semibold tracking-[0.25em] uppercase mb-4 block">
+        {/* Section Header — left-aligned, MASSIVE */}
+        <div className="why-header text-left mb-16 md:mb-24 max-w-4xl">
+          <span className="text-[#EAB308] text-xs font-semibold tracking-[0.25em] uppercase mb-6 block">
             The Difference
           </span>
-          <h2 className="text-white text-[clamp(2.2rem,5vw,4.5rem)] font-black tracking-[-0.04em] leading-[1.0] mb-6">
+          <h2 className="display-text text-white mb-6">
             Why Businesses
             <br />
             Choose Reverbex.
           </h2>
-          <p className="text-[#A0A0A0] text-lg font-normal leading-relaxed">
+          <p className="text-[#A0A0A0] text-base md:text-lg font-normal leading-relaxed max-w-xl">
             We don&apos;t build template websites. We build systems that grow your business.
           </p>
         </div>

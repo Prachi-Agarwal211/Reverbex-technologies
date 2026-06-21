@@ -5,6 +5,8 @@ import { useGSAP } from "@gsap/react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { scrollToSection } from "@/lib/scrollToSection";
+import MouseDistortion from "./MouseDistortion";
+import Sparkles from "./Sparkles";
 
 export default function HeroVideo() {
   const sectionRef = useRef<HTMLElement>(null);
@@ -133,6 +135,12 @@ export default function HeroVideo() {
       <div className="absolute inset-0 z-0">
         <HeroForeground />
       </div>
+
+      {/* Mouse-following particle distortion */}
+      <MouseDistortion />
+
+      {/* Gold sparkles overlay */}
+      <Sparkles />
 
       <HeroContent marqueeItems={marqueeItems} />
     </section>

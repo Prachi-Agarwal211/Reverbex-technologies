@@ -423,18 +423,13 @@ html.lenis, html.lenis body {
 }
 
 /* ============================================ */
-/* MOBILE NAVIGATION BOTTOM BAR */
+/* HW-ACCELERATED — GPU compositing for animated elements */
 /* ============================================ */
 
-@media (max-width: 767px) {
-  body {
-    padding-bottom: 72px;
-  }
-  
-  /* Ensure hero content doesn't hide behind nav */
-  #hero {
-    padding-bottom: 0;
-  }
+.hw-accelerated {
+  transform: translate3d(0, 0, 0);
+  will-change: transform, opacity;
+  backface-visibility: hidden;
 }
 
 /* ============================================ */
@@ -457,8 +452,45 @@ html.lenis, html.lenis body {
 /* Better tap targets on touch */
 @media (hover: none) and (pointer: coarse) {
   button, a, [role="button"] {
-    min-height: 44px;
-    min-width: 44px;
+    min-height: 48px;
+    min-width: 48px;
+  }
+}
+
+/* ============================================ */
+/* TABLET / iPad OPTIMIZATIONS */
+/* ============================================ */
+
+/* iPad portrait */
+@media (min-width: 768px) and (max-width: 1024px) and (orientation: portrait) {
+  .display-text {
+    font-size: clamp(3rem, 8vw, 7rem);
+  }
+  
+  .stat-number {
+    font-size: clamp(2.5rem, 7vw, 6rem);
+  }
+}
+
+/* iPad landscape */
+@media (min-width: 1024px) and (max-width: 1366px) and (orientation: landscape) {
+  .display-text {
+    font-size: clamp(3rem, 7vw, 6rem);
+  }
+}
+
+/* ============================================ */
+/* MOBILE TYPOGRAPHY SCALING */
+/* ============================================ */
+
+@media (max-width: 640px) {
+  .display-text {
+    font-size: clamp(2.5rem, 10vw, 4rem);
+    line-height: 0.95;
+  }
+  
+  .stat-number {
+    font-size: clamp(2rem, 12vw, 3.5rem);
   }
 }
 
@@ -517,6 +549,36 @@ html.lenis, html.lenis body {
   mix-blend-mode: overlay;
   background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
   background-size: 200px 200px;
+}
+
+/* ============================================ */
+/* DISPLAY TYPOGRAPHY — Massive headings like Linear/Stripe */
+/* ============================================ */
+
+.display-text {
+  font-size: clamp(3.5rem, 10vw, 10rem);
+  line-height: 0.9;
+  letter-spacing: -0.04em;
+  font-weight: 900;
+}
+
+.headline-text {
+  font-size: clamp(2.5rem, 6vw, 5.5rem);
+  line-height: 1.0;
+  letter-spacing: -0.03em;
+  font-weight: 800;
+}
+
+/* ============================================ */
+/* STAT NUMBERS — Visual anchors like Stripe */
+/* ============================================ */
+
+.stat-number {
+  font-size: clamp(3rem, 8vw, 8rem);
+  line-height: 0.9;
+  letter-spacing: -0.04em;
+  font-weight: 900;
+  color: #EAB308;
 }
 
 /* ============================================ */

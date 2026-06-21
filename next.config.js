@@ -81,7 +81,7 @@ const nextConfig = {
           },
           {
             key: 'Content-Security-Policy',
-            value: "default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval'; style-src 'self' 'unsafe-inline'; img-src 'self' https://images.unsplash.com data: blob:; media-src 'self' blob:; font-src 'self' data:; connect-src 'self' https://images.unsplash.com;",
+            value: "default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval'; style-src 'self' 'unsafe-inline'; img-src 'self' https://images.unsplash.com data: blob:; media-src 'self' blob:; font-src 'self' data:; connect-src 'self' https://images.unsplash.com; worker-src 'self' blob:;",
           },
           {
             key: 'Permissions-Policy',
@@ -100,6 +100,15 @@ const nextConfig = {
       },
       {
         source: '/images/:path*',
+        headers: [
+          {
+            key: 'Cache-Control',
+            value: 'public, max-age=2592000, immutable',
+          },
+        ],
+      },
+      {
+        source: '/:path*.mp4',
         headers: [
           {
             key: 'Cache-Control',

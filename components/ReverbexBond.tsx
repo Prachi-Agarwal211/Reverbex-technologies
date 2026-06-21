@@ -106,27 +106,27 @@ export default function ReverbexBond() {
       className="w-full py-24 md:py-32 bg-transparent border-b border-[#1A1A1A] relative"
     >
       <div className="max-w-6xl mx-auto px-6 md:px-12 relative z-10">
-        {/* Header — left-aligned */}
-        <div className="bond-header text-left mb-16 md:mb-24 max-w-3xl">
-          <span className="text-[#EAB308] text-xs font-semibold tracking-[0.25em] uppercase mb-4 block">
+        {/* Header — left-aligned, MASSIVE */}
+        <div className="bond-header text-left mb-16 md:mb-24 max-w-4xl">
+          <span className="text-[#EAB308] text-xs font-semibold tracking-[0.25em] uppercase mb-6 block">
             The Reverbex Bond
           </span>
-          <h2 className="text-white text-[clamp(2.2rem,5vw,4.5rem)] font-black tracking-[-0.04em] leading-[1.0] mb-6">
+          <h2 className="display-text text-white mb-6">
             We Don&apos;t Disappear
             <br />
             After <span className="text-[#EAB308]">Launch.</span>
           </h2>
-          <p className="text-[#A0A0A0] text-lg font-normal leading-relaxed">
+          <p className="text-[#A0A0A0] text-base md:text-lg font-normal leading-relaxed">
             Most agencies build your website and leave. We stay.
           </p>
         </div>
 
-        {/* Big stat — editorial visual anchor */}
+        {/* Big stat — MASSIVE editorial visual anchor */}
         <div className="bond-big-stat mb-16 md:mb-24">
-          <span className="text-[#EAB308]/10 text-[clamp(4rem,15vw,14rem)] font-black tracking-[-0.05em] leading-none select-none">
+          <span className="stat-number select-none" style={{ color: "rgba(234, 179, 8, 0.12)" }}>
             24/7
           </span>
-          <p className="text-white/50 text-sm md:text-base font-medium tracking-wide uppercase mt-2 -mt-4 md:-mt-8 ml-2">
+          <p className="text-white/50 text-xs md:text-sm font-medium tracking-wide uppercase mt-2 -mt-4 md:-mt-8 ml-2">
             Availability. Every project includes it.
           </p>
         </div>

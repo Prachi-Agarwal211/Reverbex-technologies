@@ -134,11 +134,11 @@ export default function FAQSection() {
       <div className="max-w-3xl mx-auto px-6 md:px-12 relative z-10">
         
         <div className="text-left mb-16 md:mb-20">
-          <span className="text-[#EAB308] text-xs font-semibold tracking-[0.25em] uppercase mb-4 block">
+          <span className="text-[#EAB308] text-xs font-semibold tracking-[0.25em] uppercase mb-6 block">
             Questions
           </span>
           <div className="faq-heading-mask" style={{ clipPath: "polygon(0% 100%, 100% 100%, 100% 100%, 0% 100%)" }}>
-            <h2 className="text-white text-[clamp(2.2rem,5vw,4.5rem)] font-black tracking-[-0.04em] leading-[1.0] mb-6">
+            <h2 className="display-text text-white mb-6">
               Before You Ask.
             </h2>
           </div>

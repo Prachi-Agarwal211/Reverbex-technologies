@@ -6,6 +6,7 @@ import { useGSAP } from "@gsap/react";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 
 import { CONTACT } from "@/lib/config";
+import BackgroundBeams from "./BackgroundBeams";
 
 export default function ContactSection() {
   const containerRef = useRef<HTMLElement>(null);
@@ -133,18 +134,6 @@ export default function ContactSection() {
     });
   }, { scope: containerRef });
 
-  const handleBackToTop = () => {
-    const w = window as unknown as { lenis?: { scrollTo?: (target: number, options: Record<string, unknown>) => void } };
-    if (w.lenis?.scrollTo) {
-      w.lenis.scrollTo(0, {
-        duration: 1.2,
-        easing: (t: number) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
-      });
-    } else {
-      window.scrollTo({ top: 0, behavior: "smooth" });
-    }
-  };
-
   return (
     <section
       ref={containerRef}
@@ -176,6 +165,9 @@ export default function ContactSection() {
 
         <div className="absolute inset-0 bg-gradient-to-t from-[#050505] via-[#050505]/90 to-[#050505]/40 z-10 pointer-events-none" />
         <div className="absolute inset-0 bg-[#050505]/30 z-10 pointer-events-none hidden md:block mix-blend-multiply" />
+
+        {/* Animated background beams */}
+        <BackgroundBeams />
       </div>
 
       {/* Content — editorial left-aligned */}
@@ -188,16 +180,16 @@ export default function ContactSection() {
           </span>
         </div>
 
-        {/* Massive heading — clip-path masked, left-aligned */}
+        {/* Massive heading — clip-path masked, left-aligned, HUGE */}
         <div className="w-full mb-12 md:mb-20 pointer-events-auto">
           <div className="contact-heading-mask" style={{ clipPath: "polygon(0% 100%, 100% 100%, 100% 100%, 0% 100%)" }}>
-            <h2 className="text-white text-[clamp(3rem,12vw,12rem)] tracking-[-0.04em] leading-[0.9] font-black">
+            <h2 className="display-text text-white">
               Ready to
               <br />
               <span className="text-[#EAB308]">scale?</span>
             </h2>
           </div>
-          <p className="mobile-reveal text-white/60 text-[clamp(0.75rem,1.5vw,1rem)] font-light tracking-[0.05em] mt-6 max-w-xl leading-relaxed">
+          <p className="mobile-reveal text-white/60 text-sm md:text-base font-light tracking-[0.05em] mt-6 max-w-xl leading-relaxed">
             Stop losing customers to slow websites and bad ads. Tell us about your project — we&apos;ll show you the math.
           </p>
         </div>
@@ -314,23 +306,6 @@ export default function ContactSection() {
               </form>
             )}
           </div>
-        </div>
-
-        {/* Footer */}
-        <div className="mobile-reveal w-full mt-16 md:mt-24 flex flex-col sm:flex-row items-start sm:items-center justify-between pointer-events-auto gap-4">
-          <p className="text-white/50 text-[10px] md:text-xs tracking-[0.2em] uppercase flex flex-col md:flex-row gap-2 md:gap-6">
-            <span>&copy; {new Date().getFullYear()} Reverbex Technologies</span>
-            <span className="hidden md:inline text-white/30">|</span>
-            <span className="text-[#EAB308]">
-              Made in Jaipur, Built for the World.
-            </span>
-          </p>
-          <button
-            onClick={handleBackToTop}
-            className="text-white/50 hover:text-white text-[10px] md:text-xs tracking-[0.2em] uppercase transition-colors cursor-pointer"
-          >
-            Back to Top
-          </button>
         </div>
       </div>
     </section>

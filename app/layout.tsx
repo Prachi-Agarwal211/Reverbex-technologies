@@ -6,6 +6,7 @@ import SmoothScroll from "../components/SmoothScroll";
 import CustomCursor from "../components/CustomCursor";
 import WhatsAppButton from "../components/shared/WhatsAppButton";
 import MorphingMenu from "../components/MorphingMenu";
+import Footer from "../components/Footer";
 import { CONTACT, COMPANY, SOCIALS } from "@/lib/config";
 
 const outfit = Outfit({
@@ -169,6 +170,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <main id="main-content" tabIndex={-1}>
           <SmoothScroll>{children}</SmoothScroll>
         </main>
+        <Footer />
         <WhatsAppButton />
         <ServiceWorkerRegistration />
       </body>

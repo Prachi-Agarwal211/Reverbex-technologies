@@ -1,0 +1,21 @@
+{
+  "name": "Reverbex Technologies — Websites, Ads & Automation",
+  "short_name": "Reverbex",
+  "description": "Websites. Ads. Automation. Built To Grow Businesses. Custom Next.js websites, Meta/Google Ads, and business automation.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#050505",
+  "theme_color": "#EAB308",
+  "orientation": "portrait-primary",
+  "icons": [
+    {
+      "src": "/favicon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ],
+  "categories": ["business", "technology"],
+  "lang": "en",
+  "dir": "ltr"
+}
