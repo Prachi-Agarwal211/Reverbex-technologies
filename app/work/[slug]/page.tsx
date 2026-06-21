@@ -71,7 +71,7 @@ export default async function CaseStudyPage({
               "name": "Reverbex Technologies",
               "logo": {
                 "@type": "ImageObject",
-                "url": "https://reverbex.in/logo.PNG"
+                "url": "https://reverbex.in/reverbex logo.png"
               }
             },
             "about": {

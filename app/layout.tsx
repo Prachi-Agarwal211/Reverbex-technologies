@@ -107,7 +107,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
               "@type": "Organization",
               "name": COMPANY.name,
               "url": "https://reverbex.in",
-              "logo": `https://reverbex.in/logo.PNG`,
+              "logo": `https://reverbex.in/reverbex logo.png`,
               "description": "Websites. Ads. Automation. Built To Grow Businesses. We build custom Next.js websites, run performance Meta/Google Ads, and engineer operations automation systems.",
               "foundingDate": String(COMPANY.foundingYear),
               "founders": [
