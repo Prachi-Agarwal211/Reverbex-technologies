@@ -33,8 +33,9 @@ body {
 
 /* ============================================ */
 /* PERMANENT AMBIENT BACKGROUND                  */
-/* Fixed full-viewport layer; content floats above */
+/* Fixed full-viewport layer with fluid movement */
 /* ============================================ */
+
 .ambient-bg {
   position: fixed;
   inset: 0;
@@ -44,8 +45,31 @@ body {
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
-  animation: ambient-kenburns 32s ease-in-out infinite alternate;
+  animation: ambient-fluid 20s ease-in-out infinite alternate;
   will-change: transform;
+}
+
+@keyframes ambient-fluid {
+  0% {
+    transform: scale(1.05) translate(0, 0) rotate(0deg);
+    filter: blur(0px) brightness(1);
+  }
+  25% {
+    transform: scale(1.08) translate(-1%, -0.5%) rotate(0.3deg);
+    filter: blur(0.5px) brightness(1.02);
+  }
+  50% {
+    transform: scale(1.1) translate(0.5%, -1%) rotate(-0.2deg);
+    filter: blur(0px) brightness(0.98);
+  }
+  75% {
+    transform: scale(1.07) translate(-0.5%, 0.5%) rotate(0.1deg);
+    filter: blur(0.3px) brightness(1.01);
+  }
+  100% {
+    transform: scale(1.12) translate(-1.5%, -1.5%) rotate(0deg);
+    filter: blur(0px) brightness(1);
+  }
 }
 
 /* Minimal dark veil over the ambient image so text stays readable */
@@ -55,11 +79,6 @@ body {
   z-index: -1;
   pointer-events: none;
   background: linear-gradient(180deg, rgba(5,5,5,0.15) 0%, rgba(5,5,5,0.25) 50%, rgba(5,5,5,0.4) 100%);
-}
-
-@keyframes ambient-kenburns {
-  0%   { transform: scale(1.05) translate(0, 0); }
-  100% { transform: scale(1.12) translate(-1.5%, -1.5%); }
 }
 
 /* ============================================ */

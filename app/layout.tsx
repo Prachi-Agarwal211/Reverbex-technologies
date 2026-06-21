@@ -8,7 +8,6 @@ import WhatsAppButton from "../components/shared/WhatsAppButton";
 import MorphingMenu from "../components/MorphingMenu";
 import MobileBottomNav from "../components/MobileBottomNav";
 import Footer from "../components/Footer";
-import FluidBackground from "../components/FluidBackground";
 import { CONTACT, COMPANY, SOCIALS } from "@/lib/config";
 
 const outfit = Outfit({
@@ -257,7 +256,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <a href="#main-content" className="skip-to-content">
           Skip to main content
         </a>
-        <FluidBackground />
+        <div className="ambient-bg" aria-hidden="true" />
         <div className="ambient-veil" aria-hidden="true" />
         <div className="grain-overlay" aria-hidden="true" />
         <CustomCursor />
