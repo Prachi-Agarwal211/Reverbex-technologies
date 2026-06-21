@@ -187,7 +187,7 @@ function HeroContent({ marqueeItems }: { marqueeItems: string[] }) {
           <h2 className="hero-headline text-white font-extrabold tracking-[-0.02em] leading-[1.05] mb-4 sm:mb-6 text-[2.2rem] sm:text-[clamp(2.2rem,5vw,4rem)] md:text-[clamp(2.5rem,5vw,4.5rem)] lg:text-[clamp(2.8rem,5vw,5rem)]">
             We Turn Your{" "}
             Business{" "}
-            Into <span className="text-[#EAB308]">A Brand.</span>
+            Into A Brand.
           </h2>
 
           <p className="hero-sub text-[#A0A0A0] text-sm sm:text-base font-normal leading-relaxed max-w-md mb-6 sm:mb-8 md:mb-10">

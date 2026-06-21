@@ -146,13 +146,13 @@ export default function Testimonials() {
       <div className="max-w-5xl mx-auto px-6 md:px-12 relative z-10">
         {/* Header — left-aligned */}
         <div className="test-header text-left mb-16 md:mb-20 max-w-3xl">
-          <span className="text-[#EAB308] text-xs font-semibold tracking-[0.25em] uppercase mb-4 block">
+          <span className="text-white text-xs font-semibold tracking-[0.25em] uppercase mb-4 block">
             Results
           </span>
-          <h2 className="text-white text-[clamp(2.2rem,5vw,4.5rem)] font-black tracking-[-0.04em] leading-[1.0]">
+          <h2 className="display-text text-white mb-6">
             Numbers That
             <br />
-            <span className="text-[#EAB308]">Speak.</span>
+            Speak.
           </h2>
         </div>
 
@@ -160,7 +160,7 @@ export default function Testimonials() {
         <div className="test-spotlight relative">
           {/* Big metric number */}
           <div className="mb-8 md:mb-12">
-            <span className="text-[#EAB308] text-[clamp(2rem,6vw,5rem)] font-black tracking-[-0.03em] leading-none">
+            <span className="text-white text-[clamp(2rem,6vw,5rem)] font-black tracking-[-0.03em] leading-none">
               {current.metric}
             </span>
           </div>
@@ -173,7 +173,7 @@ export default function Testimonials() {
 
             <div className="flex items-center gap-4">
               <div className="w-12 h-12 rounded-full bg-[#EAB308]/10 border border-[#EAB308]/20 flex items-center justify-center">
-                <span className="text-[#EAB308] text-lg font-bold">
+                <span className="text-white text-lg font-bold">
                   {current.author.charAt(0)}
                 </span>
               </div>

@@ -80,13 +80,13 @@ export default function Industries() {
         
         {/* Section Header — left-aligned */}
         <div className="ind-header text-left mb-16 md:mb-24 max-w-3xl">
-          <span className="text-[#EAB308] text-xs font-semibold tracking-[0.25em] uppercase mb-4 block">
+          <span className="text-white text-xs font-semibold tracking-[0.25em] uppercase mb-4 block">
             Sectors
           </span>
-          <h2 className="text-white text-[clamp(2.2rem,5vw,4.5rem)] font-black tracking-[-0.04em] leading-[1.0] mb-6">
+          <h2 className="display-text text-white mb-6">
             Industries We
             <br />
-            <span className="text-[#EAB308]">Build For.</span>
+            Build For.
           </h2>
           <p className="text-[#A0A0A0] text-lg font-normal leading-relaxed">
             We&apos;ve built digital solutions, automated workflows, and generated leads across multiple sectors.

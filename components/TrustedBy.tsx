@@ -64,11 +64,8 @@ export default function TrustedBy() {
     >
       {/* Section heading */}
       <div className="text-center pt-20 md:pt-28 pb-8 md:pb-0 px-6 z-10 relative">
-        <p className="text-[11px] tracking-[0.4em] text-[#EAB308]/80 font-medium uppercase mb-4">
-          Trusted By
-        </p>
-        <h2 className="font-heading text-3xl md:text-5xl lg:text-6xl font-bold text-white tracking-tight">
-          Visionaries
+        <h2 className="text-3xl md:text-5xl lg:text-6xl font-bold text-white tracking-tight">
+          Trusted By <span className="font-heading">Visionaries</span>
         </h2>
       </div>
 

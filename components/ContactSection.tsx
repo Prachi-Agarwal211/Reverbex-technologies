@@ -138,7 +138,7 @@ export default function ContactSection() {
     <section
       ref={containerRef}
       id="contact"
-      className="relative w-full min-h-[100dvh] overflow-hidden overflow-x-hidden bg-transparent flex flex-col justify-end"
+      className="relative w-full overflow-hidden overflow-x-hidden bg-[#050505]"
     >
       {/* Absolute Video Background */}
       <div className="absolute inset-0 w-full h-full z-0 pointer-events-none">
@@ -173,7 +173,7 @@ export default function ContactSection() {
         {/* Eyebrow */}
         <div className="contact-eyebrow flex items-center gap-3 mb-6 pointer-events-auto">
           <span className="w-8 h-[1px] bg-[#EAB308]" />
-          <span className="text-[#EAB308] text-[clamp(0.65rem,1.5vw,0.85rem)] font-semibold tracking-[0.25em] uppercase">
+          <span className="text-white text-[clamp(0.65rem,1.5vw,0.85rem)] font-semibold tracking-[0.25em] uppercase">
             Get In Touch
           </span>
         </div>
@@ -251,7 +251,7 @@ export default function ContactSection() {
             </span>
             {formSubmitted ? (
               <div className="w-full py-12 text-center">
-                <span className="text-[#EAB308] text-4xl block mb-4">
+                <span className="text-white text-4xl block mb-4">
                   &#10003;
                 </span>
                 <p className="text-white text-lg font-medium">

@@ -123,7 +123,7 @@ export default function Footer() {
   return (
     <footer ref={containerRef} className="relative w-full bg-[#050505]">
       {/* Video CTA Section */}
-      <div className="relative w-full h-[50vh] md:h-[60vh] overflow-hidden">
+      <div className="relative w-full h-[40vh] md:h-[50vh] overflow-hidden">
         <video
           ref={videoRef}
           autoPlay
@@ -140,13 +140,13 @@ export default function Footer() {
 
         {/* CTA overlay — GSAP animates this */}
         <div ref={ctaRef} className="absolute inset-0 flex flex-col items-center justify-center text-center px-6">
-          <span className="text-[#EAB308] text-xs font-semibold tracking-[0.25em] uppercase mb-4 block">
+          <span className="text-white text-xs font-semibold tracking-[0.25em] uppercase mb-4 block">
             Ready to Grow?
           </span>
-          <h2 className="display-text text-white max-w-4xl">
+          <h2 className="text-[clamp(2.5rem,8vw,6rem)] font-black tracking-[-0.04em] leading-[0.9] text-white max-w-4xl">
             Let&apos;s Build
             <br />
-            <span className="text-[#EAB308]">Something Great.</span>
+            Something Great.
           </h2>
           <a
             href="https://wa.me/919929986743"

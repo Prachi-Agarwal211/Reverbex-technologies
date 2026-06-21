@@ -68,7 +68,7 @@ function CounterItem({
       ref={elementRef}
       className="results-card flex flex-col items-start p-8 bg-[#0A0A0A] border border-[#1A1A1A] rounded-xl hover:border-[#EAB308]/30 transition-all duration-300"
     >
-      <span className="text-[#EAB308] text-4xl md:text-5xl font-black mb-3 tracking-[-0.03em] tabular-nums">
+      <span className="text-white text-4xl md:text-5xl font-black mb-3 tracking-[-0.03em] tabular-nums">
         {prefix}
         {count.toLocaleString()}
         {suffix}
@@ -180,7 +180,7 @@ export default function LiveResults() {
         <div className="text-left mb-16 md:mb-20 max-w-3xl">
           <div className="results-eyebrow flex items-center gap-3 mb-6">
             <span className="w-8 h-[1px] bg-[#EAB308]" />
-            <span className="text-[#EAB308] text-xs font-semibold tracking-[0.25em] uppercase">
+            <span className="text-white text-xs font-semibold tracking-[0.25em] uppercase">
               Proof
             </span>
           </div>
@@ -188,7 +188,7 @@ export default function LiveResults() {
             <h2 className="display-text text-white mb-6">
               Real Results.
               <br />
-              <span className="text-[#EAB308]">Real Numbers.</span>
+              Real Numbers.
             </h2>
           </div>
           <p className="text-[#A0A0A0] text-base md:text-lg font-normal leading-relaxed">
@@ -203,7 +203,7 @@ export default function LiveResults() {
         >
           {/* Hero Stat — spans full height, MASSIVE number */}
           <div className="results-card md:col-span-2 md:row-span-2 flex flex-col items-start p-10 md:p-12 bg-[#0A0A0A] border border-[#1A1A1A] rounded-xl hover:border-[#EAB308]/30 transition-all duration-300">
-            <span className="stat-number">
+            <span className="stat-number text-white">
               500+
             </span>
             <h3 className="text-white text-xl md:text-2xl font-bold mb-2 mt-4">
@@ -236,7 +236,7 @@ export default function LiveResults() {
         {/* Secondary Row */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-5 md:gap-6 mt-5 md:mt-6">
           <div className="results-card flex flex-col items-start p-8 bg-[#0A0A0A] border border-[#1A1A1A] rounded-xl hover:border-[#EAB308]/30 transition-all duration-300">
-            <span className="text-[#EAB308] text-5xl md:text-6xl font-black mb-3 tracking-[-0.04em]">
+            <span className="text-white text-5xl md:text-6xl font-black mb-3 tracking-[-0.04em]">
               100%
             </span>
             <h3 className="text-white text-lg font-bold mb-1">
@@ -248,7 +248,7 @@ export default function LiveResults() {
           </div>
 
           <div className="results-card flex flex-col items-start p-8 bg-[#0A0A0A] border border-[#1A1A1A] rounded-xl hover:border-[#EAB308]/30 transition-all duration-300">
-            <span className="text-[#EAB308] text-5xl md:text-6xl font-black mb-3 tracking-[-0.04em]">
+            <span className="text-white text-5xl md:text-6xl font-black mb-3 tracking-[-0.04em]">
               24/7
             </span>
             <h3 className="text-white text-lg font-bold mb-1">
@@ -260,7 +260,7 @@ export default function LiveResults() {
           </div>
 
           <div className="results-card flex flex-col items-start p-8 bg-[#0A0A0A] border border-[#1A1A1A] rounded-xl hover:border-[#EAB308]/30 transition-all duration-300">
-            <span className="text-[#EAB308] text-5xl md:text-6xl font-black mb-3 tracking-[-0.04em]">
+            <span className="text-white text-5xl md:text-6xl font-black mb-3 tracking-[-0.04em]">
               Complete
             </span>
             <h3 className="text-white text-lg font-bold mb-1">
@@ -281,7 +281,7 @@ export default function LiveResults() {
             { k: "AEO+GEO", v: "AI-search ready" },
           ].map((s) => (
             <div key={s.v} className="px-6 py-5 bg-[#0A0A0A]">
-              <div className="text-[#EAB308] text-lg md:text-2xl font-bold tracking-tight">{s.k}</div>
+              <div className="text-white text-lg md:text-2xl font-bold tracking-tight">{s.k}</div>
               <div className="text-white/50 text-[11px] md:text-xs uppercase tracking-wider mt-1">{s.v}</div>
             </div>
           ))}

@@ -4,182 +4,174 @@ import { useRef } from "react";
 import { useGSAP } from "@gsap/react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { CheckCircle2 } from "lucide-react";
 
 const comparisons = [
   {
-    number: "01",
-    title: "FASTER WEBSITES",
-    desc: "Our sites load in under 1 second. Template sites take 3-5 seconds. Google ranks faster sites higher.",
-    metric: "100/100 PageSpeed guaranteed",
+    title: "Blazing Fast Performance",
+    desc: "Our custom Next.js sites load in under 1 second, compared to template builders that take 3-5 seconds. Google explicitly ranks faster websites higher.",
+    metric: "100/100 PageSpeed",
   },
   {
-    number: "02",
-    title: "BETTER SEO",
-    desc: "Optimized for Google AND AI search engines. We don't just do traditional SEO — we optimize for ChatGPT, Gemini, and Perplexity too.",
-    metric: "AEO + GEO optimized",
+    title: "AI-Ready SEO (AEO/GEO)",
+    desc: "We optimize your brand not just for Google, but for ChatGPT, Gemini, and Perplexity. When people ask AI about your industry, it recommends you.",
+    metric: "Answer Engine Ready",
   },
   {
-    number: "03",
-    title: "HIGHER CONVERSIONS",
-    desc: "Every page is designed around one goal: turning visitors into customers. No wasted space, no confusing navigation.",
-    metric: "Built for business results",
+    title: "Conversion-Obsessed Design",
+    desc: "Every pixel serves a purpose. We use behavioral psychology and clean UI to guide visitors toward the 'Start Project' button without friction.",
+    metric: "Built for Revenue",
   },
   {
-    number: "04",
-    title: "NO TEMPLATE LIMITATIONS",
-    desc: "Custom code means custom everything. Unlimited design, unlimited features, unlimited integrations.",
-    metric: "Your vision, not a theme",
+    title: "Zero Platform Taxes",
+    desc: "Platforms like Shopify take 2-5% of your revenue forever. We build custom commerce systems where you keep 100% of your sales.",
+    metric: "Keep Your Margins",
   },
   {
-    number: "05",
-    title: "ZERO TRANSACTION FEES",
-    desc: "Unlike platforms that charge 2-5% on every sale, we build custom e-commerce with zero platform fees.",
-    metric: "You keep more of your revenue",
-  },
-  {
-    number: "06",
-    title: "LONG-TERM PARTNER",
-    desc: "We don't disappear after launch. We're your digital growth partner for the long term.",
-    metric: "Ongoing support and growth",
+    title: "Infinite Scalability",
+    desc: "No plugin conflicts. No locked-in themes. Because we write custom code, your website can evolve into a full web-app whenever you need it.",
+    metric: "Future-Proof Tech",
   },
 ];
 
 export default function WhyReverbex() {
   const containerRef = useRef<HTMLElement>(null);
+  const leftColRef = useRef<HTMLDivElement>(null);
+  const rightColRef = useRef<HTMLDivElement>(null);
 
   useGSAP(() => {
-    if (!containerRef.current) return;
+    if (!containerRef.current || !leftColRef.current || !rightColRef.current) return;
 
     const prefersReducedMotion = window.matchMedia(
       "(prefers-reduced-motion: reduce)"
     ).matches;
     if (prefersReducedMotion) return;
 
-    // Header entrance
-    const header = containerRef.current.querySelector(".why-header");
-    if (header) {
-      gsap.fromTo(
-        header.children,
-        { opacity: 0, y: 30 },
-        {
-          opacity: 1,
-          y: 0,
-          stagger: 0.1,
-          duration: 0.8,
-          ease: "power3.out",
-          scrollTrigger: {
-            trigger: header,
-            start: "top 85%",
-            toggleActions: "play none none reverse",
-          },
-        }
-      );
-    }
+    const isDesktop = window.matchMedia("(min-width: 1024px)").matches;
 
-    // List items stagger in from left
-    const items = containerRef.current.querySelectorAll(".why-item");
-    items.forEach((item) => {
-      gsap.fromTo(
-        item,
-        { opacity: 0, x: -30 },
-        {
-          opacity: 1,
-          x: 0,
-          duration: 0.7,
-          ease: "power3.out",
-          scrollTrigger: {
-            trigger: item,
-            start: "top 88%",
-            toggleActions: "play none none reverse",
-          },
-        }
-      );
+    if (isDesktop) {
+      // Pin the left column while the right column scrolls
+      ScrollTrigger.create({
+        trigger: containerRef.current,
+        start: "top top",
+        end: "bottom bottom",
+        pin: leftColRef.current,
+        pinSpacing: false,
+      });
 
-      // Scroll-reveal line (always runs once on scroll — no hover CSS conflict)
-      const line = item.querySelector(".why-line");
-      if (line) {
+      // Animate cards on the right as they scroll up
+      const cards = rightColRef.current.querySelectorAll(".why-card");
+      cards.forEach((card) => {
         gsap.fromTo(
-          line,
-          { scaleX: 0 },
+          card,
+          { opacity: 0.2, scale: 0.9, y: 50 },
           {
-            scaleX: 0.3,       // reveals to 30% on scroll
-            duration: 0.8,
-            ease: "power3.out",
+            opacity: 1,
+            scale: 1,
+            y: 0,
+            duration: 0.5,
+            ease: "power2.out",
             scrollTrigger: {
-              trigger: item,
+              trigger: card,
+              start: "top 80%",
+              end: "top 30%",
+              scrub: true,
+            },
+          }
+        );
+      });
+    } else {
+      // Mobile standard fade-up
+      const cards = rightColRef.current.querySelectorAll(".why-card");
+      cards.forEach((card) => {
+        gsap.fromTo(
+          card,
+          { opacity: 0, y: 30 },
+          {
+            opacity: 1,
+            y: 0,
+            duration: 0.6,
+            ease: "power2.out",
+            scrollTrigger: {
+              trigger: card,
               start: "top 85%",
               toggleActions: "play none none reverse",
             },
           }
         );
-
-        // Hover: GSAP expands/shrinks the line — no CSS conflict because
-        // we removed group-hover:scale-x-100 from the JSX below
-        item.addEventListener("mouseenter", () => {
-          gsap.to(line, { scaleX: 1, duration: 0.4, ease: "power3.out" });
-        });
-        item.addEventListener("mouseleave", () => {
-          gsap.to(line, { scaleX: 0.3, duration: 0.4, ease: "power3.in" });
-        });
-      }
-    });
+      });
+    }
   }, { scope: containerRef });
 
   return (
     <section
       ref={containerRef}
       id="why-reverbex"
-      className="w-full py-24 md:py-32 bg-transparent border-b border-[#1A1A1A] relative"
+      className="relative w-full bg-[#030303] overflow-hidden"
     >
-      <div className="max-w-6xl mx-auto px-6 md:px-12 relative z-10">
-        {/* Section Header — left-aligned, MASSIVE */}
-        <div className="why-header text-left mb-16 md:mb-24 max-w-4xl">
-          <span className="text-[#EAB308] text-xs font-semibold tracking-[0.25em] uppercase mb-6 block">
-            The Difference
-          </span>
-          <h2 className="display-text text-white mb-6">
-            Why Businesses
-            <br />
-            Choose Reverbex.
-          </h2>
-          <p className="text-[#A0A0A0] text-base md:text-lg font-normal leading-relaxed max-w-xl">
-            We don&apos;t build template websites. We build systems that grow your business.
-          </p>
-        </div>
+      {/* Dynamic Background Glows */}
+      <div className="absolute top-[-20%] left-[-10%] w-[50%] h-[50%] rounded-full bg-[#EAB308]/5 blur-[150px] pointer-events-none" />
+      <div className="absolute bottom-[-10%] right-[-10%] w-[40%] h-[40%] rounded-full bg-[#EAB308]/5 blur-[120px] pointer-events-none" />
+      
+      {/* Grid pattern overlay */}
+      <div 
+        className="absolute inset-0 opacity-[0.03] pointer-events-none"
+        style={{
+          backgroundImage: `linear-gradient(to right, #ffffff 1px, transparent 1px), linear-gradient(to bottom, #ffffff 1px, transparent 1px)`,
+          backgroundSize: '4rem 4rem'
+        }}
+      />
 
-        {/* Editorial list layout — not cards */}
-        <div className="flex flex-col">
-          {comparisons.map((item, index) => (
-            <div
-              key={index}
-              className="why-item group py-8 md:py-10 border-t border-[#1A1A1A] last:border-b cursor-default"
-            >
-              <div className="flex flex-col md:flex-row md:items-start gap-4 md:gap-8">
-                {/* Number */}
-                <span className="text-[#EAB308] text-sm font-bold tracking-[0.15em] shrink-0 md:w-16">
-                  {item.number}
-                </span>
-
-                {/* Title */}
-                <h3 className="text-white text-xl md:text-2xl font-bold tracking-tight md:w-64 shrink-0 group-hover:text-[#EAB308] transition-colors duration-300">
-                  {item.title}
-                </h3>
-
-                {/* Description */}
-                <p className="text-[#A0A0A0] text-base font-normal leading-relaxed flex-1 max-w-xl">
-                  {item.desc}
-                </p>
-
-                {/* Metric */}
-                <span className="text-[#EAB308]/70 text-sm font-semibold tracking-wide shrink-0 md:text-right md:w-48">
-                  {item.metric}
-                </span>
-              </div>
-
-              {/* Accent line — GSAP-only, no CSS hover class (removes conflict) */}
-              <div className="why-line h-[1px] bg-[#EAB308]/40 mt-8 md:mt-10 origin-left" style={{ transform: "scaleX(0)" }} />
+      <div className="max-w-7xl mx-auto px-6 md:px-12 py-24 md:py-32 relative z-10">
+        <div className="flex flex-col lg:flex-row gap-16 lg:gap-24 relative">
+          
+          {/* Left Column (Pinned on Desktop) */}
+          <div className="w-full lg:w-[45%] shrink-0">
+            <div ref={leftColRef} className="lg:h-screen lg:flex lg:flex-col lg:justify-center lg:-mt-32">
+              <span className="text-[#EAB308] text-xs font-semibold tracking-[0.25em] uppercase mb-6 block">
+                The Reverbex Edge
+              </span>
+              <h2 className="text-white text-[clamp(2.5rem,5vw,4.5rem)] font-black tracking-[-0.03em] leading-[1.0] mb-8">
+                Why We Outperform Templates.
+              </h2>
+              <p className="text-[#A0A0A0] text-lg font-normal leading-relaxed max-w-md">
+                We don't sell websites. We engineer revenue-generating systems. Here is exactly why custom code beats templates every time.
+              </p>
             </div>
-          ))}
+          </div>
+
+          {/* Right Column (Scrolling Cards) */}
+          <div ref={rightColRef} className="w-full lg:w-[55%] flex flex-col gap-8 lg:pt-[50vh] lg:pb-[20vh]">
+            {comparisons.map((item, index) => (
+              <div
+                key={index}
+                className="why-card group relative p-8 md:p-10 rounded-2xl bg-gradient-to-b from-[#111] to-[#0A0A0A] border border-white/5 hover:border-[#EAB308]/30 transition-colors duration-500 overflow-hidden"
+              >
+                {/* Glow on hover inside card */}
+                <div className="absolute top-0 right-0 w-32 h-32 bg-[#EAB308]/10 rounded-full blur-[50px] opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+                
+                <div className="relative z-10">
+                  <div className="flex items-center gap-4 mb-6">
+                    <div className="w-10 h-10 rounded-full bg-[#EAB308]/10 flex items-center justify-center shrink-0">
+                      <CheckCircle2 className="w-5 h-5 text-[#EAB308]" />
+                    </div>
+                    <h3 className="text-white text-2xl font-bold tracking-tight">
+                      {item.title}
+                    </h3>
+                  </div>
+                  
+                  <p className="text-[#A0A0A0] text-base leading-relaxed mb-8">
+                    {item.desc}
+                  </p>
+                  
+                  <div className="inline-block px-4 py-2 rounded-lg bg-white/5 border border-white/10 text-white/80 text-sm font-semibold tracking-wide">
+                    {item.metric}
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+          
         </div>
       </div>
     </section>

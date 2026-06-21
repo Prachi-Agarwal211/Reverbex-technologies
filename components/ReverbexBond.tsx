@@ -108,13 +108,13 @@ export default function ReverbexBond() {
       <div className="max-w-6xl mx-auto px-6 md:px-12 relative z-10">
         {/* Header — left-aligned, MASSIVE */}
         <div className="bond-header text-left mb-16 md:mb-24 max-w-4xl">
-          <span className="text-[#EAB308] text-xs font-semibold tracking-[0.25em] uppercase mb-6 block">
+          <span className="text-white text-xs font-semibold tracking-[0.25em] uppercase mb-6 block">
             The Reverbex Bond
           </span>
           <h2 className="display-text text-white mb-6">
             We Don&apos;t Disappear
             <br />
-            After <span className="text-[#EAB308]">Launch.</span>
+            After Launch.
           </h2>
           <p className="text-[#A0A0A0] text-base md:text-lg font-normal leading-relaxed">
             Most agencies build your website and leave. We stay.
@@ -138,7 +138,7 @@ export default function ReverbexBond() {
               key={index}
               className="bond-pillar group flex flex-col md:flex-row items-start gap-4 md:gap-8 py-6 md:py-8 border-t border-[#1A1A1A]"
             >
-              <span className="text-[#EAB308] text-sm font-bold tracking-[0.15em] shrink-0 md:w-12">
+                <span className="text-white/50 text-sm font-bold tracking-[0.15em] shrink-0 md:w-12">
                 0{index + 1}
               </span>
               <div className="flex-1">
@@ -158,10 +158,10 @@ export default function ReverbexBond() {
           <p className="text-[#666666] text-sm md:text-base font-medium tracking-wide">
             <span className="text-white font-bold">Every project includes:</span>{" "}
             Daily availability{" "}
-            <span className="text-[#EAB308]">&bull;</span> Proactive monitoring{" "}
-            <span className="text-[#EAB308]">&bull;</span> Fast problem solving{" "}
-            <span className="text-[#EAB308]">&bull;</span> Long-term partnership{" "}
-            <span className="text-[#EAB308]">&bull;</span> No surprise charges
+            <span className="text-white/40">&bull;</span> Proactive monitoring{" "}
+            <span className="text-white/40">&bull;</span> Fast problem solving{" "}
+            <span className="text-white/40">&bull;</span> Long-term partnership{" "}
+            <span className="text-white/40">&bull;</span> No surprise charges
           </p>
         </div>
       </div>

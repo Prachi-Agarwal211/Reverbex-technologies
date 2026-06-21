@@ -1,103 +1,165 @@
-import type { Metadata } from "next";
+"use client";
+
+import { useRef } from "react";
+import gsap from "gsap";
+import { useGSAP } from "@gsap/react";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
+import SplitType from "split-type";
 import Navbar from "../../components/Navbar";
 import Link from "next/link";
 import ReverbexBond from "../../components/ReverbexBond";
 
-export const metadata: Metadata = {
-  title: "About Us | Reverbex Technologies",
-  description: "Learn about the engineering philosophy, culture, and team behind Reverbex Technologies. No templates. No junior devs.",
-  openGraph: {
-    title: "About Us | Reverbex Technologies",
-    description: "The engineering philosophy and culture of Reverbex Technologies.",
-    type: "website",
-    url: "https://reverbex.in/about",
-  }
-};
+gsap.registerPlugin(ScrollTrigger);
 
 export default function AboutPage() {
-  return (
-    <>
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{
-          __html: JSON.stringify({
-            "@context": "https://schema.org",
-            "@type": "AboutPage",
-            "mainEntity": {
-              "@type": "Organization",
-              "name": "Reverbex Technologies",
-              "foundingDate": "2024",
-              "description": "A premium software engineering and digital marketing agency.",
-              "url": "https://reverbex.in"
-            }
-          })
-        }}
-      />
-      <main className="w-full text-white min-h-screen pt-32 pb-24 selection:bg-[#EAB308]/30">
-        <Navbar />
+  const containerRef = useRef<HTMLElement>(null);
+  
+  useGSAP(() => {
+    if (!containerRef.current) return;
+    
+    const prefersReducedMotion = window.matchMedia(
+      "(prefers-reduced-motion: reduce)"
+    ).matches;
+
+    // Split the text for cinematic reveal
+    const textElements = containerRef.current.querySelectorAll(".reveal-text");
+    
+    if (!prefersReducedMotion) {
+      textElements.forEach((element) => {
+        const split = new SplitType(element as HTMLElement, { types: "words" });
         
-        <div className="max-w-5xl mx-auto px-6 lg:px-12">
-          
-          <div className="mb-32">
-             <span className="text-[#EAB308] text-sm font-semibold tracking-widest uppercase block mb-6">
-              Our Philosophy
-            </span>
-            <h1 className="text-5xl md:text-7xl font-black tracking-tighter leading-[1.1] mb-12" style={{ fontFamily: "var(--font-heading), sans-serif" }}>
-              Engineering Without Compromise.
-            </h1>
-            
-            <div className="text-[#A0A0A0] text-xl md:text-2xl font-light leading-relaxed space-y-8 max-w-4xl">
-              <p>
-                The digital agency model is broken. Most agencies function as middlemen—selling you a custom project, but delivering a cheap WordPress template modified by junior developers. 
-              </p>
-              <p>
-                We started Reverbex Technologies to build the antithesis of that model.
-              </p>
-              <p className="text-white font-medium border-l-4 border-[#EAB308] pl-6 py-2 bg-[#1A1A1A]/30">
-                "We don't use templates. We don't farm work out to junior developers. We don't hide behind account managers."
-              </p>
-            </div>
-          </div>
+        gsap.fromTo(
+          split.words,
+          { opacity: 0.1 },
+          {
+            opacity: 1,
+            stagger: 0.1,
+            ease: "none",
+            scrollTrigger: {
+              trigger: element,
+              start: "top 80%",
+              end: "bottom 40%",
+              scrub: true,
+            }
+          }
+        );
+      });
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-12 lg:gap-24 mb-32">
-            <div>
-              <h2 className="text-3xl font-bold mb-6 text-white" style={{ fontFamily: "var(--font-heading), sans-serif" }}>The Reverbex Standard</h2>
-              <p className="text-[#A0A0A0] text-lg leading-relaxed mb-8">
-                Every line of code we write is custom. Every campaign we launch is built on raw data. We are a team of senior engineers and performance marketers who treat your business as our own. When you hire us, you speak directly with the people building your product.
-              </p>
-              <ul className="space-y-4 text-white font-medium">
-                <li className="flex items-center gap-3"><span className="text-[#EAB308]">✓</span> Direct access to senior engineers</li>
-                <li className="flex items-center gap-3"><span className="text-[#EAB308]">✓</span> 100% custom codebase ownership</li>
-                <li className="flex items-center gap-3"><span className="text-[#EAB308]">✓</span> Zero template usage</li>
-                <li className="flex items-center gap-3"><span className="text-[#EAB308]">✓</span> Transparent, data-driven marketing</li>
-              </ul>
-            </div>
-            
-            <div className="bg-[#111111] p-12 border border-[#1A1A1A] flex flex-col justify-center text-center relative overflow-hidden group">
-               <div className="absolute top-0 right-0 w-64 h-64 bg-[#EAB308]/5 rounded-full blur-3xl -mr-20 -mt-20 transition-transform duration-700 group-hover:scale-150"></div>
-              <h3 className="text-6xl font-black text-[#EAB308] mb-4 relative z-10" style={{ fontFamily: "var(--font-heading), sans-serif" }}>100%</h3>
-              <p className="text-[#A0A0A0] uppercase tracking-widest text-sm font-semibold relative z-10">In-House Engineering</p>
-            </div>
-          </div>
+      // Pin the massive 100% block
+      const statBlock = containerRef.current.querySelector(".stat-block");
+      if (statBlock) {
+        gsap.to(statBlock, {
+          scale: 0.95,
+          opacity: 0.5,
+          scrollTrigger: {
+            trigger: statBlock,
+            start: "center center",
+            end: "bottom top",
+            scrub: true,
+            pin: true,
+            pinSpacing: false,
+          }
+        });
+      }
+    }
 
-          <div className="mb-32">
-            <ReverbexBond />
-          </div>
+    return () => {
+      textElements.forEach((el) => {
+        // Clean up SplitType instances if needed
+        (el as any).split?.revert();
+      });
+    };
+  }, { scope: containerRef });
 
-          <div className="border-t border-[#1A1A1A] pt-20 flex flex-col items-center pb-12 text-center">
-            <h2 className="text-3xl md:text-5xl font-black text-white mb-6" style={{ fontFamily: "var(--font-heading), sans-serif" }}>
-              Work with the best.
-            </h2>
-            <Link
-              href="/contact"
-              className="inline-block px-10 py-5 bg-[#EAB308] text-black text-lg font-bold hover:bg-white transition-colors duration-300"
-            >
-              Get in Touch
-            </Link>
-          </div>
-
+  return (
+    <main ref={containerRef} className="w-full text-white min-h-screen pt-32 pb-24 selection:bg-[#EAB308]/30 overflow-hidden relative bg-[#050505]">
+      <Navbar />
+      
+      {/* Background gradients */}
+      <div className="absolute top-[-20%] left-[-10%] w-[50%] h-[50%] rounded-full bg-[#EAB308]/10 blur-[200px] pointer-events-none" />
+      
+      <div className="max-w-7xl mx-auto px-6 lg:px-12 relative z-10">
+        
+        {/* Cinematic Header */}
+        <div className="mb-40 pt-16">
+          <span className="text-[#EAB308] text-sm font-semibold tracking-widest uppercase block mb-6">
+            Our Philosophy
+          </span>
+          <h1 className="text-[clamp(3.5rem,8vw,8rem)] font-black tracking-tighter leading-[0.95] mb-12">
+            Engineering Without Compromise.
+          </h1>
         </div>
-      </main>
-    </>
+        
+        {/* Text Reveal Section */}
+        <div className="mb-40 max-w-5xl ml-auto border-l border-[#1A1A1A] pl-8 md:pl-16">
+          <p className="reveal-text text-3xl md:text-5xl lg:text-6xl font-black tracking-tight leading-[1.2] mb-16 text-white">
+            The digital agency model is broken. Most agencies function as middlemen—selling you a custom project, but delivering a cheap WordPress template modified by junior developers.
+          </p>
+          <p className="reveal-text text-3xl md:text-5xl lg:text-6xl font-black tracking-tight leading-[1.2] mb-16 text-[#A0A0A0]">
+            We started Reverbex Technologies to build the exact antithesis of that model.
+          </p>
+        </div>
+
+        {/* Pinned Stat Block */}
+        <div className="stat-block h-screen flex flex-col items-center justify-center mb-40">
+          <div className="relative group">
+            <div className="absolute inset-0 bg-[#EAB308]/20 rounded-full blur-[100px] transition-transform duration-1000 group-hover:scale-150" />
+            <h2 className="text-[clamp(8rem,20vw,20rem)] font-black text-[#EAB308] leading-none tracking-tighter relative z-10 drop-shadow-[0_0_50px_rgba(234,179,8,0.3)]">
+              100%
+            </h2>
+          </div>
+          <p className="text-white text-2xl md:text-4xl font-bold uppercase tracking-widest mt-8 z-10">
+            In-House Engineering
+          </p>
+          <p className="text-[#A0A0A0] text-lg font-medium mt-4 z-10 max-w-md text-center">
+            Zero templates. Zero outsourcing. Every line of code is written by senior developers.
+          </p>
+        </div>
+
+        {/* The Reverbex Standard Grid */}
+        <div className="mb-40">
+          <h2 className="text-4xl md:text-6xl font-black mb-16 border-b border-[#1A1A1A] pb-8">The Standard</h2>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-x-12 gap-y-16">
+            <div className="group">
+              <div className="text-[#EAB308] font-black text-6xl mb-4 opacity-30 group-hover:opacity-100 transition-opacity duration-300">01</div>
+              <h3 className="text-2xl font-bold mb-4">Direct Senior Access</h3>
+              <p className="text-[#A0A0A0] text-lg leading-relaxed">No account managers playing broken telephone. You speak directly with the engineers and strategists building your project.</p>
+            </div>
+            <div className="group">
+              <div className="text-[#EAB308] font-black text-6xl mb-4 opacity-30 group-hover:opacity-100 transition-opacity duration-300">02</div>
+              <h3 className="text-2xl font-bold mb-4">100% Code Ownership</h3>
+              <p className="text-[#A0A0A0] text-lg leading-relaxed">You own every line of code we write. No platform lock-in, no mandatory ongoing subscriptions just to keep your site live.</p>
+            </div>
+            <div className="group">
+              <div className="text-[#EAB308] font-black text-6xl mb-4 opacity-30 group-hover:opacity-100 transition-opacity duration-300">03</div>
+              <h3 className="text-2xl font-bold mb-4">Performance Obsession</h3>
+              <p className="text-[#A0A0A0] text-lg leading-relaxed">If it doesn't load instantly, we rewrite it. We guarantee 100/100 Core Web Vitals for maximum SEO ranking.</p>
+            </div>
+            <div className="group">
+              <div className="text-[#EAB308] font-black text-6xl mb-4 opacity-30 group-hover:opacity-100 transition-opacity duration-300">04</div>
+              <h3 className="text-2xl font-bold mb-4">Data-Driven Strategy</h3>
+              <p className="text-[#A0A0A0] text-lg leading-relaxed">No vanity metrics. We only track what matters: leads generated, costs reduced, and revenue increased.</p>
+            </div>
+          </div>
+        </div>
+
+        <div className="mb-40">
+          <ReverbexBond />
+        </div>
+
+        <div className="border-t border-[#1A1A1A] pt-32 flex flex-col items-center pb-12 text-center">
+          <h2 className="text-4xl md:text-6xl font-black text-white mb-12">
+            Work with the best.
+          </h2>
+          <Link
+            href="/contact"
+            className="inline-block px-12 py-6 bg-[#EAB308] text-black text-xl font-black hover:bg-white transition-colors duration-300 rounded-xl"
+          >
+            Get in Touch
+          </Link>
+        </div>
+
+      </div>
+    </main>
   );
 }
