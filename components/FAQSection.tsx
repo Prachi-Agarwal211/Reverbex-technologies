@@ -6,6 +6,8 @@ import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { Plus, Minus } from "lucide-react";
 
+gsap.registerPlugin(ScrollTrigger);
+
 const faqs = [
   {
     question: "What does Reverbex do?",
@@ -41,31 +43,29 @@ const faqs = [
   }
 ];
 
-function FAQItem({ question, answer }: { question: string; answer: string }) {
-  const [isOpen, setIsOpen] = useState(false);
-
+function FAQItem({ question, answer, isOpen, onClick }: { question: string; answer: string; isOpen: boolean; onClick: () => void }) {
   return (
-    <div className="border-b border-[#1A1A1A]">
+    <div className={`border-b transition-colors duration-500 ${isOpen ? 'border-[#EAB308]/50' : 'border-[#1A1A1A] hover:border-[#333]'}`}>
       <button
-        onClick={() => setIsOpen(!isOpen)}
-        className="w-full py-6 flex items-center justify-between text-left group"
+        onClick={onClick}
+        className="w-full py-8 flex items-center justify-between text-left group outline-none"
         aria-expanded={isOpen}
       >
-        <span className="text-white text-base md:text-lg font-medium group-hover:text-[#EAB308] transition-colors duration-300 pr-8">
+        <span className={`text-xl md:text-2xl font-bold transition-colors duration-300 pr-8 ${isOpen ? 'text-[#EAB308]' : 'text-white group-hover:text-white/80'}`}>
           {question}
         </span>
-        <span className="p-2 shrink-0 text-[#666666] group-hover:text-white transition-colors duration-300">
+        <span className={`p-3 shrink-0 rounded-full border transition-all duration-300 ${isOpen ? 'border-[#EAB308] text-[#EAB308] bg-[#EAB308]/10 rotate-180' : 'border-[#1A1A1A] text-[#666666] group-hover:border-[#333] group-hover:text-white rotate-0'}`}>
           {isOpen ? <Minus className="w-5 h-5" /> : <Plus className="w-5 h-5" />}
         </span>
       </button>
       
       <div
-        className="grid transition-[grid-template-rows] duration-300 ease-in-out"
+        className="grid transition-[grid-template-rows] duration-500 ease-[cubic-bezier(0.16,1,0.3,1)]"
         style={{ gridTemplateRows: isOpen ? "1fr" : "0fr" }}
         role="region"
       >
         <div className="overflow-hidden">
-          <p className="text-[#A0A0A0] text-sm md:text-base leading-relaxed pb-6 max-w-2xl">
+          <p className="text-[#A0A0A0] text-lg leading-relaxed pb-8 max-w-2xl font-light">
             {answer}
           </p>
         </div>
@@ -76,6 +76,7 @@ function FAQItem({ question, answer }: { question: string; answer: string }) {
 
 export default function FAQSection() {
   const containerRef = useRef<HTMLDivElement>(null);
+  const [openIndex, setOpenIndex] = useState<number | null>(0);
 
   useGSAP(() => {
     if (!containerRef.current) return;
@@ -85,74 +86,83 @@ export default function FAQSection() {
     ).matches;
     if (prefersReducedMotion) return;
 
-    // Clip-path wipe on heading
-    const headingMask = containerRef.current.querySelector(".faq-heading-mask");
-    if (headingMask) {
+    // Pinned Header entrance
+    const leftCol = containerRef.current.querySelector(".faq-left-col");
+    if (leftCol) {
       gsap.fromTo(
-        headingMask,
-        { clipPath: "polygon(0% 100%, 100% 100%, 100% 100%, 0% 100%)" },
+        leftCol,
+        { opacity: 0, x: -50 },
         {
-          clipPath: "polygon(0% 0%, 100% 0%, 100% 100%, 0% 100%)",
-          duration: 1.0,
-          ease: "power4.inOut",
+          opacity: 1,
+          x: 0,
+          duration: 1,
+          ease: "power4.out",
           scrollTrigger: {
             trigger: containerRef.current,
-            start: "top 80%",
-            toggleActions: "play none none reverse",
+            start: "top 70%",
           },
         }
       );
     }
 
-    // Stagger items in from left
+    // Stagger FAQ items
     const items = containerRef.current.querySelectorAll(".faq-item");
-    items.forEach((item, i) => {
-      gsap.fromTo(
-        item,
-        { opacity: 0, x: -20 },
-        {
-          opacity: 1,
-          x: 0,
-          duration: 0.5,
-          ease: "power3.out",
-          scrollTrigger: {
-            trigger: item,
-            start: "top 90%",
-            toggleActions: "play none none reverse",
-          },
-        }
-      );
-    });
+    gsap.fromTo(
+      items,
+      { opacity: 0, y: 30 },
+      {
+        opacity: 1,
+        y: 0,
+        duration: 0.8,
+        stagger: 0.1,
+        ease: "power3.out",
+        scrollTrigger: {
+          trigger: ".faq-right-col",
+          start: "top 80%",
+        },
+      }
+    );
   }, { scope: containerRef });
 
   return (
     <section
       ref={containerRef}
       id="faq"
-      className="w-full py-24 md:py-32 bg-transparent border-b border-[#1A1A1A] relative"
+      className="w-full py-24 md:py-32 bg-[#050505] relative z-10"
     >
-      <div className="max-w-3xl mx-auto px-6 md:px-12 relative z-10">
+      <div className="max-w-7xl mx-auto px-6 md:px-12 relative z-10">
         
-        <div className="text-left mb-16 md:mb-20">
-          <span className="text-white text-xs font-semibold tracking-[0.25em] uppercase mb-6 block">
-            Questions
-          </span>
-          <div className="faq-heading-mask" style={{ clipPath: "polygon(0% 100%, 100% 100%, 100% 100%, 0% 100%)" }}>
-            <h2 className="display-text text-white mb-6">
-              Before You Ask.
-            </h2>
-          </div>
-        </div>
-
-        <div className="flex flex-col w-full border-t border-[#1A1A1A]">
-          {faqs.map((item, index) => (
-            <div key={index} className="faq-item">
-              <FAQItem
-                question={item.question}
-                answer={item.answer}
-              />
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-16 lg:gap-24">
+          
+          {/* Left Column: Pinned Header */}
+          <div className="faq-left-col lg:col-span-5 relative">
+            <div className="lg:sticky lg:top-40">
+              <span className="text-[#EAB308] text-xs font-semibold tracking-[0.25em] uppercase mb-6 block">
+                The Details
+              </span>
+              <h2 className="text-[clamp(3.5rem,6vw,6rem)] font-black tracking-tighter leading-[0.95] text-white mb-8">
+                Before You Ask.
+              </h2>
+              <p className="text-[#A0A0A0] text-lg font-light leading-relaxed max-w-sm">
+                Everything you need to know about how we build, deploy, and scale high-performance engineering systems.
+              </p>
             </div>
-          ))}
+          </div>
+
+          {/* Right Column: Accordion Items */}
+          <div className="faq-right-col lg:col-span-7 border-t border-[#1A1A1A]">
+            {faqs.map((item, index) => (
+              <div key={index} className="faq-item">
+                <FAQItem
+                  question={item.question}
+                  answer={item.answer}
+                  isOpen={openIndex === index}
+                  onClick={() => setOpenIndex(openIndex === index ? null : index)}
+                />
+              </div>
+            ))}
+          </div>
+
         </div>
 
       </div>
