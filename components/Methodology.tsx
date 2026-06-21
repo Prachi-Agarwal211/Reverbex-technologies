@@ -175,9 +175,9 @@ export default function Methodology() {
                   </div>
                 </div>
 
-                {/* Content — clip-path masked */}
+                {/* Content — clip-path masked via CSS class (Pattern 2 fix) */}
                 <div className="md:ml-20 w-full relative">
-                  <div className="step-mask" style={{ clipPath: "polygon(0% 0%, 0% 0%, 0% 100%, 0% 100%)" }}>
+                  <div className="step-mask step-mask-hidden">
                     <span className="text-[#EAB308] text-sm font-bold tracking-[0.2em] uppercase mb-2 block md:hidden">
                       Phase {item.num}
                     </span>

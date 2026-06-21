@@ -495,7 +495,7 @@ html.lenis, html.lenis body {
 }
 
 /* ============================================ */
-/* HEIGHT FALLBACKS FOR OLDER BROWSERS */
+/* HEIGHT FALLBACKS FOR OLDER BROWSERS           */
 /* ============================================ */
 
 .hero-height {
@@ -504,10 +504,13 @@ html.lenis, html.lenis body {
 }
 
 /* ============================================ */
-/* iOS SAFARI SPECIFIC FIXES */
+/* iOS SAFARI SPECIFIC FIXES                    */
 /* ============================================ */
 
 @supports (-webkit-touch-callout: none) {
+  .hero-height {
+    height: -webkit-fill-available;
+  }
   .h-dvh {
     height: -webkit-fill-available;
   }
@@ -646,4 +649,95 @@ html.lenis, html.lenis body {
 
 .accent-line[data-visible="true"] {
   transform: scaleX(1);
+}
+
+/* ============================================ */
+/* CONTACT SECTION MOBILE FALLBACK BG            */
+/* Pattern 2 fix: background via CSS class,      */
+/* not inline style (prevents hydration mismatch) */
+/* ============================================ */
+
+.contact-fallback-bg {
+  background-image: url(/contact-fallback.webp);
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
+/* ============================================ */
+/* METHODOLOGY — step mask initial hidden state  */
+/* Pattern 2 fix: move clip-path to CSS class    */
+/* ============================================ */
+
+.step-mask-hidden {
+  clip-path: polygon(0% 0%, 0% 0%, 0% 100%, 0% 100%);
+}
+
+.step-mask-visible {
+  clip-path: polygon(0% 0%, 100% 0%, 100% 100%, 0% 100%);
+}
+
+/* ============================================ */
+/* TICKER & MARQUEE — reduced motion pauses      */
+/* ============================================ */
+
+@media (prefers-reduced-motion: reduce) {
+  .ticker-animate-left,
+  .ticker-animate-right,
+  .animate-marquee-left,
+  .trusted-marquee-track {
+    animation-play-state: paused !important;
+  }
+}
+
+/* ============================================ */
+/* SCROLLBAR UTILITIES                           */
+/* Used in FeaturedArchitectures horizontal snap */
+/* ============================================ */
+
+.scrollbar-hide {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;
+}
+
+/* ============================================ */
+/* GPU ACCELERATION HELPER                       */
+/* ============================================ */
+
+.hw-accelerated {
+  will-change: transform;
+  transform: translateZ(0);
+  backface-visibility: hidden;
+}
+
+/* ============================================ */
+/* MOBILE: Body bottom padding for MobileBottomNav */
+/* Prevents last section from being hidden behind */
+/* the fixed bottom nav bar on mobile devices    */
+/* ============================================ */
+
+@media (max-width: 767px) {
+  body {
+    padding-bottom: calc(64px + env(safe-area-inset-bottom, 0px));
+  }
+}
+
+/* ============================================ */
+/* SNAP SCROLL — FeaturedArchitectures mobile   */
+/* ============================================ */
+
+.snap-x {
+  scroll-snap-type: x mandatory;
+}
+
+.snap-mandatory {
+  scroll-snap-type: x mandatory;
+}
+
+.snap-center {
+  scroll-snap-align: center;
 }

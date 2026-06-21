@@ -23,6 +23,9 @@ export async function generateMetadata({
   return {
     title: `${study.client} | Case Study | Reverbex Technologies`,
     description: study.resultTitle,
+    alternates: {
+      canonical: `https://reverbex.in/work/${slug}`,
+    },
     openGraph: {
       title: `${study.client} | Case Study | Reverbex Technologies`,
       description: study.resultTitle,

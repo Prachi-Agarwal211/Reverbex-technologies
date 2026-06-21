@@ -152,70 +152,109 @@ export default function FeaturedArchitectures() {
   }, { scope: containerRef });
 
   return (
-    <section ref={containerRef} id="architectures" className="relative w-full h-screen bg-transparent overflow-hidden flex flex-col md:block">
-      
-      {/* Header */}
-      <div className="absolute top-12 md:top-20 left-0 w-full z-10 pointer-events-none px-6">
-        <div className="max-w-7xl mx-auto text-center">
-          <h2 className="display-text text-white mb-4">
+    <section ref={containerRef} id="architectures" className="relative w-full bg-transparent overflow-hidden">
+      {/* ===== MOBILE: Horizontal snap-scroll cards ===== */}
+      <div className="flex md:hidden flex-col py-16 px-5">
+        <div className="mb-10">
+          <h2 className="text-white font-black text-[clamp(2rem,8vw,3rem)] tracking-tight leading-[1.05] mb-3">
             Real Results.
           </h2>
-          <p className="text-[#A0A0A0] text-[clamp(0.75rem,2vw,1rem)] uppercase tracking-[0.2em] font-light">
-            Scroll to scatter
+          <p className="text-[#A0A0A0] text-sm uppercase tracking-[0.2em] font-light">
+            Projects we've shipped
           </p>
         </div>
-      </div>
-
-      {/* Images Container */}
-      <div className="relative w-full flex-1 md:absolute md:inset-0 md:h-full md:pointer-events-none flex flex-col md:block items-center justify-center gap-6 mt-32 md:mt-0 pb-20 md:pb-0 overflow-y-auto md:overflow-hidden">
-        {cases.map((item, i) => (
-          <div 
-            key={i} 
-            ref={(el) => { imagesRef.current[i] = el; }}
-            className="md:absolute md:top-1/2 md:left-1/2 w-[85vw] md:w-[clamp(280px,35vw,480px)] aspect-[4/3] rounded-[1.5rem] overflow-hidden border border-white/10 bg-[#050505] shadow-[0_20px_50px_rgba(0,0,0,0.5)] flex flex-col group will-change-transform md:pointer-events-auto"
-          >
-            {/* Clickable link to client domain */}
+        <div className="flex gap-4 overflow-x-auto snap-x snap-mandatory pb-4 -mx-5 px-5 scrollbar-hide">
+          {cases.map((item, i) => (
             <a
+              key={i}
               href={item.url}
               target="_blank"
               rel="noopener noreferrer"
-              className="block w-full h-full"
+              className="snap-center shrink-0 w-[85vw] aspect-[4/3] rounded-2xl overflow-hidden border border-white/10 bg-[#050505] shadow-lg group flex flex-col"
               aria-label={`Visit ${item.title}`}
             >
-              {/* Image */}
               <div className="relative w-full h-[65%] overflow-hidden">
-                <div className="absolute inset-0 bg-black/20 group-hover:bg-transparent transition-colors duration-500 z-10" />
+                <div className="absolute inset-0 bg-black/20 group-active:bg-transparent transition-colors duration-300 z-10" />
                 <Image
                   src={item.image}
                   alt={`${item.title} - Reverbex project`}
                   fill
-                  className="object-cover transition-transform duration-700 group-hover:scale-105"
-                  sizes="(max-width: 768px) 85vw, 35vw"
+                  className="object-cover"
+                  sizes="85vw"
                 />
               </div>
-
-              {/* Content Bottom */}
-              <div className="relative w-full h-[35%] p-4 md:p-6 bg-gradient-to-b from-[#0a0a0a] to-[#050505] flex flex-col justify-center">
-                <p className="text-[#EAB308] font-semibold tracking-[0.2em] uppercase text-[9px] md:text-[10px] mb-2">
-                  {item.tagline}
-                </p>
-                <h3 className="text-xl md:text-2xl text-white font-bold tracking-tight mb-2 group-hover:text-[#EAB308] transition-colors duration-300">
-                  {item.title}
-                </h3>
-                <p className="text-[#666666] text-[10px] md:text-xs mb-2">
-                  {item.result}
-                </p>
+              <div className="relative w-full h-[35%] p-4 bg-gradient-to-b from-[#0a0a0a] to-[#050505] flex flex-col justify-center">
+                <p className="text-[#EAB308] font-semibold tracking-[0.2em] uppercase text-[9px] mb-1">{item.tagline}</p>
+                <h3 className="text-lg text-white font-bold tracking-tight mb-1">{item.title}</h3>
+                <p className="text-[#666666] text-[10px] mb-2">{item.result}</p>
                 <div className="flex gap-2">
                   {item.stack.map((tech, j) => (
-                    <span key={j} className="px-2 py-1 rounded bg-white/5 border border-white/10 text-white/70 text-[9px] font-medium tracking-wide">
+                    <span key={j} className="px-2 py-0.5 rounded bg-white/5 border border-white/10 text-white/70 text-[9px] font-medium tracking-wide">
                       {tech}
                     </span>
                   ))}
                 </div>
               </div>
             </a>
+          ))}
+        </div>
+      </div>
+
+      {/* ===== DESKTOP: Pinned card-scatter effect ===== */}
+      <div className="hidden md:block relative w-full h-screen overflow-hidden">
+        {/* Header */}
+        <div className="absolute top-12 md:top-20 left-0 w-full z-10 pointer-events-none px-6">
+          <div className="max-w-7xl mx-auto text-center">
+            <h2 className="display-text text-white mb-4">
+              Real Results.
+            </h2>
+            <p className="text-[#A0A0A0] text-[clamp(0.75rem,2vw,1rem)] uppercase tracking-[0.2em] font-light">
+              Scroll to scatter
+            </p>
           </div>
-        ))}
+        </div>
+
+        {/* Images Container */}
+        <div className="relative w-full h-full pointer-events-none">
+          {cases.map((item, i) => (
+            <div
+              key={i}
+              ref={(el) => { imagesRef.current[i] = el; }}
+              className="md:absolute md:top-1/2 md:left-1/2 w-[clamp(280px,35vw,480px)] aspect-[4/3] rounded-[1.5rem] overflow-hidden border border-white/10 bg-[#050505] shadow-[0_20px_50px_rgba(0,0,0,0.5)] flex flex-col group will-change-transform pointer-events-auto"
+            >
+              <a
+                href={item.url}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="block w-full h-full"
+                aria-label={`Visit ${item.title}`}
+              >
+                <div className="relative w-full h-[65%] overflow-hidden">
+                  <div className="absolute inset-0 bg-black/20 group-hover:bg-transparent transition-colors duration-500 z-10" />
+                  <Image
+                    src={item.image}
+                    alt={`${item.title} - Reverbex project`}
+                    fill
+                    className="object-cover transition-transform duration-700 group-hover:scale-105"
+                    sizes="35vw"
+                  />
+                </div>
+                <div className="relative w-full h-[35%] p-4 md:p-6 bg-gradient-to-b from-[#0a0a0a] to-[#050505] flex flex-col justify-center">
+                  <p className="text-[#EAB308] font-semibold tracking-[0.2em] uppercase text-[10px] mb-2">{item.tagline}</p>
+                  <h3 className="text-xl md:text-2xl text-white font-bold tracking-tight mb-2 group-hover:text-[#EAB308] transition-colors duration-300">{item.title}</h3>
+                  <p className="text-[#666666] text-xs mb-2">{item.result}</p>
+                  <div className="flex gap-2">
+                    {item.stack.map((tech, j) => (
+                      <span key={j} className="px-2 py-1 rounded bg-white/5 border border-white/10 text-white/70 text-[9px] font-medium tracking-wide">
+                        {tech}
+                      </span>
+                    ))}
+                  </div>
+                </div>
+              </a>
+            </div>
+          ))}
+        </div>
       </div>
     </section>
   );

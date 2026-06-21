@@ -4,13 +4,14 @@ import { useRef } from "react";
 import { useGSAP } from "@gsap/react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
+import SplitType from "split-type";
 import { scrollToSection } from "@/lib/scrollToSection";
 import MouseDistortion from "./MouseDistortion";
-import Sparkles from "./Sparkles";
 
 export default function HeroVideo() {
   const sectionRef = useRef<HTMLElement>(null);
 
+  // Hook 1: Entrance animation — runs once on mount (Pattern 4 compliant)
   useGSAP(() => {
     if (!sectionRef.current) return;
 
@@ -19,34 +20,13 @@ export default function HeroVideo() {
         "(prefers-reduced-motion: reduce)"
       ).matches;
 
-      // ---- Split headline into per-character spans ----
-      const headline = sectionRef.current!.querySelector(".hero-headline");
-      if (headline) {
-        const walker = document.createTreeWalker(
-          headline,
-          NodeFilter.SHOW_TEXT | NodeFilter.SHOW_ELEMENT,
-          null,
-        );
-        let html = "";
-        let node: Node | null;
-        while ((node = walker.nextNode())) {
-          if (node.nodeType === Node.TEXT_NODE) {
-            const text = node.textContent || "";
-            html += text
-              .split("")
-              .map(
-                (char) =>
-                  `<span class="hero-char inline-block">${char === " " ? "&nbsp;" : char}</span>`
-              )
-              .join("");
-          } else if ((node as Element).tagName === "BR") {
-            html += "<br>";
-          }
-        }
-        headline.innerHTML = html;
-      }
+      // ---- Split headline using SplitType (handles word boundaries correctly) ----
+      const headlineEl = sectionRef.current!.querySelector(".hero-headline") as HTMLElement | null;
+      if (!headlineEl) return;
 
-      const chars = sectionRef.current!.querySelectorAll(".hero-char");
+      const split = new SplitType(headlineEl, { types: "chars,words" });
+      const chars = split.chars ?? [];
+
       const subtitle = sectionRef.current!.querySelector(".hero-sub");
       const ctas = sectionRef.current!.querySelectorAll(".hero-cta");
       const marquee = sectionRef.current!.querySelector(".hero-marquee");
@@ -62,7 +42,7 @@ export default function HeroVideo() {
       tl.fromTo(
         chars,
         { y: 40, opacity: 0 },
-        { y: 0, opacity: 1, stagger: 0.02, duration: 0.9, ease: "expo.out" }
+        { y: 0, opacity: 1, stagger: 0.018, duration: 0.85, ease: "expo.out" }
       );
 
       tl.fromTo(
@@ -86,10 +66,10 @@ export default function HeroVideo() {
         "-=0.15"
       );
 
-      // ---- Parallax on the video ----
-      const video = sectionRef.current!.querySelector("video");
-      if (video) {
-        gsap.to(video, {
+      // ---- Parallax on the desktop video ----
+      const desktopVideo = sectionRef.current!.querySelector(".hero-video-desktop");
+      if (desktopVideo) {
+        gsap.to(desktopVideo, {
           y: 80,
           scale: 1.04,
           scrollTrigger: {
@@ -101,17 +81,24 @@ export default function HeroVideo() {
         });
       }
 
-      // Fade the headline up slightly as we leave
-      gsap.to(headline, {
-        y: -40,
-        opacity: 0,
-        scrollTrigger: {
-          trigger: sectionRef.current!,
-          start: "20% top",
-          end: "50% top",
-          scrub: 1,
-        },
-      });
+      // ---- Fade the headline up slightly as we leave ----
+      if (headlineEl) {
+        gsap.to(headlineEl, {
+          y: -40,
+          opacity: 0,
+          scrollTrigger: {
+            trigger: sectionRef.current!,
+            start: "20% top",
+            end: "50% top",
+            scrub: 1,
+          },
+        });
+      }
+
+      // Cleanup SplitType on revert
+      return () => {
+        split.revert();
+      };
     }, sectionRef);
 
     return () => ctx.revert();
@@ -127,20 +114,17 @@ export default function HeroVideo() {
     <section
       id="hero"
       ref={sectionRef}
-      className="relative w-full h-screen min-h-[600px] overflow-hidden"
+      className="relative w-full hero-height min-h-[600px] overflow-hidden"
       aria-label="Hero section"
     >
       <h1 className="sr-only">Reverbex Technologies — Websites, Ads, Automation</h1>
-      
+
       <div className="absolute inset-0 z-0">
         <HeroForeground />
       </div>
 
       {/* Mouse-following particle distortion */}
       <MouseDistortion />
-
-      {/* Gold sparkles overlay */}
-      <Sparkles />
 
       <HeroContent marqueeItems={marqueeItems} />
     </section>
@@ -150,7 +134,7 @@ export default function HeroVideo() {
 function HeroForeground() {
   return (
     <div className="absolute inset-0 w-full h-full bg-transparent">
-      {/* DESKTOP: video background */}
+      {/* DESKTOP: optimised desktop video (1.35MB) */}
       <div className="hidden md:block absolute inset-0">
         <video
           autoPlay
@@ -159,15 +143,18 @@ function HeroForeground() {
           playsInline
           preload="metadata"
           disablePictureInPicture
-          className="absolute inset-0 w-full h-full object-cover"
+          className="hero-video-desktop absolute inset-0 w-full h-full object-cover hw-accelerated"
           aria-hidden="true"
+          poster="/hero-poster.jpg"
         >
+          <source src="/hero-video-desktop.mp4" type="video/mp4" />
+          {/* Fallback to new.mp4 if desktop file missing */}
           <source src="/new.mp4" type="video/mp4" />
         </video>
         <div className="absolute inset-0 pointer-events-none hero-gradient-mask" />
       </div>
 
-      {/* MOBILE: video top, dark bottom */}
+      {/* MOBILE: optimised mobile video (698KB) + gradient bottom */}
       <div className="flex md:hidden flex-col absolute inset-0">
         <div className="relative w-full h-[45%] overflow-hidden">
           <video
@@ -179,8 +166,10 @@ function HeroForeground() {
             disablePictureInPicture
             className="absolute inset-0 w-full h-full object-cover"
             aria-hidden="true"
+            poster="/hero-poster.jpg"
           >
-            <source src="/new.mp4" type="video/mp4" />
+            <source src="/hero-video-mobile.mp4" type="video/mp4" />
+            <source src="/hero-video-desktop.mp4" type="video/mp4" />
           </video>
           <div className="absolute bottom-0 left-0 w-full h-16 bg-gradient-to-t from-[#050505] to-transparent" />
         </div>
@@ -196,10 +185,8 @@ function HeroContent({ marqueeItems }: { marqueeItems: string[] }) {
       <div className="flex-1 flex flex-col justify-end pb-0 px-5 sm:px-6 md:px-12 xl:px-16 md:pb-20 pt-[45vh] md:pt-0">
         <div className="max-w-xl lg:max-w-2xl">
           <h2 className="hero-headline text-white font-extrabold tracking-[-0.02em] leading-[1.05] mb-4 sm:mb-6 text-[2.2rem] sm:text-[clamp(2.2rem,5vw,4rem)] md:text-[clamp(2.5rem,5vw,4.5rem)] lg:text-[clamp(2.8rem,5vw,5rem)]">
-            We Turn Your
-            <br />
-            Business
-            <br />
+            We Turn Your{" "}
+            Business{" "}
             Into <span className="text-[#EAB308]">A Brand.</span>
           </h2>
 

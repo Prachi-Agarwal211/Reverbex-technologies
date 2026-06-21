@@ -78,7 +78,7 @@ export default function WhyReverbex() {
 
     // List items stagger in from left
     const items = containerRef.current.querySelectorAll(".why-item");
-    items.forEach((item, i) => {
+    items.forEach((item) => {
       gsap.fromTo(
         item,
         { opacity: 0, x: -30 },
@@ -95,14 +95,14 @@ export default function WhyReverbex() {
         }
       );
 
-      // Accent line wipe
+      // Scroll-reveal line (always runs once on scroll — no hover CSS conflict)
       const line = item.querySelector(".why-line");
       if (line) {
         gsap.fromTo(
           line,
           { scaleX: 0 },
           {
-            scaleX: 1,
+            scaleX: 0.3,       // reveals to 30% on scroll
             duration: 0.8,
             ease: "power3.out",
             scrollTrigger: {
@@ -112,6 +112,15 @@ export default function WhyReverbex() {
             },
           }
         );
+
+        // Hover: GSAP expands/shrinks the line — no CSS conflict because
+        // we removed group-hover:scale-x-100 from the JSX below
+        item.addEventListener("mouseenter", () => {
+          gsap.to(line, { scaleX: 1, duration: 0.4, ease: "power3.out" });
+        });
+        item.addEventListener("mouseleave", () => {
+          gsap.to(line, { scaleX: 0.3, duration: 0.4, ease: "power3.in" });
+        });
       }
     });
   }, { scope: containerRef });
@@ -143,7 +152,7 @@ export default function WhyReverbex() {
           {comparisons.map((item, index) => (
             <div
               key={index}
-              className="why-item group py-8 md:py-10 border-t border-[#1A1A1A] last:border-b"
+              className="why-item group py-8 md:py-10 border-t border-[#1A1A1A] last:border-b cursor-default"
             >
               <div className="flex flex-col md:flex-row md:items-start gap-4 md:gap-8">
                 {/* Number */}
@@ -167,8 +176,8 @@ export default function WhyReverbex() {
                 </span>
               </div>
 
-              {/* Hover accent line */}
-              <div className="why-line h-[1px] bg-[#EAB308]/30 mt-8 md:mt-10 origin-left scale-x-0 group-hover:scale-x-100 transition-transform duration-500" />
+              {/* Accent line — GSAP-only, no CSS hover class (removes conflict) */}
+              <div className="why-line h-[1px] bg-[#EAB308]/40 mt-8 md:mt-10 origin-left" style={{ transform: "scaleX(0)" }} />
             </div>
           ))}
         </div>

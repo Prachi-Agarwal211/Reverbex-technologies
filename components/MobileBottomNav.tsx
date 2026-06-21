@@ -3,22 +3,16 @@
 import { useState, useEffect } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { Home, Layers, Briefcase, Heart } from "lucide-react";
-import { MOBILE_NAV_ITEMS } from "@/lib/config";
+import { Home, Layers, Briefcase, Heart, Building2 } from "lucide-react";
+import { MOBILE_NAV_ITEMS, NAV_ROUTE_MAP } from "@/lib/config";
 import { scrollToSection } from "@/lib/scrollToSection";
 
 const iconMap: Record<string, React.ElementType> = {
   hero: Home,
   capabilities: Layers,
   architectures: Briefcase,
+  industries: Building2,
   reverbexbond: Heart,
-};
-
-const sectionToRoute: Record<string, string> = {
-  hero: "/",
-  capabilities: "/services",
-  architectures: "/work",
-  reverbexbond: "/about",
 };
 
 export default function MobileBottomNav() {
@@ -80,7 +74,7 @@ export default function MobileBottomNav() {
   // Set active based on current route on sub-pages
   useEffect(() => {
     if (!isHomepage) {
-      const match = Object.entries(sectionToRoute).find(([, route]) => route === pathname);
+      const match = Object.entries(NAV_ROUTE_MAP).find(([, route]) => route === pathname);
       if (match) setActive(match[0]);
     }
   }, [pathname, isHomepage]);
@@ -102,7 +96,7 @@ export default function MobileBottomNav() {
           {MOBILE_NAV_ITEMS.map(({ label, to }) => {
             const Icon = iconMap[to] || Home;
             const isActive = active === to;
-            const route = sectionToRoute[to];
+            const route = NAV_ROUTE_MAP[to];
 
             if (isHomepage) {
               return (

@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef } from "react";
+import { useRef, useEffect } from "react";
 import { useGSAP } from "@gsap/react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
@@ -32,6 +32,35 @@ const footerLinks = {
 
 export default function Footer() {
   const containerRef = useRef<HTMLElement>(null);
+  const videoRef = useRef<HTMLVideoElement>(null);
+  const ctaRef = useRef<HTMLDivElement>(null);
+  const linksRef = useRef<HTMLDivElement>(null);
+
+  // IntersectionObserver to pause video when out of viewport
+  useEffect(() => {
+    const video = videoRef.current;
+    if (!video) return;
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            video.playbackRate = 0.7;
+            video.play().catch(() => {});
+          } else {
+            video.pause();
+          }
+        });
+      },
+      { threshold: 0.1 }
+    );
+
+    observer.observe(video);
+    return () => {
+      observer.disconnect();
+      video.pause();
+    };
+  }, []);
 
   useGSAP(() => {
     if (!containerRef.current) return;
@@ -40,26 +69,48 @@ export default function Footer() {
       const prefersReducedMotion = window.matchMedia(
         "(prefers-reduced-motion: reduce)"
       ).matches;
+
       if (prefersReducedMotion) return;
 
-      // Footer content fade in
-      const items = containerRef.current!.querySelectorAll(".footer-item");
-      gsap.fromTo(
-        items,
-        { opacity: 0, y: 20 },
-        {
-          opacity: 1,
-          y: 0,
-          stagger: 0.05,
-          duration: 0.6,
-          ease: "power3.out",
-          scrollTrigger: {
-            trigger: containerRef.current,
-            start: "top 90%",
-            toggleActions: "play none none reverse",
-          },
-        }
-      );
+      // CTA section: scale up from 0.95 + fade in
+      if (ctaRef.current) {
+        gsap.fromTo(
+          ctaRef.current,
+          { opacity: 0, scale: 0.95 },
+          {
+            opacity: 1,
+            scale: 1,
+            duration: 1,
+            ease: "power3.out",
+            scrollTrigger: {
+              trigger: ctaRef.current,
+              start: "top 95%",
+              toggleActions: "play none none none",
+            },
+          }
+        );
+      }
+
+      // Links section: stagger columns in from bottom
+      if (linksRef.current) {
+        const columns = linksRef.current.querySelectorAll(":scope > div");
+        gsap.fromTo(
+          columns,
+          { opacity: 0, y: 30 },
+          {
+            opacity: 1,
+            y: 0,
+            stagger: 0.1,
+            duration: 0.8,
+            ease: "power3.out",
+            scrollTrigger: {
+              trigger: linksRef.current,
+              start: "top 95%",
+              toggleActions: "play none none none",
+            },
+          }
+        );
+      }
     }, containerRef);
 
     return () => ctx.revert();
@@ -71,9 +122,10 @@ export default function Footer() {
 
   return (
     <footer ref={containerRef} className="relative w-full bg-[#050505]">
-      {/* Video Section — Full width, upfront */}
+      {/* Video CTA Section */}
       <div className="relative w-full h-[50vh] md:h-[60vh] overflow-hidden">
         <video
+          ref={videoRef}
           autoPlay
           loop
           muted
@@ -82,16 +134,16 @@ export default function Footer() {
           className="absolute inset-0 w-full h-full object-cover opacity-40"
           aria-hidden="true"
         >
-          <source src="/hero-video.mp4" type="video/mp4" />
+          <source src="/hero-video-desktop.mp4" type="video/mp4" />
         </video>
         <div className="absolute inset-0 bg-gradient-to-b from-[#050505] via-[#050505]/60 to-[#050505]" />
 
-        {/* CTA overlay on video */}
-        <div className="absolute inset-0 flex flex-col items-center justify-center text-center px-6">
-          <span className="footer-item text-[#EAB308] text-xs font-semibold tracking-[0.25em] uppercase mb-4 block">
+        {/* CTA overlay — GSAP animates this */}
+        <div ref={ctaRef} className="absolute inset-0 flex flex-col items-center justify-center text-center px-6">
+          <span className="text-[#EAB308] text-xs font-semibold tracking-[0.25em] uppercase mb-4 block">
             Ready to Grow?
           </span>
-          <h2 className="footer-item display-text text-white max-w-4xl">
+          <h2 className="display-text text-white max-w-4xl">
             Let&apos;s Build
             <br />
             <span className="text-[#EAB308]">Something Great.</span>
@@ -100,7 +152,7 @@ export default function Footer() {
             href="https://wa.me/919929986743"
             target="_blank"
             rel="noopener noreferrer"
-            className="footer-item mt-8 inline-flex items-center gap-3 bg-[#EAB308] text-black px-8 py-4 rounded-full font-bold text-lg hover:bg-[#d4a007] transition-colors duration-300"
+            className="mt-8 inline-flex items-center gap-3 bg-[#EAB308] text-black px-8 py-4 rounded-full font-bold text-lg hover:bg-[#d4a007] transition-colors duration-300"
           >
             Message Us on WhatsApp
             <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -110,10 +162,10 @@ export default function Footer() {
         </div>
       </div>
 
-      {/* Footer Content */}
-      <div className="max-w-7xl mx-auto px-6 md:px-12 py-16 md:py-20">
+      {/* Footer Links — GSAP animates columns */}
+      <div ref={linksRef} className="max-w-7xl mx-auto px-6 md:px-12 py-16 md:py-20">
         <div className="grid grid-cols-2 md:grid-cols-12 gap-10 md:gap-8">
-          {/* Brand Column */}
+          {/* Brand */}
           <div className="col-span-2 md:col-span-4 flex flex-col gap-6">
             <Link href="/" className="flex items-center gap-2.5 group">
               <Image
@@ -150,9 +202,9 @@ export default function Footer() {
             </div>
           </div>
 
-          {/* Services Column */}
+          {/* Services */}
           <div className="col-span-1 md:col-span-2 md:col-start-6">
-            <h3 className="footer-item text-white text-xs font-bold tracking-[0.2em] uppercase mb-4">
+            <h3 className="text-white text-xs font-bold tracking-[0.2em] uppercase mb-4">
               Services
             </h3>
             <ul className="flex flex-col gap-2.5">
@@ -160,7 +212,7 @@ export default function Footer() {
                 <li key={link.href}>
                   <Link
                     href={link.href}
-                    className="footer-item text-[#666666] text-sm hover:text-[#EAB308] transition-colors duration-200"
+                    className="text-[#666666] text-sm hover:text-[#EAB308] transition-colors duration-200"
                   >
                     {link.label}
                   </Link>
@@ -169,9 +221,9 @@ export default function Footer() {
             </ul>
           </div>
 
-          {/* Company Column */}
+          {/* Company */}
           <div className="col-span-1 md:col-span-2">
-            <h3 className="footer-item text-white text-xs font-bold tracking-[0.2em] uppercase mb-4">
+            <h3 className="text-white text-xs font-bold tracking-[0.2em] uppercase mb-4">
               Company
             </h3>
             <ul className="flex flex-col gap-2.5">
@@ -179,7 +231,7 @@ export default function Footer() {
                 <li key={link.href}>
                   <Link
                     href={link.href}
-                    className="footer-item text-[#666666] text-sm hover:text-[#EAB308] transition-colors duration-200"
+                    className="text-[#666666] text-sm hover:text-[#EAB308] transition-colors duration-200"
                   >
                     {link.label}
                   </Link>
@@ -188,13 +240,13 @@ export default function Footer() {
             </ul>
           </div>
 
-          {/* Contact Column */}
+          {/* Contact */}
           <div className="col-span-2 md:col-span-3">
-            <h3 className="footer-item text-white text-xs font-bold tracking-[0.2em] uppercase mb-4">
+            <h3 className="text-white text-xs font-bold tracking-[0.2em] uppercase mb-4">
               Get in Touch
             </h3>
             <ul className="flex flex-col gap-3">
-              <li className="footer-item">
+              <li>
                 <a
                   href={`mailto:${CONTACT.email}`}
                   className="text-[#666666] text-sm hover:text-[#EAB308] transition-colors break-all"
@@ -202,7 +254,7 @@ export default function Footer() {
                   {CONTACT.emailDisplay}
                 </a>
               </li>
-              <li className="footer-item">
+              <li>
                 <a
                   href={CONTACT.phoneHref}
                   className="text-[#666666] text-sm hover:text-[#EAB308] transition-colors"
@@ -210,7 +262,7 @@ export default function Footer() {
                   {CONTACT.phone}
                 </a>
               </li>
-              <li className="footer-item">
+              <li>
                 <span className="text-[#666666] text-sm">
                   {CONTACT.location}
                 </span>

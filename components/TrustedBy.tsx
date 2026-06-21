@@ -17,8 +17,9 @@ const basePartners: Partner[] = [
   { name: "MAAC Animation", src: "/maac logo.png" },
 ];
 
-// Duplicate to create a full continuous circle (12 items = 30 degree increments)
-const partners = [...basePartners, ...basePartners, ...basePartners];
+// Duplicate for seamless marquee (mobile) and for 3D ring (desktop)
+const marqueePartners = [...basePartners, ...basePartners, ...basePartners];
+const ringPartners = [...basePartners, ...basePartners, ...basePartners];
 
 export default function TrustedBy() {
   const containerRef = useRef<HTMLElement>(null);
@@ -27,19 +28,17 @@ export default function TrustedBy() {
   useGSAP(() => {
     if (!ringRef.current || typeof window === "undefined") return;
 
-    // 1. Arrange logos in a 3D convex cylinder
+    if (window.matchMedia("(pointer: coarse)").matches) return;
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+
     const logos = gsap.utils.toArray(".partner-card") as HTMLElement[];
     const totalLogos = logos.length;
-    // Use a large radius for a gentle curve like the reference image
-    const radius = window.innerWidth < 768 ? 400 : 700; 
+    const radius = 700;
     const angleIncrement = 360 / totalLogos;
 
     gsap.set(ringRef.current, { transformStyle: "preserve-3d" });
 
     logos.forEach((logo, i) => {
-      // By setting transformOrigin to -radius on the Z axis, 
-      // we push the rotation point behind the card.
-      // This creates a perfect convex cylinder where the cards face outward.
       gsap.set(logo, {
         rotationY: i * angleIncrement,
         z: radius,
@@ -47,9 +46,9 @@ export default function TrustedBy() {
       });
     });
 
-    // 2. Continuous infinite rotation
+    // Continuous rotation — never pauses
     gsap.to(ringRef.current, {
-      rotationY: -360, // Rotate negatively so it spins left-to-right
+      rotationY: -360,
       duration: 35,
       ease: "none",
       repeat: -1,
@@ -60,60 +59,86 @@ export default function TrustedBy() {
   return (
     <section
       ref={containerRef}
-      className="relative w-full h-[70vh] md:h-[90vh] flex flex-col items-center justify-center overflow-hidden bg-transparent"
-      // High perspective to make the 3D effect subtle and premium
-      style={{ perspective: "1500px" }}
+      className="relative w-full overflow-hidden bg-transparent"
       aria-label="Trusted by partners"
     >
-      {/* Title */}
-      <div className="absolute top-24 text-center z-10 w-full px-6">
+      {/* Section heading */}
+      <div className="text-center pt-20 md:pt-28 pb-8 md:pb-0 px-6 z-10 relative">
         <p className="text-[11px] tracking-[0.4em] text-[#EAB308]/80 font-medium uppercase mb-4">
           Trusted By
         </p>
-        <h2 className="font-heading text-4xl md:text-6xl font-bold text-white tracking-tight">
+        <h2 className="font-heading text-3xl md:text-5xl lg:text-6xl font-bold text-white tracking-tight">
           Visionaries
         </h2>
       </div>
 
-      {/* 3D Ring */}
-      <div 
-        ref={ringRef} 
-        className="relative w-full h-full flex items-center justify-center mt-20"
-        style={{ transformStyle: "preserve-3d" }}
+      {/* ===== DESKTOP: 3D Ring ===== */}
+      <div
+        className="hidden md:flex relative w-full h-[70vh] lg:h-[85vh] items-center justify-center"
+        style={{ perspective: "1500px" }}
       >
-        {partners.map((partner, i) => (
-          <div 
-            key={i} 
-            className="partner-card absolute top-1/2 left-1/2 flex flex-col items-center justify-center"
-            style={{ 
-              width: "280px",
-              height: "320px",
-              marginTop: "-160px", 
-              marginLeft: "-140px",
-            }}
-          >
-            {/* The Logo - mimicking the 3D curve layout but WITHOUT cards/backgrounds */}
-            <div className="w-full h-full flex flex-col items-center justify-center p-8 transition-transform duration-500 hover:scale-110">
-              <div className="relative w-full h-[60%] pointer-events-none flex items-center justify-center">
+        <div
+          ref={ringRef}
+          className="relative w-full h-full flex items-center justify-center"
+          style={{ transformStyle: "preserve-3d" }}
+        >
+          {ringPartners.map((partner, i) => (
+            <div
+              key={i}
+              className="partner-card absolute top-1/2 left-1/2 flex flex-col items-center justify-center"
+              style={{
+                width: "280px",
+                height: "320px",
+                marginTop: "-160px",
+                marginLeft: "-140px",
+              }}
+            >
+              <div className="w-full h-full flex flex-col items-center justify-center p-8 transition-transform duration-500 hover:scale-110">
+                <div className="relative w-full h-[60%] pointer-events-none flex items-center justify-center">
+                  <Image
+                    src={partner.src}
+                    alt={partner.name}
+                    fill
+                    className="object-contain"
+                    sizes="280px"
+                  />
+                </div>
+                <span className="mt-8 text-white/50 text-xs font-bold tracking-[0.3em] uppercase">
+                  {partner.name}
+                </span>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      {/* ===== MOBILE: CSS Marquee (no 3D transforms = no overflow bug) ===== */}
+      <div className="flex md:hidden w-full py-12 overflow-hidden">
+        <div
+          className="flex items-center gap-10 animate-marquee-left"
+          style={{ minWidth: "max-content" }}
+        >
+          {marqueePartners.map((partner, i) => (
+            <div
+              key={i}
+              className="flex flex-col items-center gap-3 px-4 shrink-0"
+            >
+              <div className="relative w-24 h-16">
                 <Image
                   src={partner.src}
                   alt={partner.name}
                   fill
                   className="object-contain"
-                  sizes="280px"
+                  sizes="96px"
                 />
               </div>
-              <span className="mt-8 text-white/50 text-xs font-bold tracking-[0.3em] uppercase">
+              <span className="text-white/40 text-[9px] font-bold tracking-[0.2em] uppercase whitespace-nowrap">
                 {partner.name}
               </span>
             </div>
-          </div>
-        ))}
+          ))}
+        </div>
       </div>
-      
-      {/* Edge Gradients to smoothly blend the sides of the cylinder into the background */}
-      <div className="absolute inset-y-0 left-0 w-1/4 bg-gradient-to-r from-[#050505]/80 to-transparent pointer-events-none z-20 hidden md:block" />
-      <div className="absolute inset-y-0 right-0 w-1/4 bg-gradient-to-l from-[#050505]/80 to-transparent pointer-events-none z-20 hidden md:block" />
     </section>
   );
 }

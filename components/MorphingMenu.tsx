@@ -7,7 +7,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { usePathname } from "next/navigation";
 import SplitType from "split-type";
-import { DESKTOP_NAV_ITEMS, MOBILE_NAV_ITEMS, SOCIALS, CONTACT } from "../lib/config";
+import { DESKTOP_NAV_ITEMS, MOBILE_NAV_ITEMS, SOCIALS, CONTACT, NAV_ROUTE_MAP } from "../lib/config";
 
 const hiddenPath = "M 0 0 L 0 0 Q 500 0 1000 0 L 1000 0 Z";
 const bulgeDownPath = "M 0 0 L 0 0 Q 500 1000 1000 0 L 1000 0 Z";
@@ -19,119 +19,135 @@ export default function MorphingMenu() {
   const [isAnimating, setIsAnimating] = useState(false);
   const containerRef = useRef<HTMLDivElement>(null);
   const pathRef = useRef<SVGPathElement>(null);
-  const linksRef = useRef<HTMLDivElement>(null);
+  // Fix: separate refs for desktop/mobile link containers (was a single ref causing SplitType duplication)
+  const desktopLinksRef = useRef<HTMLDivElement>(null);
+  const mobileLinksRef = useRef<HTMLDivElement>(null);
   const tl = useRef<gsap.core.Timeline | null>(null);
+  const desktopSplit = useRef<SplitType | null>(null);
+  const mobileSplit = useRef<SplitType | null>(null);
   const pathname = usePathname();
 
   // Reset menu on route change
   useEffect(() => {
     if (isOpen) {
-      toggleMenu();
+      closeMenu();
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [pathname]);
 
   useGSAP(() => {
-    // 1. Initialize SplitType for the links
-    if (linksRef.current) {
-      const linkElements = linksRef.current.querySelectorAll(".menu-link-text");
-      linkElements.forEach(el => {
-        new SplitType(el as HTMLElement, { types: "chars" });
-      });
-      
-      // Initially hide all chars (push them down)
-      gsap.set(".char", { yPercent: 100, opacity: 0 });
-      gsap.set(".menu-fade-item", { opacity: 0, y: 20 });
+    // Initialize SplitType for desktop links
+    if (desktopLinksRef.current) {
+      const linkEls = desktopLinksRef.current.querySelectorAll(".menu-link-text-desktop");
+      desktopSplit.current = new SplitType(Array.from(linkEls) as HTMLElement[], { types: "chars" });
     }
+
+    // Initialize SplitType for mobile links
+    if (mobileLinksRef.current) {
+      const linkEls = mobileLinksRef.current.querySelectorAll(".menu-link-text-mobile");
+      mobileSplit.current = new SplitType(Array.from(linkEls) as HTMLElement[], { types: "chars" });
+    }
+
+    // Initially hide all chars and fade items
+    gsap.set(".menu-char-desktop, .menu-char-mobile", { yPercent: 100, opacity: 0 });
+    gsap.set(".menu-fade-item", { opacity: 0, y: 20 });
   }, { scope: containerRef });
 
-  const toggleMenu = () => {
+  function openMenu() {
     if (isAnimating) return;
     setIsAnimating(true);
+    setIsOpen(true);
 
-    if (!isOpen) {
-      // OPEN SEQUENCE
-      setIsOpen(true);
-      
-      tl.current = gsap.timeline({
-        onComplete: () => setIsAnimating(false)
-      });
+    // Revert and re-split to avoid duplicate chars from previous opens
+    if (desktopLinksRef.current) {
+      desktopSplit.current?.revert();
+      const linkEls = desktopLinksRef.current.querySelectorAll(".menu-link-text-desktop");
+      desktopSplit.current = new SplitType(Array.from(linkEls) as HTMLElement[], { types: "chars", tagName: "span" });
+      const chars = desktopLinksRef.current.querySelectorAll(".char");
+      chars.forEach((c) => c.classList.add("menu-char-desktop"));
+      gsap.set(chars, { yPercent: 100, opacity: 0 });
+    }
+    if (mobileLinksRef.current) {
+      mobileSplit.current?.revert();
+      const linkEls = mobileLinksRef.current.querySelectorAll(".menu-link-text-mobile");
+      mobileSplit.current = new SplitType(Array.from(linkEls) as HTMLElement[], { types: "chars", tagName: "span" });
+      const chars = mobileLinksRef.current.querySelectorAll(".char");
+      chars.forEach((c) => c.classList.add("menu-char-mobile"));
+      gsap.set(chars, { yPercent: 100, opacity: 0 });
+    }
 
-      // 1. Morph SVG down
-      tl.current.to(pathRef.current, {
-        attr: { d: bulgeDownPath },
-        duration: 0.4,
-        ease: "power2.in"
-      }).to(pathRef.current, {
-        attr: { d: fullPath },
-        duration: 0.4,
-        ease: "power2.out"
-      }, "-=0.1");
+    tl.current = gsap.timeline({ onComplete: () => setIsAnimating(false) });
 
-      // 2. Animate Staggered Link Text
-      tl.current.to(".char", {
+    // 1. Morph SVG down to cover screen
+    tl.current
+      .to(pathRef.current, { attr: { d: bulgeDownPath }, duration: 0.4, ease: "power2.in" })
+      .to(pathRef.current, { attr: { d: fullPath }, duration: 0.4, ease: "power2.out" }, "-=0.1");
+
+    // 2. Animate chars in — scope to desktop or mobile separately
+    tl.current
+      .to(".menu-char-desktop, .menu-char-mobile", {
         yPercent: 0,
         opacity: 1,
         duration: 0.8,
         stagger: 0.015,
-        ease: "elastic.out(1, 0.25)"
+        ease: "elastic.out(1, 0.25)",
       }, "-=0.3");
 
-      // 3. Fade in contact info
-      tl.current.to(".menu-fade-item", {
-        opacity: 1,
-        y: 0,
-        duration: 0.5,
-        stagger: 0.1,
-        ease: "power2.out"
-      }, "-=0.6");
+    // 3. Fade in contact info
+    tl.current.to(".menu-fade-item", {
+      opacity: 1,
+      y: 0,
+      duration: 0.5,
+      stagger: 0.1,
+      ease: "power2.out",
+    }, "-=0.6");
+  }
 
-    } else {
-      // CLOSE SEQUENCE
-      tl.current = gsap.timeline({
-        onComplete: () => {
-          setIsOpen(false);
-          setIsAnimating(false);
-        }
-      });
+  function closeMenu() {
+    if (isAnimating) return;
+    setIsAnimating(true);
 
-      // 1. Fade out content immediately
-      tl.current.to(".char", {
+    tl.current = gsap.timeline({
+      onComplete: () => {
+        setIsOpen(false);
+        setIsAnimating(false);
+      },
+    });
+
+    // 1. Fade out content
+    tl.current
+      .to(".menu-char-desktop, .menu-char-mobile", {
         yPercent: -100,
         opacity: 0,
         duration: 0.3,
         stagger: 0.005,
-        ease: "power2.in"
-      }).to(".menu-fade-item", {
-        opacity: 0,
-        y: -20,
-        duration: 0.3,
-        ease: "power2.in"
-      }, "<");
+        ease: "power2.in",
+      })
+      .to(".menu-fade-item", { opacity: 0, y: -20, duration: 0.3, ease: "power2.in" }, "<");
 
-      // 2. Morph SVG up
-      tl.current.to(pathRef.current, {
-        attr: { d: bulgeUpPath },
-        duration: 0.4,
-        ease: "power2.in"
-      }, "-=0.1").to(pathRef.current, {
-        attr: { d: hiddenPath },
-        duration: 0.4,
-        ease: "power2.out"
-      }, "-=0.1");
-      
-      // Reset chars position for next open
-      tl.current.set(".char", { yPercent: 100 });
+    // 2. Morph SVG back up
+    tl.current
+      .to(pathRef.current, { attr: { d: bulgeUpPath }, duration: 0.4, ease: "power2.in" }, "-=0.1")
+      .to(pathRef.current, { attr: { d: hiddenPath }, duration: 0.4, ease: "power2.out" }, "-=0.1");
+  }
+
+  const toggleMenu = () => {
+    if (isOpen) {
+      closeMenu();
+    } else {
+      openMenu();
     }
   };
 
   return (
     <div ref={containerRef} className="fixed top-0 left-0 w-full h-screen z-[100] pointer-events-none">
-      
+
       {/* The Toggle Button (Always Clickable) */}
       <div className="absolute top-5 right-5 sm:top-6 sm:right-6 md:top-8 md:right-12 z-[101] pointer-events-auto">
-        <button 
+        <button
           onClick={toggleMenu}
+          aria-label={isOpen ? "Close menu" : "Open menu"}
+          aria-expanded={isOpen}
           className="relative overflow-hidden w-20 h-11 sm:w-24 sm:h-12 rounded-full bg-gradient-to-b from-[#EAB308] via-[#d4a007] to-[#b8860b] border border-[#EAB308]/30 flex items-center justify-center text-black text-xs sm:text-sm font-semibold tracking-widest uppercase hover:from-[#f5c842] hover:via-[#EAB308] hover:to-[#d4a007] transition-all duration-300 shadow-[0_2px_12px_rgba(234,179,8,0.3)]"
         >
           <div className={`absolute transition-transform duration-500 ${isOpen ? '-translate-y-12' : 'translate-y-0'}`}>
@@ -145,12 +161,13 @@ export default function MorphingMenu() {
 
       {/* The Menu Overlay */}
       <div className={`absolute top-0 left-0 w-full h-full ${isOpen ? 'pointer-events-auto' : 'pointer-events-none'}`}>
-        
+
         {/* Morphing SVG Background */}
-        <svg 
-          className="absolute top-0 left-0 w-full h-[110vh] -z-10" 
-          viewBox="0 0 1000 1000" 
+        <svg
+          className="absolute top-0 left-0 w-full h-[110vh] -z-10"
+          viewBox="0 0 1000 1000"
           preserveAspectRatio="none"
+          aria-hidden="true"
         >
           <defs>
             <radialGradient id="menuGradient" cx="50%" cy="50%" r="70%">
@@ -159,22 +176,22 @@ export default function MorphingMenu() {
               <stop offset="100%" stopColor="#FFFFFF" />
             </radialGradient>
           </defs>
-          <path 
+          <path
             ref={pathRef}
-            id="menu-path" 
-            fill="url(#menuGradient)" 
+            id="menu-path"
+            fill="url(#menuGradient)"
             d={hiddenPath}
-          ></path>
+          />
         </svg>
 
         {/* ========== DESKTOP MENU ========== */}
         <div className={`hidden md:flex w-full h-full transition-opacity duration-300 ${isOpen ? 'opacity-100' : 'opacity-0'}`}>
-          
+
           {/* Left Column — Logo + Contact */}
           <div className="w-[40%] h-full flex flex-col justify-between p-16 lg:p-24 pt-20 lg:pt-24">
             {/* Logo */}
             <div className="menu-fade-item">
-              <Link href="/" className="block group">
+              <Link href="/" className="block group" onClick={closeMenu}>
                 <Image
                   src="/logo for menu.png"
                   alt="Reverbex"
@@ -202,29 +219,32 @@ export default function MorphingMenu() {
             </div>
           </div>
 
-          {/* Right Column — Nav Links */}
-          <div ref={linksRef} className="w-[60%] h-full flex flex-col justify-center items-end pr-16 lg:pr-24 pt-12 gap-0">
-            {DESKTOP_NAV_ITEMS.map((item, idx) => (
-              <Link 
-                key={idx} 
-                href={item.to.startsWith('/') ? item.to : `/${item.to === 'hero' ? '' : item.to}`}
-                className="group relative text-[#050505] text-5xl lg:text-6xl xl:text-7xl font-black tracking-tighter uppercase leading-[1.05] hover:opacity-50 transition-opacity duration-300"
-              >
-                <div className="menu-link-text inline-block overflow-hidden pb-2 lg:pb-3">
-                  {item.label}
-                </div>
-              </Link>
-            ))}
+          {/* Right Column — Nav Links (uses its own scoped ref) */}
+          <div ref={desktopLinksRef} className="w-[60%] h-full flex flex-col justify-center items-end pr-16 lg:pr-24 pt-12 gap-0">
+            {DESKTOP_NAV_ITEMS.map((item, idx) => {
+              const href = NAV_ROUTE_MAP[item.to] ?? "/";
+              return (
+                <Link
+                  key={idx}
+                  href={href}
+                  onClick={closeMenu}
+                  className="group relative text-[#050505] text-5xl lg:text-6xl xl:text-7xl font-black tracking-tighter uppercase leading-[1.05] hover:opacity-50 transition-opacity duration-300"
+                >
+                  <div className="menu-link-text-desktop inline-block overflow-hidden pb-2 lg:pb-3">
+                    {item.label}
+                  </div>
+                </Link>
+              );
+            })}
           </div>
-
         </div>
 
         {/* ========== MOBILE MENU ========== */}
         <div className={`flex md:hidden w-full h-full flex-col transition-opacity duration-300 ${isOpen ? 'opacity-100' : 'opacity-0'}`}>
-          
+
           {/* Top — Logo */}
           <div className="pt-20 px-6 menu-fade-item">
-            <Link href="/" className="block group">
+            <Link href="/" className="block group" onClick={closeMenu}>
               <Image
                 src="/logo for menu.png"
                 alt="Reverbex"
@@ -235,19 +255,23 @@ export default function MorphingMenu() {
             </Link>
           </div>
 
-          {/* Center — Nav Links */}
-          <div ref={linksRef} className="flex-1 flex flex-col justify-center items-start px-6 gap-1">
-            {MOBILE_NAV_ITEMS.map((item, idx) => (
-              <Link 
-                key={idx} 
-                href={item.to.startsWith('/') ? item.to : `/${item.to === 'hero' ? '' : item.to}`}
-                className="group relative text-[#050505] text-4xl font-black tracking-tighter uppercase leading-[1.1] hover:opacity-50 transition-opacity duration-300"
-              >
-                <div className="menu-link-text inline-block overflow-hidden pb-3">
-                  {item.label}
-                </div>
-              </Link>
-            ))}
+          {/* Center — Nav Links (uses its own scoped ref — no more ref collision) */}
+          <div ref={mobileLinksRef} className="flex-1 flex flex-col justify-center items-start px-6 gap-1">
+            {MOBILE_NAV_ITEMS.map((item, idx) => {
+              const href = NAV_ROUTE_MAP[item.to] ?? "/";
+              return (
+                <Link
+                  key={idx}
+                  href={href}
+                  onClick={closeMenu}
+                  className="group relative text-[#050505] text-4xl font-black tracking-tighter uppercase leading-[1.1] hover:opacity-50 transition-opacity duration-300"
+                >
+                  <div className="menu-link-text-mobile inline-block overflow-hidden pb-3">
+                    {item.label}
+                  </div>
+                </Link>
+              );
+            })}
           </div>
 
           {/* Bottom — Contact Info */}
@@ -265,7 +289,6 @@ export default function MorphingMenu() {
               <a href={SOCIALS.twitter} target="_blank" rel="noopener noreferrer" className="text-[10px] uppercase tracking-[0.2em] font-bold text-[#050505]/60 hover:text-[#050505] transition-colors">Twitter</a>
             </div>
           </div>
-
         </div>
       </div>
     </div>

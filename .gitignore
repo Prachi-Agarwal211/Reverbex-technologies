@@ -38,8 +38,8 @@ next-env.d.ts
 test-results/
 playwright-report/
 
-# temp screenshots
-*.png
+# temp screenshots and generated images
+ChatGPT Image*.png
 
 # AI tool configs
 .kilocode/

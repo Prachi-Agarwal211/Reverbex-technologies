@@ -151,16 +151,13 @@ export default function ContactSection() {
           preload="metadata"
           className="w-full h-full object-cover opacity-50 hidden md:block"
         >
-          <source src="/hero-video.mp4" type="video/mp4" />
+          {/* Use the 1.35MB optimised desktop video, NOT the 16MB hero-video.mp4 */}
+          <source src="/hero-video-desktop.mp4" type="video/mp4" />
         </video>
 
+        {/* Mobile fallback — CSS class instead of inline style (Pattern 2 fix) */}
         <div
-          className="absolute inset-0 w-full h-full md:hidden animate-ken-burns"
-          style={{
-            backgroundImage: "url(/contact-fallback.webp)",
-            backgroundSize: "cover",
-            backgroundPosition: "center",
-          }}
+          className="absolute inset-0 w-full h-full md:hidden animate-ken-burns contact-fallback-bg"
         />
 
         <div className="absolute inset-0 bg-gradient-to-t from-[#050505] via-[#050505]/90 to-[#050505]/40 z-10 pointer-events-none" />
@@ -169,6 +166,7 @@ export default function ContactSection() {
         {/* Animated background beams */}
         <BackgroundBeams />
       </div>
+
 
       {/* Content — editorial left-aligned */}
       <div className="relative z-20 w-full max-w-7xl mx-auto px-6 pb-28 md:pb-20 pb-safe flex flex-col items-start justify-end pointer-events-none pt-24 md:pt-0">

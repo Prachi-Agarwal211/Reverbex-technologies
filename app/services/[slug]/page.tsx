@@ -25,6 +25,9 @@ export async function generateMetadata({
     title: `${service.name} | Reverbex Technologies`,
     description: service.tagline,
     keywords: [service.name, "Reverbex", ...service.tech],
+    alternates: {
+      canonical: `https://reverbex.in/services/${slug}`,
+    },
     openGraph: {
       title: `${service.name} | Reverbex Technologies`,
       description: service.tagline,
@@ -99,6 +102,37 @@ export default async function ServiceDetailPage({
                 "position": index + 1
               }))
             }
+          })
+        }}
+      />
+
+      {/* BreadcrumbList Schema */}
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "BreadcrumbList",
+            "itemListElement": [
+              {
+                "@type": "ListItem",
+                "position": 1,
+                "name": "Home",
+                "item": "https://reverbex.in"
+              },
+              {
+                "@type": "ListItem",
+                "position": 2,
+                "name": "Services",
+                "item": "https://reverbex.in/services"
+              },
+              {
+                "@type": "ListItem",
+                "position": 3,
+                "name": service.name,
+                "item": `https://reverbex.in/services/${slug}`
+              }
+            ]
           })
         }}
       />
