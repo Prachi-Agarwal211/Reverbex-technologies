@@ -3,9 +3,7 @@
 @tailwind utilities;
 
 :root {
-  background: #000000;
-  color: #ffffff;
-  /* Safe area insets for notched devices */
+  color: #F5F5F0;
   --sat: env(safe-area-inset-top, 0px);
   --sar: env(safe-area-inset-right, 0px);
   --sab: env(safe-area-inset-bottom, 0px);
@@ -27,11 +25,65 @@ body {
   min-height: 100dvh;
   font-family: var(--font-body), -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
   letter-spacing: -0.01em;
-  background: #000;
   overflow-x: hidden;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-rendering: optimizeLegibility;
+}
+
+/* ============================================ */
+/* PERMANENT AMBIENT BACKGROUND                  */
+/* Fixed full-viewport layer; content floats above */
+/* ============================================ */
+.ambient-bg {
+  position: fixed;
+  inset: 0;
+  z-index: -2;
+  background-color: #050505;
+  background-image: url("/ambient-bg.png");
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  animation: ambient-kenburns 32s ease-in-out infinite alternate;
+  will-change: transform;
+}
+
+/* Minimal dark veil over the ambient image so text stays readable */
+.ambient-veil {
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  background: linear-gradient(180deg, rgba(5,5,5,0.15) 0%, rgba(5,5,5,0.25) 50%, rgba(5,5,5,0.4) 100%);
+}
+
+@keyframes ambient-kenburns {
+  0%   { transform: scale(1.05) translate(0, 0); }
+  100% { transform: scale(1.12) translate(-1.5%, -1.5%); }
+}
+
+/* ============================================ */
+/* GLASS — floating translucent panels           */
+/* ============================================ */
+.glass {
+  background-color: rgba(255, 255, 255, 0.03);
+  backdrop-filter: blur(16px) saturate(120%);
+  -webkit-backdrop-filter: blur(16px) saturate(120%);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.glass-strong {
+  background-color: rgba(10, 10, 10, 0.55);
+  backdrop-filter: blur(24px) saturate(130%);
+  -webkit-backdrop-filter: blur(24px) saturate(130%);
+  border: 1px solid rgba(255, 255, 255, 0.10);
+}
+
+.glass-accent {
+  background-color: rgba(234, 179, 8, 0.04);
+  backdrop-filter: blur(20px) saturate(140%);
+  -webkit-backdrop-filter: blur(20px) saturate(140%);
+  border: 1px solid rgba(234, 179, 8, 0.18);
 }
 
 /* Prevent horizontal scroll */
@@ -89,10 +141,10 @@ html.lenis, html.lenis body {
 .mesh-gradient-static {
   background-color: #050505;
   background-image:
-    radial-gradient(at 40% 20%, hsla(217, 91%, 60%, 0.1) 0px, transparent 50%),
-    radial-gradient(at 80% 0%, hsla(187, 100%, 45%, 0.1) 0px, transparent 50%),
-    radial-gradient(at 0% 50%, hsla(45, 93%, 47%, 0.05) 0px, transparent 50%),
-    radial-gradient(at 80% 50%, hsla(190, 100%, 45%, 0.1) 0px, transparent 50%);
+    radial-gradient(at 40% 20%, hsla(45, 93%, 47%, 0.08) 0px, transparent 50%),
+    radial-gradient(at 80% 0%, hsla(45, 93%, 47%, 0.05) 0px, transparent 50%),
+    radial-gradient(at 0% 50%, hsla(45, 93%, 47%, 0.03) 0px, transparent 50%),
+    radial-gradient(at 80% 50%, hsla(45, 93%, 47%, 0.06) 0px, transparent 50%);
 }
 
 /* Custom Selection */
@@ -138,8 +190,8 @@ html.lenis, html.lenis body {
   left: -9999px;
   z-index: 999;
   padding: 1rem 2rem;
-  background: #22d3ee;
-  color: #000;
+  background: #EAB308;
+  color: #050505;
   text-decoration: none;
   font-weight: 600;
   border-radius: 4px;
@@ -208,47 +260,7 @@ html.lenis, html.lenis body {
   will-change: background-position;
 }
 
-/* FractalGlassBackground - Desktop */
-.fractal-glass-desktop {
-  background-color: #050505;
-  background-image:
-    url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.15' style='mix-blend-mode: overlay;'/%3E%3C/svg%3E"),
-    repeating-linear-gradient(90deg,
-      rgba(0,0,0,0.15) 0px,
-      rgba(0,0,0,0.15) 2px,
-      transparent 2px,
-      transparent 6px
-    ),
-    repeating-linear-gradient(90deg,
-      rgba(255,255,255,0.03) 0px,
-      rgba(255,255,255,0.01) 2px,
-      transparent 2px,
-      transparent 12px
-    ),
-    radial-gradient(ellipse 80% 150% at 20% -10%, rgba(6, 182, 212, 0.45) 0%, transparent 70%),
-    radial-gradient(ellipse 80% 150% at 80% 110%, rgba(234, 179, 8, 0.35) 0%, transparent 70%);
-  background-blend-mode: overlay, normal, normal, screen, screen;
-  background-size: 150px 150px, 100% 100%, 100% 100%, 100% 100%, 100% 100%;
-}
 
-@keyframes subtle-pan {
-  0% { background-position: 0 0, 0 0, 0 0, 0 0, 0 0; }
-  100% { background-position: 150px 150px, 0 0, 0 0, 0 0, 0 0; }
-}
-
-.animate-shimmer {
-  animation: subtle-pan 20s linear infinite;
-  will-change: background-position;
-}
-
-/* FractalGlassBackground - Mobile */
-.fractal-glass-mobile {
-  background:
-    linear-gradient(180deg, #050505 0%, #050a15 50%, #050505 100%),
-    radial-gradient(ellipse 100% 80% at 20% -10%, rgba(6, 182, 212, 0.25) 0%, transparent 60%),
-    radial-gradient(ellipse 100% 80% at 80% 110%, rgba(234, 179, 8, 0.15) 0%, transparent 60%);
-  background-blend-mode: normal, screen, screen;
-}
 
 /* Preloader Iris Clip - for exit animation */
 .preloader-clip {
@@ -273,14 +285,14 @@ html.lenis, html.lenis body {
   .animate-shimmer,
   .animate-subtle-shimmer,
   .animate-ken-burns,
-  .fractal-glass-desktop,
-  .fractal-glass-mobile {
+  .ambient-bg {
     animation: none !important;
   }
 
   /* Pause marquees instead of stopping */
   .animate-marquee-left,
-  .animate-marquee-right {
+  .animate-marquee-right,
+  .trusted-marquee-track {
     animation-play-state: paused !important;
   }
 
@@ -319,6 +331,17 @@ html.lenis, html.lenis body {
 }
 
 /* ============================================ */
+/* HERO GRADIENT MASK — replaces inline style */
+/* ============================================ */
+
+.hero-gradient-mask {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: linear-gradient(to right, rgba(5,5,5,1) 0%, rgba(5,5,5,0.92) 25%, rgba(5,5,5,0.5) 45%, transparent 60%);
+}
+
+/* ============================================ */
 /* Hero Video Optimizations */
 /* ============================================ */
 
@@ -331,17 +354,6 @@ html.lenis, html.lenis body {
   opacity: 0.03;
   mix-blend-mode: overlay;
   background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
-}
-
-@keyframes grain-shift {
-  0%, 100% { transform: translate(0, 0); }
-  12.5% { transform: translate(-5%, -5%); }
-  25% { transform: translate(5%, 5%); }
-  37.5% { transform: translate(-5%, 5%); }
-  50% { transform: translate(5%, -5%); }
-  62.5% { transform: translate(-5%, 0); }
-  75% { transform: translate(5%, 0); }
-  87.5% { transform: translate(0, 5%); }
 }
 
 /* Slow bounce for scroll cue */
@@ -470,16 +482,106 @@ html.lenis, html.lenis body {
 }
 
 /* ============================================ */
-/* REDUCED MOTION — RESPECT USER PREFERENCE */
+/* TRUSTED BY MARQUEE */
 /* ============================================ */
 
-@media (prefers-reduced-motion: reduce) {
-  [data-reveal] {
-    transition: opacity 0.3s ease !important;
-    transform: none !important;
-    clip-path: none !important;
+.trusted-marquee-wrapper {
+  mask-image: linear-gradient(to right, transparent 0%, black 8%, black 92%, transparent 100%);
+  -webkit-mask-image: linear-gradient(to right, transparent 0%, black 8%, black 92%, transparent 100%);
+}
+
+.trusted-marquee-track {
+  animation: trusted-marquee-scroll 30s linear infinite;
+  will-change: transform;
+}
+
+@keyframes trusted-marquee-scroll {
+  0% {
+    transform: translate3d(0, 0, 0);
   }
-  [data-reveal][data-visible="true"] {
-    opacity: 1;
+  100% {
+    transform: translate3d(-33.333%, 0, 0);
   }
+}
+
+/* ============================================ */
+/* GRAIN TEXTURE — 2% OPACITY FILM OVERLAY */
+/* ============================================ */
+
+.grain-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  pointer-events: none;
+  opacity: 0.02;
+  mix-blend-mode: overlay;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  background-size: 200px 200px;
+}
+
+/* ============================================ */
+/* SECTION SEPARATORS — Editorial dividers */
+/* ============================================ */
+
+.section-divider {
+  position: relative;
+  width: 100%;
+  height: 1px;
+  background: linear-gradient(90deg, transparent 0%, #1A1A1A 20%, #1A1A1A 80%, transparent 100%);
+}
+
+.section-divider::after {
+  content: "";
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  width: 6px;
+  height: 6px;
+  background: #EAB308;
+  border-radius: 50%;
+}
+
+/* ============================================ */
+/* MAGNETIC HOVER — Premium button interaction */
+/* ============================================ */
+
+.magnetic-hover {
+  transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.magnetic-hover:hover {
+  transform: scale(1.02);
+}
+
+.magnetic-hover:active {
+  transform: scale(0.98);
+}
+
+/* ============================================ */
+/* TEXT REVEAL — Clip-path animation base */
+/* ============================================ */
+
+.text-reveal-mask {
+  clip-path: polygon(0% 100%, 100% 100%, 100% 100%, 0% 100%);
+}
+
+.text-reveal-mask[data-visible="true"] {
+  clip-path: polygon(0% 0%, 100% 0%, 100% 100%, 0% 100%);
+}
+
+/* ============================================ */
+/* HORIZONTAL RULE — Animated accent line */
+/* ============================================ */
+
+.accent-line {
+  height: 1px;
+  background: #EAB308;
+  transform-origin: left;
+  transform: scaleX(0);
+  transition: transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.accent-line[data-visible="true"] {
+  transform: scaleX(1);
 }

@@ -44,7 +44,7 @@ export default async function IndustryPage({
 
   if (!industry) {
     return (
-      <main className="w-full bg-[#050505] text-white min-h-screen pt-32 pb-24 text-center">
+      <main className="w-full text-white min-h-screen pt-32 pb-24 text-center">
         <Navbar />
         <h1 className="text-4xl font-bold mb-4">Industry Not Found</h1>
         <Link href="/industries" className="text-[#EAB308] hover:underline">Return to Industries</Link>
@@ -71,7 +71,7 @@ export default async function IndustryPage({
         }}
       />
 
-      <main className="w-full bg-[#050505] text-white min-h-screen pt-32 pb-24 selection:bg-[#EAB308]/30 overflow-hidden">
+      <main className="w-full text-white min-h-screen pt-32 pb-24 selection:bg-[#EAB308]/30 overflow-hidden">
         <Navbar />
         
         <div className="max-w-6xl mx-auto px-6 lg:px-12">

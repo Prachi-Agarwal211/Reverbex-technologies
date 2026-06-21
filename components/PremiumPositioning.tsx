@@ -63,7 +63,7 @@ export default function PremiumPositioning() {
     <section
       ref={containerRef}
       id="premium-positioning"
-      className="w-full py-24 md:py-32 bg-[#050505] border-b border-[#1A1A1A] relative"
+      className="w-full py-24 md:py-32 bg-transparent border-b border-[#1A1A1A] relative"
     >
       <div className="max-w-6xl mx-auto px-6 relative z-10">
         

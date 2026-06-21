@@ -74,7 +74,7 @@ export default function MorphingMenu() {
         opacity: 1,
         duration: 0.8,
         stagger: 0.015,
-        ease: "expo.out"
+        ease: "elastic.out(1, 0.25)"
       }, "-=0.3");
 
       // 3. Fade in contact info
@@ -132,7 +132,7 @@ export default function MorphingMenu() {
       <div className="absolute top-5 right-5 sm:top-6 sm:right-6 md:top-8 md:right-12 z-[101] pointer-events-auto">
         <button 
           onClick={toggleMenu}
-          className="relative overflow-hidden w-20 h-11 sm:w-24 sm:h-12 rounded-full bg-gradient-to-b from-[#3B82F6] via-[#1D4ED8] to-[#1E3A8A] border border-[#60A5FA]/30 flex items-center justify-center text-white text-xs sm:text-sm font-semibold tracking-widest uppercase hover:from-[#60A5FA] hover:via-[#2563EB] hover:to-[#1D4ED8] transition-all duration-300 shadow-[0_2px_12px_rgba(29,78,216,0.5)]"
+          className="relative overflow-hidden w-20 h-11 sm:w-24 sm:h-12 rounded-full bg-gradient-to-b from-[#EAB308] via-[#d4a007] to-[#b8860b] border border-[#EAB308]/30 flex items-center justify-center text-black text-xs sm:text-sm font-semibold tracking-widest uppercase hover:from-[#f5c842] hover:via-[#EAB308] hover:to-[#d4a007] transition-all duration-300 shadow-[0_2px_12px_rgba(234,179,8,0.3)]"
         >
           <div className={`absolute transition-transform duration-500 ${isOpen ? '-translate-y-12' : 'translate-y-0'}`}>
             Menu
@@ -188,16 +188,16 @@ export default function MorphingMenu() {
             {/* Contact Info — Bottom Left */}
             <div className="space-y-5 pb-4">
               <div className="menu-fade-item">
-                <span className="block text-[11px] uppercase tracking-[0.2em] font-bold mb-2 text-[#1D4ED8]/40">Say Hello</span>
-                <a href={`mailto:${CONTACT.email}`} className="text-lg font-medium text-[#1D4ED8] hover:underline leading-relaxed">{CONTACT.emailDisplay}</a>
+                <span className="block text-[11px] uppercase tracking-[0.2em] font-bold mb-2 text-[#050505]/60">Say Hello</span>
+                <a href={`mailto:${CONTACT.email}`} className="text-lg font-medium text-[#050505] hover:underline leading-relaxed">{CONTACT.emailDisplay}</a>
               </div>
               <div className="menu-fade-item">
-                <span className="block text-[11px] uppercase tracking-[0.2em] font-bold mb-2 text-[#1D4ED8]/40">Call Us</span>
-                <a href={CONTACT.phoneHref} className="text-lg font-medium text-[#1D4ED8] hover:underline">{CONTACT.phone}</a>
+                <span className="block text-[11px] uppercase tracking-[0.2em] font-bold mb-2 text-[#050505]/60">Call Us</span>
+                <a href={CONTACT.phoneHref} className="text-lg font-medium text-[#050505] hover:underline">{CONTACT.phone}</a>
               </div>
               <div className="menu-fade-item flex gap-8 pt-4">
-                <a href={SOCIALS.linkedin} target="_blank" rel="noopener noreferrer" className="text-[11px] uppercase tracking-[0.2em] font-bold text-[#1D4ED8]/60 hover:text-[#1D4ED8] transition-colors">LinkedIn</a>
-                <a href={SOCIALS.twitter} target="_blank" rel="noopener noreferrer" className="text-[11px] uppercase tracking-[0.2em] font-bold text-[#1D4ED8]/60 hover:text-[#1D4ED8] transition-colors">Twitter</a>
+                <a href={SOCIALS.linkedin} target="_blank" rel="noopener noreferrer" className="text-[11px] uppercase tracking-[0.2em] font-bold text-[#050505]/60 hover:text-[#050505] transition-colors">LinkedIn</a>
+                <a href={SOCIALS.twitter} target="_blank" rel="noopener noreferrer" className="text-[11px] uppercase tracking-[0.2em] font-bold text-[#050505]/60 hover:text-[#050505] transition-colors">Twitter</a>
               </div>
             </div>
           </div>
@@ -208,8 +208,7 @@ export default function MorphingMenu() {
               <Link 
                 key={idx} 
                 href={item.to.startsWith('/') ? item.to : `/${item.to === 'hero' ? '' : item.to}`}
-                className="group relative text-[#1D4ED8] text-5xl lg:text-6xl xl:text-7xl font-black tracking-tighter uppercase leading-[1.05] hover:opacity-50 transition-opacity duration-300"
-                style={{ fontFamily: "var(--font-heading), sans-serif" }}
+                className="group relative text-[#050505] text-5xl lg:text-6xl xl:text-7xl font-black tracking-tighter uppercase leading-[1.05] hover:opacity-50 transition-opacity duration-300"
               >
                 <div className="menu-link-text inline-block overflow-hidden pb-2 lg:pb-3">
                   {item.label}
@@ -242,8 +241,7 @@ export default function MorphingMenu() {
               <Link 
                 key={idx} 
                 href={item.to.startsWith('/') ? item.to : `/${item.to === 'hero' ? '' : item.to}`}
-                className="group relative text-[#1D4ED8] text-4xl font-black tracking-tighter uppercase leading-[1.1] hover:opacity-50 transition-opacity duration-300"
-                style={{ fontFamily: "var(--font-heading), sans-serif" }}
+                className="group relative text-[#050505] text-4xl font-black tracking-tighter uppercase leading-[1.1] hover:opacity-50 transition-opacity duration-300"
               >
                 <div className="menu-link-text inline-block overflow-hidden pb-3">
                   {item.label}
@@ -255,16 +253,16 @@ export default function MorphingMenu() {
           {/* Bottom — Contact Info */}
           <div className="space-y-4 px-6 pb-8">
             <div className="menu-fade-item">
-              <span className="block text-[10px] uppercase tracking-[0.2em] font-bold mb-1 text-[#1D4ED8]/40">Say Hello</span>
-              <a href={`mailto:${CONTACT.email}`} className="text-base font-medium text-[#1D4ED8] hover:underline">{CONTACT.emailDisplay}</a>
+              <span className="block text-[10px] uppercase tracking-[0.2em] font-bold mb-1 text-[#050505]/60">Say Hello</span>
+              <a href={`mailto:${CONTACT.email}`} className="text-base font-medium text-[#050505] hover:underline">{CONTACT.emailDisplay}</a>
             </div>
             <div className="menu-fade-item">
-              <span className="block text-[10px] uppercase tracking-[0.2em] font-bold mb-1 text-[#1D4ED8]/40">Call Us</span>
-              <a href={CONTACT.phoneHref} className="text-base font-medium text-[#1D4ED8] hover:underline">{CONTACT.phone}</a>
+              <span className="block text-[10px] uppercase tracking-[0.2em] font-bold mb-1 text-[#050505]/60">Call Us</span>
+              <a href={CONTACT.phoneHref} className="text-base font-medium text-[#050505] hover:underline">{CONTACT.phone}</a>
             </div>
             <div className="menu-fade-item flex gap-6 pt-2">
-              <a href={SOCIALS.linkedin} target="_blank" rel="noopener noreferrer" className="text-[10px] uppercase tracking-[0.2em] font-bold text-[#1D4ED8]/60 hover:text-[#1D4ED8] transition-colors">LinkedIn</a>
-              <a href={SOCIALS.twitter} target="_blank" rel="noopener noreferrer" className="text-[10px] uppercase tracking-[0.2em] font-bold text-[#1D4ED8]/60 hover:text-[#1D4ED8] transition-colors">Twitter</a>
+              <a href={SOCIALS.linkedin} target="_blank" rel="noopener noreferrer" className="text-[10px] uppercase tracking-[0.2em] font-bold text-[#050505]/60 hover:text-[#050505] transition-colors">LinkedIn</a>
+              <a href={SOCIALS.twitter} target="_blank" rel="noopener noreferrer" className="text-[10px] uppercase tracking-[0.2em] font-bold text-[#050505]/60 hover:text-[#050505] transition-colors">Twitter</a>
             </div>
           </div>
 

@@ -1,5 +1,5 @@
 import type { Metadata, Viewport } from "next";
-import { Space_Grotesk, Inter } from "next/font/google";
+import { Outfit, DM_Sans } from "next/font/google";
 import "./globals.css";
 import ServiceWorkerRegistration from "../components/ServiceWorkerRegistration";
 import SmoothScroll from "../components/SmoothScroll";
@@ -8,17 +8,17 @@ import WhatsAppButton from "../components/shared/WhatsAppButton";
 import MorphingMenu from "../components/MorphingMenu";
 import { CONTACT, COMPANY, SOCIALS } from "@/lib/config";
 
-const spaceGrotesk = Space_Grotesk({
+const outfit = Outfit({
   subsets: ["latin"],
   variable: "--font-heading",
-  weight: ["400", "500", "600", "700"],
+  weight: ["300", "400", "500", "600", "700", "800", "900"],
   display: "swap",
 });
 
-const inter = Inter({
+const dmSans = DM_Sans({
   subsets: ["latin"],
   variable: "--font-body",
-  weight: ["400", "500", "600"],
+  weight: ["400", "500", "600", "700"],
   display: "swap",
 });
 
@@ -79,7 +79,7 @@ export const metadata: Metadata = {
 };
 
 export const viewport: Viewport = {
-  themeColor: "#000000",
+  themeColor: "#050505",
   width: "device-width",
   initialScale: 1,
   maximumScale: 5,
@@ -89,7 +89,7 @@ export const viewport: Viewport = {
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en" className={`${spaceGrotesk.variable} ${inter.variable}`} suppressHydrationWarning>
+    <html lang="en" className={`${outfit.variable} ${dmSans.variable}`} suppressHydrationWarning>
       <head>
         <link rel="preconnect" href="https://images.unsplash.com" crossOrigin="anonymous" />
         <link rel="preload" as="video" href="/hero-video-mobile.mp4" type="video/mp4" fetchPriority="high" media="(max-width: 768px)" />
@@ -144,7 +144,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
                 "Meta Ads Management",
                 "Google Ads Management",
                 "Lead Generation",
-                "ERP System Development",
+                "ERP & CRM System Development",
                 "Mobile App Development",
                 "AI Solutions",
                 "WhatsApp Automation",
@@ -156,11 +156,14 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           }}
         />
       </head>
-      <body className={`${inter.className} overflow-x-hidden antialiased bg-black text-white`}>
+      <body className={`${dmSans.className} overflow-x-hidden antialiased text-[#F5F5F0]`}>
         {/* Skip to Content Link for Accessibility */}
         <a href="#main-content" className="skip-to-content">
           Skip to main content
         </a>
+        <div className="ambient-bg" aria-hidden="true" />
+        <div className="ambient-veil" aria-hidden="true" />
+        <div className="grain-overlay" aria-hidden="true" />
         <CustomCursor />
         <MorphingMenu />
         <main id="main-content" tabIndex={-1}>

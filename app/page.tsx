@@ -3,15 +3,9 @@ import {
   HeroVideo,
   TrustedBy,
   StickyServices,
-  LiveResults,
-  FeaturedArchitectures,
   WhyReverbex,
-  PremiumPositioning,
-  ReverbexBond,
   Methodology,
-  WhyNextJs,
-  Industries,
-  Testimonials,
+  FeaturedArchitectures,
   FAQSection,
   ContactSection,
 } from "./DynamicComponents";
@@ -23,15 +17,9 @@ export default function Home() {
       <HeroVideo />
       <TrustedBy />
       <StickyServices />
-      <LiveResults />
-      <FeaturedArchitectures />
       <WhyReverbex />
-      <PremiumPositioning />
-      <ReverbexBond />
       <Methodology />
-      <WhyNextJs />
-      <Industries />
-      <Testimonials />
+      <FeaturedArchitectures />
       <FAQSection />
       <ContactSection />
     </main>

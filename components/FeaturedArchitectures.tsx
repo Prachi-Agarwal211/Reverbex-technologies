@@ -4,266 +4,196 @@ import { useRef } from "react";
 import Image from "next/image";
 import gsap from "gsap";
 import { useGSAP } from "@gsap/react";
-import FractalGlassBackground from "./FractalGlassBackground";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
 
 const cases = [
   {
-    title: "MAAC Animation Jaipur",
-    tagline: "Education • Web Design • Ads",
+    title: "MAAC Animation",
+    tagline: "Education • Web Design",
     problem: "No online lead generation",
-    result: "500+ leads generated in weeks",
-    image: "https://images.unsplash.com/photo-1516321318423-f06f85e504b3?auto=format&fit=crop&q=80&w=1600",
-    link: "/work/maac-animation",
-    stack: ["Next.js", "Meta Ads", "Lead Gen"]
+    result: "500+ leads in weeks",
+    image: "/work/maac.png",
+    stack: ["Next.js", "Meta Ads"]
   },
   {
     title: "Aarya Clothing",
-    tagline: "E-Commerce • Full Stack • Payments",
-    problem: "No scalable online sales system",
+    tagline: "E-Commerce • Full Stack",
+    problem: "No scalable sales system",
     result: "₹3+ lakh revenue generated",
-    image: "https://images.unsplash.com/photo-1441986300917-64674bd600d8?auto=format&fit=crop&q=80&w=1600",
-    link: "/work/aarya-clothing",
-    stack: ["Custom Commerce", "Stripe API", "Meta Ads"]
+    image: "/work/aarya.png",
+    stack: ["Custom Commerce", "Stripe API"]
   },
   {
-    title: "Khemji Wire Company",
-    tagline: "Corporate • Catalogue • Rebranding",
+    title: "Khemji Wire Co.",
+    tagline: "Corporate • Rebranding",
     problem: "Outdated digital presence",
-    result: "Complete professional transformation",
-    image: "https://images.unsplash.com/photo-1504307651254-35680f356dfd?auto=format&fit=crop&q=80&w=1600",
-    link: "/work/khemji-wire",
-    stack: ["Next.js (SSR)", "Logo Design", "SEO Services"]
+    result: "Complete transformation",
+    image: "/work/khemji.png",
+    stack: ["Next.js", "SEO Services"]
+  },
+  {
+    title: "Shipbridge",
+    tagline: "Logistics • Platform",
+    problem: "Manual supply tracking",
+    result: "Automated dispatch system",
+    image: "/work/shipbridge.png",
+    stack: ["Next.js", "Node API"]
   }
 ];
 
 export default function FeaturedArchitectures() {
   const containerRef = useRef<HTMLElement>(null);
-  const cardsContainerRef = useRef<HTMLDivElement>(null);
+  const imagesRef = useRef<(HTMLDivElement | null)[]>([]);
 
   useGSAP(() => {
-    // Header Animation
-    gsap.fromTo('.cases-header',
-      { opacity: 0, y: 40 },
-      {
-        opacity: 1,
-        y: 0,
-        duration: 0.8,
-        ease: "power3.out",
-        scrollTrigger: {
-          trigger: containerRef.current,
-          start: "top 85%",
-          toggleActions: "play none none reverse"
-        }
-      }
-    );
+    if (!containerRef.current || imagesRef.current.length === 0) return;
 
-    // Section number animation
-    gsap.fromTo('.section-number',
-      { opacity: 0, scale: 0.8 },
-      {
-        opacity: 1,
-        scale: 1,
-        duration: 1,
-        ease: "power3.out",
-        delay: 0.2,
-        scrollTrigger: {
-          trigger: containerRef.current,
-          start: "top 85%",
-          toggleActions: "play none none reverse"
-        }
-      }
-    );
+    const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    const isMobile = window.innerWidth < 768;
+    
+    if (prefersReducedMotion || isMobile) return;
 
-    const mm = gsap.matchMedia();
+    const images = imagesRef.current.filter(Boolean) as HTMLDivElement[];
 
-    // Desktop: Horizontal scroll
-    mm.add("(min-width: 768px)", () => {
-      const cards = cardsContainerRef.current?.querySelectorAll('.case-card');
-      
-      if (cards && cards.length > 0) {
-        const totalWidth = cardsContainerRef.current?.scrollWidth || 0;
-        const windowWidth = window.innerWidth;
-        const scrollDistance = totalWidth - windowWidth;
+    // 1. THE CONFIGURATION ARRAYS
+    const initialRotations = [-5, 3, -4, 2]; 
+    const phaseOneStartOffsets = [0, 0.1, 0.2, 0.3]; 
 
-        // Pin section and scroll horizontally
-        gsap.to(cardsContainerRef.current, {
-          x: -scrollDistance,
-          ease: "none",
-          scrollTrigger: {
-            trigger: containerRef.current,
-            start: "top top",
-            end: `+=${scrollDistance}`,
-            scrub: 1,
-            pin: true,
-            anticipatePin: 1,
-            invalidateOnRefresh: true
+    // Final positions for a 2x2 grid. 
+    // X and Y are translate percentages relative to the card's width/height.
+    // -105% = shifted left by 1 width + 5% gap. 
+    const finalPositions = [
+      [-105, -105], // Top Left
+      [5, -105],    // Top Right
+      [-105, 5],    // Bottom Left
+      [5, 5]        // Bottom Right
+    ];
+
+    ScrollTrigger.create({
+      trigger: containerRef.current,
+      start: "top top",
+      end: "+=4000px", 
+      pin: true,
+      pinSpacing: true,
+      scrub: 1,
+      onUpdate: (self) => {
+        const progress = self.progress;
+
+        images.forEach((img, index) => {
+          let x = -50; 
+          let y = -50;
+          let rotation = 0;
+          let scale = 1;
+
+          const phase1Start = phaseOneStartOffsets[index];
+          const phase1End = phase1Start + 0.3; 
+          
+          const phase2Start = 0.55; // Start scattering
+          const phase2End = 0.95;   // Finish scattering
+
+          // --- PHASE 0: OFF SCREEN ---
+          if (progress < phase1Start) {
+            y = 200;
+            scale = 0;
+            rotation = initialRotations[index];
+          } 
+          // --- PHASE 1: FLY UP AND STACK ---
+          else if (progress >= phase1Start && progress < phase2Start) {
+            let phase1Progress = (progress - phase1Start) / (phase1End - phase1Start);
+            phase1Progress = Math.min(Math.max(phase1Progress, 0), 1); 
+
+            // Easing curve
+            const easedProgress = 1 - Math.pow(1 - phase1Progress, 3);
+
+            y = 200 - (easedProgress * 250); // From 200 to -50
+            scale = easedProgress;
+            rotation = initialRotations[index];
+          } 
+          // --- PHASE 2: SCATTER INTO GRID ---
+          else if (progress >= phase2Start && progress <= phase2End) {
+            let phase2Progress = (progress - phase2Start) / (phase2End - phase2Start);
+            const easedProgress = 1 - Math.pow(1 - phase2Progress, 3);
+
+            const finalX = finalPositions[index][0];
+            const finalY = finalPositions[index][1];
+
+            x = gsap.utils.interpolate(-50, finalX, easedProgress);
+            y = gsap.utils.interpolate(-50, finalY, easedProgress);
+            rotation = gsap.utils.interpolate(initialRotations[index], 0, easedProgress);
+          } 
+          // --- PHASE 3: FINAL LOCK ---
+          else if (progress > phase2End) {
+            x = finalPositions[index][0];
+            y = finalPositions[index][1];
+            rotation = 0;
           }
-        });
 
-        // Card reveal animations
-        cards.forEach((card) => {
-          const image = card.querySelector('.case-image');
-          const overlay = card.querySelector('.case-overlay');
-          
-          gsap.set(image, { scale: 1.1 });
-          gsap.set(overlay, { clipPath: "polygon(0 0, 100% 0, 100% 100%, 0% 100%)" });
-          
-          gsap.to(overlay, {
-            clipPath: "polygon(0 0, 100% 0, 100% 0%, 0% 0%)",
-            duration: 1.2,
-            ease: "power4.inOut",
-            scrollTrigger: {
-              trigger: card,
-              containerAnimation: gsap.getTweensOf(cardsContainerRef.current)[0],
-              start: "left 60%",
-              toggleActions: "play none none reverse"
-            }
-          });
-
-          gsap.to(image, {
-            scale: 1,
-            duration: 1.2,
-            ease: "power3.out",
-            scrollTrigger: {
-              trigger: card,
-              containerAnimation: gsap.getTweensOf(cardsContainerRef.current)[0],
-              start: "left 60%",
-              toggleActions: "play none none reverse"
-            }
+          gsap.set(img, {
+            xPercent: x,
+            yPercent: y,
+            rotation: rotation,
+            scale: scale,
           });
         });
       }
-    });
-
-    // Mobile: Simple vertical reveal
-    mm.add("(max-width: 767px)", () => {
-      const cards = cardsContainerRef.current?.querySelectorAll('.case-card');
-      
-      cards?.forEach((card, i) => {
-        const overlay = card.querySelector('.case-overlay');
-        if (overlay) gsap.set(overlay, { opacity: 0, display: "none" });
-
-        card.setAttribute('data-reveal', 'fade-up');
-        card.setAttribute('style', `--reveal-delay: ${i * 100}ms`);
-        
-        const observer = new IntersectionObserver(([e]) => {
-          if (e.isIntersecting) {
-            card.setAttribute('data-visible', 'true');
-            observer.disconnect();
-          }
-        }, { threshold: 0.1 });
-        
-        observer.observe(card);
-      });
     });
 
   }, { scope: containerRef });
 
   return (
-    <section ref={containerRef} id="architectures" className="relative w-full min-h-screen bg-[#050505] overflow-hidden flex flex-col pt-20 md:pt-32 pb-16 md:pb-0">
-      <FractalGlassBackground />
+    <section ref={containerRef} id="architectures" className="relative w-full h-screen bg-transparent overflow-hidden flex flex-col md:block">
       
       {/* Header */}
-      <div className="max-w-7xl mx-auto px-6 relative z-10 w-full shrink-0 mb-12 md:mb-16">
-        <div className="cases-header text-center md:text-left relative">
-          <span className="section-number absolute -right-4 -top-12 md:-right-16 md:-top-20 text-[6rem] md:text-[8rem] text-white/[0.04] font-bold leading-none select-none pointer-events-none">
-            05
-          </span>
-          
-          <div className="flex items-center gap-4 mb-6 justify-center md:justify-start">
-            <div className="h-px bg-white/10 flex-1 max-w-[60px]" />
-            <span className="text-[#EAB308] text-[clamp(0.65rem,1.5vw,0.85rem)] font-light tracking-[0.2em] uppercase tabular">
-              Case Studies
-            </span>
-            <div className="h-px bg-white/10 flex-1 max-w-[60px]" />
-          </div>
-          
-          <h2 className="text-[clamp(2.2rem,5vw,5rem)] text-white mb-4 tracking-tight leading-tight" style={{ fontFamily: "var(--font-heading), sans-serif" }}>
-            Our Work.
+      <div className="absolute top-12 md:top-20 left-0 w-full z-10 pointer-events-none px-6">
+        <div className="max-w-7xl mx-auto text-center">
+          <h2 className="text-[clamp(2.2rem,5vw,5rem)] font-black text-white mb-4 tracking-[-0.04em] leading-tight">
+            Real Results.
           </h2>
-          
           <p className="text-[#A0A0A0] text-[clamp(0.75rem,2vw,1rem)] uppercase tracking-[0.2em] font-light">
-            See how we help businesses grow
+            Scroll to scatter
           </p>
         </div>
       </div>
 
-      {/* Cards Container */}
-      <div className="w-full flex-1 relative z-10 overflow-hidden">
-        <div 
-          ref={cardsContainerRef}
-          className="flex flex-row md:items-center px-6 md:px-0 md:pl-24 gap-6 md:gap-0 w-max"
-        >
-          {cases.map((item, i) => (
-            <div 
-              key={i} 
-              className="case-card snap-center flex-shrink-0 w-[85vw] md:w-[65vw] lg:w-[55vw] h-[65vh] md:h-[60vh] md:mr-32 relative flex flex-col justify-end p-6 md:p-12 rounded-[2rem] overflow-hidden border border-white/5 bg-[#0A0A0A]"
-            >
-              {/* Image & Overlay */}
-              <div className="absolute inset-0 z-0 overflow-hidden rounded-[2rem]">
-                <div className="case-overlay absolute inset-0 bg-[#000] z-20 pointer-events-none" />
-                <Image
-                  src={item.image}
-                  alt={item.title}
-                  fill
-                  className="case-image object-cover opacity-60 z-0"
-                  sizes="(max-width: 768px) 100vw, 55vw"
-                  priority={i === 0}
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/50 to-black/10 z-10 pointer-events-none" />
-              </div>
+      {/* Images Container */}
+      <div className="relative w-full flex-1 md:absolute md:inset-0 md:h-full md:pointer-events-none flex flex-col md:block items-center justify-center gap-6 mt-32 md:mt-0 pb-20 md:pb-0 overflow-y-auto md:overflow-hidden">
+        {cases.map((item, i) => (
+          <div 
+            key={i} 
+            ref={(el) => { imagesRef.current[i] = el; }}
+            className="md:absolute md:top-1/2 md:left-1/2 w-[85vw] md:w-[clamp(280px,35vw,480px)] aspect-[4/3] rounded-[1.5rem] overflow-hidden border border-white/10 bg-[#050505] shadow-[0_20px_50px_rgba(0,0,0,0.5)] flex flex-col group will-change-transform md:pointer-events-auto"
+          >
+            {/* Image */}
+            <div className="relative w-full h-[65%] overflow-hidden">
+              <div className="absolute inset-0 bg-black/20 group-hover:bg-transparent transition-colors duration-500 z-10" />
+              <Image
+                src={item.image}
+                alt={item.title}
+                fill
+                className="object-cover transition-transform duration-700 group-hover:scale-105"
+                sizes="(max-width: 768px) 85vw, 35vw"
+              />
+            </div>
 
-              {/* Card Number */}
-              <span className="card-number absolute top-6 right-6 md:top-8 md:right-8 text-[4rem] md:text-[5rem] text-white/[0.04] font-bold leading-none select-none pointer-events-none z-30">
-                {String(i + 1).padStart(2, '0')}
-              </span>
-
-              {/* Content */}
-              <div className="relative z-30 max-w-3xl">
-                {/* Tagline */}
-                <p className="text-[#EAB308] font-semibold tracking-[0.2em] uppercase text-[11px] md:text-xs mb-4">
-                  {item.tagline}
-                </p>
-
-                {/* Title */}
-                <h3 className="text-2xl md:text-4xl lg:text-5xl text-white tracking-tight leading-none mb-6" style={{ fontFamily: "var(--font-heading), sans-serif" }}>
-                  {item.title}
-                </h3>
-
-                {/* Problem vs Result Grid */}
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-6">
-                  <div>
-                    <span className="text-[#666666] text-xs font-semibold tracking-wider uppercase block mb-1">Challenge</span>
-                    <p className="text-white/80 font-normal text-sm md:text-base">{item.problem}</p>
-                  </div>
-                  <div>
-                    <span className="text-[#EAB308] text-xs font-semibold tracking-wider uppercase block mb-1">Result</span>
-                    <p className="text-white font-bold text-sm md:text-base">{item.result}</p>
-                  </div>
-                </div>
-
-                {/* Tech Stack */}
-                <div className="flex flex-wrap gap-2">
-                  {item.stack.map((tech, j) => (
-                    <span 
-                      key={j}
-                      className="px-3 py-1.5 md:px-4 md:py-2 rounded-full border border-white/15 bg-white/5 text-white/85 text-[11px] md:text-sm tracking-wide font-medium backdrop-blur-md hover:bg-white/10 hover:border-white/25 transition-all duration-300"
-                    >
-                      {tech}
-                    </span>
-                  ))}
-                </div>
+            {/* Content Bottom */}
+            <div className="relative w-full h-[35%] p-4 md:p-6 bg-gradient-to-b from-[#0a0a0a] to-[#050505] flex flex-col justify-center">
+              <p className="text-[#EAB308] font-semibold tracking-[0.2em] uppercase text-[9px] md:text-[10px] mb-2">
+                {item.tagline}
+              </p>
+              <h3 className="text-xl md:text-2xl text-white font-bold tracking-tight mb-2">
+                {item.title}
+              </h3>
+              <div className="flex gap-2">
+                {item.stack.map((tech, j) => (
+                  <span key={j} className="px-2 py-1 rounded bg-white/5 border border-white/10 text-white/70 text-[9px] font-medium tracking-wide">
+                    {tech}
+                  </span>
+                ))}
               </div>
             </div>
-          ))}
-        </div>
+          </div>
+        ))}
       </div>
-
-      {/* Bottom gradient */}
-      <div
-        className="absolute bottom-0 left-0 right-0 h-32 pointer-events-none z-10 hidden md:block"
-        style={{ background: 'linear-gradient(to bottom, transparent, #050505)' }}
-      />
     </section>
   );
 }

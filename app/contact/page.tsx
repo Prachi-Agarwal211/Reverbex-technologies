@@ -33,7 +33,7 @@ export default function ContactPage() {
           })
         }}
       />
-      <main className="w-full bg-[#050505] text-white min-h-screen pt-32 selection:bg-[#EAB308]/30">
+      <main className="w-full text-white min-h-screen pt-32 selection:bg-[#EAB308]/30">
         <Navbar />
         
         <div className="max-w-7xl mx-auto px-6 lg:px-12 mb-12">

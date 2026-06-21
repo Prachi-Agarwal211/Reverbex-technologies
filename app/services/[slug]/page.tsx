@@ -103,7 +103,7 @@ export default async function ServiceDetailPage({
         }}
       />
 
-      <main className="w-full bg-[#050505] text-white min-h-screen pt-32 pb-24 selection:bg-[#EAB308]/30 overflow-hidden">
+      <main className="w-full text-white min-h-screen pt-32 pb-24 selection:bg-[#EAB308]/30 overflow-hidden">
         <Navbar />
         
         <div className="max-w-6xl mx-auto px-6 lg:px-12">

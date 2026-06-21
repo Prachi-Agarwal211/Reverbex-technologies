@@ -3,7 +3,10 @@
 import { useRef } from "react";
 import { useGSAP } from "@gsap/react";
 import gsap from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { GraduationCap, Factory, ShoppingBag, Truck, Rocket, Store, ArrowUpRight } from "lucide-react";
+
+gsap.registerPlugin(ScrollTrigger);
 
 const industries = [
   { name: "Education", link: "/industries/education", icon: GraduationCap },
@@ -16,102 +19,102 @@ const industries = [
 
 export default function Industries() {
   const containerRef = useRef<HTMLElement>(null);
-  const gridRef = useRef<HTMLDivElement>(null);
 
   useGSAP(() => {
-    gsap.fromTo(
-      ".industry-reveal",
-      { opacity: 0, y: 35 },
-      {
-        opacity: 1,
-        y: 0,
-        stagger: 0.1,
-        duration: 0.6,
-        ease: "power3.out",
-        scrollTrigger: {
-          trigger: containerRef.current,
-          start: "top 85%",
-          toggleActions: "play none none reverse",
-        },
-      }
-    );
+    if (!containerRef.current) return;
 
-    const cards = gridRef.current?.querySelectorAll(".industry-card");
-    if (cards && cards.length > 0) {
+    const prefersReducedMotion = window.matchMedia(
+      "(prefers-reduced-motion: reduce)"
+    ).matches;
+    if (prefersReducedMotion) return;
+
+    // Header entrance
+    const header = containerRef.current.querySelector(".ind-header");
+    if (header) {
       gsap.fromTo(
-        cards,
-        { opacity: 0, scale: 0.95 },
+        header.children,
+        { opacity: 0, y: 30 },
         {
           opacity: 1,
-          scale: 1,
-          stagger: 0.05,
-          duration: 0.5,
-          ease: "power2.out",
+          y: 0,
+          stagger: 0.1,
+          duration: 0.8,
+          ease: "power3.out",
           scrollTrigger: {
-            trigger: gridRef.current,
+            trigger: header,
             start: "top 85%",
             toggleActions: "play none none reverse",
           },
         }
       );
     }
+
+    // Items stagger from alternating sides
+    const items = containerRef.current.querySelectorAll(".ind-item");
+    items.forEach((item, i) => {
+      gsap.fromTo(
+        item,
+        { opacity: 0, x: i % 2 === 0 ? -30 : 30 },
+        {
+          opacity: 1,
+          x: 0,
+          duration: 0.6,
+          ease: "power3.out",
+          scrollTrigger: {
+            trigger: item,
+            start: "top 90%",
+            toggleActions: "play none none reverse",
+          },
+        }
+      );
+    });
   }, { scope: containerRef });
 
   return (
     <section
       ref={containerRef}
       id="industries"
-      className="w-full py-24 md:py-32 bg-[#0A0A0A] border-b border-[#1A1A1A] relative"
+      className="w-full py-24 md:py-32 bg-transparent border-b border-[#1A1A1A] relative"
     >
-      <div className="max-w-7xl mx-auto px-6 relative z-10">
+      <div className="max-w-6xl mx-auto px-6 md:px-12 relative z-10">
         
-        {/* Section Header */}
-        <div className="text-center md:text-left mb-16 md:mb-24 mx-auto md:mx-0 max-w-3xl">
-          <span
-            className="industry-reveal text-[#EAB308] text-xs font-semibold tracking-[0.25em] uppercase mb-4 block"
-            style={{ fontFamily: "var(--font-body), sans-serif" }}
-          >
+        {/* Section Header — left-aligned */}
+        <div className="ind-header text-left mb-16 md:mb-24 max-w-3xl">
+          <span className="text-[#EAB308] text-xs font-semibold tracking-[0.25em] uppercase mb-4 block">
             Sectors
           </span>
-          <h2
-            className="industry-reveal text-white text-[clamp(2.2rem,5vw,4.5rem)] font-black tracking-tighter leading-[1.0] mb-6"
-            style={{ fontFamily: "var(--font-heading), sans-serif" }}
-          >
-            Industries We Serve.
+          <h2 className="text-white text-[clamp(2.2rem,5vw,4.5rem)] font-black tracking-[-0.04em] leading-[1.0] mb-6">
+            Industries We
+            <br />
+            <span className="text-[#EAB308]">Build For.</span>
           </h2>
-          <p
-            className="industry-reveal text-[#A0A0A0] text-lg font-normal leading-relaxed mx-auto md:mx-0"
-            style={{ fontFamily: "var(--font-body), sans-serif" }}
-          >
-            We've built digital solutions, automated workflows, and generated leads for businesses across multiple sectors.
+          <p className="text-[#A0A0A0] text-lg font-normal leading-relaxed">
+            We&apos;ve built digital solutions, automated workflows, and generated leads across multiple sectors.
           </p>
         </div>
 
-        {/* Industries Grid */}
-        <div
-          ref={gridRef}
-          className="grid grid-cols-2 md:grid-cols-3 gap-4 md:gap-6"
-        >
+        {/* Editorial list layout — not card grid */}
+        <div className="flex flex-col">
           {industries.map((industry, index) => {
             const IconComponent = industry.icon;
             return (
               <a
                 key={index}
                 href={industry.link}
-                className="industry-card group flex flex-col md:flex-row items-center md:items-start justify-center md:justify-between p-6 md:p-8 bg-[#050505] border border-[#1A1A1A] rounded-xl hover:border-[#EAB308]/50 hover:bg-[#111111] transition-all duration-300"
+                className="ind-item group flex items-center gap-6 md:gap-10 py-7 md:py-9 border-t border-[#1A1A1A] last:border-b hover:bg-white/[0.01] transition-colors duration-300"
               >
-                <div className="flex flex-col md:flex-row items-center md:items-center gap-4 md:gap-6 mb-4 md:mb-0">
-                  <div className="p-3 bg-[#111111] rounded-lg border border-[#1A1A1A] group-hover:bg-[#EAB308]/10 group-hover:border-[#EAB308]/30 transition-colors duration-300">
-                    <IconComponent className="w-6 h-6 text-[#A0A0A0] group-hover:text-[#EAB308] transition-colors duration-300" />
-                  </div>
-                  <h3
-                    className="text-white text-lg md:text-xl font-bold tracking-tight text-center md:text-left group-hover:text-white transition-colors duration-300"
-                    style={{ fontFamily: "var(--font-heading), sans-serif" }}
-                  >
-                    {industry.name}
-                  </h3>
+                {/* Icon */}
+                <div className="p-3 bg-[#0A0A0A] rounded-lg border border-[#1A1A1A] group-hover:bg-[#EAB308]/10 group-hover:border-[#EAB308]/30 transition-colors duration-300 shrink-0">
+                  <IconComponent className="w-6 h-6 text-[#A0A0A0] group-hover:text-[#EAB308] transition-colors duration-300" />
                 </div>
-                <ArrowUpRight className="w-5 h-5 text-[#666666] hidden md:block group-hover:text-[#EAB308] transition-colors duration-300" />
+
+                {/* Name */}
+                <h3 className="text-white text-xl md:text-2xl font-bold tracking-tight flex-1 group-hover:text-[#EAB308] transition-colors duration-300">
+                  {industry.name}
+                </h3>
+
+                {/* Arrow */}
+                <ArrowUpRight className="w-5 h-5 text-[#666666] group-hover:text-[#EAB308] transition-all duration-300 shrink-0 group-hover:translate-x-1 group-hover:-translate-y-1" />
               </a>
             );
           })}

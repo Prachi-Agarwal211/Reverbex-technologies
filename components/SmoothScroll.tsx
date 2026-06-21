@@ -35,7 +35,7 @@ export default function SmoothScroll({
     lenisRef.current = lenis;
 
     // Expose lenis globally for programmatic scrolling
-    (window as any).lenis = lenis;
+    (window as unknown as { lenis: Lenis }).lenis = lenis;
 
     // Sync Lenis with GSAP ScrollTrigger
     lenis.on("scroll", ScrollTrigger.update);

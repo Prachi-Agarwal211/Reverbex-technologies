@@ -111,19 +111,20 @@ export const servicesData: Record<
     ]
   },
   "erp-systems": {
-    name: "ERP System Development",
-    tagline: "Custom ERP systems designed to automate your specific business operations and data reporting.",
-    intro: "Replace spreadsheets and manual processes with a custom ERP system built around your exact workflow. Automate invoicing, inventory, orders, and reporting.",
-    problem: "Generic ERP software forces your business to adapt to rigid workflows. You end up paying for features you don't need while lacking the ones you do. Manual data entry wastes hours every week.",
-    solution: "We develop custom ERP systems tailored to your exact business processes. From inventory management and invoicing to employee tracking and financial reporting — everything is built around how your team actually works.",
+    name: "ERP & CRM System Development",
+    tagline: "Custom ERP & CRM systems to automate operations, manage customer relationships, and drive sales.",
+    intro: "Replace spreadsheets and manual processes with a unified ERP and CRM system built around your exact workflow. Automate invoicing, inventory, orders, customer tracking, and reporting — all in one platform.",
+    problem: "Generic ERP software forces your business to adapt to rigid workflows. You end up paying for features you don't need while lacking the ones you do. Separately, disconnected spreadsheets and inboxes for customer data mean leads slip through cracks and sales visibility is zero.",
+    solution: "We develop custom ERP and CRM systems tailored to your exact business processes. From inventory management, invoicing, and financial reporting to lead tracking, customer relationship management, and sales pipeline dashboards — everything unified in one platform that works how your team actually works.",
     comparison: {
-      template: ["One-size-fits-all workflows", "Per-user monthly licensing", "Generic dashboards you don't use", "Forced process adaptation"],
-      custom: ["Workflows built for your business", "One-time development cost", "Custom dashboards with your KPIs", "System adapts to your process"]
+      template: ["One-size-fits-all workflows", "Per-user monthly licensing", "Separate tools for ERP & CRM that don't talk to each other", "Forced process adaptation"],
+      custom: ["Workflows built for your business", "One-time development cost, no per-user fees", "Unified ERP + CRM — customer data flows from lead to invoice seamlessly", "System adapts to your process"]
     },
-    tech: ["Next.js", "Node.js", "PostgreSQL", "Tailwind CSS", "REST APIs"],
+    tech: ["Next.js", "Node.js", "PostgreSQL", "WhatsApp Business API", "REST APIs"],
     faqs: [
       { q: "How long does ERP development take?", a: "A core ERP module (inventory + invoicing + reporting) typically takes 6-10 weeks. We deploy in phases so you start using features immediately." },
-      { q: "Can it integrate with my existing tools?", a: "Yes. We build APIs that connect your ERP with your website, WhatsApp, payment gateways, and accounting software." }
+      { q: "Can the CRM integrate with WhatsApp?", a: "Yes. Our systems integrate deeply with the WhatsApp Business API — leads from WhatsApp are automatically created in the CRM, and follow-ups can be sent directly from the system." },
+      { q: "Can it integrate with my existing tools?", a: "Yes. We build APIs that connect your ERP & CRM with your website, WhatsApp, payment gateways, and accounting software." }
     ]
   },
   "whatsapp-automation": {
@@ -205,5 +206,6 @@ export const servicesData: Record<
       { q: "What is AEO and GEO?", a: "AEO (Answer Engine Optimization) optimizes your content for AI assistants that provide direct answers. GEO (Generative Engine Optimization) ensures AI systems cite your brand in generated responses." },
       { q: "How long until I see SEO results?", a: "Technical SEO improvements show impact within 2-4 weeks. Content and authority building typically shows significant results within 3-6 months." }
     ]
-  }
+  },
+
 };

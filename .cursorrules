@@ -1,0 +1,59 @@
+# Project Constitution: The Apple/Stripe "Miracle" Aesthetic
+
+## 1. Core Visual Directives (The Vibe)
+- **Aesthetic**: Ultra-Premium Corporate (Apple Meets Stripe). Deep dark mode with breathtaking micro-interactions, subtle glowing gradients, and exquisite typography.
+- **Tone**: Magical, immersive, deeply refined, and breathtakingly polished.
+- **Forbidden Elements (The Slop)**:
+  - NO cheap, generic `bg-blue-600` primary buttons.
+  - NO "AI slop" gradients (e.g., standard cyan-to-purple linear gradients).
+  - NO templated 3-column "icon + text" feature grids without depth or scroll interactions.
+
+## 2. Design System Tokens (Mandatory)
+- **Background Layer**: `bg-background` (`#050505`).
+- **Surface Layer**: `bg-surface` (`#0F0F13`). Used for cards. Should often be paired with `bg-white/5` and `backdrop-blur-xl`.
+- **Text Layer**: 
+  - `text-ink-primary` (`#FAFAFA`)
+  - `text-ink-secondary` (`#A1A1AA`)
+  - `text-ink-tertiary` (`#52525B`)
+- **Accent**: `text-accent` (Premium glowing white or subtle glowing titanium).
+- **Glows & Highlights**: Use absolutely subtle radial gradients for depth (e.g., behind a hero text or tracking a mouse hover).
+- **Borders**: 1px borders using `border-white/10` or `border-white/5` with subtle inner drop shadows to create a polished 3D glass effect.
+
+## 3. Typography & Layout Rules
+- **Typography Engine**:
+  - Headings: `var(--font-heading)`. Tight tracking (`tracking-[-0.04em]`), absolute black font weights (`font-black`), massive scale (`clamp(4rem, 10vw, 10rem)`).
+  - Body: `var(--font-body)`. Loose line-heights (`leading-[1.7]`), beautiful contrast.
+- **Layout**: 
+  - Massive whitespace. Sections must have `py-32` or `py-48` minimum.
+  - Bento grids are allowed, but they must feature asymmetrical spans and rich internal visuals (glass, glows, refined icons).
+  - Everything flows on an 8px grid system.
+  - Max-width containers: `max-w-[1440px]`.
+
+## 4. Interaction Engine (GSAP Only)
+- **Entrance**: Cinematic. Elements should never just "fade up". They should rotate in 3D (`rotateX`, `perspective`), mask-reveal (`clip-path`), and stagger with dramatic easing (`power4.out`).
+- **Scroll**: Heavy use of `ScrollTrigger` for sticky scrolling (Apple-style product pages), scrubbed parallax, and horizontal narrative scrolling.
+
+## 5. Development Constraints
+- Use raw Tailwind CSS with GSAP.
+- NEVER invent new CSS classes unless absolutely necessary. Rely on Tailwind.
+- The `dirty-grain` class is allowed for cinematic matte finishing.
+- **Cards/Containers**: NO generic rounded cards. Use subtle 1px borders, subtle inner glows, or stark brutalist blocks. Border radius max `12px`, prefer `8px` or `0px` for a sharper edge.
+
+## 3. MOTION & INTERACTION (MEMORY ANCHORS)
+- **Philosophy**: Motion must have physics and purpose. No generic fade-ins or bounce effects.
+- **Scroll**: Use scroll-linked animations. Elements should reveal, transform, or assemble based on scroll position. Use Framer Motion `useScroll` and `useTransform` (or GSAP equivalent).
+- **Easing**: Use custom cubic-beziers for premium deceleration. `cubic-bezier(0.16, 1, 0.3, 1)` (expo-out).
+- **Loading**: No spinners. Use skeleton states that mimic the final layout, or cinematic progress bars.
+
+## 4. COMPONENT RULES
+- **Navbar**: Ultra-minimal. Transparent, blurs on scroll (`backdrop-blur-md`). Logo left, minimal links right. No heavy CTA buttons in the nav.
+- **Hero**: NO "Headline + Subhead + 2 Buttons + Dashboard Image". 
+  - Use a cinematic statement. Massive typography. A subtle, interactive background (WebGL, canvas, or pure CSS blend modes). 
+- **Features**: NO 3-column grids. Use a bento box (done tastefully with asymmetrical sizing), a horizontal scroll narrative, or an interactive "story" section where scrolling changes the visual state.
+- **Footer**: Massive. Treat it as a secondary landing page. Huge typography, minimal links, strong brand statement.
+
+## 5. CODE QUALITY & PERFORMANCE
+- **Stack**: Next.js (App Router), Tailwind CSS, Framer Motion (or GSAP), Lucide Icons.
+- **CSS**: Use Tailwind config to enforce design tokens. NO arbitrary values in classes (e.g., no `w-[342px]`). Define everything in `tailwind.config.js`.
+- **Performance**: Lighthouse 100. Zero CLS. `next/image` for everything. Defer heavy animations until in viewport.
+- **Accessibility**: WCAG AA minimum. Focus states must be beautiful, not just default browser outlines. Respect `prefers-reduced-motion`.

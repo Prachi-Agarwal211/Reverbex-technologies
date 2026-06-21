@@ -1,218 +1,119 @@
 "use client";
 
 import { useRef } from "react";
-import { useGSAP } from "@gsap/react";
 import gsap from "gsap";
-import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { useGSAP } from "@gsap/react";
+import Image from "next/image";
 
-gsap.registerPlugin(ScrollTrigger);
+interface Partner {
+  name: string;
+  src: string;
+}
 
-const partners = [
-  { name: "MAAC Animation", role: "Education Partner" },
-  { name: "Aarya Clothing", role: "E-Commerce Brand" },
-  { name: "Khemji Wire", role: "Industrial Manufacturer" },
-  { name: "Shipbridge", role: "Logistics Partner" },
+const basePartners: Partner[] = [
+  { name: "Aarya Clothing", src: "/aarya clothing logo.png" },
+  { name: "Shipbridge", src: "/shipbridge logo.png" },
+  { name: "Khemji Wire Co.", src: "/khemji logo.png" },
+  { name: "MAAC Animation", src: "/maac logo.png" },
 ];
 
-const BLUE = "#0A2540";
+// Duplicate to create a full continuous circle (12 items = 30 degree increments)
+const partners = [...basePartners, ...basePartners, ...basePartners];
 
 export default function TrustedBy() {
-  const containerRef = useRef<HTMLDivElement>(null);
-  const revealerRef = useRef<HTMLDivElement>(null);
-  const contentRef = useRef<HTMLDivElement>(null);
-  const titleRef = useRef<HTMLHeadingElement>(null);
-  const cardsRef = useRef<(HTMLDivElement | null)[]>([]);
-  const doorLeftRef = useRef<HTMLDivElement>(null);
-  const doorRightRef = useRef<HTMLDivElement>(null);
+  const containerRef = useRef<HTMLElement>(null);
+  const ringRef = useRef<HTMLDivElement>(null);
 
   useGSAP(() => {
-    if (!containerRef.current) return;
+    if (!ringRef.current || typeof window === "undefined") return;
 
-    const prefersReducedMotion = window.matchMedia(
-      "(prefers-reduced-motion: reduce)"
-    ).matches;
-    if (prefersReducedMotion) return;
+    // 1. Arrange logos in a 3D convex cylinder
+    const logos = gsap.utils.toArray(".partner-card") as HTMLElement[];
+    const totalLogos = logos.length;
+    // Use a large radius for a gentle curve like the reference image
+    const radius = window.innerWidth < 768 ? 400 : 700; 
+    const angleIncrement = 360 / totalLogos;
 
-    const cards = cardsRef.current.filter(Boolean) as HTMLDivElement[];
+    gsap.set(ringRef.current, { transformStyle: "preserve-3d" });
 
-    // Set initial states
-    gsap.set(revealerRef.current, {
-      clipPath: "polygon(49.8% 0%, 50.2% 0%, 50.2% 100%, 49.8% 100%)",
-      scaleY: 0,
-      transformOrigin: "center center",
-    });
-    gsap.set(contentRef.current, { opacity: 0, pointerEvents: "none" });
-    gsap.set(titleRef.current, { y: 50, opacity: 0 });
-    gsap.set(cards, { scale: 0, opacity: 0 });
-    gsap.set([doorLeftRef.current, doorRightRef.current], {
-      scaleY: 0,
-      transformOrigin: "bottom center",
-    });
-
-    // THE FIX: start: "top 95%" — animation begins while hero is still 5% visible
-    const tl = gsap.timeline({
-      scrollTrigger: {
-        trigger: containerRef.current,
-        start: "top 95%",
-        end: "+=4000",
-        pin: true,
-        scrub: 1,
-      },
+    logos.forEach((logo, i) => {
+      // By setting transformOrigin to -radius on the Z axis, 
+      // we push the rotation point behind the card.
+      // This creates a perfect convex cylinder where the cards face outward.
+      gsap.set(logo, {
+        rotationY: i * angleIncrement,
+        z: radius,
+        transformOrigin: `50% 50% ${-radius}px`,
+      });
     });
 
-    // MOMENT 1: The slit grows vertically
-    tl.to(revealerRef.current, {
-      scaleY: 1,
-      duration: 1,
-      ease: "power2.inOut",
-    })
+    // 2. Continuous infinite rotation
+    gsap.to(ringRef.current, {
+      rotationY: -360, // Rotate negatively so it spins left-to-right
+      duration: 35,
+      ease: "none",
+      repeat: -1,
+    });
 
-      // MOMENT 2: The slit expands horizontally to fill screen
-      .to(revealerRef.current, {
-        clipPath: "polygon(0% 0%, 100% 0%, 100% 100%, 0% 100%)",
-        duration: 1.5,
-        ease: "power3.inOut",
-      })
-
-      // Make content visible
-      .set(contentRef.current, { opacity: 1, pointerEvents: "auto" })
-
-      // MOMENT 3: Title slides up
-      .to(titleRef.current, {
-        y: 0,
-        opacity: 1,
-        duration: 0.5,
-        ease: "power3.out",
-      })
-
-      // MOMENT 3: Cards cascade in with bounce
-      .to(
-        cards,
-        {
-          scale: 1,
-          opacity: 1,
-          stagger: 0.15,
-          duration: 1,
-          ease: "back.out(1.5)",
-        },
-        "-=0.3"
-      )
-
-      // MOMENT 4: Hold
-      .to({}, { duration: 1.5 })
-
-      // MOMENT 5: Blue doors sweep up from bottom
-      .to(
-        [doorLeftRef.current, doorRightRef.current],
-        {
-          scaleY: 1,
-          duration: 1.5,
-          ease: "power3.inOut",
-        },
-        "sweep"
-      )
-
-      // MOMENT 6: Doors split apart — reveal next section
-      .to(
-        doorLeftRef.current,
-        {
-          xPercent: -100,
-          duration: 1.5,
-          ease: "power3.inOut",
-        },
-        "split"
-      )
-      .to(
-        doorRightRef.current,
-        {
-          xPercent: 100,
-          duration: 1.5,
-          ease: "power3.inOut",
-        },
-        "split"
-      );
-
-    return () => {
-      tl.kill();
-    };
   }, { scope: containerRef });
 
   return (
     <section
       ref={containerRef}
-      className="relative w-full h-screen overflow-hidden bg-[#050505]"
+      className="relative w-full h-[70vh] md:h-[90vh] flex flex-col items-center justify-center overflow-hidden bg-transparent"
+      // High perspective to make the 3D effect subtle and premium
+      style={{ perspective: "1500px" }}
+      aria-label="Trusted by partners"
     >
-      {/* Layer 1: The Blue Revealer */}
-      <div
-        ref={revealerRef}
-        className="absolute inset-0 z-[1]"
-        style={{ backgroundColor: BLUE }}
-      />
-
-      {/* Layer 2: Partner Content */}
-      <div
-        ref={contentRef}
-        className="absolute inset-0 z-[2] flex flex-col items-center justify-center gap-10 md:gap-14 px-6"
-      >
-        <div className="text-center">
-          <span
-            className="text-[#60A5FA] text-xs font-semibold tracking-[0.3em] uppercase mb-3 block"
-            style={{ fontFamily: "var(--font-body), sans-serif" }}
-          >
-            Partnerships
-          </span>
-          <h2
-            ref={titleRef}
-            className="text-white text-[clamp(1.8rem,5vw,3.5rem)] font-black tracking-tighter"
-            style={{ fontFamily: "var(--font-heading), sans-serif" }}
-          >
-            Trusted By Growing Brands
-          </h2>
-        </div>
-
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-5 md:gap-8 max-w-5xl w-full">
-          {partners.map((partner, i) => (
-            <div
-              key={partner.name}
-              ref={(el) => { cardsRef.current[i] = el; }}
-              className="bg-white/[0.07] backdrop-blur-sm border border-white/10 rounded-2xl p-6 md:p-8 flex flex-col items-center justify-center text-center gap-3 hover:border-[#60A5FA]/40 transition-colors duration-300 group"
-            >
-              <div className="w-14 h-14 md:w-16 md:h-16 rounded-full bg-[#60A5FA]/10 border border-[#60A5FA]/20 flex items-center justify-center group-hover:bg-[#60A5FA]/20 transition-colors duration-300">
-                <span
-                  className="text-[#60A5FA] text-xl md:text-2xl font-black"
-                  style={{ fontFamily: "var(--font-heading), sans-serif" }}
-                >
-                  {partner.name.charAt(0)}
-                </span>
-              </div>
-              <h3
-                className="text-white text-sm md:text-base font-bold tracking-tight group-hover:text-[#60A5FA] transition-colors duration-300"
-                style={{ fontFamily: "var(--font-heading), sans-serif" }}
-              >
-                {partner.name}
-              </h3>
-              <span
-                className="text-[#A0A0A0] text-[10px] md:text-xs tracking-wider uppercase"
-                style={{ fontFamily: "var(--font-body), sans-serif" }}
-              >
-                {partner.role}
-              </span>
-            </div>
-          ))}
-        </div>
+      {/* Title */}
+      <div className="absolute top-24 text-center z-10 w-full px-6">
+        <p className="text-[11px] tracking-[0.4em] text-[#EAB308]/80 font-medium uppercase mb-4">
+          Trusted By
+        </p>
+        <h2 className="font-heading text-4xl md:text-6xl font-bold text-white tracking-tight">
+          Visionaries
+        </h2>
       </div>
 
-      {/* Layer 3: Blue Outro Doors */}
-      <div
-        ref={doorLeftRef}
-        className="absolute top-0 left-0 w-1/2 h-full z-[3]"
-        style={{ backgroundColor: BLUE, transformOrigin: "bottom center" }}
-      />
-      <div
-        ref={doorRightRef}
-        className="absolute top-0 right-0 w-1/2 h-full z-[3]"
-        style={{ backgroundColor: BLUE, transformOrigin: "bottom center" }}
-      />
+      {/* 3D Ring */}
+      <div 
+        ref={ringRef} 
+        className="relative w-full h-full flex items-center justify-center mt-20"
+        style={{ transformStyle: "preserve-3d" }}
+      >
+        {partners.map((partner, i) => (
+          <div 
+            key={i} 
+            className="partner-card absolute top-1/2 left-1/2 flex flex-col items-center justify-center"
+            style={{ 
+              width: "280px",
+              height: "320px",
+              marginTop: "-160px", 
+              marginLeft: "-140px",
+            }}
+          >
+            {/* The Logo - mimicking the 3D curve layout but WITHOUT cards/backgrounds */}
+            <div className="w-full h-full flex flex-col items-center justify-center p-8 transition-transform duration-500 hover:scale-110">
+              <div className="relative w-full h-[60%] pointer-events-none flex items-center justify-center">
+                <Image
+                  src={partner.src}
+                  alt={partner.name}
+                  fill
+                  className="object-contain"
+                  sizes="280px"
+                />
+              </div>
+              <span className="mt-8 text-white/50 text-xs font-bold tracking-[0.3em] uppercase">
+                {partner.name}
+              </span>
+            </div>
+          </div>
+        ))}
+      </div>
+      
+      {/* Edge Gradients to smoothly blend the sides of the cylinder into the background */}
+      <div className="absolute inset-y-0 left-0 w-1/4 bg-gradient-to-r from-[#050505]/80 to-transparent pointer-events-none z-20 hidden md:block" />
+      <div className="absolute inset-y-0 right-0 w-1/4 bg-gradient-to-l from-[#050505]/80 to-transparent pointer-events-none z-20 hidden md:block" />
     </section>
   );
 }

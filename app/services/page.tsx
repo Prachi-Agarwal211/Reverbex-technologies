@@ -23,7 +23,7 @@ const services = [
 
 export default function ServicesPage() {
   return (
-    <main className="w-full bg-[#050505] text-white min-h-screen pt-32 pb-24 selection:bg-[#EAB308]/30">
+    <main className="w-full text-white min-h-screen pt-32 pb-24 selection:bg-[#EAB308]/30">
       <Navbar />
       <div className="max-w-7xl mx-auto px-6">
         <span
@@ -48,7 +48,7 @@ export default function ServicesPage() {
             >
               <div>
                 <span className="text-[#666666] text-xs font-semibold tracking-widest uppercase block mb-4">
-                  0{idx + 1} / Service
+                  {String(idx + 1).padStart(2, '0')} / Service
                 </span>
                 <h3
                   className="text-white text-2xl font-bold group-hover:text-[#EAB308] transition-colors duration-300 mb-2"

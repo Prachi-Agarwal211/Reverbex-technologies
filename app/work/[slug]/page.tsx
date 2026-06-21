@@ -44,7 +44,7 @@ export default async function CaseStudyPage({
 
   if (!study) {
     return (
-      <main className="w-full bg-[#050505] text-white min-h-screen pt-32 pb-24 text-center">
+      <main className="w-full text-white min-h-screen pt-32 pb-24 text-center">
         <Navbar />
         <h1 className="text-4xl font-bold mb-4">Case Study Not Found</h1>
         <Link href="/work" className="text-[#EAB308] hover:underline">Return to Work</Link>
@@ -83,7 +83,7 @@ export default async function CaseStudyPage({
         }}
       />
 
-      <main className="w-full bg-[#050505] text-white min-h-screen pt-32 pb-24 selection:bg-[#EAB308]/30 overflow-hidden">
+      <main className="w-full text-white min-h-screen pt-32 pb-24 selection:bg-[#EAB308]/30 overflow-hidden">
         <Navbar />
         
         <div className="max-w-5xl mx-auto px-6 lg:px-12">

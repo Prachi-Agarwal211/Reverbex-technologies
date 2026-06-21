@@ -3,160 +3,174 @@
 import { useRef } from "react";
 import { useGSAP } from "@gsap/react";
 import gsap from "gsap";
-import { Zap, Search, Target, Unlock, Percent, Users } from "lucide-react";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
 
 const comparisons = [
   {
-    icon: Zap,
+    number: "01",
     title: "FASTER WEBSITES",
     desc: "Our sites load in under 1 second. Template sites take 3-5 seconds. Google ranks faster sites higher.",
-    metric: "100/100 PageSpeed guaranteed"
+    metric: "100/100 PageSpeed guaranteed",
   },
   {
-    icon: Search,
+    number: "02",
     title: "BETTER SEO",
     desc: "Optimized for Google AND AI search engines. We don't just do traditional SEO — we optimize for ChatGPT, Gemini, and Perplexity too.",
-    metric: "AEO + GEO optimized"
+    metric: "AEO + GEO optimized",
   },
   {
-    icon: Target,
+    number: "03",
     title: "HIGHER CONVERSIONS",
     desc: "Every page is designed around one goal: turning visitors into customers. No wasted space, no confusing navigation.",
-    metric: "Built for business results"
+    metric: "Built for business results",
   },
   {
-    icon: Unlock,
+    number: "04",
     title: "NO TEMPLATE LIMITATIONS",
     desc: "Custom code means custom everything. Unlimited design, unlimited features, unlimited integrations.",
-    metric: "Your vision, not a theme"
+    metric: "Your vision, not a theme",
   },
   {
-    icon: Percent,
+    number: "05",
     title: "ZERO TRANSACTION FEES",
     desc: "Unlike platforms that charge 2-5% on every sale, we build custom e-commerce with zero platform fees.",
-    metric: "You keep more of your revenue"
+    metric: "You keep more of your revenue",
   },
   {
-    icon: Users,
+    number: "06",
     title: "LONG-TERM PARTNER",
     desc: "We don't disappear after launch. We're your digital growth partner for the long term.",
-    metric: "Ongoing support and growth"
-  }
+    metric: "Ongoing support and growth",
+  },
 ];
 
 export default function WhyReverbex() {
   const containerRef = useRef<HTMLElement>(null);
-  const gridRef = useRef<HTMLDivElement>(null);
 
   useGSAP(() => {
-    gsap.fromTo(
-      ".why-reveal",
-      { opacity: 0, y: 35 },
-      {
-        opacity: 1,
-        y: 0,
-        stagger: 0.1,
-        duration: 0.6,
-        ease: "power3.out",
-        scrollTrigger: {
-          trigger: containerRef.current,
-          start: "top 85%",
-          toggleActions: "play none none reverse",
-        },
-      }
-    );
+    if (!containerRef.current) return;
 
-    const cards = gridRef.current?.querySelectorAll(".comparison-card");
-    if (cards && cards.length > 0) {
+    const prefersReducedMotion = window.matchMedia(
+      "(prefers-reduced-motion: reduce)"
+    ).matches;
+    if (prefersReducedMotion) return;
+
+    // Header entrance
+    const header = containerRef.current.querySelector(".why-header");
+    if (header) {
       gsap.fromTo(
-        cards,
+        header.children,
         { opacity: 0, y: 30 },
         {
           opacity: 1,
           y: 0,
           stagger: 0.1,
-          duration: 0.5,
-          ease: "power2.out",
+          duration: 0.8,
+          ease: "power3.out",
           scrollTrigger: {
-            trigger: gridRef.current,
+            trigger: header,
             start: "top 85%",
             toggleActions: "play none none reverse",
           },
         }
       );
     }
+
+    // List items stagger in from left
+    const items = containerRef.current.querySelectorAll(".why-item");
+    items.forEach((item, i) => {
+      gsap.fromTo(
+        item,
+        { opacity: 0, x: -30 },
+        {
+          opacity: 1,
+          x: 0,
+          duration: 0.7,
+          ease: "power3.out",
+          scrollTrigger: {
+            trigger: item,
+            start: "top 88%",
+            toggleActions: "play none none reverse",
+          },
+        }
+      );
+
+      // Accent line wipe
+      const line = item.querySelector(".why-line");
+      if (line) {
+        gsap.fromTo(
+          line,
+          { scaleX: 0 },
+          {
+            scaleX: 1,
+            duration: 0.8,
+            ease: "power3.out",
+            scrollTrigger: {
+              trigger: item,
+              start: "top 85%",
+              toggleActions: "play none none reverse",
+            },
+          }
+        );
+      }
+    });
   }, { scope: containerRef });
 
   return (
     <section
       ref={containerRef}
       id="why-reverbex"
-      className="w-full py-24 md:py-32 bg-[#0A0A0A] border-b border-[#1A1A1A] relative"
+      className="w-full py-24 md:py-32 bg-transparent border-b border-[#1A1A1A] relative"
     >
-      <div className="max-w-7xl mx-auto px-6 relative z-10">
-        
-        {/* Section Header */}
-        <div className="text-left mb-16 md:mb-24 max-w-3xl">
-          <span
-            className="why-reveal text-[#EAB308] text-xs font-semibold tracking-[0.25em] uppercase mb-4 block"
-            style={{ fontFamily: "var(--font-body), sans-serif" }}
-          >
+      <div className="max-w-6xl mx-auto px-6 md:px-12 relative z-10">
+        {/* Section Header — left-aligned */}
+        <div className="why-header text-left mb-16 md:mb-24 max-w-3xl">
+          <span className="text-[#EAB308] text-xs font-semibold tracking-[0.25em] uppercase mb-4 block">
             The Difference
           </span>
-          <h2
-            className="why-reveal text-white text-[clamp(2.2rem,5vw,4.5rem)] font-black tracking-tighter leading-[1.0] mb-6"
-            style={{ fontFamily: "var(--font-heading), sans-serif" }}
-          >
-            Why Businesses Choose Reverbex.
+          <h2 className="text-white text-[clamp(2.2rem,5vw,4.5rem)] font-black tracking-[-0.04em] leading-[1.0] mb-6">
+            Why Businesses
+            <br />
+            Choose Reverbex.
           </h2>
-          <p
-            className="why-reveal text-[#A0A0A0] text-lg font-normal leading-relaxed"
-            style={{ fontFamily: "var(--font-body), sans-serif" }}
-          >
-            We don't build template websites. We build systems that grow your business.
+          <p className="text-[#A0A0A0] text-lg font-normal leading-relaxed">
+            We don&apos;t build template websites. We build systems that grow your business.
           </p>
         </div>
 
-        {/* Comparison Cards Grid */}
-        <div
-          ref={gridRef}
-          className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"
-        >
-          {comparisons.map((item, index) => {
-            const IconComponent = item.icon;
-            return (
-              <div
-                key={index}
-                className="comparison-card flex flex-col p-8 bg-[#050505] border border-[#1A1A1A] rounded-xl hover:border-[#EAB308]/50 transition-all duration-300 relative group"
-              >
-                <div className="absolute top-0 left-0 w-full h-[1px] bg-[#EAB308] scale-x-0 group-hover:scale-x-100 transition-transform duration-500 origin-left" />
-                
-                <div className="mb-6 inline-flex p-3 bg-[#111111] rounded-lg border border-[#1A1A1A] group-hover:bg-[#EAB308]/10 group-hover:border-[#EAB308]/30 transition-colors duration-300">
-                  <IconComponent className="w-6 h-6 text-[#A0A0A0] group-hover:text-[#EAB308] transition-colors duration-300" />
-                </div>
+        {/* Editorial list layout — not cards */}
+        <div className="flex flex-col">
+          {comparisons.map((item, index) => (
+            <div
+              key={index}
+              className="why-item group py-8 md:py-10 border-t border-[#1A1A1A] last:border-b"
+            >
+              <div className="flex flex-col md:flex-row md:items-start gap-4 md:gap-8">
+                {/* Number */}
+                <span className="text-[#EAB308] text-sm font-bold tracking-[0.15em] shrink-0 md:w-16">
+                  {item.number}
+                </span>
 
-                <h3
-                  className="text-white text-xl font-bold tracking-tight mb-3"
-                  style={{ fontFamily: "var(--font-heading), sans-serif" }}
-                >
+                {/* Title */}
+                <h3 className="text-white text-xl md:text-2xl font-bold tracking-tight md:w-64 shrink-0 group-hover:text-[#EAB308] transition-colors duration-300">
                   {item.title}
                 </h3>
-                
-                <p
-                  className="text-[#A0A0A0] text-sm leading-relaxed font-normal mb-6 flex-grow"
-                  style={{ fontFamily: "var(--font-body), sans-serif" }}
-                >
+
+                {/* Description */}
+                <p className="text-[#A0A0A0] text-base font-normal leading-relaxed flex-1 max-w-xl">
                   {item.desc}
                 </p>
 
-                <div className="pt-4 border-t border-[#1A1A1A]">
-                  <span className="text-[#EAB308] text-sm font-semibold tracking-wide">
-                    → {item.metric}
-                  </span>
-                </div>
+                {/* Metric */}
+                <span className="text-[#EAB308]/70 text-sm font-semibold tracking-wide shrink-0 md:text-right md:w-48">
+                  {item.metric}
+                </span>
               </div>
-            );
-          })}
+
+              {/* Hover accent line */}
+              <div className="why-line h-[1px] bg-[#EAB308]/30 mt-8 md:mt-10 origin-left scale-x-0 group-hover:scale-x-100 transition-transform duration-500" />
+            </div>
+          ))}
         </div>
       </div>
     </section>

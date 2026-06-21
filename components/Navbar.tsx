@@ -49,7 +49,7 @@ export default function Navbar() {
             style={{ filter: "brightness(0) invert(1)" }}
           />
           <span
-            className="text-lg bg-gradient-to-r from-[#EAB308] via-[#f5c842] to-white bg-clip-text text-transparent font-semibold tracking-tight"
+            className="text-lg text-white font-semibold tracking-tight"
           >
             REVERBEX
           </span>

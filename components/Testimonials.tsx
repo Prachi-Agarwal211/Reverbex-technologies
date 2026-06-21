@@ -1,64 +1,133 @@
 "use client";
 
-import { useRef } from "react";
+import { useRef, useState, useCallback } from "react";
 import { useGSAP } from "@gsap/react";
 import gsap from "gsap";
-import { Quote } from "lucide-react";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { ChevronLeft, ChevronRight } from "lucide-react";
+
+gsap.registerPlugin(ScrollTrigger);
 
 const testimonials = [
   {
-    quote: "Reverbex transformed our online presence. We went from zero leads to 500+ in just weeks.",
+    quote:
+      "Reverbex transformed our online presence. We went from zero leads to 500+ in just weeks.",
     author: "Marketing Director",
-    company: "MAAC Animation Jaipur"
+    company: "MAAC Animation Jaipur",
+    metric: "500+ leads generated",
   },
   {
-    quote: "The e-commerce platform they built generates revenue while we sleep.",
+    quote:
+      "The e-commerce platform they built generates revenue while we sleep. Zero platform fees, full control.",
     author: "Founder",
-    company: "Aarya Clothing"
+    company: "Aarya Clothing",
+    metric: "3+ lakh revenue",
   },
   {
-    quote: "Professional, fast, and they understood our business perfectly.",
+    quote:
+      "Professional, fast, and they understood our business perfectly. Our digital presence finally matches our quality.",
     author: "Operations Head",
-    company: "Khemji Wire Company"
-  }
+    company: "Khemji Wire Company",
+    metric: "Complete transformation",
+  },
 ];
 
 export default function Testimonials() {
   const containerRef = useRef<HTMLElement>(null);
-  const gridRef = useRef<HTMLDivElement>(null);
+  const [activeIndex, setActiveIndex] = useState(0);
+  const quoteRef = useRef<HTMLDivElement>(null);
+
+  const goTo = useCallback(
+    (index: number) => {
+      const nextIndex = (index + testimonials.length) % testimonials.length;
+      if (nextIndex === activeIndex) return;
+
+      // Animate out
+      if (quoteRef.current) {
+        gsap.to(quoteRef.current, {
+          opacity: 0,
+          y: -20,
+          duration: 0.3,
+          ease: "power2.in",
+          onComplete: () => {
+            setActiveIndex(nextIndex);
+            // Animate in
+            gsap.fromTo(
+              quoteRef.current!,
+              { opacity: 0, y: 20 },
+              { opacity: 1, y: 0, duration: 0.5, ease: "power3.out" }
+            );
+          },
+        });
+      } else {
+        setActiveIndex(nextIndex);
+      }
+    },
+    [activeIndex]
+  );
 
   useGSAP(() => {
-    gsap.fromTo(
-      ".testimonial-reveal",
-      { opacity: 0, y: 35 },
-      {
-        opacity: 1,
-        y: 0,
-        stagger: 0.1,
-        duration: 0.6,
-        ease: "power3.out",
-        scrollTrigger: {
-          trigger: containerRef.current,
-          start: "top 85%",
-          toggleActions: "play none none reverse",
-        },
-      }
-    );
+    if (!containerRef.current) return;
 
-    const cards = gridRef.current?.querySelectorAll(".testimonial-card");
-    if (cards && cards.length > 0) {
+    const prefersReducedMotion = window.matchMedia(
+      "(prefers-reduced-motion: reduce)"
+    ).matches;
+    if (prefersReducedMotion) return;
+
+    // Header entrance
+    const header = containerRef.current.querySelector(".test-header");
+    if (header) {
       gsap.fromTo(
-        cards,
+        header.children,
         { opacity: 0, y: 30 },
         {
           opacity: 1,
           y: 0,
-          stagger: 0.15,
-          duration: 0.6,
-          ease: "power2.out",
+          stagger: 0.1,
+          duration: 0.8,
+          ease: "power3.out",
           scrollTrigger: {
-            trigger: gridRef.current,
-            start: "top 80%",
+            trigger: header,
+            start: "top 85%",
+            toggleActions: "play none none reverse",
+          },
+        }
+      );
+    }
+
+    // Spotlight card entrance
+    const spotlight = containerRef.current.querySelector(".test-spotlight");
+    if (spotlight) {
+      gsap.fromTo(
+        spotlight,
+        { opacity: 0, y: 40, scale: 0.98 },
+        {
+          opacity: 1,
+          y: 0,
+          scale: 1,
+          duration: 0.8,
+          ease: "power3.out",
+          scrollTrigger: {
+            trigger: spotlight,
+            start: "top 85%",
+            toggleActions: "play none none reverse",
+          },
+        }
+      );
+    }
+
+    // Dots entrance
+    const dots = containerRef.current.querySelector(".test-dots");
+    if (dots) {
+      gsap.fromTo(
+        dots,
+        { opacity: 0 },
+        {
+          opacity: 1,
+          duration: 0.6,
+          scrollTrigger: {
+            trigger: dots,
+            start: "top 90%",
             toggleActions: "play none none reverse",
           },
         }
@@ -66,59 +135,92 @@ export default function Testimonials() {
     }
   }, { scope: containerRef });
 
+  const current = testimonials[activeIndex];
+
   return (
     <section
       ref={containerRef}
       id="testimonials"
-      className="w-full py-24 md:py-32 bg-[#050505] border-b border-[#1A1A1A] relative"
+      className="w-full py-24 md:py-32 bg-transparent border-b border-[#1A1A1A] relative"
     >
-      <div className="max-w-7xl mx-auto px-6 relative z-10">
-        
-        {/* Section Header */}
-        <div className="text-center mb-16 md:mb-24 mx-auto max-w-3xl">
-          <span
-            className="testimonial-reveal text-[#EAB308] text-xs font-semibold tracking-[0.25em] uppercase mb-4 block"
-            style={{ fontFamily: "var(--font-body), sans-serif" }}
-          >
-            Client Success
+      <div className="max-w-5xl mx-auto px-6 md:px-12 relative z-10">
+        {/* Header — left-aligned */}
+        <div className="test-header text-left mb-16 md:mb-20 max-w-3xl">
+          <span className="text-[#EAB308] text-xs font-semibold tracking-[0.25em] uppercase mb-4 block">
+            Results
           </span>
-          <h2
-            className="testimonial-reveal text-white text-[clamp(2.2rem,5vw,4.5rem)] font-black tracking-tighter leading-[1.0] mb-6"
-            style={{ fontFamily: "var(--font-heading), sans-serif" }}
-          >
-            What Our Clients Say.
+          <h2 className="text-white text-[clamp(2.2rem,5vw,4.5rem)] font-black tracking-[-0.04em] leading-[1.0]">
+            Numbers That
+            <br />
+            <span className="text-[#EAB308]">Speak.</span>
           </h2>
         </div>
 
-        {/* Testimonials Grid */}
-        <div
-          ref={gridRef}
-          className="grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-8"
-        >
-          {testimonials.map((item, index) => (
-            <div
-              key={index}
-              className="testimonial-card flex flex-col p-8 md:p-10 bg-[#0A0A0A] border border-[#1A1A1A] rounded-2xl relative"
-            >
-              <Quote className="w-10 h-10 text-[#1A1A1A] mb-6" fill="currentColor" />
-              
-              <p
-                className="text-white text-lg md:text-xl leading-relaxed font-medium mb-8 flex-grow"
-                style={{ fontFamily: "var(--font-body), sans-serif" }}
-              >
-                "{item.quote}"
-              </p>
+        {/* Spotlight — one large quote at a time */}
+        <div className="test-spotlight relative">
+          {/* Big metric number */}
+          <div className="mb-8 md:mb-12">
+            <span className="text-[#EAB308] text-[clamp(2rem,6vw,5rem)] font-black tracking-[-0.03em] leading-none">
+              {current.metric}
+            </span>
+          </div>
 
-              <div className="flex flex-col mt-auto pt-6 border-t border-[#1A1A1A]">
-                <span className="text-white font-bold tracking-tight">
-                  {item.author}
+          {/* Quote */}
+          <div ref={quoteRef} className="min-h-[200px]">
+            <blockquote className="text-white text-xl md:text-2xl lg:text-3xl leading-relaxed font-medium mb-8 max-w-3xl">
+              &ldquo;{current.quote}&rdquo;
+            </blockquote>
+
+            <div className="flex items-center gap-4">
+              <div className="w-12 h-12 rounded-full bg-[#EAB308]/10 border border-[#EAB308]/20 flex items-center justify-center">
+                <span className="text-[#EAB308] text-lg font-bold">
+                  {current.author.charAt(0)}
                 </span>
-                <span className="text-[#A0A0A0] text-sm mt-1">
-                  {item.company}
+              </div>
+              <div>
+                <span className="text-white font-bold tracking-tight block text-lg">
+                  {current.author}
+                </span>
+                <span className="text-[#A0A0A0] text-sm">
+                  {current.company}
                 </span>
               </div>
             </div>
-          ))}
+          </div>
+
+          {/* Navigation */}
+          <div className="test-dots flex items-center gap-6 mt-10 md:mt-14">
+            <button
+              onClick={() => goTo(activeIndex - 1)}
+              className="w-10 h-10 rounded-full border border-[#1A1A1A] flex items-center justify-center text-[#A0A0A0] hover:text-white hover:border-[#EAB308]/50 transition-all duration-300 cursor-pointer"
+              aria-label="Previous testimonial"
+            >
+              <ChevronLeft className="w-4 h-4" />
+            </button>
+
+            <div className="flex gap-2">
+              {testimonials.map((_, i) => (
+                <button
+                  key={i}
+                  onClick={() => goTo(i)}
+                  className={`h-1 rounded-full transition-all duration-500 cursor-pointer ${
+                    i === activeIndex
+                      ? "w-8 bg-[#EAB308]"
+                      : "w-2 bg-[#1A1A1A] hover:bg-[#333]"
+                  }`}
+                  aria-label={`Go to testimonial ${i + 1}`}
+                />
+              ))}
+            </div>
+
+            <button
+              onClick={() => goTo(activeIndex + 1)}
+              className="w-10 h-10 rounded-full border border-[#1A1A1A] flex items-center justify-center text-[#A0A0A0] hover:text-white hover:border-[#EAB308]/50 transition-all duration-300 cursor-pointer"
+              aria-label="Next testimonial"
+            >
+              <ChevronRight className="w-4 h-4" />
+            </button>
+          </div>
         </div>
       </div>
     </section>
