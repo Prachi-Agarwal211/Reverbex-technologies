@@ -1,36 +1,24 @@
 "use client";
 
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { usePathname } from "next/navigation";
-import { scrollToSection } from "@/lib/scrollToSection";
+import { useScrollDirection } from "@/lib/hooks/useScrollDirection";
 
 export default function Navbar() {
   const [isMounted, setIsMounted] = useState(false);
-  const [isScrolled, setIsScrolled] = useState(false);
-  const navRef = useRef<HTMLElement>(null);
-  const pathname = usePathname();
+  const isVisible = useScrollDirection();
 
   useEffect(() => {
     setIsMounted(true);
-  }, []);
-
-  useEffect(() => {
-    const handleScroll = () => {
-      setIsScrolled(window.scrollY > 60);
-    };
-    window.addEventListener("scroll", handleScroll, { passive: true });
-    return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
   if (!isMounted) return null;
 
   return (
     <nav
-      ref={navRef}
-      className={`fixed top-0 left-0 w-full z-40 transition-all duration-500 pointer-events-none ${
-        isScrolled ? "bg-black/0" : "bg-transparent"
+      className={`fixed top-0 left-0 w-full z-40 transition-transform duration-500 pointer-events-none ${
+        isVisible ? "translate-y-0" : "-translate-y-full"
       }`}
     >
       <div className="max-w-7xl mx-auto px-6 md:px-12 xl:px-16 py-6 md:py-8 flex items-center justify-between pointer-events-auto">

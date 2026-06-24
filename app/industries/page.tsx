@@ -64,7 +64,7 @@ export default function IndustriesIndexPage() {
                 {/* Background Image that fades in on hover */}
                 <div 
                   className="absolute inset-0 bg-cover bg-center transition-all duration-700 opacity-0 group-hover:opacity-30 group-hover:scale-105"
-                  style={{ backgroundImage: `url(/ambient-bg.png)` }}
+                  style={{ backgroundImage: `url(/ambient-bg.jpg)` }}
                 />
                 
                 {/* Gradient overlay */}

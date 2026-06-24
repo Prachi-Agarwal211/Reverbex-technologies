@@ -169,7 +169,7 @@ export default function FeaturedArchitectures() {
         {/* Track Container */}
         <div
           ref={trackRef}
-          className="flex flex-col md:flex-row gap-12 md:gap-16 px-6 md:px-[10vw] w-full md:w-max md:pt-32 items-start will-change-transform"
+          className="flex flex-col md:flex-row gap-12 md:gap-16 px-6 md:px-[10vw] w-full md:w-max md:pt-52 items-start will-change-transform"
         >
           {cases.map((item, i) => (
             <div
@@ -181,19 +181,17 @@ export default function FeaturedArchitectures() {
                 href={item.url}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="w-full aspect-[4/3] rounded-2xl overflow-hidden relative mb-8 bg-[#0A0A0A] block"
+                className="w-full aspect-video rounded-2xl overflow-hidden relative mb-8 bg-[#0A0A0A] block"
                 aria-label={`Visit ${item.title}`}
               >
-                <div className="absolute inset-0 w-[110%] h-full -left-[5%]">
-                  <Image
-                    src={item.image}
-                    alt={`${item.title} — Reverbex project`}
-                    fill
-                    sizes="(max-width: 768px) 100vw, 50vw"
-                    className="work-card-img object-cover group-hover:scale-105 transition-transform duration-700 ease-out"
-                    priority={i < 2}
-                  />
-                </div>
+                <Image
+                  src={item.image}
+                  alt={`${item.title} — Reverbex project`}
+                  fill
+                  sizes="(max-width: 768px) 100vw, 50vw"
+                  className="work-card-img object-cover group-hover:scale-105 transition-transform duration-700 ease-out"
+                  priority={i < 2}
+                />
                 {/* Hover Overlay */}
                 <div className="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-colors duration-500 z-10" />
                 

@@ -8,6 +8,7 @@ import Image from "next/image";
 import { usePathname } from "next/navigation";
 import SplitType from "split-type";
 import { DESKTOP_NAV_ITEMS, MOBILE_NAV_ITEMS, SOCIALS, CONTACT, NAV_ROUTE_MAP } from "../lib/config";
+import { useScrollDirection } from "@/lib/hooks/useScrollDirection";
 
 const hiddenPath = "M 0 0 L 0 0 Q 500 0 1000 0 L 1000 0 Z";
 const bulgeDownPath = "M 0 0 L 0 0 Q 500 1000 1000 0 L 1000 0 Z";
@@ -26,6 +27,7 @@ export default function MorphingMenu() {
   const desktopSplit = useRef<SplitType | null>(null);
   const mobileSplit = useRef<SplitType | null>(null);
   const pathname = usePathname();
+  const isNavVisible = useScrollDirection();
 
   // Reset menu on route change
   useEffect(() => {
@@ -143,7 +145,9 @@ export default function MorphingMenu() {
     <div ref={containerRef} className="fixed top-0 left-0 w-full h-screen z-[100] pointer-events-none">
 
       {/* The Toggle Button (Always Clickable) */}
-      <div className="absolute top-5 right-5 sm:top-6 sm:right-6 md:top-8 md:right-12 z-[101] pointer-events-auto">
+      <div className={`absolute top-5 right-5 sm:top-6 sm:right-6 md:top-8 md:right-12 z-[101] pointer-events-auto transition-transform duration-500 ${
+        isNavVisible || isOpen ? "translate-y-0" : "-translate-y-full"
+      }`}>
         <button
           onClick={toggleMenu}
           aria-label={isOpen ? "Close menu" : "Open menu"}

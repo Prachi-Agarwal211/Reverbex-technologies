@@ -6,18 +6,18 @@ import { useGSAP } from "@gsap/react";
 import Navbar from "../../components/Navbar";
 
 const services = [
-  { slug: "website-development", name: "Custom Website Development", image: "/ambient-bg.png" },
-  { slug: "e-commerce", name: "E-Commerce Development", image: "/ambient-bg.png" },
-  { slug: "mobile-apps", name: "Mobile App Development", image: "/ambient-bg.png" },
-  { slug: "meta-ads", name: "Meta Ads Management", image: "/ambient-bg.png" },
-  { slug: "google-ads", name: "Google Ads Management", image: "/ambient-bg.png" },
-  { slug: "lead-generation", name: "Lead Generation", image: "/ambient-bg.png" },
-  { slug: "erp-systems", name: "ERP System Development", image: "/ambient-bg.png" },
-  { slug: "whatsapp-automation", name: "WhatsApp Automation", image: "/ambient-bg.png" },
-  { slug: "ai-solutions", name: "AI Solutions & Automation", image: "/ambient-bg.png" },
-  { slug: "logo-branding", name: "Logo Design & Branding", image: "/ambient-bg.png" },
-  { slug: "rebranding", name: "Complete Rebranding", image: "/ambient-bg.png" },
-  { slug: "seo", name: "SEO Services", image: "/ambient-bg.png" }
+  { slug: "website-development", name: "Custom Website Development", image: "/ambient-bg.jpg" },
+  { slug: "e-commerce", name: "E-Commerce Development", image: "/ambient-bg.jpg" },
+  { slug: "mobile-apps", name: "Mobile App Development", image: "/ambient-bg.jpg" },
+  { slug: "meta-ads", name: "Meta Ads Management", image: "/ambient-bg.jpg" },
+  { slug: "google-ads", name: "Google Ads Management", image: "/ambient-bg.jpg" },
+  { slug: "lead-generation", name: "Lead Generation", image: "/ambient-bg.jpg" },
+  { slug: "erp-systems", name: "ERP System Development", image: "/ambient-bg.jpg" },
+  { slug: "whatsapp-automation", name: "WhatsApp Automation", image: "/ambient-bg.jpg" },
+  { slug: "ai-solutions", name: "AI Solutions & Automation", image: "/ambient-bg.jpg" },
+  { slug: "logo-branding", name: "Logo Design & Branding", image: "/ambient-bg.jpg" },
+  { slug: "rebranding", name: "Complete Rebranding", image: "/ambient-bg.jpg" },
+  { slug: "seo", name: "SEO Services", image: "/ambient-bg.jpg" }
 ];
 
 export default function ServicesPage() {

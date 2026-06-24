@@ -1,6 +1,7 @@
 "use client";
 
 import { useRef } from "react";
+import Image from "next/image";
 import { useGSAP } from "@gsap/react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
@@ -50,7 +51,6 @@ export default function WhyReverbex() {
     const isDesktop = window.matchMedia("(min-width: 1024px)").matches;
 
     if (isDesktop) {
-      // Pin the left column while the right column scrolls
       ScrollTrigger.create({
         trigger: containerRef.current,
         start: "top top",
@@ -59,7 +59,6 @@ export default function WhyReverbex() {
         pinSpacing: false,
       });
 
-      // Animate cards on the right as they scroll up
       const cards = rightColRef.current.querySelectorAll(".why-card");
       cards.forEach((card) => {
         gsap.fromTo(
@@ -81,7 +80,6 @@ export default function WhyReverbex() {
         );
       });
     } else {
-      // Mobile standard fade-up
       const cards = rightColRef.current.querySelectorAll(".why-card");
       cards.forEach((card) => {
         gsap.fromTo(
@@ -107,28 +105,38 @@ export default function WhyReverbex() {
     <section
       ref={containerRef}
       id="why-reverbex"
-      className="relative w-full bg-[#030303] overflow-hidden"
+      className="relative w-full bg-black overflow-hidden"
     >
-      {/* Dynamic Background Glows */}
-      <div className="absolute top-[-20%] left-[-10%] w-[50%] h-[50%] rounded-full bg-[#EAB308]/5 blur-[150px] pointer-events-none" />
-      <div className="absolute bottom-[-10%] right-[-10%] w-[40%] h-[40%] rounded-full bg-[#EAB308]/5 blur-[120px] pointer-events-none" />
-      
-      {/* Grid pattern overlay */}
-      <div 
-        className="absolute inset-0 opacity-[0.03] pointer-events-none"
+      {/* Background Image */}
+      <div className="absolute inset-0 z-0">
+        <Image
+          src="/outperform-bg.jpg"
+          alt=""
+          fill
+          className="object-cover opacity-40"
+          priority={false}
+        />
+      </div>
+
+      {/* Blue Grid Overlay */}
+      <div
+        className="absolute inset-0 z-[1] pointer-events-none opacity-20"
         style={{
-          backgroundImage: `linear-gradient(to right, #ffffff 1px, transparent 1px), linear-gradient(to bottom, #ffffff 1px, transparent 1px)`,
-          backgroundSize: '4rem 4rem'
+          backgroundImage:
+            "linear-gradient(to right, #3b82f6 1px, transparent 1px), linear-gradient(to bottom, #3b82f6 1px, transparent 1px)",
+          backgroundSize: "4rem 4rem",
         }}
       />
 
+      {/* Dark gradient overlay for readability */}
+      <div className="absolute inset-0 z-[2] bg-gradient-to-b from-black/70 via-black/50 to-black/80 pointer-events-none" />
+
       <div className="max-w-7xl mx-auto px-6 md:px-12 py-24 md:py-32 relative z-10">
         <div className="flex flex-col lg:flex-row gap-16 lg:gap-24 relative">
-          
           {/* Left Column (Pinned on Desktop) */}
           <div className="w-full lg:w-[45%] shrink-0">
             <div ref={leftColRef} className="lg:h-screen lg:flex lg:flex-col lg:justify-center lg:-mt-32">
-              <span className="text-[#EAB308] text-xs font-semibold tracking-[0.25em] uppercase mb-6 block">
+              <span className="text-[#3b82f6] text-xs font-semibold tracking-[0.25em] uppercase mb-6 block">
                 The Reverbex Edge
               </span>
               <h2 className="text-white text-[clamp(2.5rem,5vw,4.5rem)] font-black tracking-[-0.03em] leading-[1.0] mb-8">
@@ -145,33 +153,32 @@ export default function WhyReverbex() {
             {comparisons.map((item, index) => (
               <div
                 key={index}
-                className="why-card group relative p-8 md:p-10 rounded-2xl bg-gradient-to-b from-[#111] to-[#0A0A0A] border border-white/5 hover:border-[#EAB308]/30 transition-colors duration-500 overflow-hidden"
+                className="why-card group relative p-8 md:p-10 rounded-2xl bg-black/60 backdrop-blur-sm border border-[#3b82f6]/20 hover:border-[#3b82f6]/60 transition-all duration-500 overflow-hidden"
               >
-                {/* Glow on hover inside card */}
-                <div className="absolute top-0 right-0 w-32 h-32 bg-[#EAB308]/10 rounded-full blur-[50px] opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-                
+                {/* Blue glow on hover */}
+                <div className="absolute top-0 right-0 w-32 h-32 bg-[#3b82f6]/10 rounded-full blur-[50px] opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+
                 <div className="relative z-10">
                   <div className="flex items-center gap-4 mb-6">
-                    <div className="w-10 h-10 rounded-full bg-[#EAB308]/10 flex items-center justify-center shrink-0">
-                      <CheckCircle2 className="w-5 h-5 text-[#EAB308]" />
+                    <div className="w-10 h-10 rounded-full bg-[#3b82f6]/10 flex items-center justify-center shrink-0">
+                      <CheckCircle2 className="w-5 h-5 text-[#3b82f6]" />
                     </div>
                     <h3 className="text-white text-2xl font-bold tracking-tight">
                       {item.title}
                     </h3>
                   </div>
-                  
+
                   <p className="text-[#A0A0A0] text-base leading-relaxed mb-8">
                     {item.desc}
                   </p>
-                  
-                  <div className="inline-block px-4 py-2 rounded-lg bg-white/5 border border-white/10 text-white/80 text-sm font-semibold tracking-wide">
+
+                  <div className="inline-block px-4 py-2 rounded-lg bg-[#3b82f6]/10 border border-[#3b82f6]/20 text-[#93c5fd] text-sm font-semibold tracking-wide">
                     {item.metric}
                   </div>
                 </div>
               </div>
             ))}
           </div>
-          
         </div>
       </div>
     </section>
