@@ -20,14 +20,14 @@ export default function WorkIndexPage() {
       
       <div className="max-w-7xl mx-auto px-6 lg:px-12 mb-12">
         <div className="text-center md:text-left">
-          <span className="text-[#EAB308] text-xs font-semibold tracking-[0.25em] uppercase mb-4 block" style={{ fontFamily: "var(--font-body), sans-serif" }}>
+          <span className="font-body text-[#EAB308] text-xs font-semibold tracking-[0.25em] uppercase mb-4 block">
             The Portfolio
           </span>
-          <h1 className="text-5xl md:text-7xl font-black tracking-tighter leading-[1.0] mb-6" style={{ fontFamily: "var(--font-heading), sans-serif" }}>
+          <h1 className="font-heading text-5xl md:text-7xl font-black tracking-tighter leading-[1.0] mb-6">
             Results That Speak.
           </h1>
-          <p className="text-[#A0A0A0] text-xl font-light leading-relaxed max-w-2xl mx-auto md:mx-0" style={{ fontFamily: "var(--font-body), sans-serif" }}>
-            We don't count visitors or lines of code. We count leads generated, costs reduced, and revenue increased.
+          <p className="font-body text-[#A0A0A0] text-xl font-light leading-relaxed max-w-2xl mx-auto md:mx-0">
+            Every project tells a story. Browse our case studies.
           </p>
         </div>
       </div>

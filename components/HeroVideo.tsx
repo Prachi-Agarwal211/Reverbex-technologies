@@ -117,7 +117,7 @@ export default function HeroVideo() {
       className="relative w-full hero-height min-h-[600px] overflow-hidden"
       aria-label="Hero section"
     >
-      <h1 className="sr-only">Reverbex Technologies — Websites, Ads, Automation</h1>
+      <h1 className="sr-only">Reverbex Technologies | Custom Website Development & AI Automation Company in India</h1>
 
       <div className="absolute inset-0 z-0">
         <HeroForeground />

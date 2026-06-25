@@ -13,7 +13,7 @@ export default function PrivacyPolicyPage() {
       <Navbar />
       
       <div className="max-w-4xl mx-auto px-6 lg:px-12">
-        <h1 className="text-4xl md:text-5xl font-black mb-8" style={{ fontFamily: "var(--font-heading), sans-serif" }}>
+        <h1 className="text-4xl md:text-5xl font-black mb-8">
           Privacy Policy
         </h1>
         <div className="text-[#A0A0A0] text-sm mb-12">Last Updated: October 2023</div>

@@ -4,13 +4,17 @@ export const CONTACT = {
   email: "15anuragsingh2003@gmail.com",
   emailDisplay: "15anuragsingh2003@gmail.com",
   phone: "+91 99299 86743",
+  phoneDisplay: "+91-9929986743",
   phoneHref: "tel:+919929986743",
+  whatsappHref: "https://wa.me/919929986743",
   location: "Jaipur, India / Remote-First",
 };
 
 export const SOCIALS = {
   linkedin: "https://linkedin.com/company/reverbex",
   twitter: "https://twitter.com/reverbex",
+  instagram: "https://instagram.com/reverbex",
+  facebook: "https://facebook.com/reverbex",
 };
 
 // Nav items: "to" values are used as section IDs on homepage,

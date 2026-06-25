@@ -63,16 +63,10 @@ export default function ServiceClient({ service, whatsappNumber, encodedMsg }: S
     <div ref={containerRef} className="w-full">
       {/* Intro Header */}
       <div className="service-header mb-20 border-b border-[#1A1A1A] pb-12">
-        <h1
-          className="text-white text-5xl md:text-7xl font-black tracking-tighter leading-[1.1] mb-6 max-w-5xl"
-          style={{ fontFamily: "var(--font-heading), sans-serif" }}
-        >
+        <h1 className="font-heading text-white text-5xl md:text-7xl font-black tracking-tighter leading-[1.1] mb-6 max-w-5xl">
           {service.name}
         </h1>
-        <p
-          className="text-[#A0A0A0] text-xl md:text-2xl font-light leading-relaxed max-w-3xl"
-          style={{ fontFamily: "var(--font-body), sans-serif" }}
-        >
+        <p className="font-body text-[#A0A0A0] text-xl md:text-2xl font-light leading-relaxed max-w-3xl">
           {service.tagline}
         </p>
       </div>
@@ -83,7 +77,7 @@ export default function ServiceClient({ service, whatsappNumber, encodedMsg }: S
           <span className="text-[#666666] text-sm font-semibold tracking-wider uppercase block mb-6">
             The Industry Problem
           </span>
-          <p className="text-[#A0A0A0] text-lg leading-relaxed" style={{ fontFamily: "var(--font-body), sans-serif" }}>
+          <p className="font-body text-[#A0A0A0] text-lg leading-relaxed">
             {service.problem}
           </p>
         </div>
@@ -92,7 +86,7 @@ export default function ServiceClient({ service, whatsappNumber, encodedMsg }: S
           <span className="text-[#EAB308] text-sm font-semibold tracking-wider uppercase block mb-6 relative z-10">
             The Reverbex Solution
           </span>
-          <p className="text-white text-lg leading-relaxed font-medium relative z-10" style={{ fontFamily: "var(--font-body), sans-serif" }}>
+          <p className="font-body text-white text-lg leading-relaxed font-medium relative z-10">
             {service.solution}
           </p>
         </div>
@@ -100,7 +94,7 @@ export default function ServiceClient({ service, whatsappNumber, encodedMsg }: S
 
       {/* Comparison Details */}
       <div className="service-section mb-32 bg-black border border-[#1A1A1A] rounded-none p-8 md:p-16">
-        <h3 className="text-white text-3xl font-bold mb-12 text-center" style={{ fontFamily: "var(--font-heading), sans-serif" }}>
+        <h3 className="font-heading text-white text-3xl font-bold mb-12 text-center">
           Why Custom Engineering Wins
         </h3>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-12 lg:gap-20">
@@ -149,16 +143,16 @@ export default function ServiceClient({ service, whatsappNumber, encodedMsg }: S
 
       {/* FAQs */}
       <div className="service-section mb-32">
-        <h3 className="text-white text-3xl md:text-4xl font-bold mb-12" style={{ fontFamily: "var(--font-heading), sans-serif" }}>
+        <h3 className="font-heading text-white text-3xl md:text-4xl font-bold mb-12">
           Frequently Asked Questions
         </h3>
         <div className="grid grid-cols-1 gap-6 max-w-4xl">
           {service.faqs.map((faq, idx) => (
             <div key={idx} className="bg-[#0A0A0A] border border-[#1A1A1A] p-8 hover:border-[#EAB308]/30 transition-colors duration-300">
-              <h4 className="text-white text-lg md:text-xl font-bold mb-4" style={{ fontFamily: "var(--font-heading), sans-serif" }}>
+              <h4 className="font-heading text-white text-lg md:text-xl font-bold mb-4">
                 {faq.q}
               </h4>
-              <p className="text-[#A0A0A0] text-base leading-relaxed" style={{ fontFamily: "var(--font-body), sans-serif" }}>
+              <p className="font-body text-[#A0A0A0] text-base leading-relaxed">
                 {faq.a}
               </p>
             </div>
@@ -173,7 +167,7 @@ export default function ServiceClient({ service, whatsappNumber, encodedMsg }: S
 
       {/* Support disclaimer and CTA */}
       <div className="service-section border-t border-[#1A1A1A] pt-20 text-center pb-12">
-        <h2 className="text-3xl md:text-5xl font-black text-white mb-6" style={{ fontFamily: "var(--font-heading), sans-serif" }}>
+        <h2 className="font-heading text-3xl md:text-5xl font-black text-white mb-6">
           Ready to scale?
         </h2>
         <p className="text-[#A0A0A0] text-lg mb-10 max-w-2xl mx-auto">

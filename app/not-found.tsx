@@ -9,7 +9,7 @@ export default function NotFound() {
         </span>
         <h1
           className="text-white text-4xl font-black tracking-tighter mb-4"
-          style={{ fontFamily: "var(--font-heading), sans-serif" }}
+         
         >
           Page Not Found.
         </h1>

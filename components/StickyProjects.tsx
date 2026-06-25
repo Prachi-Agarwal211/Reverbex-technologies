@@ -108,7 +108,7 @@ export default function StickyProjects() {
             {/* Visual/Metric Side */}
             <div className="md:w-5/12 bg-[#111111] p-10 flex flex-col justify-center border-b md:border-b-0 md:border-r border-[#1A1A1A] relative overflow-hidden h-full">
               <div className="absolute top-0 right-0 w-64 h-64 bg-[#EAB308]/10 rounded-full blur-3xl -mr-20 -mt-20 group-hover:scale-150 transition-transform duration-700"></div>
-              <div className="text-[#EAB308] text-5xl md:text-7xl font-black tracking-tighter mb-4" style={{ fontFamily: "var(--font-heading), sans-serif" }}>
+              <div className="font-heading text-[#EAB308] text-5xl md:text-7xl font-black tracking-tighter mb-4">
                 {study.metrics[0].prefix}{study.metrics[0].value}{study.metrics[0].suffix}
               </div>
               <div className="text-[#666666] text-sm uppercase tracking-widest font-semibold">
@@ -126,7 +126,7 @@ export default function StickyProjects() {
                     </span>
                   ))}
                 </div>
-                <h3 className="text-3xl md:text-5xl font-bold text-white mb-6 group-hover:text-[#EAB308] transition-colors duration-300" style={{ fontFamily: "var(--font-heading), sans-serif" }}>
+                <h3 className="font-heading text-3xl md:text-5xl font-bold text-white mb-6 group-hover:text-[#EAB308] transition-colors duration-300">
                   {study.client}
                 </h3>
                 <p className="text-[#A0A0A0] text-base leading-relaxed line-clamp-4">

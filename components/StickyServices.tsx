@@ -5,7 +5,22 @@ import gsap from "gsap";
 import { useGSAP } from "@gsap/react";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import Link from "next/link";
-import Image from "next/image";
+
+
+const gradients = [
+  "from-[#050505] via-[#0A0A0A] to-[#1A1A1A]",
+  "from-[#0A0A0A] via-[#111] to-[#222]",
+  "from-[#050505] via-[#0A0A0A] to-[#1A1A1A]",
+  "from-[#0A0A0A] via-[#111] to-[#222]",
+  "from-[#050505] via-[#0A0A0A] to-[#1A1A1A]",
+  "from-[#0A0A0A] via-[#111] to-[#222]",
+  "from-[#050505] via-[#0A0A0A] to-[#1A1A1A]",
+  "from-[#0A0A0A] via-[#111] to-[#222]",
+  "from-[#050505] via-[#0A0A0A] to-[#1A1A1A]",
+  "from-[#0A0A0A] via-[#111] to-[#222]",
+  "from-[#050505] via-[#0A0A0A] to-[#1A1A1A]",
+  "from-[#0A0A0A] via-[#111] to-[#222]",
+];
 
 const services = [
   {
@@ -14,8 +29,6 @@ const services = [
     tagline: "High-performance Next.js websites built to convert.",
     description:
       "Clean, lightweight code. Under 1 second load times. Full code ownership.",
-    image:
-      "https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=1200&q=80",
   },
   {
     slug: "e-commerce",
@@ -23,8 +36,6 @@ const services = [
     tagline: "Custom stores. Zero platform fees. Full checkout control.",
     description:
       "Secure payments, inventory management, and sub-second catalog rendering.",
-    image:
-      "https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?w=1200&q=80",
   },
   {
     slug: "mobile-apps",
@@ -32,8 +43,6 @@ const services = [
     tagline: "Native & cross-platform apps for iOS and Android.",
     description:
       "React Native & Flutter apps that feel native, load fast, and integrate with your existing systems.",
-    image:
-      "https://images.unsplash.com/photo-1512941937669-90a1b58e7e9c?w=1200&q=80",
   },
   {
     slug: "meta-ads",
@@ -41,8 +50,6 @@ const services = [
     tagline: "Facebook & Instagram campaigns that generate customers.",
     description:
       "Full-funnel strategy. Daily optimization. Lead-focused conversion tracking.",
-    image:
-      "https://images.unsplash.com/photo-1611162617474-5b21e879e113?w=1200&q=80",
   },
   {
     slug: "google-ads",
@@ -50,8 +57,6 @@ const services = [
     tagline: "Search, Display & YouTube campaigns configured for ROI.",
     description:
       "Intent-based keywords, conversion tracking, negative filtering, and weekly bid optimization.",
-    image:
-      "https://images.unsplash.com/photo-1574169208507-84376144848b?w=1200&q=80",
   },
   {
     slug: "lead-generation",
@@ -59,8 +64,6 @@ const services = [
     tagline: "High-converting funnels that deliver qualified leads 24/7.",
     description:
       "Landing pages, lead magnets, automated email & WhatsApp follow-ups — every lead tracked and routed instantly.",
-    image:
-      "https://images.unsplash.com/photo-1434030216411-0b793f4b4173?w=1200&q=80",
   },
   {
     slug: "erp-systems",
@@ -68,8 +71,6 @@ const services = [
     tagline: "Custom ERP & CRM to automate operations and manage customer relationships.",
     description:
       "Inventory, invoicing, lead tracking, sales pipelines, financial reporting — one unified system.",
-    image:
-      "https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=1200&q=80",
   },
   {
     slug: "whatsapp-automation",
@@ -77,8 +78,6 @@ const services = [
     tagline: "Automated messaging. Instant lead routing. 24/7 responses.",
     description:
       "Official Business API. Chatbots, order confirmations, broadcast campaigns.",
-    image:
-      "https://images.unsplash.com/photo-1611746872915-64382b5c76da?w=1200&q=80",
   },
   {
     slug: "ai-solutions",
@@ -86,8 +85,6 @@ const services = [
     tagline: "Intelligent automation. Custom chatbots. Data pipelines.",
     description:
       "Trained on your business data. Reduces overhead. Scales with demand.",
-    image:
-      "https://images.unsplash.com/photo-1677442136019-21780ecad995?w=1200&q=80",
   },
   {
     slug: "seo",
@@ -95,8 +92,6 @@ const services = [
     tagline: "Dominate Google. Get cited by ChatGPT, Gemini, Perplexity.",
     description:
       "Technical SEO + AEO/GEO strategy. Structured data. Weekly optimization.",
-    image:
-      "https://images.unsplash.com/photo-1562577309-4932fdd64cd1?w=1200&q=80",
   },
   {
     slug: "logo-branding",
@@ -104,8 +99,6 @@ const services = [
     tagline: "Distinctive visual identities that make you stand out.",
     description:
       "Logo design, color systems, typography, and complete brand guidelines.",
-    image:
-      "https://images.unsplash.com/photo-1561070791-2526d30994b5?w=1200&q=80",
   },
   {
     slug: "rebranding",
@@ -113,8 +106,6 @@ const services = [
     tagline: "Full brand refresh from strategy to deployment.",
     description:
       "Strategy, visual identity, website redesign, social media — every touchpoint transformed.",
-    image:
-      "https://images.unsplash.com/photo-1559136555-9303baea8ebd?w=1200&q=80",
   },
 ];
 
@@ -217,10 +208,7 @@ export default function StickyServices() {
       aria-label="Our services"
     >
       <div className="absolute top-12 text-center w-full z-0 opacity-50 pointer-events-none">
-        <h2
-          className="text-[#A0A0A0] text-sm uppercase tracking-[0.3em]"
-          style={{ fontFamily: "var(--font-body), sans-serif" }}
-        >
+        <h2 className="font-body text-[#A0A0A0] text-sm uppercase tracking-[0.3em]">
           Scroll to explore
         </h2>
       </div>
@@ -228,7 +216,7 @@ export default function StickyServices() {
       {services.map((service, index) => (
         <div
           key={service.slug}
-          className="stacked-card absolute w-[95%] md:w-[85%] max-w-6xl h-[70vh] md:h-[75vh] overflow-hidden shadow-2xl will-change-transform group border border-white/10"
+          className={`stacked-card absolute w-[95%] md:w-[85%] max-w-6xl h-[70vh] md:h-[75vh] overflow-hidden shadow-2xl will-change-transform group border border-white/10 bg-gradient-to-br ${gradients[index]}`}
           style={{
             top: "50%",
             left: "50%",
@@ -239,44 +227,23 @@ export default function StickyServices() {
             href={`/services/${service.slug}`}
             className="w-full h-full block relative"
           >
-            {/* Full Bleed Image Background */}
-            <div className="absolute inset-0 w-full h-full">
-              <Image
-                src={service.image}
-                alt={service.name}
-                fill
-                sizes="100vw"
-                className="object-cover group-hover:scale-105 transition-transform duration-1000 ease-out"
-                priority={index < 3}
-              />
-              <div className="absolute inset-0 bg-gradient-to-t from-[#050505] via-[#050505]/50 to-black/20 z-10" />
-            </div>
+            {/* Gradient Background */}
+            <div className="absolute inset-0 bg-gradient-to-t from-[#EAB308]/5 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-700" />
+            <div className="absolute inset-0 bg-gradient-to-t from-[#050505] via-[#050505]/50 to-black/20 z-10" />
 
             {/* Overlay Text Content */}
             <div className="relative z-20 w-full h-full p-8 md:p-16 flex flex-col justify-end">
               <div className="max-w-3xl transform translate-y-4 group-hover:translate-y-0 transition-transform duration-500 ease-out">
-                <span
-                  className="text-[#EAB308] text-xs font-bold tracking-[0.3em] uppercase mb-4 md:mb-6 block"
-                  style={{ fontFamily: "var(--font-body), sans-serif" }}
-                >
+                <span className="font-body text-[#EAB308] text-xs font-bold tracking-[0.3em] uppercase mb-4 md:mb-6 block">
                   {String(index + 1).padStart(2, "0")} / {String(totalCards).padStart(2, "0")}
                 </span>
-                <h3
-                  className="text-white text-[clamp(2.5rem,6vw,5rem)] font-black tracking-[-0.03em] leading-[1.0] mb-4 group-hover:text-[#EAB308] transition-colors duration-300"
-                  style={{ fontFamily: "var(--font-heading), sans-serif" }}
-                >
+                <h3 className="font-heading text-white text-[clamp(2.5rem,6vw,5rem)] font-black tracking-[-0.03em] leading-[1.0] mb-4 group-hover:text-[#EAB308] transition-colors duration-300">
                   {service.name}
                 </h3>
-                <p
-                  className="text-white text-lg md:text-2xl font-semibold tracking-tight mb-3"
-                  style={{ fontFamily: "var(--font-heading), sans-serif" }}
-                >
+                <p className="font-heading text-white text-lg md:text-2xl font-semibold tracking-tight mb-3">
                   {service.tagline}
                 </p>
-                <p
-                  className="text-white/70 text-base md:text-lg leading-relaxed max-w-xl mb-8"
-                  style={{ fontFamily: "var(--font-body), sans-serif" }}
-                >
+                <p className="font-body text-white/70 text-base md:text-lg leading-relaxed max-w-xl mb-8">
                   {service.description}
                 </p>
               </div>

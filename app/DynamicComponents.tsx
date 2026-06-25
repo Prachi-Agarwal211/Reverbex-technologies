@@ -19,11 +19,6 @@ export const TrustedBy = dynamic(() => import("../components/TrustedBy"), {
   loading: () => <div className="w-full min-h-[40vh] bg-transparent" />,
 });
 
-export const LiveResults = dynamic(() => import("../components/LiveResults"), {
-  ssr: false,
-  loading: () => pulse,
-});
-
 export const StickyServices = dynamic(() => import("../components/StickyServices"), {
   ssr: false,
   loading: () => <div className="w-full min-h-screen bg-transparent animate-pulse" />,
@@ -38,11 +33,6 @@ export const FeaturedArchitectures = dynamic(
 );
 
 export const WhyReverbex = dynamic(() => import("../components/WhyReverbex"), {
-  ssr: false,
-  loading: () => pulse,
-});
-
-export const Testimonials = dynamic(() => import("../components/Testimonials"), {
   ssr: false,
   loading: () => pulse,
 });
@@ -70,7 +60,4 @@ export const ContactSection = dynamic(
   }
 );
 
-export const Industries = dynamic(() => import("../components/Industries"), {
-  ssr: false,
-  loading: () => <div className="w-full py-24 bg-transparent animate-pulse" />,
-});
+

@@ -13,7 +13,7 @@ export default function Loading() {
       </div>
 
       {/* Ambient background effect */}
-      <div className="absolute inset-0 bg-gradient-to-br from-blue-900/10 via-black to-yellow-900/10" />
+      <div className="absolute inset-0 bg-gradient-to-br from-[#EAB308]/5 via-black to-[#EAB308]/10" />
     </div>
   );
 }

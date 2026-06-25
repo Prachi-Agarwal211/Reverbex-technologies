@@ -6,6 +6,7 @@ import { useGSAP } from "@gsap/react";
 import Navbar from "../../components/Navbar";
 import ContactSection from "../../components/ContactSection";
 import { ArrowRight, Mail, Phone, MapPin } from "lucide-react";
+import { CONTACT } from "@/lib/config";
 
 export default function ContactPage() {
   const containerRef = useRef<HTMLElement>(null);
@@ -57,23 +58,23 @@ export default function ContactPage() {
 
               {/* Direct Contact Methods */}
               <div className="space-y-8 border-t border-[#1A1A1A] pt-12">
-                <a href="mailto:15anuragsingh2003@gmail.com" className="group flex items-center gap-6 p-4 -ml-4 hover:bg-[#0A0A0A] rounded-2xl transition-colors duration-300">
+                <a href={`mailto:${CONTACT.email}`} className="group flex items-center gap-6 p-4 -ml-4 hover:bg-[#0A0A0A] rounded-2xl transition-colors duration-300">
                   <div className="w-14 h-14 bg-[#111] rounded-full flex items-center justify-center text-[#EAB308] group-hover:scale-110 transition-transform duration-300">
                     <Mail className="w-6 h-6" />
                   </div>
                   <div>
                     <div className="text-[#666666] text-xs font-semibold uppercase tracking-widest mb-1">Email Us</div>
-                    <div className="text-xl font-bold group-hover:text-[#EAB308] transition-colors duration-300">15anuragsingh2003@gmail.com</div>
+                    <div className="text-xl font-bold group-hover:text-[#EAB308] transition-colors duration-300">{CONTACT.emailDisplay}</div>
                   </div>
                 </a>
                 
-                <a href="https://wa.me/919929986743" target="_blank" rel="noopener noreferrer" className="group flex items-center gap-6 p-4 -ml-4 hover:bg-[#0A0A0A] rounded-2xl transition-colors duration-300">
+                <a href={CONTACT.whatsappHref} target="_blank" rel="noopener noreferrer" className="group flex items-center gap-6 p-4 -ml-4 hover:bg-[#0A0A0A] rounded-2xl transition-colors duration-300">
                   <div className="w-14 h-14 bg-[#111] rounded-full flex items-center justify-center text-[#EAB308] group-hover:scale-110 transition-transform duration-300">
                     <Phone className="w-6 h-6" />
                   </div>
                   <div>
                     <div className="text-[#666666] text-xs font-semibold uppercase tracking-widest mb-1">Call / WhatsApp</div>
-                    <div className="text-xl font-bold group-hover:text-[#EAB308] transition-colors duration-300">+91-9929986743</div>
+                    <div className="text-xl font-bold group-hover:text-[#EAB308] transition-colors duration-300">{CONTACT.phone}</div>
                   </div>
                 </a>
                 

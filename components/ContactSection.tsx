@@ -140,8 +140,22 @@ export default function ContactSection() {
                 </div>
               ) : (
                 <form
-                  onSubmit={(e) => {
+                  onSubmit={async (e) => {
                     e.preventDefault();
+                    const form = e.currentTarget;
+                    const data = {
+                      name: (form.elements.namedItem("name") as HTMLInputElement).value,
+                      phone: (form.elements.namedItem("phone") as HTMLInputElement).value,
+                      website: (form.elements.namedItem("website") as HTMLInputElement).value,
+                      message: (form.elements.namedItem("message") as HTMLTextAreaElement).value,
+                    };
+                    try {
+                      await fetch("/api/contact", {
+                        method: "POST",
+                        headers: { "Content-Type": "application/json" },
+                        body: JSON.stringify(data),
+                      });
+                    } catch {}
                     setFormSubmitted(true);
                   }}
                   className="w-full flex flex-col gap-10"
