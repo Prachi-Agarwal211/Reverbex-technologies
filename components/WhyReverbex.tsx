@@ -1,184 +1,158 @@
 "use client";
 
-import { useRef } from "react";
-import Image from "next/image";
-import { useGSAP } from "@gsap/react";
+import { useRef, useEffect, useState } from "react";
 import gsap from "gsap";
+import { useGSAP } from "@gsap/react";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
-import { CheckCircle2 } from "lucide-react";
 
-const comparisons = [
-  {
-    title: "Blazing Fast Performance",
-    desc: "Our custom Next.js sites load in under 1 second, compared to template builders that take 3-5 seconds. Google explicitly ranks faster websites higher.",
-    metric: "100/100 PageSpeed",
-  },
-  {
-    title: "AI-Ready SEO (AEO/GEO)",
-    desc: "We optimize your brand not just for Google, but for ChatGPT, Gemini, and Perplexity. When people ask AI about your industry, it recommends you.",
-    metric: "Answer Engine Ready",
-  },
-  {
-    title: "Conversion-Obsessed Design",
-    desc: "Every pixel serves a purpose. We use behavioral psychology and clean UI to guide visitors toward the 'Start Project' button without friction.",
-    metric: "Built for Revenue",
-  },
-  {
-    title: "Zero Platform Taxes",
-    desc: "Platforms like Shopify take 2-5% of your revenue forever. We build custom commerce systems where you keep 100% of your sales.",
-    metric: "Keep Your Margins",
-  },
-  {
-    title: "Infinite Scalability",
-    desc: "No plugin conflicts. No locked-in themes. Because we write custom code, your website can evolve into a full web-app whenever you need it.",
-    metric: "Future-Proof Tech",
-  },
+gsap.registerPlugin(ScrollTrigger);
+
+const reasons = [
+  { stat: "100", unit: "/100", label: "PageSpeed",       line: "Score guaranteed on every project. Sub-second load — Google rewards speed.",                    color: "#3B82F6" },
+  { stat: "5",   unit: "×",    label: "Faster Rankings", line: "AEO + GEO optimization. Your business cited by ChatGPT, Gemini, and Google AI.",                 color: "#EAB308" },
+  { stat: "3",   unit: "×",    label: "More Conversions",line: "Conversion-first architecture. Every element exists to turn visitors into customers.",            color: "#10B981" },
+  { stat: "0",   unit: "%",    label: "Platform Fees",   line: "No WordPress. No Shopify. Pure code ownership — the whole codebase is yours, forever.",          color: "#A78BFA" },
+  { stat: "0",   unit: "",     label: "Templates",       line: "We charge once. No monthly fees, no transaction cuts. Pay once, own everything.",                 color: "#F472B6" },
+  { stat: "247", unit: "",     label: "Support",         line: "Daily WhatsApp availability. Proactive monitoring. We don't disappear after launch.",             color: "#0EA5E9" },
 ];
+
+function WhyRow({ r, index, visible }: { r: typeof reasons[0]; index: number; visible: boolean }) {
+  const target = parseInt(r.stat) || 0;
+  const [count, setCount] = useState(0);
+
+  useEffect(() => {
+    if (!visible) return;
+    const duration = 1000;
+    const start = Date.now();
+    const tick = () => {
+      const p = Math.min((Date.now() - start) / duration, 1);
+      setCount(Math.round((1 - Math.pow(1 - p, 3)) * target));
+      if (p < 1) requestAnimationFrame(tick);
+    };
+    requestAnimationFrame(tick);
+  }, [visible, target]);
+
+  const displayStat = r.label === "Support" ? "24/7" : count;
+
+  return (
+    <div
+      className="why-row flex flex-col sm:flex-row items-start sm:items-center gap-4 sm:gap-8 py-6 md:py-8 cursor-default"
+      style={{ opacity: 0, transform: "translateY(20px)" }}
+    >
+      <div
+        className="shrink-0 font-black leading-none tabular-nums"
+        style={{
+          fontSize: "clamp(2.5rem, 5vw, 4rem)",
+          letterSpacing: "-0.05em",
+          color: r.color,
+          fontFamily: "var(--font-heading)",
+          minWidth: "min(160px, 35vw)",
+          filter: `drop-shadow(0 0 24px ${r.color}30)`,
+        }}
+      >
+        {displayStat}
+        {r.unit && (
+          <span className="text-[55%] ml-0.5" style={{ color: `${r.color}80` }}>
+            {r.unit}
+          </span>
+        )}
+      </div>
+
+      <div className="hidden sm:block w-px h-10 self-center" style={{ background: "rgba(255,255,255,0.07)" }} />
+
+      <div className="flex-1">
+        <div className="flex items-center gap-2.5 mb-2">
+          <div className="w-3 h-[1px]" style={{ background: r.color }} />
+          <span className="text-[10px] font-bold uppercase tracking-[0.25em]" style={{ color: `${r.color}90` }}>
+            {r.label}
+          </span>
+        </div>
+        <p className="text-sm text-white/40 leading-relaxed max-w-md">
+          {r.line}
+        </p>
+      </div>
+
+      <span className="hidden md:block shrink-0 text-[10px] font-mono" style={{ color: "rgba(255,255,255,0.07)" }}>
+        {String(index + 1).padStart(2, "0")}
+      </span>
+    </div>
+  );
+}
 
 export default function WhyReverbex() {
   const containerRef = useRef<HTMLElement>(null);
-  const leftColRef = useRef<HTMLDivElement>(null);
-  const rightColRef = useRef<HTMLDivElement>(null);
+  const [visible, setVisible] = useState(false);
+
+  useEffect(() => {
+    const el = containerRef.current;
+    if (!el) return;
+    const io = new IntersectionObserver(([e]) => { if (e.isIntersecting) setVisible(true); }, { threshold: 0.1 });
+    io.observe(el);
+    return () => io.disconnect();
+  }, []);
 
   useGSAP(() => {
-    if (!containerRef.current || !leftColRef.current || !rightColRef.current) return;
+    if (!containerRef.current) return;
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
 
-    const prefersReducedMotion = window.matchMedia(
-      "(prefers-reduced-motion: reduce)"
-    ).matches;
-    if (prefersReducedMotion) return;
-
-    const isDesktop = window.matchMedia("(min-width: 1024px)").matches;
-
-    if (isDesktop) {
-      ScrollTrigger.create({
-        trigger: containerRef.current,
-        start: "top top",
-        end: "bottom bottom",
-        pin: leftColRef.current,
-        pinSpacing: false,
+    // Normal scroll reveal — no pinning!
+    const rows = containerRef.current.querySelectorAll(".why-row");
+    
+    rows.forEach((row, i) => {
+      gsap.to(row, {
+        opacity: 1,
+        y: 0,
+        duration: 0.8,
+        ease: "power3.out",
+        scrollTrigger: {
+          trigger: row,
+          start: "top 85%",
+        }
       });
-
-      const cards = rightColRef.current.querySelectorAll(".why-card");
-      cards.forEach((card) => {
-        gsap.fromTo(
-          card,
-          { opacity: 0.2, scale: 0.9, y: 50 },
-          {
-            opacity: 1,
-            scale: 1,
-            y: 0,
-            duration: 0.5,
-            ease: "power2.out",
-            scrollTrigger: {
-              trigger: card,
-              start: "top 80%",
-              end: "top 30%",
-              scrub: true,
-            },
-          }
-        );
-      });
-    } else {
-      const cards = rightColRef.current.querySelectorAll(".why-card");
-      cards.forEach((card) => {
-        gsap.fromTo(
-          card,
-          { opacity: 0, y: 30 },
-          {
-            opacity: 1,
-            y: 0,
-            duration: 0.6,
-            ease: "power2.out",
-            scrollTrigger: {
-              trigger: card,
-              start: "top 85%",
-              toggleActions: "play none none reverse",
-            },
-          }
-        );
-      });
-    }
+    });
   }, { scope: containerRef });
 
   return (
     <section
       ref={containerRef}
       id="why-reverbex"
-      className="relative w-full bg-black overflow-hidden"
+      className="relative w-full overflow-hidden py-24 md:py-32 z-20"
+      style={{
+        background: "#040810",
+        backgroundImage: `
+          radial-gradient(ellipse 80% 60% at 80% 20%, rgba(234,179,8,0.08) 0%, transparent 55%),
+          radial-gradient(ellipse 60% 70% at 10% 60%, rgba(59,130,246,0.10) 0%, transparent 55%)
+        `,
+      }}
     >
-      {/* Background Image */}
-      <div className="absolute inset-0 z-0">
-        <Image
-          src="/outperform-bg.jpg"
-          alt=""
-          fill
-          className="object-cover opacity-40"
-          priority={false}
-        />
-      </div>
+      <div className="absolute inset-0 grid-lines opacity-10 pointer-events-none" />
 
-      {/* Gold Grid Overlay */}
-      <div
-        className="absolute inset-0 z-[1] pointer-events-none opacity-20"
-        style={{
-          backgroundImage:
-            "linear-gradient(to right, #EAB308 1px, transparent 1px), linear-gradient(to bottom, #EAB308 1px, transparent 1px)",
-          backgroundSize: "4rem 4rem",
-        }}
-      />
-
-      {/* Dark gradient overlay for readability */}
-      <div className="absolute inset-0 z-[2] bg-gradient-to-b from-black/70 via-black/50 to-black/80 pointer-events-none" />
-
-      <div className="max-w-7xl mx-auto px-6 md:px-12 py-24 md:py-32 relative z-10">
-        <div className="flex flex-col lg:flex-row gap-16 lg:gap-24 relative">
-          {/* Left Column (Pinned on Desktop) */}
-          <div className="w-full lg:w-[45%] shrink-0">
-            <div ref={leftColRef} className="lg:h-screen lg:flex lg:flex-col lg:justify-center lg:-mt-32">
-              <span className="text-[#EAB308] text-xs font-semibold tracking-[0.25em] uppercase mb-6 block">
-                The Reverbex Edge
-              </span>
-              <h2 className="text-white text-[clamp(2.5rem,5vw,4.5rem)] font-black tracking-[-0.03em] leading-[1.0] mb-8">
-                Why We Outperform Templates.
-              </h2>
-              <p className="text-[#A0A0A0] text-lg font-normal leading-relaxed max-w-md">
-                We don't sell websites. We engineer revenue-generating systems. Here is exactly why custom code beats templates every time.
-              </p>
+      <div className="max-w-6xl mx-auto px-5 md:px-10 relative z-10">
+        <div className="mb-16 md:mb-20 flex flex-col md:flex-row md:items-end md:justify-between gap-6">
+          <div>
+            <div className="flex items-center gap-2.5 mb-4">
+              <div className="w-4 h-[1px] bg-yellow-400/50" />
+              <span className="text-[9px] font-bold uppercase tracking-[0.3em] text-yellow-400/60">Why Reverbex</span>
             </div>
+            <h2
+              className="font-black text-white leading-[0.92]"
+              style={{ fontSize: "clamp(2rem, 5vw, 4rem)", letterSpacing: "-0.04em", fontFamily: "var(--font-heading)" }}
+            >
+              Built different.<br />
+              <span style={{ color: "#EAB308" }}>Priced honest.</span>
+            </h2>
           </div>
+          <p className="text-xs text-white/30 max-w-xs leading-relaxed md:text-right">
+            We don't build websites. We engineer business growth systems — with no BS and no hidden fees.
+          </p>
+        </div>
 
-          {/* Right Column (Scrolling Cards) */}
-          <div ref={rightColRef} className="w-full lg:w-[55%] flex flex-col gap-8 lg:pt-[50vh] lg:pb-[20vh]">
-            {comparisons.map((item, index) => (
-              <div
-                key={index}
-                className="why-card group relative p-8 md:p-10 rounded-2xl bg-black/60 backdrop-blur-sm border border-[#EAB308]/20 hover:border-[#EAB308]/60 transition-all duration-500 overflow-hidden"
-              >
-                {/* Gold glow on hover */}
-                <div className="absolute top-0 right-0 w-32 h-32 bg-[#EAB308]/10 rounded-full blur-[50px] opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-
-                <div className="relative z-10">
-                  <div className="flex items-center gap-4 mb-6">
-                    <div className="w-10 h-10 rounded-full bg-[#EAB308]/10 flex items-center justify-center shrink-0">
-                      <CheckCircle2 className="w-5 h-5 text-[#EAB308]" />
-                    </div>
-                    <h3 className="text-white text-2xl font-bold tracking-tight">
-                      {item.title}
-                    </h3>
-                  </div>
-
-                  <p className="text-[#A0A0A0] text-base leading-relaxed mb-8">
-                    {item.desc}
-                  </p>
-
-                  <div className="inline-block px-4 py-2 rounded-lg bg-[#EAB308]/10 border border-[#EAB308]/20 text-[#EAB308] text-sm font-semibold tracking-wide">
-                    {item.metric}
-                  </div>
-                </div>
-              </div>
-            ))}
-          </div>
+        <div className="flex flex-col" style={{ borderTop: "1px solid rgba(255,255,255,0.05)" }}>
+          {reasons.map((r, i) => (
+            <div key={i} style={{ borderBottom: "1px solid rgba(255,255,255,0.05)" }}>
+              <WhyRow r={r} index={i} visible={visible} />
+            </div>
+          ))}
         </div>
       </div>
     </section>

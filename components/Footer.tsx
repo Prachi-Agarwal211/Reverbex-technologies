@@ -10,23 +10,23 @@ import { CONTACT, SOCIALS } from "@/lib/config";
 
 const footerLinks = {
   services: [
-    { label: "Custom Websites", href: "/services/website-development" },
-    { label: "E-Commerce", href: "/services/e-commerce" },
-    { label: "Meta Ads", href: "/services/meta-ads" },
-    { label: "Google Ads", href: "/services/google-ads" },
-    { label: "AI Solutions", href: "/services/ai-solutions" },
-    { label: "SEO & AI Optimization", href: "/services/seo" },
+    { label: "Custom Websites",    href: "/services/website-development" },
+    { label: "E-Commerce",         href: "/services/e-commerce" },
+    { label: "Meta Ads",           href: "/services/meta-ads" },
+    { label: "Google Ads",         href: "/services/google-ads" },
+    { label: "AI Solutions",       href: "/services/ai-solutions" },
+    { label: "SEO & AI Ranking",   href: "/services/seo" },
+    { label: "WhatsApp Automation",href: "/services/whatsapp-automation" },
   ],
   company: [
-    { label: "About", href: "/about" },
-    { label: "Work", href: "/work" },
-    { label: "Pricing", href: "/pricing" },
-    { label: "Industries", href: "/industries" },
-    { label: "Contact", href: "/contact" },
+    { label: "About",    href: "/about" },
+    { label: "Work",     href: "/work" },
+    { label: "Contact",  href: "/contact" },
+    { label: "Pricing",  href: "/pricing" },
   ],
   legal: [
-    { label: "Privacy Policy", href: "/privacy-policy" },
-    { label: "Terms of Service", href: "/terms-of-service" },
+    { label: "Privacy Policy",  href: "/privacy-policy" },
+    { label: "Terms of Service",href: "/terms-of-service" },
   ],
 };
 
@@ -36,183 +36,162 @@ export default function Footer() {
   const ctaRef = useRef<HTMLDivElement>(null);
   const linksRef = useRef<HTMLDivElement>(null);
 
-  // IntersectionObserver to pause video when out of viewport
   useEffect(() => {
     const video = videoRef.current;
     if (!video) return;
-
     const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            video.playbackRate = 0.7;
-            video.play().catch(() => {});
-          } else {
-            video.pause();
-          }
-        });
-      },
+      ([entry]) => { entry.isIntersecting ? video.play().catch(() => {}) : video.pause(); },
       { threshold: 0.1 }
     );
-
     observer.observe(video);
-    return () => {
-      observer.disconnect();
-      video.pause();
-    };
+    return () => { observer.disconnect(); video.pause(); };
   }, []);
 
   useGSAP(() => {
     if (!containerRef.current) return;
-
     const ctx = gsap.context(() => {
-      const prefersReducedMotion = window.matchMedia(
-        "(prefers-reduced-motion: reduce)"
-      ).matches;
+      if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
 
-      if (prefersReducedMotion) return;
-
-      // CTA section: scale up from 0.95 + fade in
       if (ctaRef.current) {
-        gsap.fromTo(
-          ctaRef.current,
-          { opacity: 0, scale: 0.95 },
-          {
-            opacity: 1,
-            scale: 1,
-            duration: 1,
-            ease: "power3.out",
-            scrollTrigger: {
-              trigger: ctaRef.current,
-              start: "top 95%",
-              toggleActions: "play none none none",
-            },
+        gsap.fromTo(ctaRef.current,
+          { opacity: 0, scale: 0.96 },
+          { opacity: 1, scale: 1, duration: 0.9, ease: "power3.out",
+            scrollTrigger: { trigger: ctaRef.current, start: "top 92%", toggleActions: "play none none none" }
           }
         );
       }
-
-      // Links section: stagger columns in from bottom
       if (linksRef.current) {
-        const columns = linksRef.current.querySelectorAll(":scope > div");
-        gsap.fromTo(
-          columns,
-          { opacity: 0, y: 30 },
-          {
-            opacity: 1,
-            y: 0,
-            stagger: 0.1,
-            duration: 0.8,
-            ease: "power3.out",
-            scrollTrigger: {
-              trigger: linksRef.current,
-              start: "top 95%",
-              toggleActions: "play none none none",
-            },
+        const cols = linksRef.current.querySelectorAll(":scope > div");
+        gsap.fromTo(cols,
+          { opacity: 0, y: 24 },
+          { opacity: 1, y: 0, stagger: 0.08, duration: 0.7, ease: "power2.out",
+            scrollTrigger: { trigger: linksRef.current, start: "top 95%", toggleActions: "play none none none" }
           }
         );
       }
     }, containerRef);
-
     return () => ctx.revert();
   }, { scope: containerRef });
 
-  const handleBackToTop = () => {
-    window.scrollTo({ top: 0, behavior: "smooth" });
-  };
-
   return (
-    <footer ref={containerRef} className="relative w-full bg-[#050505]">
-      {/* Video CTA Section */}
-      <div className="relative w-full h-[40vh] md:h-[50vh] overflow-hidden">
+    <footer
+      ref={containerRef}
+      className="relative w-full"
+      style={{
+        background: "#020408",
+        borderTop: "1px solid rgba(59,130,246,0.10)",
+      }}
+    >
+      {/* CTA Video Banner */}
+      <div className="relative w-full h-[38vh] md:h-[48vh] overflow-hidden">
         <video
           ref={videoRef}
-          autoPlay
-          loop
-          muted
-          playsInline
-          preload="metadata"
-          className="absolute inset-0 w-full h-full object-cover opacity-40"
+          autoPlay loop muted playsInline preload="metadata"
+          className="absolute inset-0 w-full h-full object-cover"
+          style={{ opacity: 0.3 }}
           aria-hidden="true"
         >
           <source src="/hero-video-desktop.mp4" type="video/mp4" />
         </video>
-        <div className="absolute inset-0 bg-gradient-to-b from-[#050505] via-[#050505]/60 to-[#050505]" />
 
-        {/* CTA overlay — GSAP animates this */}
-        <div ref={ctaRef} className="absolute inset-0 flex flex-col items-center justify-center text-center px-6">
-          <span className="text-white text-xs font-semibold tracking-[0.25em] uppercase mb-4 block">
-            Ready to Grow?
-          </span>
-          <h2 className="text-[clamp(2.5rem,8vw,6rem)] font-black tracking-[-0.04em] leading-[0.9] text-white max-w-4xl">
-            Let&apos;s Build
-            <br />
-            Something Great.
+        {/* Video overlays */}
+        <div
+          className="absolute inset-0"
+          style={{ background: "linear-gradient(180deg, #020408 0%, rgba(2,4,8,0.5) 40%, rgba(2,4,8,0.5) 60%, #020408 100%)" }}
+        />
+        <div
+          className="absolute inset-0"
+          style={{ background: "radial-gradient(ellipse 70% 80% at 50% 50%, rgba(59,130,246,0.10) 0%, transparent 60%)" }}
+        />
+
+        {/* CTA Content */}
+        <div ref={ctaRef} className="absolute inset-0 flex flex-col items-center justify-center text-center px-5">
+          <div className="flex items-center gap-2.5 mb-5">
+            <div className="w-4 h-[1.5px] rounded bg-yellow-400" />
+            <span className="section-label text-yellow-400">Ready to Grow?</span>
+            <div className="w-4 h-[1.5px] rounded bg-yellow-400" />
+          </div>
+          <h2
+            className="text-white font-black leading-[0.95] tracking-tight mb-7"
+            style={{ fontSize: "clamp(2rem, 6vw, 4.5rem)", letterSpacing: "-0.035em" }}
+          >
+            Let's build something{" "}
+            <span className="text-gradient-gold">great</span>.
           </h2>
           <a
             href="https://wa.me/919929986743"
             target="_blank"
             rel="noopener noreferrer"
-            className="mt-8 inline-flex items-center gap-3 bg-[#EAB308] text-black px-8 py-4 rounded-full font-bold text-lg hover:bg-[#d4a007] transition-colors duration-300"
+            className="inline-flex items-center gap-2.5 px-6 py-3 rounded-full font-bold text-sm transition-all duration-300"
+            style={{
+              background: "linear-gradient(135deg, #EAB308, #D97706)",
+              color: "#020408",
+              boxShadow: "0 6px 24px rgba(234,179,8,0.35)",
+            }}
+            onMouseEnter={e => { (e.currentTarget as HTMLElement).style.transform = "scale(1.05)"; (e.currentTarget as HTMLElement).style.boxShadow = "0 10px 35px rgba(234,179,8,0.5)"; }}
+            onMouseLeave={e => { (e.currentTarget as HTMLElement).style.transform = ""; (e.currentTarget as HTMLElement).style.boxShadow = "0 6px 24px rgba(234,179,8,0.35)"; }}
           >
-            Message Us on WhatsApp
-            <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14 5l7 7m0 0l-7 7m7-7H3" />
+            Message us on WhatsApp
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
+              <path d="M5 12h14M12 5l7 7-7 7" />
             </svg>
           </a>
         </div>
       </div>
 
-      {/* Footer Links — GSAP animates columns */}
-      <div ref={linksRef} className="max-w-7xl mx-auto px-6 md:px-12 py-16 md:py-20">
-        <div className="grid grid-cols-2 md:grid-cols-12 gap-10 md:gap-8">
-          {/* Brand */}
-          <div className="col-span-2 md:col-span-4 flex flex-col gap-6">
-            <Link href="/" className="flex items-center gap-2.5 group">
-              <Image
-                src="/reverbex logo.png"
-                alt="Reverbex"
-                width={120}
-                height={36}
-                className="h-7 w-auto object-contain"
-              />
-              <span className="text-base text-white font-semibold tracking-tight">
-                REVERBEX
+      {/* Footer links grid */}
+      <div ref={linksRef} className="max-w-7xl mx-auto px-5 md:px-10 py-14 md:py-16">
+        <div className="grid grid-cols-2 md:grid-cols-12 gap-8 md:gap-6">
+
+          {/* Brand column */}
+          <div className="col-span-2 md:col-span-4">
+            <Link href="/" className="flex items-center gap-2.5 group mb-5">
+              <div className="relative w-6 h-6">
+                <Image
+                  src="/reverbex logo.png"
+                  alt="Reverbex"
+                  fill
+                  className="object-contain transition-transform duration-300 group-hover:scale-110"
+                  sizes="24px"
+                />
+              </div>
+              <span className="text-xs font-bold tracking-[0.15em] text-white uppercase">
+                Reverbex Technologies
               </span>
             </Link>
-            <p className="text-[#666666] text-sm leading-relaxed max-w-xs">
-              Websites. Ads. Automation. Built to grow businesses. Based in Jaipur, serving globally.
+            <p className="text-xs text-white/30 leading-relaxed max-w-xs mb-5">
+              Websites. Ads. Automation. ERP systems. Built to grow businesses.
+              Based in Jaipur, serving globally.
             </p>
             <div className="flex gap-4">
-              <a
-                href={SOCIALS.linkedin}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="text-[#666666] hover:text-[#EAB308] transition-colors text-xs uppercase tracking-[0.15em]"
-              >
-                LinkedIn
-              </a>
-              <a
-                href={SOCIALS.twitter}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="text-[#666666] hover:text-[#EAB308] transition-colors text-xs uppercase tracking-[0.15em]"
-              >
-                Twitter
-              </a>
+              {[
+                { label: "LinkedIn", href: SOCIALS.linkedin },
+                { label: "Twitter", href: SOCIALS.twitter },
+              ].map((s) => (
+                <a
+                  key={s.label}
+                  href={s.href}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-[10px] font-semibold uppercase tracking-[0.2em] text-white/25 hover:text-blue-400 transition-colors duration-200"
+                >
+                  {s.label}
+                </a>
+              ))}
             </div>
           </div>
 
           {/* Services */}
-          <div className="col-span-1 md:col-span-2 md:col-start-6">
-            <h3 className="text-white text-xs font-bold tracking-[0.2em] uppercase mb-4">
+          <div className="col-span-1 md:col-span-3 md:col-start-6">
+            <h3 className="text-[10px] font-bold tracking-[0.2em] uppercase text-white/40 mb-4">
               Services
             </h3>
-            <ul className="flex flex-col gap-2.5">
+            <ul className="flex flex-col gap-2">
               {footerLinks.services.map((link) => (
                 <li key={link.href}>
                   <Link
                     href={link.href}
-                    className="text-[#666666] text-sm hover:text-[#EAB308] transition-colors duration-200"
+                    className="text-xs text-white/30 hover:text-yellow-400 transition-colors duration-200"
                   >
                     {link.label}
                   </Link>
@@ -223,15 +202,15 @@ export default function Footer() {
 
           {/* Company */}
           <div className="col-span-1 md:col-span-2">
-            <h3 className="text-white text-xs font-bold tracking-[0.2em] uppercase mb-4">
+            <h3 className="text-[10px] font-bold tracking-[0.2em] uppercase text-white/40 mb-4">
               Company
             </h3>
-            <ul className="flex flex-col gap-2.5">
+            <ul className="flex flex-col gap-2">
               {footerLinks.company.map((link) => (
                 <li key={link.href}>
                   <Link
                     href={link.href}
-                    className="text-[#666666] text-sm hover:text-[#EAB308] transition-colors duration-200"
+                    className="text-xs text-white/30 hover:text-blue-400 transition-colors duration-200"
                   >
                     {link.label}
                   </Link>
@@ -242,14 +221,14 @@ export default function Footer() {
 
           {/* Contact */}
           <div className="col-span-2 md:col-span-3">
-            <h3 className="text-white text-xs font-bold tracking-[0.2em] uppercase mb-4">
+            <h3 className="text-[10px] font-bold tracking-[0.2em] uppercase text-white/40 mb-4">
               Get in Touch
             </h3>
             <ul className="flex flex-col gap-3">
               <li>
                 <a
                   href={`mailto:${CONTACT.email}`}
-                  className="text-[#666666] text-sm hover:text-[#EAB308] transition-colors break-all"
+                  className="text-xs text-white/30 hover:text-yellow-400 transition-colors break-all"
                 >
                   {CONTACT.emailDisplay}
                 </a>
@@ -257,32 +236,33 @@ export default function Footer() {
               <li>
                 <a
                   href={CONTACT.phoneHref}
-                  className="text-[#666666] text-sm hover:text-[#EAB308] transition-colors"
+                  className="text-xs text-white/30 hover:text-yellow-400 transition-colors"
                 >
                   {CONTACT.phone}
                 </a>
               </li>
               <li>
-                <span className="text-[#666666] text-sm">
-                  {CONTACT.location}
-                </span>
+                <span className="text-xs text-white/20">{CONTACT.location}</span>
               </li>
             </ul>
           </div>
         </div>
 
-        {/* Bottom Bar */}
-        <div className="mt-16 pt-8 border-t border-[#1A1A1A] flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
-          <div className="flex flex-col sm:flex-row items-start sm:items-center gap-2 sm:gap-6">
-            <p className="text-[#444] text-[10px] md:text-xs tracking-[0.15em] uppercase">
-              &copy; {new Date().getFullYear()} Reverbex Technologies
+        {/* Bottom bar */}
+        <div
+          className="mt-12 pt-6 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4"
+          style={{ borderTop: "1px solid rgba(255,255,255,0.05)" }}
+        >
+          <div className="flex flex-col sm:flex-row items-start sm:items-center gap-3 sm:gap-6">
+            <p className="text-[10px] text-white/20 tracking-[0.15em] uppercase">
+              © {new Date().getFullYear()} Reverbex Technologies
             </p>
             <div className="flex gap-4">
               {footerLinks.legal.map((link) => (
                 <Link
                   key={link.href}
                   href={link.href}
-                  className="text-[#444] text-[10px] md:text-xs tracking-[0.15em] uppercase hover:text-[#EAB308] transition-colors"
+                  className="text-[10px] text-white/20 tracking-[0.12em] uppercase hover:text-white/50 transition-colors"
                 >
                   {link.label}
                 </Link>
@@ -290,12 +270,12 @@ export default function Footer() {
             </div>
           </div>
           <button
-            onClick={handleBackToTop}
-            className="text-[#444] hover:text-white text-[10px] md:text-xs tracking-[0.15em] uppercase transition-colors cursor-pointer flex items-center gap-2"
+            onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
+            className="flex items-center gap-1.5 text-[10px] text-white/20 uppercase tracking-[0.15em] hover:text-blue-400 transition-colors duration-200"
           >
             Back to Top
-            <svg className="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 15l7-7 7 7" />
+            <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
+              <path d="M5 15l7-7 7 7" />
             </svg>
           </button>
         </div>

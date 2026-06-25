@@ -152,14 +152,11 @@ export default function MorphingMenu() {
           onClick={toggleMenu}
           aria-label={isOpen ? "Close menu" : "Open menu"}
           aria-expanded={isOpen}
-          className="relative overflow-hidden w-20 h-11 sm:w-24 sm:h-12 rounded-full bg-gradient-to-b from-[#EAB308] via-[#d4a007] to-[#b8860b] border border-[#EAB308]/30 flex items-center justify-center text-black text-xs sm:text-sm font-semibold tracking-widest uppercase hover:from-[#f5c842] hover:via-[#EAB308] hover:to-[#d4a007] transition-all duration-300 shadow-[0_2px_12px_rgba(234,179,8,0.3)]"
+          className="relative overflow-hidden w-12 h-12 rounded-full bg-transparent border border-[#EAB308]/50 flex flex-col items-center justify-center gap-1.5 hover:border-[#EAB308] hover:bg-[#EAB308]/10 transition-all duration-300 shadow-[0_0_15px_rgba(234,179,8,0.15)] group"
         >
-          <div className={`absolute transition-transform duration-500 ${isOpen ? '-translate-y-12' : 'translate-y-0'}`}>
-            Menu
-          </div>
-          <div className={`absolute transition-transform duration-500 ${isOpen ? 'translate-y-0' : 'translate-y-12'}`}>
-            Close
-          </div>
+          <span className={`block w-5 h-[2px] bg-[#EAB308] transition-transform duration-300 ${isOpen ? 'rotate-45 translate-y-[8px]' : ''}`} />
+          <span className={`block w-5 h-[2px] bg-[#EAB308] transition-opacity duration-300 ${isOpen ? 'opacity-0' : ''}`} />
+          <span className={`block w-5 h-[2px] bg-[#EAB308] transition-transform duration-300 ${isOpen ? '-rotate-45 -translate-y-[8px]' : ''}`} />
         </button>
       </div>
 

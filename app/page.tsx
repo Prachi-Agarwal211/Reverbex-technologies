@@ -1,7 +1,5 @@
-import Navbar from "../components/Navbar";
 import {
   HeroVideo,
-  TrustedBy,
   StickyServices,
   WhyReverbex,
   Methodology,
@@ -12,10 +10,8 @@ import {
 
 export default function Home() {
   return (
-    <main className="w-full relative text-white selection:bg-[#EAB308]/30 min-h-screen">
-      <Navbar />
+    <main className="w-full relative text-white selection:bg-blue-500/30 min-h-screen">
       <HeroVideo />
-      <TrustedBy />
       <StickyServices />
       <WhyReverbex />
       <Methodology />

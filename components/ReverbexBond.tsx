@@ -123,10 +123,10 @@ export default function ReverbexBond() {
 
         {/* Big stat — MASSIVE editorial visual anchor */}
         <div className="bond-big-stat mb-16 md:mb-24">
-          <span className="stat-number select-none" style={{ color: "rgba(234, 179, 8, 0.12)" }}>
+          <span className="font-heading select-none block leading-[0.7] text-[clamp(6rem,20vw,16rem)] font-black tracking-[-0.06em]" style={{ color: "rgba(234, 179, 8, 0.08)" }}>
             24/7
           </span>
-          <p className="text-white/50 text-xs md:text-sm font-medium tracking-wide uppercase mt-2 -mt-4 md:-mt-8 ml-2">
+          <p className="text-white/60 text-xs md:text-sm font-semibold tracking-[0.2em] uppercase -mt-2 md:-mt-6 ml-1">
             Availability. Every project includes it.
           </p>
         </div>
@@ -138,14 +138,15 @@ export default function ReverbexBond() {
               key={index}
               className="bond-pillar group flex flex-col md:flex-row items-start gap-4 md:gap-8 py-6 md:py-8 border-t border-[#1A1A1A]"
             >
-                <span className="text-white/50 text-sm font-bold tracking-[0.15em] shrink-0 md:w-12">
-                0{index + 1}
-              </span>
-              <div className="flex-1">
-                <h3 className="text-white text-xl md:text-2xl font-bold tracking-tight mb-3 group-hover:text-[#EAB308] transition-colors duration-300">
+                <span className="text-white/20 text-sm font-bold tracking-[0.15em] shrink-0 md:w-12 md:pt-0.5 group-hover:text-[#EAB308]/50 transition-colors duration-300">
+                 0{index + 1}
+               </span>
+              <div className="flex-1 relative">
+                <div className="absolute left-0 top-0 w-6 h-px bg-[#EAB308]/0 group-hover:bg-[#EAB308]/50 transition-all duration-500 -mt-[1px]" />
+                <h3 className="text-white text-xl md:text-2xl font-heading font-bold tracking-tight mb-3 group-hover:text-[#EAB308] transition-colors duration-300">
                   {pillar.title}
                 </h3>
-                <p className="text-[#A0A0A0] text-base leading-relaxed font-normal max-w-2xl">
+                <p className="text-[#A0A0A0] text-base leading-relaxed max-w-2xl">
                   {pillar.desc}
                 </p>
               </div>
@@ -153,15 +154,15 @@ export default function ReverbexBond() {
           ))}
         </div>
 
-        {/* Trust line — clean, no duplicate copy */}
-        <div className="border-t border-[#1A1A1A] pt-8 mt-12">
-          <p className="text-[#666666] text-sm md:text-base font-medium tracking-wide">
-            <span className="text-white font-bold">Every project includes:</span>{" "}
-            Daily availability{" "}
-            <span className="text-white/40">&bull;</span> Proactive monitoring{" "}
-            <span className="text-white/40">&bull;</span> Fast problem solving{" "}
-            <span className="text-white/40">&bull;</span> Long-term partnership{" "}
-            <span className="text-white/40">&bull;</span> No surprise charges
+        {/* Trust line */}
+        <div className="border-t border-white/5 pt-8 mt-12">
+          <p className="text-[#666666] text-sm md:text-base tracking-wide font-mono">
+            <span className="text-white/80 font-semibold">{'//'} every project includes:</span>{" "}
+            Daily availability <span className="text-white/20">/</span>{" "}
+            Proactive monitoring <span className="text-white/20">/</span>{" "}
+            Fast problem solving <span className="text-white/20">/</span>{" "}
+            Long-term partnership <span className="text-white/20">/</span>{" "}
+            No surprise charges
           </p>
         </div>
       </div>

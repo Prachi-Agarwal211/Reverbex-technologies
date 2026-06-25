@@ -5,11 +5,17 @@ import gsap from "gsap";
 import { useGSAP } from "@gsap/react";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { ArrowUpRight, Mail, Phone, MapPin } from "lucide-react";
-
 import { CONTACT } from "@/lib/config";
 import BackgroundBeams from "./BackgroundBeams";
 
 gsap.registerPlugin(ScrollTrigger);
+
+const inputClass = `
+  w-full bg-transparent text-sm text-white placeholder-white/25
+  border border-white/10 rounded-xl px-4 py-3.5
+  focus:outline-none focus:border-blue-500/60 focus:bg-blue-500/5
+  transition-all duration-250
+`;
 
 export default function ContactSection() {
   const containerRef = useRef<HTMLElement>(null);
@@ -17,126 +23,194 @@ export default function ContactSection() {
 
   useGSAP(() => {
     if (!containerRef.current) return;
-
-    const prefersReducedMotion = window.matchMedia(
-      "(prefers-reduced-motion: reduce)"
-    ).matches;
+    const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
     if (prefersReducedMotion) return;
 
-    // Heading reveal
-    gsap.fromTo(
-      ".contact-heading > *",
-      { y: 50, opacity: 0 },
+    gsap.fromTo(".contact-heading > *",
+      { y: 30, opacity: 0 },
       {
-        y: 0,
-        opacity: 1,
-        duration: 1,
-        stagger: 0.1,
-        ease: "power4.out",
-        scrollTrigger: {
-          trigger: containerRef.current,
-          start: "top 75%",
-        },
+        y: 0, opacity: 1, duration: 0.8, stagger: 0.1, ease: "power3.out",
+        scrollTrigger: { trigger: containerRef.current, start: "top 75%" },
       }
     );
 
-    // Grid items stagger
     const gridItems = containerRef.current.querySelectorAll(".contact-grid-item");
-    gsap.fromTo(
-      gridItems,
-      { opacity: 0, y: 40 },
+    gsap.fromTo(gridItems,
+      { opacity: 0, y: 30 },
       {
-        opacity: 1,
-        y: 0,
-        stagger: 0.15,
-        duration: 0.8,
-        ease: "power3.out",
-        scrollTrigger: {
-          trigger: containerRef.current,
-          start: "top 60%",
-        },
+        opacity: 1, y: 0, stagger: 0.12, duration: 0.7, ease: "power2.out",
+        scrollTrigger: { trigger: containerRef.current, start: "top 60%" },
       }
     );
+
+    // No pinning needed for ContactSection.
+
   }, { scope: containerRef });
 
   return (
     <section
       ref={containerRef}
       id="contact"
-      className="relative w-full overflow-hidden bg-[#050505] py-24 md:py-32"
+      className="relative w-full overflow-hidden py-20 md:py-28 z-[60]"
+      style={{
+        background: "#040510",
+        backgroundImage: `
+          radial-gradient(ellipse 70% 60% at 50% 0%,  rgba(234,179,8,0.16) 0%, transparent 55%),
+          radial-gradient(ellipse 55% 55% at 10% 75%, rgba(59,130,246,0.14) 0%, transparent 50%),
+          radial-gradient(ellipse 40% 40% at 90% 60%, rgba(29,78,216,0.10) 0%, transparent 45%)
+        `,
+      }}
     >
-      {/* Animated background beams & glows */}
-      <div className="absolute inset-0 z-0 pointer-events-none overflow-hidden">
+      {/* Background beams */}
+      <div className="absolute inset-0 z-0 pointer-events-none overflow-hidden opacity-40">
         <BackgroundBeams />
-        <div className="absolute top-0 right-0 w-[50%] h-[50%] bg-[#EAB308]/5 blur-[150px] rounded-full mix-blend-screen" />
-        <div className="absolute bottom-0 left-0 w-[50%] h-[50%] bg-[#EAB308]/5 blur-[150px] rounded-full mix-blend-screen" />
       </div>
 
-      <div className="relative z-20 w-full max-w-7xl mx-auto px-6 lg:px-12">
-        
-        {/* Header */}
-        <div className="contact-heading mb-16 md:mb-24 text-center md:text-left">
-          <span className="text-[#EAB308] text-xs font-semibold tracking-[0.25em] uppercase mb-4 block">
-            Initiate Project
-          </span>
-          <h2 className="text-[clamp(3.5rem,6vw,6rem)] font-black tracking-tighter leading-[0.95] text-white">
-            Ready to <span className="text-[#EAB308]">Scale?</span>
+      {/* Grid lines */}
+      <div className="absolute inset-0 grid-lines-blue opacity-20 pointer-events-none" />
+
+      {/* Orbs */}
+      <div className="orb w-80 h-80 -top-20 left-1/2 -translate-x-1/2 opacity-20" style={{ background: "rgba(234,179,8,0.4)" }} />
+      <div className="orb orb-2 w-64 h-64 bottom-0 right-10 opacity-15" style={{ background: "rgba(59,130,246,0.4)" }} />
+
+      <div className="relative z-10 max-w-7xl mx-auto px-5 md:px-10">
+        {/* Heading */}
+        <div className="contact-heading mb-12 md:mb-16">
+          <div className="flex items-center gap-2.5 mb-5">
+            <div className="w-4 h-[1.5px] rounded bg-yellow-400" />
+            <span className="section-label text-yellow-400">Let's Talk</span>
+          </div>
+          <h2 className="section-heading text-white mb-3">
+            Ready to{" "}
+            <span className="text-gradient-gold">scale</span>?
           </h2>
+          <p className="text-sm text-white/50 max-w-lg leading-relaxed">
+            Stop losing customers to slow websites and generic templates. Tell us about your project.
+          </p>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-12 gap-16 lg:gap-24">
-          
-          {/* Left: Contact Info Cards */}
-          <div className="contact-grid-item md:col-span-5 flex flex-col gap-6">
-            <p className="text-[#A0A0A0] text-lg md:text-xl font-light leading-relaxed mb-8">
-              Stop losing customers to slow websites and generic templates. Tell us about your project—we'll show you the math.
-            </p>
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-14">
 
-            {/* Glassmorphic Info Cards */}
-            <a href="mailto:15anuragsingh2003@gmail.com" className="group flex items-center gap-6 p-6 bg-white/[0.02] border border-white/5 hover:border-[#EAB308]/30 rounded-2xl transition-all duration-500 hover:-translate-y-1 hover:bg-white/[0.04]">
-              <div className="w-14 h-14 bg-[#111] rounded-full flex items-center justify-center text-[#EAB308] border border-white/5 group-hover:scale-110 group-hover:bg-[#EAB308]/10 transition-all duration-500">
-                <Mail className="w-6 h-6" />
-              </div>
+          {/* Left: Contact Info */}
+          <div className="contact-grid-item lg:col-span-5 flex flex-col gap-4">
+
+            {/* Info cards */}
+            {[
+              {
+                href: `mailto:${CONTACT.email}`,
+                icon: <Mail className="w-4 h-4" />,
+                label: "Email",
+                value: CONTACT.emailDisplay,
+                color: "#EAB308",
+              },
+              {
+                href: "https://wa.me/919929986743",
+                icon: <Phone className="w-4 h-4" />,
+                label: "Call / WhatsApp",
+                value: CONTACT.phoneDisplay,
+                color: "#3B82F6",
+              },
+              {
+                href: undefined,
+                icon: <MapPin className="w-4 h-4" />,
+                label: "Location",
+                value: CONTACT.location,
+                color: "#10B981",
+              },
+            ].map((item, i) => {
+              const El = item.href ? "a" : "div";
+              const props = item.href
+                ? { href: item.href, target: item.href.startsWith("http") ? "_blank" : undefined, rel: "noopener noreferrer" }
+                : {};
+              return (
+                <El
+                  key={i}
+                  {...(props as React.AnchorHTMLAttributes<HTMLAnchorElement>)}
+                  className="group flex items-center gap-4 p-4 rounded-xl transition-all duration-300"
+                  style={{
+                    background: "rgba(255,255,255,0.03)",
+                    border: `1px solid rgba(255,255,255,0.07)`,
+                  }}
+                  onMouseEnter={item.href ? (e => {
+                    (e.currentTarget as HTMLElement).style.borderColor = `${item.color}35`;
+                    (e.currentTarget as HTMLElement).style.background = `${item.color}08`;
+                    (e.currentTarget as HTMLElement).style.transform = "translateX(4px)";
+                  }) : undefined}
+                  onMouseLeave={item.href ? (e => {
+                    (e.currentTarget as HTMLElement).style.borderColor = `rgba(255,255,255,0.07)`;
+                    (e.currentTarget as HTMLElement).style.background = "rgba(255,255,255,0.03)";
+                    (e.currentTarget as HTMLElement).style.transform = "";
+                  }) : undefined}
+                >
+                  <div
+                    className="w-9 h-9 rounded-xl flex items-center justify-center shrink-0"
+                    style={{ background: `${item.color}15`, color: item.color }}
+                  >
+                    {item.icon}
+                  </div>
+                  <div>
+                    <div className="text-[10px] font-semibold uppercase tracking-widest text-white/30 mb-0.5">
+                      {item.label}
+                    </div>
+                    <div className="text-sm font-semibold text-white/80">
+                      {item.value}
+                    </div>
+                  </div>
+                </El>
+              );
+            })}
+
+            {/* WhatsApp CTA */}
+            <a
+              href="https://wa.me/919929986743"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="mt-2 flex items-center justify-between px-5 py-4 rounded-2xl group transition-all duration-300"
+              style={{
+                background: "linear-gradient(135deg, rgba(234,179,8,0.15) 0%, rgba(29,78,216,0.10) 100%)",
+                border: "1px solid rgba(234,179,8,0.25)",
+              }}
+              onMouseEnter={e => {
+                (e.currentTarget as HTMLElement).style.boxShadow = "0 8px 32px rgba(234,179,8,0.2)";
+                (e.currentTarget as HTMLElement).style.transform = "translateY(-2px)";
+              }}
+              onMouseLeave={e => {
+                (e.currentTarget as HTMLElement).style.boxShadow = "";
+                (e.currentTarget as HTMLElement).style.transform = "";
+              }}
+            >
               <div>
-                <div className="text-[#666666] text-xs font-semibold uppercase tracking-widest mb-1">Email Us</div>
-                <div className="text-lg md:text-xl font-bold text-white group-hover:text-[#EAB308] transition-colors duration-500">{CONTACT.emailDisplay}</div>
+                <div className="text-xs font-semibold text-white/50 mb-0.5">Fastest response</div>
+                <div className="text-sm font-bold text-yellow-400">Chat on WhatsApp →</div>
+              </div>
+              <div className="w-9 h-9 rounded-xl flex items-center justify-center" style={{ background: "rgba(234,179,8,0.15)", color: "#EAB308" }}>
+                <ArrowUpRight className="w-4 h-4" />
               </div>
             </a>
-
-            <a href="https://wa.me/919929986743" target="_blank" rel="noopener noreferrer" className="group flex items-center gap-6 p-6 bg-white/[0.02] border border-white/5 hover:border-[#EAB308]/30 rounded-2xl transition-all duration-500 hover:-translate-y-1 hover:bg-white/[0.04]">
-              <div className="w-14 h-14 bg-[#111] rounded-full flex items-center justify-center text-[#EAB308] border border-white/5 group-hover:scale-110 group-hover:bg-[#EAB308]/10 transition-all duration-500">
-                <Phone className="w-6 h-6" />
-              </div>
-              <div>
-                <div className="text-[#666666] text-xs font-semibold uppercase tracking-widest mb-1">Call / WhatsApp</div>
-                <div className="text-lg md:text-xl font-bold text-white group-hover:text-[#EAB308] transition-colors duration-500">{CONTACT.phoneDisplay}</div>
-              </div>
-            </a>
-
-            <div className="group flex items-center gap-6 p-6 bg-white/[0.02] border border-white/5 hover:border-[#EAB308]/30 rounded-2xl transition-all duration-500 hover:-translate-y-1 hover:bg-white/[0.04]">
-              <div className="w-14 h-14 bg-[#111] rounded-full flex items-center justify-center text-[#EAB308] border border-white/5 group-hover:scale-110 group-hover:bg-[#EAB308]/10 transition-all duration-500">
-                <MapPin className="w-6 h-6" />
-              </div>
-              <div>
-                <div className="text-[#666666] text-xs font-semibold uppercase tracking-widest mb-1">Location</div>
-                <div className="text-lg md:text-xl font-bold text-white group-hover:text-[#EAB308] transition-colors duration-500">{CONTACT.location}</div>
-              </div>
-            </div>
           </div>
 
-          {/* Right: Ultra-Minimalist Form */}
-          <div className="contact-grid-item md:col-span-7 relative">
-            <div className="bg-[#0A0A0A]/50 backdrop-blur-xl border border-[#1A1A1A] p-8 md:p-12 rounded-[2rem] relative z-10">
-              
+          {/* Right: Form */}
+          <div className="contact-grid-item lg:col-span-7">
+            <div
+              className="p-6 md:p-8 rounded-2xl"
+              style={{
+                background: "rgba(255,255,255,0.03)",
+                border: "1px solid rgba(59,130,246,0.15)",
+                boxShadow: "0 8px 40px rgba(0,0,0,0.4)",
+              }}
+            >
               {formSubmitted ? (
-                <div className="w-full h-full min-h-[400px] flex flex-col items-center justify-center text-center">
-                  <div className="w-20 h-20 bg-[#EAB308]/10 rounded-full flex items-center justify-center mb-6">
-                    <span className="text-[#EAB308] text-4xl block">&#10003;</span>
+                <div className="min-h-[340px] flex flex-col items-center justify-center text-center">
+                  <div
+                    className="w-14 h-14 rounded-full flex items-center justify-center mb-5"
+                    style={{ background: "rgba(59,130,246,0.15)", color: "#60A5FA" }}
+                  >
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
+                      <path d="M20 6L9 17l-5-5" />
+                    </svg>
                   </div>
-                  <h3 className="text-2xl font-bold text-white mb-2">Message Received</h3>
-                  <p className="text-[#A0A0A0] text-lg">
-                    Thank you. A senior engineer will review your request and get back to you within 24 hours.
-                  </p>
+                  <h3 className="text-base font-bold text-white mb-2">Message received</h3>
+                  <p className="text-sm text-white/50">A senior engineer will review your request within 24 hours.</p>
                 </div>
               ) : (
                 <form
@@ -149,74 +223,38 @@ export default function ContactSection() {
                       website: (form.elements.namedItem("website") as HTMLInputElement).value,
                       message: (form.elements.namedItem("message") as HTMLTextAreaElement).value,
                     };
-                    try {
-                      await fetch("/api/contact", {
-                        method: "POST",
-                        headers: { "Content-Type": "application/json" },
-                        body: JSON.stringify(data),
-                      });
-                    } catch {}
+                    try { await fetch("/api/contact", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(data) }); } catch {}
                     setFormSubmitted(true);
                   }}
-                  className="w-full flex flex-col gap-10"
+                  className="flex flex-col gap-4"
                 >
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-10">
-                    <div className="relative group">
-                      <input
-                        type="text"
-                        name="name"
-                        placeholder="Your Name *"
-                        required
-                        className="w-full bg-transparent border-b border-[#333] px-0 py-4 text-white text-lg placeholder-[#666] focus:outline-none focus:border-[#EAB308] transition-colors peer"
-                      />
-                      <span className="absolute bottom-0 left-0 w-0 h-[2px] bg-[#EAB308] transition-all duration-500 peer-focus:w-full" />
-                    </div>
-                    
-                    <div className="relative group">
-                      <input
-                        type="tel"
-                        name="phone"
-                        placeholder="Phone Number *"
-                        required
-                        className="w-full bg-transparent border-b border-[#333] px-0 py-4 text-white text-lg placeholder-[#666] focus:outline-none focus:border-[#EAB308] transition-colors peer"
-                      />
-                      <span className="absolute bottom-0 left-0 w-0 h-[2px] bg-[#EAB308] transition-all duration-500 peer-focus:w-full" />
-                    </div>
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <input type="text" name="name" placeholder="Your name *" required className={inputClass} />
+                    <input type="tel" name="phone" placeholder="Phone number *" required className={inputClass} />
                   </div>
-                  
-                  <div className="relative group">
-                    <input
-                      type="url"
-                      name="website"
-                      placeholder="Business URL (Optional)"
-                      className="w-full bg-transparent border-b border-[#333] px-0 py-4 text-white text-lg placeholder-[#666] focus:outline-none focus:border-[#EAB308] transition-colors peer"
-                    />
-                    <span className="absolute bottom-0 left-0 w-0 h-[2px] bg-[#EAB308] transition-all duration-500 peer-focus:w-full" />
-                  </div>
-                  
-                  <div className="relative group">
-                    <textarea
-                      name="message"
-                      placeholder="Tell us about your technical requirements..."
-                      rows={4}
-                      required
-                      className="w-full bg-transparent border-b border-[#333] px-0 py-4 text-white text-lg placeholder-[#666] focus:outline-none focus:border-[#EAB308] transition-colors resize-none peer"
-                    ></textarea>
-                    <span className="absolute bottom-0 left-0 w-0 h-[2px] bg-[#EAB308] transition-all duration-500 peer-focus:w-full" />
-                  </div>
-                  
+                  <input type="url" name="website" placeholder="Business URL (optional)" className={inputClass} />
+                  <textarea
+                    name="message" placeholder="Tell us about your project..." rows={4}
+                    required className={inputClass + " resize-none"}
+                  />
                   <button
                     type="submit"
-                    className="group relative w-full overflow-hidden bg-[#1A1A1A] border border-[#333] text-white font-bold py-5 rounded-xl hover:border-[#EAB308] transition-all duration-500 flex items-center justify-center gap-3 mt-4"
+                    className="flex items-center justify-center gap-2 w-full py-3.5 rounded-xl font-bold text-sm transition-all duration-300 hover:scale-[1.02] hover:shadow-lg"
+                    style={{
+                      background: "linear-gradient(135deg, #EAB308, #D97706)",
+                      color: "#030510",
+                      boxShadow: "0 4px 20px rgba(234,179,8,0.3)",
+                    }}
+                    onMouseEnter={e => { (e.currentTarget as HTMLElement).style.boxShadow = "0 8px 30px rgba(234,179,8,0.5)"; }}
+                    onMouseLeave={e => { (e.currentTarget as HTMLElement).style.boxShadow = "0 4px 20px rgba(234,179,8,0.3)"; }}
                   >
-                    {/* Hover fill effect */}
-                    <div className="absolute inset-0 bg-[#EAB308] translate-y-[100%] group-hover:translate-y-0 transition-transform duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] -z-0" />
-                    
-                    <span className="relative z-10 group-hover:text-black transition-colors duration-500">
-                      Submit Project Details
-                    </span>
-                    <ArrowUpRight className="relative z-10 w-5 h-5 group-hover:text-black transition-colors duration-500 group-hover:translate-x-1 group-hover:-translate-y-1" />
+                    Send Message
+                    <ArrowUpRight className="w-4 h-4" />
                   </button>
+
+                  <p className="text-center text-[10px] text-white/25 leading-relaxed">
+                    No spam. We respond within 24 hours. Your data is safe.
+                  </p>
                 </form>
               )}
             </div>
