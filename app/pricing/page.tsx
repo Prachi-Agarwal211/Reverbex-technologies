@@ -4,8 +4,8 @@ import { useRef, useEffect } from "react";
 import gsap from "gsap";
 import { useGSAP } from "@gsap/react";
 import Link from "next/link";
-import Navbar from "../../components/Navbar";
 import ReverbexBond from "../../components/ReverbexBond";
+import PageCTA from "../../components/PageCTA";
 
 const tiers = [
   {
@@ -121,7 +121,6 @@ export default function PricingPage() {
 
   return (
     <main ref={containerRef} className="w-full text-white min-h-screen pt-32 pb-24 selection:bg-[#EAB308]/30 overflow-hidden relative bg-[#050505]">
-      <Navbar />
       
       {/* Subtle Background Glow */}
       <div className="absolute top-1/4 left-1/2 -translate-x-1/2 w-[80%] h-[50%] bg-[#EAB308]/5 blur-[200px] rounded-full pointer-events-none" />
@@ -135,7 +134,7 @@ export default function PricingPage() {
           <h1 className="text-[clamp(3.5rem,8vw,7rem)] font-black tracking-tighter leading-[0.95] mb-8">
             Transparent Value.
           </h1>
-          <p className="text-[#A0A0A0] text-xl font-light leading-relaxed max-w-2xl mx-auto">
+          <p className="text-[#D0D0D0] text-xl font-medium leading-relaxed max-w-2xl mx-auto text-shadow-body">
             We don't charge per-user licenses. We don't take transaction cuts on your e-commerce store. You pay for premium engineering and performance management.
           </p>
         </div>
@@ -160,7 +159,7 @@ export default function PricingPage() {
               <h3 className="text-3xl font-black text-white mb-4">
                 {tier.name}
               </h3>
-              <p className="text-[#A0A0A0] text-sm leading-relaxed mb-8 h-20">{tier.description}</p>
+              <p className="text-[#D0D0D0] text-sm leading-relaxed mb-8 h-20 text-shadow-body">{tier.description}</p>
               
               <div className="text-4xl font-black text-[#EAB308] mb-8 pb-8 border-b border-[#1A1A1A]">
                 {tier.price}
@@ -192,6 +191,8 @@ export default function PricingPage() {
         <div className="mb-40">
           <ReverbexBond />
         </div>
+
+        <PageCTA />
 
       </div>
     </main>

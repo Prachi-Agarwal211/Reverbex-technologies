@@ -1,5 +1,4 @@
 import type { Metadata } from "next";
-import Navbar from "../../components/Navbar";
 import Link from "next/link";
 
 export const metadata: Metadata = {
@@ -10,7 +9,6 @@ export const metadata: Metadata = {
 export default function PrivacyPolicyPage() {
   return (
     <main className="w-full text-white min-h-screen pt-32 pb-24 selection:bg-[#EAB308]/30">
-      <Navbar />
       
       <div className="max-w-4xl mx-auto px-6 lg:px-12">
         <h1 className="text-4xl md:text-5xl font-black mb-8">

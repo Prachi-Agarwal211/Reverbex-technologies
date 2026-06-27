@@ -1,6 +1,5 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import Navbar from "../../../components/Navbar";
 import CaseStudyClient from "../../../components/CaseStudyClient";
 import { caseStudiesData } from "../../../lib/caseStudiesData";
 
@@ -48,7 +47,6 @@ export default async function CaseStudyPage({
   if (!study) {
     return (
       <main className="w-full text-white min-h-screen pt-32 pb-24 text-center">
-        <Navbar />
         <h1 className="text-4xl font-bold mb-4">Case Study Not Found</h1>
         <Link href="/work" className="text-[#EAB308] hover:underline">Return to Work</Link>
       </main>
@@ -87,12 +85,11 @@ export default async function CaseStudyPage({
       />
 
       <main className="w-full text-white min-h-screen pt-32 pb-24 selection:bg-[#EAB308]/30 overflow-hidden">
-        <Navbar />
         
         <div className="max-w-5xl mx-auto px-6 lg:px-12">
           {/* Breadcrumb */}
           <nav className="mb-12" aria-label="Breadcrumb">
-            <ol className="flex items-center gap-2 text-sm text-[#666666] font-mono tracking-wider">
+            <ol className="flex items-center gap-2 text-sm text-[#888] font-mono tracking-wider">
               <li><Link href="/" className="hover:text-white transition-colors">HOME</Link></li>
               <li>/</li>
               <li><Link href="/work" className="hover:text-white transition-colors">WORK</Link></li>

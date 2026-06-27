@@ -1,23 +1,25 @@
 import {
   HeroVideo,
-  StickyServices,
+  FeaturedArchitectures,
+  ServicesGallery,
   WhyReverbex,
   Methodology,
-  FeaturedArchitectures,
+  ReverbexBond,
   FAQSection,
   ContactSection,
 } from "./DynamicComponents";
 
 export default function Home() {
   return (
-    <main className="w-full relative text-white selection:bg-blue-500/30 min-h-screen">
+    <div className="w-full relative text-white selection:bg-[#EAB308]/30 min-h-screen">
       <HeroVideo />
-      <StickyServices />
+      <FeaturedArchitectures />
+      <ServicesGallery />
       <WhyReverbex />
       <Methodology />
-      <FeaturedArchitectures />
+      <ReverbexBond />
       <FAQSection />
       <ContactSection />
-    </main>
+    </div>
   );
 }

@@ -5,6 +5,7 @@ import gsap from "gsap";
 import { useGSAP } from "@gsap/react";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import ReverbexBond from "./ReverbexBond";
+import PageCTA from "./PageCTA";
 import Link from "next/link";
 
 gsap.registerPlugin(ScrollTrigger);
@@ -63,7 +64,7 @@ export default function IndustryClient({ industry }: IndustryClientProps) {
         <h1 className="font-heading text-5xl md:text-7xl font-black tracking-tighter leading-[1.1] mb-8">
           {industry.name}
         </h1>
-        <p className="text-[#A0A0A0] text-xl md:text-2xl font-light leading-relaxed">
+        <p className="text-[#D0D0D0] text-xl md:text-2xl font-medium leading-relaxed text-shadow-body">
           {industry.tagline}
         </p>
       </div>
@@ -75,7 +76,7 @@ export default function IndustryClient({ industry }: IndustryClientProps) {
             <div className="font-heading text-4xl md:text-6xl font-black text-[#EAB308] mb-4">
               {metric.value}
             </div>
-            <div className="text-[#A0A0A0] text-sm uppercase tracking-widest font-semibold">
+            <div className="text-[#D0D0D0] text-sm uppercase tracking-widest font-semibold text-shadow-body">
               {metric.label}
             </div>
           </div>
@@ -95,7 +96,7 @@ export default function IndustryClient({ industry }: IndustryClientProps) {
             </h3>
             <ul className="space-y-8">
               {industry.challenges.map((challenge, idx) => (
-                <li key={idx} className="flex items-start gap-4 text-[#A0A0A0] text-lg">
+                <li key={idx} className="flex items-start gap-4 text-[#D0D0D0] text-lg font-medium text-shadow-body">
                   <span className="text-red-500/50 mt-1 block">✕</span>
                   <span>{challenge}</span>
                 </li>
@@ -143,21 +144,8 @@ export default function IndustryClient({ industry }: IndustryClientProps) {
         <ReverbexBond />
       </div>
 
-      <div className="ind-section border-t border-[#1A1A1A] pt-20 flex flex-col items-center pb-12 text-center">
-         <h2 className="font-heading text-3xl md:text-5xl font-black text-white mb-6">
-          Ready to dominate your industry?
-        </h2>
-        <p className="text-[#A0A0A0] text-lg mb-10 max-w-2xl mx-auto">
-          We build custom engineering solutions tailored specifically to the {industry.name} sector.
-        </p>
-        <a
-          href="https://wa.me/919929986743"
-          target="_blank"
-          rel="noopener noreferrer"
-          className="inline-block px-10 py-5 bg-[#EAB308] text-black text-lg font-bold hover:bg-white transition-colors duration-300"
-        >
-          Consult with an Expert
-        </a>
+      <div className="ind-section">
+        <PageCTA />
       </div>
 
     </div>

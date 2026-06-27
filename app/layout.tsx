@@ -1,5 +1,5 @@
 import type { Metadata, Viewport } from "next";
-import { Outfit, DM_Sans } from "next/font/google";
+import { Outfit, DM_Sans, Cormorant_Garamond, Geist } from "next/font/google";
 import "./globals.css";
 import ServiceWorkerRegistration from "../components/ServiceWorkerRegistration";
 import SmoothScroll from "../components/SmoothScroll";
@@ -8,7 +8,11 @@ import WhatsAppButton from "../components/shared/WhatsAppButton";
 import MorphingMenu from "../components/MorphingMenu";
 import MobileBottomNav from "../components/MobileBottomNav";
 import Footer from "../components/Footer";
+import GrainientBackground from "../components/GrainientBackground";
 import { CONTACT, COMPANY, SOCIALS } from "@/lib/config";
+import { cn } from "@/lib/utils";
+
+const geist = Geist({subsets:['latin'],variable:'--font-sans'});
 
 const outfit = Outfit({
   subsets: ["latin"],
@@ -21,6 +25,14 @@ const dmSans = DM_Sans({
   subsets: ["latin"],
   variable: "--font-body",
   weight: ["400", "500", "600", "700"],
+  display: "swap",
+});
+
+const cormorant = Cormorant_Garamond({
+  subsets: ["latin"],
+  variable: "--font-display",
+  weight: ["300", "400", "500", "600", "700"],
+  style: ["normal", "italic"],
   display: "swap",
 });
 
@@ -66,10 +78,12 @@ export const metadata: Metadata = {
   },
   icons: {
     icon: [
-      { url: "/favicon.svg", type: "image/svg+xml" },
+      { url: "/favicon.png", type: "image/png", sizes: "32x32" },
+      { url: "/icon-192.png", type: "image/png", sizes: "192x192" },
+      { url: "/icon-512.png", type: "image/png", sizes: "512x512" },
     ],
-    shortcut: "/favicon.svg",
-    apple: "/favicon.svg",
+    shortcut: "/favicon.png",
+    apple: "/apple-touch-icon.png",
   },
   manifest: "/site.webmanifest",
   other: {
@@ -91,13 +105,13 @@ export const viewport: Viewport = {
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en" className={`${outfit.variable} ${dmSans.variable}`} suppressHydrationWarning>
+    <html lang="en" className={cn(outfit.variable, dmSans.variable, cormorant.variable, "font-sans", geist.variable)} suppressHydrationWarning>
       <head>
         <link rel="preconnect" href="https://images.unsplash.com" crossOrigin="anonymous" />
         <link rel="preload" as="video" href="/hero-video-mobile.mp4" type="video/mp4" fetchPriority="high" media="(max-width: 768px)" />
         <link rel="preload" as="image" href="/hero-poster.jpg" fetchPriority="high" />
-        <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
-        <link rel="apple-touch-icon" href="/favicon.svg" />
+        <link rel="icon" href="/favicon.png" type="image/png" sizes="32x32" />
+        <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
         <link rel="manifest" href="/site.webmanifest" />
         {/* JSON-LD Organization Schema */}
         <script
@@ -256,7 +270,14 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <a href="#main-content" className="skip-to-content">
           Skip to main content
         </a>
-        <div className="ambient-bg" aria-hidden="true" />
+        <GrainientBackground
+          color1="#EAB308"
+          color2="#1D4ED8"
+          color3="#050505"
+          speed={0.15}
+          grainAmount={0.08}
+          zoom={0.85}
+        />
         <div className="ambient-veil" aria-hidden="true" />
         <div className="grain-overlay" aria-hidden="true" />
         <CustomCursor />

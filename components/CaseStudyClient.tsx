@@ -6,6 +6,7 @@ import { useGSAP } from "@gsap/react";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import Link from "next/link";
 import { ArrowUpRight } from "lucide-react";
+import PageCTA from "./PageCTA";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -177,7 +178,7 @@ export default function CaseStudyClient({ study }: CaseStudyClientProps) {
         {/* Left Side: Sticky Morphing Title */}
         <div className="lg:col-span-4 hidden lg:block">
           <div className="sticky top-40">
-            <span className="text-[#666666] text-xs font-semibold tracking-widest uppercase mb-4 block">
+            <span className="text-[#888888] text-xs font-semibold tracking-widest uppercase mb-4 block text-shadow-body">
               The Narrative
             </span>
             <h3 className="text-4xl font-bold text-white transition-all duration-500 transform translate-y-0 opacity-100">
@@ -191,14 +192,16 @@ export default function CaseStudyClient({ study }: CaseStudyClientProps) {
           <div className="narrative-block" data-title="The Challenge">
             {/* Mobile Title (Hidden on Desktop) */}
             <h3 className="text-3xl font-bold text-white mb-6 lg:hidden">The Challenge</h3>
-            <p className="text-[#A0A0A0] text-xl md:text-2xl leading-relaxed font-light">
+            <p className="text-[#D0D0D0] text-xl md:text-2xl leading-relaxed font-medium text-shadow-body bg-white/[0.03] p-8 md:p-12 rounded-3xl border border-white/[0.06] relative overflow-hidden">
+              <span className="absolute top-0 left-0 w-2 h-full bg-white/20" />
               {study.problem}
             </p>
           </div>
 
           <div className="narrative-block" data-title="Our Research">
-            <h3 className="text-3xl font-bold text-white mb-6 lg:hidden">Our Research</h3>
-            <p className="text-[#A0A0A0] text-xl md:text-2xl leading-relaxed font-light">
+            <h3 className="text-3xl font-bold text-[#EAB308] mb-6 lg:hidden">Our Research</h3>
+            <p className="text-[#D0D0D0] text-xl md:text-2xl leading-relaxed font-medium text-shadow-body bg-[#EAB308]/[0.03] p-8 md:p-12 rounded-3xl border border-[#EAB308]/[0.08] relative overflow-hidden">
+              <span className="absolute top-0 left-0 w-2 h-full bg-[#EAB308]/40" />
               {study.research}
             </p>
           </div>
@@ -217,7 +220,7 @@ export default function CaseStudyClient({ study }: CaseStudyClientProps) {
       <div className="mb-40 bg-[#050505] rounded-[3rem] border border-[#1A1A1A] p-12 lg:p-24 relative overflow-hidden group">
         <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full h-full max-w-3xl max-h-96 bg-[#EAB308]/5 rounded-full blur-[100px] opacity-50 group-hover:opacity-100 transition-opacity duration-700 pointer-events-none" />
         
-        <h3 className="text-white/50 text-sm font-semibold uppercase tracking-widest text-center mb-20">
+        <h3 className="text-white/65 text-sm font-semibold uppercase tracking-widest text-center mb-20 text-shadow-body">
           The Impact
         </h3>
         
@@ -245,13 +248,13 @@ export default function CaseStudyClient({ study }: CaseStudyClientProps) {
 
       {/* 4. Glassmorphic Tech Stack */}
       <div className="mb-40">
-        <h3 className="text-white/50 text-sm font-semibold uppercase tracking-widest mb-12 text-center md:text-left">
+        <h3 className="text-white/65 text-sm font-semibold uppercase tracking-widest mb-12 text-center md:text-left">
           Technology Stack
         </h3>
         <div className="flex flex-wrap justify-center md:justify-start gap-4">
           {study.techStack.map((tech, idx) => (
             <div key={idx} className="px-8 py-5 bg-[#0A0A0A]/50 backdrop-blur-md border border-[#1A1A1A] rounded-2xl flex flex-col hover:border-[#EAB308]/50 hover:-translate-y-1 transition-all duration-300">
-              <span className="text-[#666666] text-[10px] uppercase tracking-[0.2em] mb-2">{tech.category}</span>
+              <span className="text-[#888] text-[10px] uppercase tracking-[0.2em] mb-2">{tech.category}</span>
               <span className="text-white font-bold text-lg">{tech.name}</span>
             </div>
           ))}
@@ -264,7 +267,7 @@ export default function CaseStudyClient({ study }: CaseStudyClientProps) {
         <div className="text-[#111111] text-[15rem] leading-none font-serif absolute -top-8 -left-8 -z-10 select-none">"</div>
         <div className="text-[#111111] text-[15rem] leading-none font-serif absolute -bottom-24 right-0 -z-10 select-none rotate-180">"</div>
         
-        <p className="text-2xl md:text-4xl lg:text-5xl text-white font-light leading-[1.4] mb-16 relative z-10 text-center max-w-5xl mx-auto">
+        <p className="text-2xl md:text-4xl lg:text-5xl text-white font-medium leading-[1.4] mb-16 relative z-10 text-center max-w-5xl mx-auto text-heading-lift">
           "{study.testimonial.quote}"
         </p>
         
@@ -274,33 +277,13 @@ export default function CaseStudyClient({ study }: CaseStudyClientProps) {
           </div>
           <div>
             <div className="text-white font-bold text-xl mb-1">{study.testimonial.name}</div>
-            <div className="text-[#A0A0A0] text-sm uppercase tracking-widest">{study.testimonial.title}, {study.testimonial.company}</div>
+            <div className="text-[#D0D0D0] text-sm uppercase tracking-widest">{study.testimonial.title}, {study.testimonial.company}</div>
           </div>
         </div>
       </div>
 
       {/* CTA Footer */}
-      <div className="border-t border-[#1A1A1A] pt-32 flex flex-col items-center text-center">
-         <h2 className="text-4xl md:text-6xl font-black text-white mb-12 max-w-2xl leading-tight">
-          Ready to engineer your own success story?
-        </h2>
-        <div className="flex flex-col sm:flex-row gap-6 w-full sm:w-auto">
-          <a
-            href="https://wa.me/919929986743"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="px-10 py-5 bg-[#EAB308] text-black text-lg font-bold text-center rounded-xl hover:scale-105 transition-transform duration-300 w-full sm:w-auto flex items-center justify-center gap-2"
-          >
-            Start Your Project <ArrowUpRight className="w-5 h-5" />
-          </a>
-          <Link
-            href="/work"
-            className="px-10 py-5 bg-transparent border border-[#333333] text-white text-lg font-bold text-center rounded-xl hover:bg-white/5 transition-colors duration-300 w-full sm:w-auto"
-          >
-            View More Work
-          </Link>
-        </div>
-      </div>
+      <PageCTA />
 
     </div>
   );

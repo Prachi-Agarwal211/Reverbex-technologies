@@ -1,6 +1,5 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import Navbar from "../../../components/Navbar";
 import ServiceClient from "../../../components/ServiceClient";
 import { servicesData } from "../../../lib/servicesData";
 import { COMPANY, CONTACT } from "../../../lib/config";
@@ -157,12 +156,11 @@ export default async function ServiceDetailPage({
       />
 
       <main className="w-full text-white min-h-screen pt-32 pb-24 selection:bg-[#EAB308]/30 overflow-hidden">
-        <Navbar />
         
         <div className="max-w-6xl mx-auto px-6 lg:px-12">
           {/* Breadcrumb */}
           <nav className="mb-12" aria-label="Breadcrumb">
-            <ol className="flex items-center gap-2 text-sm text-[#666666] font-mono tracking-wider">
+            <ol className="flex items-center gap-2 text-sm text-[#888] font-mono tracking-wider">
               <li><Link href="/" className="hover:text-white transition-colors">HOME</Link></li>
               <li>/</li>
               <li><Link href="/services" className="hover:text-white transition-colors">SERVICES</Link></li>

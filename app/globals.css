@@ -46,23 +46,7 @@ body {
 /* BASE BACKGROUND — deep navy-black             */
 /* ============================================ */
 
-.ambient-bg {
-  position: fixed;
-  inset: 0;
-  z-index: -2;
-  background: #03050F;
-  background-image:
-    radial-gradient(ellipse 80% 60% at 10% 20%, rgba(29,78,216,0.12) 0%, transparent 60%),
-    radial-gradient(ellipse 60% 50% at 90% 80%, rgba(234,179,8,0.06) 0%, transparent 50%);
-  will-change: transform;
-  animation: ambient-fluid 25s ease-in-out infinite alternate;
-}
-
-@keyframes ambient-fluid {
-  0%   { filter: brightness(1); }
-  50%  { filter: brightness(1.04); }
-  100% { filter: brightness(0.97); }
-}
+/* ambient-bg removed — replaced by GrainientBackground WebGL shader */
 
 .ambient-veil {
   position: fixed;
@@ -216,6 +200,69 @@ body {
     0 8px 40px rgba(0,0,0,0.3),
     inset 0 1px 0 rgba(255,255,255,0.18),
     inset 0 -1px 0 rgba(0,0,0,0.1);
+}
+
+/* ============================================ */
+/* TEXT EFFECTS — Premium Dark Mode Typography  */
+/* ============================================ */
+
+/* Emboss: text appears raised off the surface */
+.text-emboss {
+  text-shadow:
+    0 1px 0 rgba(255,255,255,0.07),
+    0 -1px 0 rgba(0,0,0,0.6);
+}
+
+/* Deep emboss: stronger raise effect for headings */
+.text-emboss-deep {
+  text-shadow:
+    0 1px 0 rgba(255,255,255,0.1),
+    0 2px 0 rgba(255,255,255,0.05),
+    0 -1px 0 rgba(0,0,0,0.5),
+    0 -2px 0 rgba(0,0,0,0.3);
+}
+
+/* Letterpress: text pressed into surface */
+.text-letterpress {
+  text-shadow:
+    0 -1px 0 rgba(0,0,0,0.7),
+    0 1px 1px rgba(255,255,255,0.08);
+}
+
+/* Depth: layered shadows for 3D lift */
+.text-depth {
+  text-shadow:
+    0 1px 2px rgba(0,0,0,0.5),
+    0 2px 4px rgba(0,0,0,0.3),
+    0 4px 8px rgba(0,0,0,0.2);
+}
+
+/* Ambient glow: warm halo for accent text */
+.text-glow-gold {
+  text-shadow:
+    0 0 20px rgba(234,179,8,0.3),
+    0 0 40px rgba(234,179,8,0.1);
+}
+
+/* Subtle depth for body text readability */
+.text-shadow-body {
+  text-shadow: 0 1px 3px rgba(0,0,0,0.4);
+}
+
+/* Premium text shadow for dim sections — makes low-opacity text pop */
+.text-shadow-premium {
+  text-shadow:
+    0 1px 0 rgba(255,255,255,0.08),
+    0 2px 4px rgba(0,0,0,0.5),
+    0 4px 12px rgba(0,0,0,0.3);
+}
+
+/* Heading lift: makes large text pop */
+.text-heading-lift {
+  text-shadow:
+    0 1px 0 rgba(255,255,255,0.06),
+    0 2px 4px rgba(0,0,0,0.4),
+    0 4px 12px rgba(0,0,0,0.25);
 }
 
 /* ============================================ */
@@ -718,12 +765,6 @@ html.lenis, html.lenis body { height: auto; }
 /* MISC UTILITIES                               */
 /* ============================================ */
 
-.hw-accelerated {
-  transform: translate3d(0,0,0);
-  will-change: transform, opacity;
-  backface-visibility: hidden;
-}
-
 .hide-scrollbar, .scrollbar-hide {
   -ms-overflow-style: none;
   scrollbar-width: none;
@@ -811,9 +852,124 @@ body.loaded { overflow-y: auto; }
 }
 [data-reveal="scale-in"][data-visible="true"] { transform: scale(1); opacity: 1; }
 
+/* ============================================ */
+/* PARTICLE FLOAT — TrustedBy background         */
+/* ============================================ */
+
+@keyframes particleFloat {
+  0% {
+    transform: translateY(0) translateX(0);
+    opacity: 0;
+  }
+  10% {
+    opacity: var(--particle-opacity, 0.15);
+  }
+  90% {
+    opacity: var(--particle-opacity, 0.15);
+  }
+  100% {
+    transform: translateY(-350px) translateX(20px);
+    opacity: 0;
+  }
+}
+
+/* ============================================ */
+/* 3D FLIP CARD SYSTEM                         */
+/* ============================================ */
+
+.flip-card {
+  transform-style: preserve-3d;
+  -webkit-transform-style: preserve-3d;
+  will-change: transform;
+  transform: translate(-50%, -50%);
+}
+
+.flip-card-front {
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+}
+
+.flip-card-back {
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+}
+
+/* Editorial image treatment — desaturate to keep gold as only accent */
+.editorial-image {
+  filter: saturate(0.7) contrast(1.1) brightness(0.85);
+}
+
+/* Film grain overlay — static noise (WebGL GrainientBackground handles animated grain) */
+.grain-overlay::after {
+  content: '';
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 9999;
+  opacity: 0.02;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 512 512' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='1'/%3E%3C/svg%3E");
+  background-size: 256px 256px;
+}
+
+@keyframes grain {
+  0%   { transform: translate(0px, 0px); }
+  10%  { transform: translate(-5%, -5%); }
+  20%  { transform: translate(-10%, 5%); }
+  30%  { transform: translate(5%, -10%); }
+  40%  { transform: translate(-5%, 15%); }
+  50%  { transform: translate(-10%, 5%); }
+  60%  { transform: translate(15%, 0); }
+  70%  { transform: translate(0px, 10%); }
+  80%  { transform: translate(-15%, 0px); }
+  90%  { transform: translate(10%, 5%); }
+  100% { transform: translate(5%, 0px); }
+}
+
+/* Horizontal scroll gallery */
+.horizontal-scroll-track {
+  display: flex;
+  gap: 1.5rem;
+  will-change: transform;
+}
+
+/* Walking Loader */
+.walker-loader .walker { scale: 0.75; position: relative; width: 200px; height: 200px; translate: 10px -20px; }
+.walker-loader .walker svg { position: absolute; top: 0; left: 0; }
+.walker-loader .walker .head { translate: 27px -30px; z-index: 3; animation: wbob 1s infinite ease-in; }
+.walker-loader .walker .bod { translate: 0px 30px; z-index: 3; animation: wbob 1s infinite ease-in-out; }
+.walker-loader .walker .legr { translate: 75px 135px; z-index: 0; animation: wrstep 1s infinite ease-in; animation-delay: 0.45s; }
+.walker-loader .walker .legl { translate: 30px 155px; z-index: 3; animation: wlstep 1s infinite ease-in; }
+.walker-loader .walker #gnd { translate: -140px 0; rotate: 10deg; z-index: -1; filter: blur(0.5px) drop-shadow(1px 3px 5px #000); opacity: 0.25; animation: wscroll 5s infinite linear; }
+@keyframes wbob {
+  0% { transform: translateY(0) rotate(3deg); }
+  5% { transform: translateY(0) rotate(3deg); }
+  25% { transform: translateY(5px) rotate(0deg); }
+  50% { transform: translateY(0px) rotate(-3deg); }
+  70% { transform: translateY(5px) rotate(0deg); }
+  100% { transform: translateY(0) rotate(3deg); }
+}
+@keyframes wlstep {
+  0% { transform: translateY(0) rotate(-5deg); }
+  33% { transform: translateY(-15px) translate(32px) rotate(35deg); }
+  66% { transform: translateY(0) translate(25px) rotate(-25deg); }
+  100% { transform: translateY(0) rotate(-5deg); }
+}
+@keyframes wrstep {
+  0% { transform: translateY(0) translate(0px) rotate(-5deg); }
+  33% { transform: translateY(-10px) translate(30px) rotate(35deg); }
+  66% { transform: translateY(0) translate(20px) rotate(-25deg); }
+  100% { transform: translateY(0) translate(0px) rotate(-5deg); }
+}
+@keyframes wscroll {
+  0% { transform: translateY(25px) translate(50px); opacity: 0; }
+  33% { opacity: 0.25; }
+  66% { opacity: 0.25; }
+  to { transform: translateY(-50px) translate(-100px); opacity: 0; }
+}
+
 /* Reduced motion */
 @media (prefers-reduced-motion: reduce) {
-  .orb,.ambient-bg,.animate-ken-burns,.float-y,.spin-slow,.gradient-animate,.pulse-glow { animation: none !important; }
+  .orb,.animate-ken-burns,.float-y,.spin-slow,.gradient-animate,.pulse-glow,particleFloat { animation: none !important; }
   .animate-marquee-left,.trusted-marquee-track,.ticker-animate-left,.ticker-animate-right { animation-play-state: paused !important; }
   a,button { transition-duration: 0.01ms !important; }
   html { scroll-behavior: auto !important; }

@@ -1,0 +1,19 @@
+Lead Source,Type,What You Get,Cost,How to Use It,Best For
+Google Maps,Free/Paid,"Business name, phone, email, website, reviews, address",Free (manual) / Paid (Outscraper/Apify ~$5-50/search),"Search by category + city, scrape or manually collect",Local businesses, retail, restaurants, coaching centers
+IndiaMART,B2B Directory,"Manufacturer/supplier profiles, contact info, GST verified",Free to browse (paid for premium leads),"Search by product/category, filter by city and business type",Manufacturing companies, B2B suppliers, wholesale businesses
+JustDial,Local Directory,"Business listings with phone numbers, reviews, ratings",Free,"Search by category + city, collect phone numbers",Local retail, services, small businesses
+LinkedIn,Professional Network,"Decision maker names, emails, company size, industry",Free (basic) / Sales Navigator ($99/mo),"Search by job title (Owner, Director, Marketing Head) + company type",All B2B - startups, enterprises, professional services
+Crunchbase,Startup Database,"Funded startups, founders, funding rounds, tech stack",Free (basic) / Paid ($33/mo),"Search for recently funded companies needing tech teams",Tech startups, funded companies
+AngelList/Wellfound,Startup Jobs,"Startup founders, their companies, hiring patterns",Free,"Search for startups with job postings for dev roles",Early-stage startups needing outsourced dev
+TradeIndia,B2B Directory,"Manufacturer and supplier contacts",Free,"Similar to IndiaMART - search by category",Manufacturing, B2B, export businesses
+ExportersIndia,B2B Directory,"Indian manufacturers and exporters",Free,"Search by product category",Export-oriented manufacturers
+Sulekha,Local Services,"Service provider listings with contact info",Free,"Search by service category + city",Local service businesses, coaching, healthcare
+JustDial JD Mart,B2B Marketplace,"B2B product and supplier listings",Free,"Search by product and location",Wholesale, manufacturing, distribution
+Facebook Groups,Community,"Business owners discussing challenges and needs",Free,"Join industry-specific groups, observe pain points",Small business owners, local businesses
+Instagram Business,Social Search,"Business profiles with contact info and engagement data",Free,"Search by hashtag + location (#JaipurBusiness #ManufacturingIndia)",Fashion, retail, food brands, lifestyle businesses
+Quora,Forum/Community,"People asking about CRM/ERP/website solutions",Free,"Search for questions about 'best CRM for manufacturing' etc.",Businesses actively looking for solutions
+Google Alerts,Monitoring,"Businesses announcing digital transformation, new launches",Free,"Set alerts for 'digital transformation India' 'new factory' etc.",Market intelligence
+Trade Shows/Expo,In-Person,"Direct contact with business owners and decision makers",Free (attending) / Paid (exhibiting),"Attend manufacturing, education, e-commerce trade shows in Jaipur/Delhi/Mumbai",High-intent prospects
+Clutch.co,Review Platform,"Verified company reviews and contact info",Free (listing),,"List Reverbex for inbound leads from businesses searching for vendors"
+GoodFirms,Review Platform,"IT company listings with client reviews",Free (listing),,"List Reverbex for inbound leads"
+RightFirms,Review Platform,"Web development company directory",Free (listing),,"Additional inbound lead channel"

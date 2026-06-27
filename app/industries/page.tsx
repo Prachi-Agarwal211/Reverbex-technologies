@@ -4,8 +4,8 @@ import { useRef, useState } from "react";
 import gsap from "gsap";
 import { useGSAP } from "@gsap/react";
 import Link from "next/link";
-import Navbar from "../../components/Navbar";
 import { industriesData } from "../../lib/industriesData";
+import PageCTA from "../../components/PageCTA";
 
 export default function IndustriesIndexPage() {
   const containerRef = useRef<HTMLElement>(null);
@@ -30,8 +30,6 @@ export default function IndustriesIndexPage() {
 
   return (
     <main ref={containerRef} className="w-full text-white min-h-screen pt-32 pb-24 selection:bg-[#EAB308]/30 bg-[#030303] overflow-hidden">
-      <Navbar />
-      
       <div className="max-w-7xl mx-auto px-6 lg:px-12">
         <div className="industry-header mb-20 max-w-4xl">
           <span className="text-[#EAB308] text-xs font-semibold tracking-[0.25em] uppercase mb-4 block">
@@ -40,7 +38,7 @@ export default function IndustriesIndexPage() {
           <h1 className="text-[clamp(3.5rem,8vw,7rem)] font-black tracking-tighter leading-[0.95] mb-8">
             Built for Your Vertical.
           </h1>
-          <p className="text-[#A0A0A0] text-xl md:text-2xl font-light leading-relaxed">
+          <p className="text-[#D0D0D0] text-xl md:text-2xl font-medium leading-relaxed text-shadow-body">
             Generic solutions don't work in specialized markets. We build engineering systems and marketing engines tailored to the exact challenges of your industry.
           </p>
         </div>
@@ -99,6 +97,10 @@ export default function IndustriesIndexPage() {
             );
           })}
         </div>
+      </div>
+
+      <div className="max-w-7xl mx-auto px-6 lg:px-12">
+        <PageCTA />
       </div>
     </main>
   );

@@ -194,7 +194,7 @@ export default function MorphingMenu() {
             <div className="menu-fade-item">
               <Link href="/" className="block group" onClick={closeMenu}>
                 <Image
-                  src="/logo for menu.png"
+                  src="/reverbex logo.png"
                   alt="Reverbex"
                   width={400}
                   height={400}
@@ -247,7 +247,7 @@ export default function MorphingMenu() {
           <div className="pt-20 px-6 menu-fade-item">
             <Link href="/" className="block group" onClick={closeMenu}>
               <Image
-                src="/logo for menu.png"
+                src="/reverbex logo.png"
                 alt="Reverbex"
                 width={400}
                 height={400}

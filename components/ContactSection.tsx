@@ -1,25 +1,58 @@
 "use client";
 
-import React, { useRef, useState } from "react";
+import React, { useRef, useState, useEffect } from "react";
 import gsap from "gsap";
 import { useGSAP } from "@gsap/react";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { ArrowUpRight, Mail, Phone, MapPin } from "lucide-react";
 import { CONTACT } from "@/lib/config";
 import BackgroundBeams from "./BackgroundBeams";
+import DotGrid from "./DotGrid";
 
 gsap.registerPlugin(ScrollTrigger);
 
 const inputClass = `
-  w-full bg-transparent text-sm text-white placeholder-white/25
+  w-full bg-[#111111] text-sm text-white placeholder-white/30
   border border-white/10 rounded-xl px-4 py-3.5
-  focus:outline-none focus:border-blue-500/60 focus:bg-blue-500/5
+  focus:outline-none focus:border-yellow-500/50 focus:bg-[#151515]
   transition-all duration-250
 `;
 
 export default function ContactSection() {
   const containerRef = useRef<HTMLElement>(null);
+  const submitBtnRef = useRef<HTMLButtonElement>(null);
   const [formSubmitted, setFormSubmitted] = useState(false);
+  const cleanupRef = useRef<(() => void) | null>(null);
+
+  const handleMagneticEnter = () => {
+    const btn = submitBtnRef.current;
+    if (!btn) return;
+    // Clean up previous listeners if any
+    cleanupRef.current?.();
+    const onMove = (e: MouseEvent) => {
+      const rect = btn.getBoundingClientRect();
+      const x = e.clientX - rect.left - rect.width / 2;
+      const y = e.clientY - rect.top - rect.height / 2;
+      gsap.to(btn, { x: x * 0.15, y: y * 0.15, duration: 0.3, ease: "power2.out" });
+    };
+    const onLeave = () => {
+      gsap.to(btn, { x: 0, y: 0, duration: 0.5, ease: "elastic.out(1, 0.4)" });
+      btn.removeEventListener("mousemove", onMove);
+      btn.removeEventListener("mouseleave", onLeave);
+      cleanupRef.current = null;
+    };
+    btn.addEventListener("mousemove", onMove);
+    btn.addEventListener("mouseleave", onLeave);
+    cleanupRef.current = () => {
+      btn.removeEventListener("mousemove", onMove);
+      btn.removeEventListener("mouseleave", onLeave);
+    };
+  };
+
+  // Cleanup on unmount
+  useEffect(() => {
+    return () => { cleanupRef.current?.(); };
+  }, []);
 
   useGSAP(() => {
     if (!containerRef.current) return;
@@ -53,14 +86,28 @@ export default function ContactSection() {
       id="contact"
       className="relative w-full overflow-hidden py-20 md:py-28 z-[60]"
       style={{
-        background: "#040510",
+        background: "transparent",
         backgroundImage: `
-          radial-gradient(ellipse 70% 60% at 50% 0%,  rgba(234,179,8,0.16) 0%, transparent 55%),
-          radial-gradient(ellipse 55% 55% at 10% 75%, rgba(59,130,246,0.14) 0%, transparent 50%),
-          radial-gradient(ellipse 40% 40% at 90% 60%, rgba(29,78,216,0.10) 0%, transparent 45%)
+          radial-gradient(ellipse 70% 60% at 50% 0%,  rgba(234,179,8,0.08) 0%, transparent 55%),
+          radial-gradient(ellipse 55% 55% at 10% 75%, rgba(59,130,246,0.05) 0%, transparent 50%)
         `,
       }}
     >
+      {/* DotGrid background */}
+      <div className="absolute inset-0 z-0 pointer-events-none">
+        <DotGrid
+          dotSize={5}
+          gap={15}
+          baseColor="#1A1A1A"
+          activeColor="#EAB308"
+          proximity={120}
+          shockRadius={250}
+          shockStrength={5}
+          resistance={750}
+          returnDuration={1.5}
+        />
+      </div>
+
       {/* Background beams */}
       <div className="absolute inset-0 z-0 pointer-events-none overflow-hidden opacity-40">
         <BackgroundBeams />
@@ -78,14 +125,14 @@ export default function ContactSection() {
         <div className="contact-heading mb-12 md:mb-16">
           <div className="flex items-center gap-2.5 mb-5">
             <div className="w-4 h-[1.5px] rounded bg-yellow-400" />
-            <span className="section-label text-yellow-400">Let's Talk</span>
+            <span className="section-label text-yellow-400">Let&apos;s Talk</span>
           </div>
           <h2 className="section-heading text-white mb-3">
-            Ready to{" "}
-            <span className="text-gradient-gold">scale</span>?
+            Let&apos;s build{" "}
+            <span className="text-gradient-gold">something</span>.
           </h2>
-          <p className="text-sm text-white/50 max-w-lg leading-relaxed">
-            Stop losing customers to slow websites and generic templates. Tell us about your project.
+          <p className="text-sm text-white/60 max-w-lg leading-relaxed">
+            Tell us about your project. We respond within 24 hours.
           </p>
         </div>
 
@@ -118,30 +165,23 @@ export default function ContactSection() {
                 color: "#10B981",
               },
             ].map((item, i) => {
-              const El = item.href ? "a" : "div";
-              const props = item.href
-                ? { href: item.href, target: item.href.startsWith("http") ? "_blank" : undefined, rel: "noopener noreferrer" }
-                : {};
-              return (
-                <El
-                  key={i}
-                  {...(props as React.AnchorHTMLAttributes<HTMLAnchorElement>)}
-                  className="group flex items-center gap-4 p-4 rounded-xl transition-all duration-300"
-                  style={{
-                    background: "rgba(255,255,255,0.03)",
-                    border: `1px solid rgba(255,255,255,0.07)`,
-                  }}
-                  onMouseEnter={item.href ? (e => {
-                    (e.currentTarget as HTMLElement).style.borderColor = `${item.color}35`;
-                    (e.currentTarget as HTMLElement).style.background = `${item.color}08`;
-                    (e.currentTarget as HTMLElement).style.transform = "translateX(4px)";
-                  }) : undefined}
-                  onMouseLeave={item.href ? (e => {
-                    (e.currentTarget as HTMLElement).style.borderColor = `rgba(255,255,255,0.07)`;
-                    (e.currentTarget as HTMLElement).style.background = "rgba(255,255,255,0.03)";
-                    (e.currentTarget as HTMLElement).style.transform = "";
-                  }) : undefined}
-                >
+              const sharedClass = "group flex items-center gap-4 p-4 rounded-xl transition-all duration-300";
+              const sharedStyle: React.CSSProperties = {
+                background: "#111111",
+                border: `1px solid rgba(255,255,255,0.08)`,
+              };
+              const handleEnter = (e: React.MouseEvent<HTMLElement>) => {
+                e.currentTarget.style.borderColor = `${item.color}35`;
+                e.currentTarget.style.background = `${item.color}08`;
+                e.currentTarget.style.transform = "translateX(4px)";
+              };
+              const handleLeave = (e: React.MouseEvent<HTMLElement>) => {
+                e.currentTarget.style.borderColor = `rgba(255,255,255,0.08)`;
+                e.currentTarget.style.background = "#111111";
+                e.currentTarget.style.transform = "";
+              };
+              const inner = (
+                <>
                   <div
                     className="w-9 h-9 rounded-xl flex items-center justify-center shrink-0"
                     style={{ background: `${item.color}15`, color: item.color }}
@@ -149,14 +189,40 @@ export default function ContactSection() {
                     {item.icon}
                   </div>
                   <div>
-                    <div className="text-[10px] font-semibold uppercase tracking-widest text-white/30 mb-0.5">
+                    <div className="text-[10px] font-semibold uppercase tracking-widest text-white/45 mb-0.5">
                       {item.label}
                     </div>
-                    <div className="text-sm font-semibold text-white/80">
+                    <div className="text-sm font-semibold text-white/90">
                       {item.value}
                     </div>
                   </div>
-                </El>
+                </>
+              );
+
+              if (item.href) {
+                return (
+                  <a
+                    key={i}
+                    href={item.href}
+                    target={item.href.startsWith("http") ? "_blank" : undefined}
+                    rel="noopener noreferrer"
+                    className={sharedClass}
+                    style={sharedStyle}
+                    onMouseEnter={handleEnter}
+                    onMouseLeave={handleLeave}
+                  >
+                    {inner}
+                  </a>
+                );
+              }
+              return (
+                <div
+                  key={i}
+                  className={sharedClass}
+                  style={sharedStyle}
+                >
+                  {inner}
+                </div>
               );
             })}
 
@@ -167,8 +233,8 @@ export default function ContactSection() {
               rel="noopener noreferrer"
               className="mt-2 flex items-center justify-between px-5 py-4 rounded-2xl group transition-all duration-300"
               style={{
-                background: "linear-gradient(135deg, rgba(234,179,8,0.15) 0%, rgba(29,78,216,0.10) 100%)",
-                border: "1px solid rgba(234,179,8,0.25)",
+                background: "#111111",
+                border: "1px solid rgba(234,179,8,0.2)",
               }}
               onMouseEnter={e => {
                 (e.currentTarget as HTMLElement).style.boxShadow = "0 8px 32px rgba(234,179,8,0.2)";
@@ -183,7 +249,7 @@ export default function ContactSection() {
                 <div className="text-xs font-semibold text-white/50 mb-0.5">Fastest response</div>
                 <div className="text-sm font-bold text-yellow-400">Chat on WhatsApp →</div>
               </div>
-              <div className="w-9 h-9 rounded-xl flex items-center justify-center" style={{ background: "rgba(234,179,8,0.15)", color: "#EAB308" }}>
+              <div className="w-9 h-9 rounded-xl flex items-center justify-center" style={{ background: "rgba(234,179,8,0.12)", color: "#EAB308" }}>
                 <ArrowUpRight className="w-4 h-4" />
               </div>
             </a>
@@ -194,9 +260,8 @@ export default function ContactSection() {
             <div
               className="p-6 md:p-8 rounded-2xl"
               style={{
-                background: "rgba(255,255,255,0.03)",
-                border: "1px solid rgba(59,130,246,0.15)",
-                boxShadow: "0 8px 40px rgba(0,0,0,0.4)",
+                background: "#111111",
+                border: "1px solid rgba(255,255,255,0.08)",
               }}
             >
               {formSubmitted ? (
@@ -213,21 +278,22 @@ export default function ContactSection() {
                   <p className="text-sm text-white/50">A senior engineer will review your request within 24 hours.</p>
                 </div>
               ) : (
-                <form
-                  onSubmit={async (e) => {
-                    e.preventDefault();
-                    const form = e.currentTarget;
-                    const data = {
-                      name: (form.elements.namedItem("name") as HTMLInputElement).value,
-                      phone: (form.elements.namedItem("phone") as HTMLInputElement).value,
-                      website: (form.elements.namedItem("website") as HTMLInputElement).value,
-                      message: (form.elements.namedItem("message") as HTMLTextAreaElement).value,
-                    };
-                    try { await fetch("/api/contact", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(data) }); } catch {}
-                    setFormSubmitted(true);
-                  }}
-                  className="flex flex-col gap-4"
-                >
+                  <form
+                    onSubmit={async (e) => {
+                      e.preventDefault();
+                      const form = e.currentTarget;
+                      const data = {
+                        name: (form.elements.namedItem("name") as HTMLInputElement).value,
+                        phone: (form.elements.namedItem("phone") as HTMLInputElement).value,
+                        website: (form.elements.namedItem("website") as HTMLInputElement).value,
+                        message: (form.elements.namedItem("message") as HTMLTextAreaElement).value,
+                      };
+                      try { await fetch("/api/contact", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(data) }); } catch {}
+                      setFormSubmitted(true);
+                    }}
+                    className="flex flex-col gap-4"
+                    aria-label="Contact form"
+                  >
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <input type="text" name="name" placeholder="Your name *" required className={inputClass} />
                     <input type="tel" name="phone" placeholder="Phone number *" required className={inputClass} />
@@ -238,15 +304,21 @@ export default function ContactSection() {
                     required className={inputClass + " resize-none"}
                   />
                   <button
+                    ref={submitBtnRef}
                     type="submit"
-                    className="flex items-center justify-center gap-2 w-full py-3.5 rounded-xl font-bold text-sm transition-all duration-300 hover:scale-[1.02] hover:shadow-lg"
+                    className="flex items-center justify-center gap-2 w-full py-3.5 rounded-xl font-bold text-sm transition-shadow duration-300 hover:shadow-lg"
                     style={{
                       background: "linear-gradient(135deg, #EAB308, #D97706)",
                       color: "#030510",
                       boxShadow: "0 4px 20px rgba(234,179,8,0.3)",
                     }}
-                    onMouseEnter={e => { (e.currentTarget as HTMLElement).style.boxShadow = "0 8px 30px rgba(234,179,8,0.5)"; }}
-                    onMouseLeave={e => { (e.currentTarget as HTMLElement).style.boxShadow = "0 4px 20px rgba(234,179,8,0.3)"; }}
+                    onMouseEnter={(e) => {
+                      (e.currentTarget as HTMLElement).style.boxShadow = "0 8px 30px rgba(234,179,8,0.5)";
+                      handleMagneticEnter();
+                    }}
+                    onMouseLeave={(e) => {
+                      (e.currentTarget as HTMLElement).style.boxShadow = "0 4px 20px rgba(234,179,8,0.3)";
+                    }}
                   >
                     Send Message
                     <ArrowUpRight className="w-4 h-4" />

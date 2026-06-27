@@ -90,10 +90,10 @@ export default function StickyProjects() {
   return (
     <section 
       ref={containerRef} 
-      className="relative w-full h-screen overflow-hidden flex justify-center items-center perspective-[1000px] bg-[#050505]"
+      className="relative w-full h-screen overflow-hidden flex justify-center items-center perspective-[1000px]"
     >
       <div className="absolute top-12 text-center w-full z-0 opacity-50 pointer-events-none">
-        <h2 className="text-[#A0A0A0] text-sm uppercase tracking-[0.3em] font-mono">Scroll to explore</h2>
+        <h2 className="text-[#D0D0D0] text-sm uppercase tracking-[0.3em] font-mono text-shadow-body">Scroll to explore</h2>
       </div>
 
       {caseStudies.map(([slug, study], index) => (
@@ -111,7 +111,7 @@ export default function StickyProjects() {
               <div className="font-heading text-[#EAB308] text-5xl md:text-7xl font-black tracking-tighter mb-4">
                 {study.metrics[0].prefix}{study.metrics[0].value}{study.metrics[0].suffix}
               </div>
-              <div className="text-[#666666] text-sm uppercase tracking-widest font-semibold">
+              <div className="text-[#888] text-sm uppercase tracking-widest font-semibold text-shadow-body">
                 {study.metrics[0].label}
               </div>
             </div>
@@ -121,7 +121,7 @@ export default function StickyProjects() {
               <div>
                 <div className="flex flex-wrap gap-2 mb-6">
                   {study.tags.slice(0, 3).map((tag, i) => (
-                    <span key={i} className="px-3 py-1 bg-[#1A1A1A] text-[#A0A0A0] text-xs font-mono uppercase tracking-wider rounded-full">
+                    <span key={i} className="px-3 py-1 bg-[#1A1A1A] text-[#D0D0D0] text-xs font-mono uppercase tracking-wider rounded-full">
                       {tag}
                     </span>
                   ))}
@@ -129,7 +129,7 @@ export default function StickyProjects() {
                 <h3 className="font-heading text-3xl md:text-5xl font-bold text-white mb-6 group-hover:text-[#EAB308] transition-colors duration-300">
                   {study.client}
                 </h3>
-                <p className="text-[#A0A0A0] text-base leading-relaxed line-clamp-4">
+                <p className="text-[#D0D0D0] text-base leading-relaxed line-clamp-4 font-medium text-shadow-body">
                   {study.problem}
                 </p>
               </div>

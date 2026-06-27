@@ -5,9 +5,9 @@ import gsap from "gsap";
 import { useGSAP } from "@gsap/react";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import SplitType from "split-type";
-import Navbar from "../../components/Navbar";
 import Link from "next/link";
 import ReverbexBond from "../../components/ReverbexBond";
+import PageCTA from "../../components/PageCTA";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -73,8 +73,6 @@ export default function AboutPage() {
 
   return (
     <main ref={containerRef} className="w-full text-white min-h-screen pt-32 pb-24 selection:bg-[#EAB308]/30 overflow-hidden relative bg-[#050505]">
-      <Navbar />
-      
       {/* Background gradients */}
       <div className="absolute top-[-20%] left-[-10%] w-[50%] h-[50%] rounded-full bg-[#EAB308]/10 blur-[200px] pointer-events-none" />
       
@@ -95,7 +93,7 @@ export default function AboutPage() {
           <p className="reveal-text text-3xl md:text-5xl lg:text-6xl font-black tracking-tight leading-[1.2] mb-16 text-white">
             The digital agency model is broken. Most agencies function as middlemen—selling you a custom project, but delivering a cheap WordPress template modified by junior developers.
           </p>
-          <p className="reveal-text text-3xl md:text-5xl lg:text-6xl font-black tracking-tight leading-[1.2] mb-16 text-[#A0A0A0]">
+          <p className="reveal-text text-3xl md:text-5xl lg:text-6xl font-black tracking-tight leading-[1.2] mb-16 text-[#D0D0D0] text-shadow-body">
             We started Reverbex Technologies to build the exact antithesis of that model.
           </p>
         </div>
@@ -111,7 +109,7 @@ export default function AboutPage() {
           <p className="text-white text-2xl md:text-4xl font-bold uppercase tracking-widest mt-8 z-10">
             In-House Engineering
           </p>
-          <p className="text-[#A0A0A0] text-lg font-medium mt-4 z-10 max-w-md text-center">
+          <p className="text-[#D0D0D0] text-lg font-medium mt-4 z-10 max-w-md text-center text-shadow-body">
             Zero templates. Zero outsourcing. Every line of code is written by senior developers.
           </p>
         </div>
@@ -123,22 +121,22 @@ export default function AboutPage() {
             <div className="group">
               <div className="text-[#EAB308] font-black text-6xl mb-4 opacity-30 group-hover:opacity-100 transition-opacity duration-300">01</div>
               <h3 className="text-2xl font-bold mb-4">Direct Senior Access</h3>
-              <p className="text-[#A0A0A0] text-lg leading-relaxed">No account managers playing broken telephone. You speak directly with the engineers and strategists building your project.</p>
+              <p className="text-[#D0D0D0] text-lg leading-relaxed font-medium text-shadow-body">No account managers playing broken telephone. You speak directly with the engineers and strategists building your project.</p>
             </div>
             <div className="group">
               <div className="text-[#EAB308] font-black text-6xl mb-4 opacity-30 group-hover:opacity-100 transition-opacity duration-300">02</div>
               <h3 className="text-2xl font-bold mb-4">100% Code Ownership</h3>
-              <p className="text-[#A0A0A0] text-lg leading-relaxed">You own every line of code we write. No platform lock-in, no mandatory ongoing subscriptions just to keep your site live.</p>
+              <p className="text-[#D0D0D0] text-lg leading-relaxed font-medium text-shadow-body">You own every line of code we write. No platform lock-in, no mandatory ongoing subscriptions just to keep your site live.</p>
             </div>
             <div className="group">
               <div className="text-[#EAB308] font-black text-6xl mb-4 opacity-30 group-hover:opacity-100 transition-opacity duration-300">03</div>
               <h3 className="text-2xl font-bold mb-4">Performance Obsession</h3>
-              <p className="text-[#A0A0A0] text-lg leading-relaxed">If it doesn't load instantly, we rewrite it. We guarantee 100/100 Core Web Vitals for maximum SEO ranking.</p>
+              <p className="text-[#D0D0D0] text-lg leading-relaxed font-medium text-shadow-body">If it doesn't load instantly, we rewrite it. We guarantee 100/100 Core Web Vitals for maximum SEO ranking.</p>
             </div>
             <div className="group">
               <div className="text-[#EAB308] font-black text-6xl mb-4 opacity-30 group-hover:opacity-100 transition-opacity duration-300">04</div>
               <h3 className="text-2xl font-bold mb-4">Data-Driven Strategy</h3>
-              <p className="text-[#A0A0A0] text-lg leading-relaxed">No vanity metrics. We only track what matters: leads generated, costs reduced, and revenue increased.</p>
+              <p className="text-[#D0D0D0] text-lg leading-relaxed font-medium text-shadow-body">No vanity metrics. We only track what matters: leads generated, costs reduced, and revenue increased.</p>
             </div>
           </div>
         </div>
@@ -147,17 +145,7 @@ export default function AboutPage() {
           <ReverbexBond />
         </div>
 
-        <div className="border-t border-[#1A1A1A] pt-32 flex flex-col items-center pb-12 text-center">
-          <h2 className="text-4xl md:text-6xl font-black text-white mb-12">
-            Work with the best.
-          </h2>
-          <Link
-            href="/contact"
-            className="inline-block px-12 py-6 bg-[#EAB308] text-black text-xl font-black hover:bg-white transition-colors duration-300 rounded-xl"
-          >
-            Get in Touch
-          </Link>
-        </div>
+        <PageCTA />
 
       </div>
     </main>

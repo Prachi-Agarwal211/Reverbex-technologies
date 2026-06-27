@@ -3,125 +3,184 @@
 import { useRef, useState, useEffect } from "react";
 import gsap from "gsap";
 import { useGSAP } from "@gsap/react";
-import Navbar from "../../components/Navbar";
+import Link from "next/link";
+import PageCTA from "../../components/PageCTA";
 
+// Each service gets its own distinct accent color — no two look alike
 const services = [
-  { slug: "website-development", name: "Custom Website Development", image: "/ambient-bg.jpg" },
-  { slug: "e-commerce", name: "E-Commerce Development", image: "/ambient-bg.jpg" },
-  { slug: "mobile-apps", name: "Mobile App Development", image: "/ambient-bg.jpg" },
-  { slug: "meta-ads", name: "Meta Ads Management", image: "/ambient-bg.jpg" },
-  { slug: "google-ads", name: "Google Ads Management", image: "/ambient-bg.jpg" },
-  { slug: "lead-generation", name: "Lead Generation", image: "/ambient-bg.jpg" },
-  { slug: "erp-systems", name: "ERP System Development", image: "/ambient-bg.jpg" },
-  { slug: "whatsapp-automation", name: "WhatsApp Automation", image: "/ambient-bg.jpg" },
-  { slug: "ai-solutions", name: "AI Solutions & Automation", image: "/ambient-bg.jpg" },
-  { slug: "logo-branding", name: "Logo Design & Branding", image: "/ambient-bg.jpg" },
-  { slug: "rebranding", name: "Complete Rebranding", image: "/ambient-bg.jpg" },
-  { slug: "seo", name: "SEO Services", image: "/ambient-bg.jpg" }
+  { slug: "website-development",  num: "01", name: "Custom Website Development",  tag: "Next.js · Sub-second · 100/100",    accent: "#EAB308" },
+  { slug: "e-commerce",           num: "02", name: "E-Commerce Development",       tag: "Zero fees · Custom checkout",        accent: "#F59E0B" },
+  { slug: "mobile-apps",          num: "03", name: "Mobile App Development",        tag: "iOS & Android · React Native",      accent: "#0EA5E9" },
+  { slug: "meta-ads",             num: "04", name: "Meta Ads Management",           tag: "Facebook & Instagram → customers",  accent: "#8B5CF6" },
+  { slug: "google-ads",           num: "05", name: "Google Ads Management",         tag: "Search & Display · Built for ROI",  accent: "#3B82F6" },
+  { slug: "lead-generation",      num: "06", name: "Lead Generation",               tag: "High-converting funnels · 24/7",    accent: "#EC4899" },
+  { slug: "erp-systems",          num: "07", name: "ERP System Development",        tag: "Automate operations · Own data",    accent: "#10B981" },
+  { slug: "whatsapp-automation",  num: "08", name: "WhatsApp Automation",           tag: "Official API · Instant routing",    accent: "#22C55E" },
+  { slug: "ai-solutions",         num: "09", name: "AI Solutions & Automation",     tag: "Trained on your data",              accent: "#67E8F9" },
+  { slug: "logo-branding",        num: "10", name: "Logo Design & Branding",        tag: "Identity · Stand out · Scale",      accent: "#EAB308" },
+  { slug: "rebranding",           num: "11", name: "Complete Rebranding",           tag: "Strategy → refresh → deploy",       accent: "#A78BFA" },
+  { slug: "seo",                  num: "12", name: "SEO Services",                  tag: "Google + ChatGPT + Gemini ranked",  accent: "#34D399" },
 ];
 
 export default function ServicesPage() {
   const containerRef = useRef<HTMLElement>(null);
-  const imageRef = useRef<HTMLDivElement>(null);
-  const [activeImage, setActiveImage] = useState<string | null>(null);
+  const [hoveredIdx, setHoveredIdx] = useState<number | null>(null);
 
   useGSAP(() => {
     if (!containerRef.current) return;
-
-    // Entrance Animation
     gsap.fromTo(
-      ".service-header > *",
+      ".svc-header > *",
       { y: 50, opacity: 0 },
       { y: 0, opacity: 1, duration: 1, stagger: 0.1, ease: "power4.out" }
     );
-
     gsap.fromTo(
-      ".service-row",
-      { y: 30, opacity: 0 },
-      { y: 0, opacity: 1, duration: 0.8, stagger: 0.05, ease: "power3.out", delay: 0.5 }
+      ".svc-row",
+      { y: 24, opacity: 0 },
+      { y: 0, opacity: 1, duration: 0.7, stagger: 0.04, ease: "power3.out", delay: 0.5 }
     );
-
   }, { scope: containerRef });
 
-  // Floating Mouse Follower Effect
-  useEffect(() => {
-    if (!imageRef.current || window.matchMedia("(max-width: 1024px)").matches) return;
-
-    // Use gsap.quickTo for high-performance mouse tracking
-    const xTo = gsap.quickTo(imageRef.current, "x", { duration: 0.6, ease: "power3" });
-    const yTo = gsap.quickTo(imageRef.current, "y", { duration: 0.6, ease: "power3" });
-
-    const handleMouseMove = (e: MouseEvent) => {
-      // Offset by half the image size so it centers on the cursor
-      xTo(e.clientX - 150);
-      yTo(e.clientY - 200);
-    };
-
-    window.addEventListener("mousemove", handleMouseMove);
-    return () => window.removeEventListener("mousemove", handleMouseMove);
-  }, []);
-
   return (
-    <main ref={containerRef} className="w-full text-white min-h-screen pt-32 pb-24 selection:bg-[#EAB308]/30 overflow-hidden relative">
-      <Navbar />
-      
-      {/* Global Background Fix */}
-      <div className="fixed inset-0 bg-[#030303] -z-20" />
-      
-      {/* Floating Image Container (Desktop Only) */}
-      <div 
-        ref={imageRef}
-        className="fixed top-0 left-0 w-[300px] h-[400px] pointer-events-none z-0 hidden lg:block overflow-hidden rounded-2xl transition-all duration-500 ease-out"
+    <main
+      ref={containerRef}
+      className="w-full text-white min-h-screen pt-32 pb-24 overflow-hidden relative"
+      style={{ background: "#040810" }}
+    >
+      {/* Active accent ambient glow */}
+      <div
+        className="fixed inset-0 pointer-events-none z-0 transition-all duration-700"
         style={{
-          opacity: activeImage ? 0.7 : 0,
-          transform: `scale(${activeImage ? 1 : 0.8})`,
+          background: hoveredIdx !== null
+            ? `radial-gradient(ellipse 60% 50% at 80% 40%, ${services[hoveredIdx].accent}08 0%, transparent 60%)`
+            : "none",
         }}
-      >
-        <div 
-          className="w-full h-full bg-cover bg-center transition-all duration-700"
-          style={{ backgroundImage: `url(${activeImage})` }}
-        />
-        <div className="absolute inset-0 bg-[#EAB308] mix-blend-overlay opacity-30" />
-      </div>
+      />
 
       <div className="max-w-7xl mx-auto px-6 lg:px-12 relative z-10">
-        <div className="service-header mb-24">
-          <span className="text-[#EAB308] text-xs font-semibold tracking-[0.25em] uppercase mb-4 block">
+
+        {/* Header */}
+        <div className="svc-header mb-20 md:mb-28">
+          <p className="text-[9px] font-bold uppercase tracking-[0.4em] text-[#EAB308]/50 mb-5">
             Capabilities Catalog
-          </span>
-          <h1 className="text-white text-[clamp(3rem,8vw,7rem)] font-black tracking-tighter leading-none max-w-4xl">
-            Everything You Need To Scale.
+          </p>
+          <h1
+            className="leading-none tracking-tight text-white"
+            style={{
+              fontFamily: "var(--font-display)",
+              fontSize: "clamp(3rem, 8vw, 7rem)",
+              fontWeight: 300,
+              fontStyle: "italic",
+              letterSpacing: "-0.04em",
+            }}
+          >
+            Everything you need
+            <br />
+            <span style={{ fontWeight: 600, fontStyle: "normal", color: "#EAB308" }}>
+              to scale.
+            </span>
           </h1>
+          <p className="text-white/50 font-medium mt-6 max-w-md text-shadow-body" style={{ fontSize: "14px" }}>
+            12 capabilities. All engineered in-house. No outsourcing. No templates.
+          </p>
         </div>
 
-        {/* List of Services (Full Width Rows) */}
-        <div className="border-t border-[#1A1A1A]">
-          {services.map((service, idx) => (
-            <a
+        {/* Service rows */}
+        <div style={{ borderTop: "1px solid rgba(255,255,255,0.05)" }}>
+          {services.map((svc, idx) => (
+            <Link
               key={idx}
-              href={`/services/${service.slug}`}
-              className="service-row group flex flex-col md:flex-row md:items-center justify-between py-8 md:py-12 border-b border-[#1A1A1A] hover:bg-[#0A0A0A]/80 transition-colors duration-500 px-4 md:px-8 -mx-4 md:-mx-8 cursor-pointer relative overflow-hidden"
-              onMouseEnter={() => setActiveImage(service.image)}
-              onMouseLeave={() => setActiveImage(null)}
+              href={`/services/${svc.slug}`}
+              className="svc-row group block relative overflow-hidden"
+              style={{ borderBottom: "1px solid rgba(255,255,255,0.05)" }}
+              onMouseEnter={() => setHoveredIdx(idx)}
+              onMouseLeave={() => setHoveredIdx(null)}
             >
-              {/* Animated Background Slide */}
-              <div className="absolute inset-0 bg-[#111] translate-y-full group-hover:translate-y-0 transition-transform duration-500 ease-out -z-10" />
+              {/* Background slide on hover */}
+              <div
+                className="absolute inset-0 translate-y-full group-hover:translate-y-0 transition-transform duration-500 ease-out"
+                style={{ background: `${svc.accent}07` }}
+              />
 
-              <div className="flex items-center gap-8 mb-4 md:mb-0">
-                <span className="text-[#666666] text-sm font-semibold tracking-widest uppercase md:w-16">
-                  {String(idx + 1).padStart(2, '0')}
-                </span>
-                <h3 className="text-white text-3xl md:text-5xl font-black group-hover:text-[#EAB308] group-hover:translate-x-4 transition-all duration-500">
-                  {service.name}
-                </h3>
-              </div>
+              {/* Left accent bar that slides in */}
+              <div
+                className="absolute left-0 top-0 bottom-0 w-[2px] scale-y-0 group-hover:scale-y-100 transition-transform duration-400 ease-out origin-top"
+                style={{ background: svc.accent }}
+              />
 
-              <div className="text-[#666666] group-hover:text-white transition-colors duration-500 text-sm font-semibold uppercase tracking-widest flex items-center gap-2">
-                Explore <span className="group-hover:translate-x-2 transition-transform duration-500">→</span>
+              <div className="relative flex items-center justify-between py-7 md:py-9 px-4 md:px-8">
+
+                {/* Left side — number + name */}
+                <div className="flex items-center gap-6 md:gap-10 flex-1 min-w-0">
+                  <span
+                    className="flex-shrink-0 tabular-nums font-black transition-colors duration-400"
+                    style={{
+                      fontFamily: "var(--font-heading)",
+                      fontSize: "clamp(0.65rem, 1vw, 0.8rem)",
+                      letterSpacing: "-0.02em",
+                      color: hoveredIdx === idx ? svc.accent : "rgba(255,255,255,0.15)",
+                    }}
+                  >
+                    {svc.num}
+                  </span>
+
+                  <div className="flex-1 min-w-0">
+                    <h3
+                      className="leading-none tracking-tight transition-colors duration-400 truncate"
+                      style={{
+                        fontFamily: "var(--font-display)",
+                        fontSize: "clamp(1.4rem, 3.5vw, 2.8rem)",
+                        fontWeight: hoveredIdx === idx ? 500 : 300,
+                        fontStyle: hoveredIdx === idx ? "normal" : "italic",
+                        letterSpacing: "-0.03em",
+                        color: hoveredIdx === idx ? "#ffffff" : "rgba(255,255,255,0.55)",
+                      }}
+                    >
+                      {svc.name}
+                    </h3>
+                    <p
+                      className="mt-1 font-bold uppercase tracking-[0.18em] transition-opacity duration-400"
+                      style={{
+                        fontSize: "8px",
+                        color: svc.accent,
+                        opacity: hoveredIdx === idx ? 0.7 : 0,
+                      }}
+                    >
+                      {svc.tag}
+                    </p>
+                  </div>
+                </div>
+
+                {/* Right — arrow */}
+                <div
+                  className="flex-shrink-0 flex items-center gap-3 transition-all duration-400 ml-6"
+                  style={{ color: hoveredIdx === idx ? svc.accent : "rgba(255,255,255,0.15)" }}
+                >
+                  <span
+                    className="hidden md:block text-[9px] font-bold uppercase tracking-widest transition-opacity duration-400"
+                    style={{ opacity: hoveredIdx === idx ? 1 : 0 }}
+                  >
+                    Explore
+                  </span>
+                  <svg
+                    width="14" height="14"
+                    viewBox="0 0 24 24" fill="none"
+                    stroke="currentColor" strokeWidth="2"
+                    style={{
+                      transform: hoveredIdx === idx ? "translate(4px, -4px)" : "none",
+                      transition: "transform 0.4s cubic-bezier(0.34,1.56,0.64,1)",
+                    }}
+                  >
+                    <path d="M7 17L17 7M17 7H7M17 7v10" />
+                  </svg>
+                </div>
               </div>
-            </a>
+            </Link>
           ))}
         </div>
+
+        {/* Bottom CTA */}
+        <PageCTA />
+
       </div>
     </main>
   );

@@ -14,6 +14,7 @@ export default function BackgroundBeams() {
 
     let animId: number;
     let time = 0;
+    let isVisible = true;
 
     const resize = () => {
       canvas.width = canvas.offsetWidth * window.devicePixelRatio;
@@ -31,6 +32,7 @@ export default function BackgroundBeams() {
     }));
 
     const animate = () => {
+      if (!isVisible) return;
       time += 0.01;
       const w = canvas.offsetWidth;
       const h = canvas.offsetHeight;
@@ -59,10 +61,34 @@ export default function BackgroundBeams() {
       animId = requestAnimationFrame(animate);
     };
 
+    // Pause when offscreen
+    const io = new IntersectionObserver(([entry]) => {
+      const wasVisible = isVisible;
+      isVisible = entry.isIntersecting;
+      if (isVisible && !wasVisible) {
+        animId = requestAnimationFrame(animate);
+      }
+    }, { threshold: 0 });
+    io.observe(canvas);
+
+    // Pause when tab hidden
+    const onVisChange = () => {
+      if (document.hidden) {
+        isVisible = false;
+        cancelAnimationFrame(animId);
+      } else {
+        isVisible = true;
+        animId = requestAnimationFrame(animate);
+      }
+    };
+    document.addEventListener("visibilitychange", onVisChange);
+
     animate();
 
     return () => {
       window.removeEventListener("resize", resize);
+      document.removeEventListener("visibilitychange", onVisChange);
+      io.disconnect();
       cancelAnimationFrame(animId);
     };
   }, []);

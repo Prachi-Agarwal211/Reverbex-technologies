@@ -1,6 +1,5 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import Navbar from "../../../components/Navbar";
 import IndustryClient from "../../../components/IndustryClient";
 import { industriesData } from "../../../lib/industriesData";
 
@@ -45,7 +44,6 @@ export default async function IndustryPage({
   if (!industry) {
     return (
       <main className="w-full text-white min-h-screen pt-32 pb-24 text-center">
-        <Navbar />
         <h1 className="text-4xl font-bold mb-4">Industry Not Found</h1>
         <Link href="/industries" className="text-[#EAB308] hover:underline">Return to Industries</Link>
       </main>
@@ -72,11 +70,10 @@ export default async function IndustryPage({
       />
 
       <main className="w-full text-white min-h-screen pt-32 pb-24 selection:bg-[#EAB308]/30 overflow-hidden">
-        <Navbar />
         
         <div className="max-w-6xl mx-auto px-6 lg:px-12">
           <nav className="mb-12" aria-label="Breadcrumb">
-            <ol className="flex items-center gap-2 text-sm text-[#666666] font-mono tracking-wider">
+            <ol className="flex items-center gap-2 text-sm text-[#888] font-mono tracking-wider">
               <li><Link href="/" className="hover:text-white transition-colors">HOME</Link></li>
               <li>/</li>
               <li><Link href="/industries" className="hover:text-white transition-colors">INDUSTRIES</Link></li>
