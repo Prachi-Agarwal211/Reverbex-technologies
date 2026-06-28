@@ -10,6 +10,12 @@ export default function Template({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
 
   useEffect(() => {
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+      // Skip animation — just ensure container is hidden
+      gsap.set(containerRef.current, { zIndex: -1, pointerEvents: "none" });
+      return;
+    }
+
     // Page Entrance GSAP Morph Wipe Animation
     // This perfectly mimics the SVG Morphing logic used in the menu!
     

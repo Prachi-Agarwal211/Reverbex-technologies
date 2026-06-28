@@ -30,6 +30,15 @@ export default function IndustriesIndexPage() {
 
   return (
     <main ref={containerRef} className="w-full text-white min-h-screen pt-32 pb-24 selection:bg-[#EAB308]/30 bg-[#030303] overflow-hidden">
+      {/* Breadcrumb Schema */}
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify({
+        "@context": "https://schema.org",
+        "@type": "BreadcrumbList",
+        "itemListElement": [
+          { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://reverbex.in" },
+          { "@type": "ListItem", "position": 2, "name": "Industries", "item": "https://reverbex.in/industries" }
+        ]
+      })}} />
       <div className="max-w-7xl mx-auto px-6 lg:px-12">
         <div className="industry-header mb-20 max-w-4xl">
           <span className="text-[#EAB308] text-xs font-semibold tracking-[0.25em] uppercase mb-4 block">

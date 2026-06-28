@@ -59,13 +59,12 @@ export default function Footer() {
       ref={containerRef}
       className="relative w-full"
       style={{
-        background: "#03050F",
+        background: "#020308",
         backgroundImage: `
-          radial-gradient(ellipse 80% 50% at 50% 0%, rgba(234,179,8,0.12) 0%, transparent 50%),
-          radial-gradient(ellipse 60% 60% at 10% 60%, rgba(59,130,246,0.08) 0%, transparent 50%),
-          radial-gradient(ellipse 40% 40% at 80% 30%, rgba(29,78,216,0.06) 0%, transparent 45%)
+          radial-gradient(ellipse 80% 50% at 50% 0%, rgba(26,58,107,0.15) 0%, transparent 50%),
+          radial-gradient(ellipse 60% 60% at 10% 60%, rgba(26,58,107,0.08) 0%, transparent 50%)
         `,
-        borderTop: "1px solid rgba(234,179,8,0.08)",
+        borderTop: "1px solid rgba(26,58,107,0.12)",
       }}
     >
       {/* DotGrid background */}

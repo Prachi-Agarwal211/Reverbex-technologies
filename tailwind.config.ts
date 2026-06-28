@@ -73,6 +73,9 @@ const config: Config = {
         "headline": ["clamp(2.5rem, 6vw, 5.5rem)", { lineHeight: "1.0", letterSpacing: "-0.03em", fontWeight: "800" }],
         "title": ["clamp(1.5rem, 3vw, 2.5rem)", { lineHeight: "1.15", letterSpacing: "-0.02em", fontWeight: "700" }],
       },
+      animation: {
+        "marquee": "marquee 40s linear infinite",
+      },
       keyframes: {
         "grain": {
           "0%, 100%": { transform: "translate(0, 0)" },
@@ -81,6 +84,10 @@ const config: Config = {
           "50%": { transform: "translate(12%, 9%)" },
           "70%": { transform: "translate(9%, 4%)" },
           "90%": { transform: "translate(-1%, 7%)" },
+        },
+        "marquee": {
+          "0%": { transform: "translateX(0%)" },
+          "100%": { transform: "translateX(-50%)" },
         },
       },
     },

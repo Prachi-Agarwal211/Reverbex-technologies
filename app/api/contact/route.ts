@@ -12,8 +12,6 @@ export async function POST(request: Request) {
       );
     }
 
-    console.log("CONTACT FORM SUBMISSION:", { name, phone, website, message, timestamp: new Date().toISOString() });
-
     return NextResponse.json({ success: true });
   } catch {
     return NextResponse.json(

@@ -115,11 +115,17 @@ export default function GrainientBackground({
     const container = containerRef.current;
     if (!container) return;
 
+    // Skip WebGL entirely on mobile for performance
+    const isMobile = window.matchMedia("(max-width: 768px)").matches;
+    if (isMobile) {
+      container.style.background = `linear-gradient(180deg, ${color3} 0%, ${color2} 50%, ${color3} 100%)`;
+      return;
+    }
+
     // WebGL2 check
     const testCanvas = document.createElement("canvas");
     const gl = testCanvas.getContext("webgl2");
     if (!gl) {
-      // Fallback: show a CSS gradient instead
       container.style.background = `linear-gradient(135deg, ${color3} 0%, ${color2} 50%, ${color3} 100%)`;
       return;
     }
@@ -139,7 +145,7 @@ export default function GrainientBackground({
     });
     if (!ctx) return;
 
-    const dpr = Math.min(window.devicePixelRatio || 1, 2);
+    const dpr = Math.min(window.devicePixelRatio || 1, isMobile ? 1 : 2);
     container.appendChild(canvas);
 
     // Compile shader
@@ -149,7 +155,6 @@ export default function GrainientBackground({
       ctx!.shaderSource(shader, source);
       ctx!.compileShader(shader);
       if (!ctx!.getShaderParameter(shader, ctx!.COMPILE_STATUS)) {
-        console.warn("Grainient shader error:", ctx!.getShaderInfoLog(shader));
         ctx!.deleteShader(shader);
         return null;
       }
@@ -166,7 +171,6 @@ export default function GrainientBackground({
     ctx.attachShader(program, fs);
     ctx.linkProgram(program);
     if (!ctx.getProgramParameter(program, ctx.LINK_STATUS)) {
-      console.warn("Grainient program link error:", ctx.getProgramInfoLog(program));
       return;
     }
     ctx.useProgram(program);

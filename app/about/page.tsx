@@ -73,6 +73,15 @@ export default function AboutPage() {
 
   return (
     <main ref={containerRef} className="w-full text-white min-h-screen pt-32 pb-24 selection:bg-[#EAB308]/30 overflow-hidden relative bg-[#050505]">
+      {/* Breadcrumb Schema */}
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify({
+        "@context": "https://schema.org",
+        "@type": "BreadcrumbList",
+        "itemListElement": [
+          { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://reverbex.in" },
+          { "@type": "ListItem", "position": 2, "name": "About", "item": "https://reverbex.in/about" }
+        ]
+      })}} />
       {/* Background gradients */}
       <div className="absolute top-[-20%] left-[-10%] w-[50%] h-[50%] rounded-full bg-[#EAB308]/10 blur-[200px] pointer-events-none" />
       

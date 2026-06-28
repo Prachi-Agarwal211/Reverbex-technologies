@@ -6,7 +6,6 @@ import SmoothScroll from "../components/SmoothScroll";
 import CustomCursor from "../components/CustomCursor";
 import WhatsAppButton from "../components/shared/WhatsAppButton";
 import MorphingMenu from "../components/MorphingMenu";
-import MobileBottomNav from "../components/MobileBottomNav";
 import Footer from "../components/Footer";
 import GrainientBackground from "../components/GrainientBackground";
 import { CONTACT, COMPANY, SOCIALS } from "@/lib/config";
@@ -17,7 +16,7 @@ const geist = Geist({subsets:['latin'],variable:'--font-sans'});
 const outfit = Outfit({
   subsets: ["latin"],
   variable: "--font-heading",
-  weight: ["300", "400", "500", "600", "700", "800", "900"],
+  weight: ["300", "400", "600", "800", "900"],
   display: "swap",
 });
 
@@ -31,7 +30,7 @@ const dmSans = DM_Sans({
 const cormorant = Cormorant_Garamond({
   subsets: ["latin"],
   variable: "--font-display",
-  weight: ["300", "400", "500", "600", "700"],
+  weight: ["300", "400", "600"],
   style: ["normal", "italic"],
   display: "swap",
 });
@@ -271,12 +270,12 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           Skip to main content
         </a>
         <GrainientBackground
-          color1="#EAB308"
-          color2="#1D4ED8"
-          color3="#050505"
-          speed={0.15}
-          grainAmount={0.08}
-          zoom={0.85}
+          color1="#B8860B"
+          color2="#1A3A6B"
+          color3="#03050F"
+          speed={0.1}
+          grainAmount={0.05}
+          zoom={0.9}
         />
         <div className="ambient-veil" aria-hidden="true" />
         <div className="grain-overlay" aria-hidden="true" />
@@ -286,7 +285,6 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           <SmoothScroll>{children}</SmoothScroll>
         </main>
         <Footer />
-        <MobileBottomNav />
         <WhatsAppButton />
         <ServiceWorkerRegistration />
       </body>

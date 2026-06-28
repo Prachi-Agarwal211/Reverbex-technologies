@@ -46,6 +46,15 @@ export default function ServicesPage() {
       className="w-full text-white min-h-screen pt-32 pb-24 overflow-hidden relative"
       style={{ background: "#040810" }}
     >
+      {/* Breadcrumb Schema */}
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify({
+        "@context": "https://schema.org",
+        "@type": "BreadcrumbList",
+        "itemListElement": [
+          { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://reverbex.in" },
+          { "@type": "ListItem", "position": 2, "name": "Services", "item": "https://reverbex.in/services" }
+        ]
+      })}} />
       {/* Active accent ambient glow */}
       <div
         className="fixed inset-0 pointer-events-none z-0 transition-all duration-700"

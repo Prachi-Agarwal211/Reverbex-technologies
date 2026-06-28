@@ -198,6 +198,7 @@ export default function MorphingMenu() {
                   alt="Reverbex"
                   width={400}
                   height={400}
+                  sizes="192px"
                   className="w-40 lg:w-48 h-auto object-contain transition-transform duration-300 group-hover:scale-105"
                 />
               </Link>
@@ -251,6 +252,7 @@ export default function MorphingMenu() {
                 alt="Reverbex"
                 width={400}
                 height={400}
+                sizes="112px"
                 className="w-28 h-auto object-contain transition-transform duration-300 group-hover:scale-105"
               />
             </Link>

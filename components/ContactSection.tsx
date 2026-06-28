@@ -22,6 +22,8 @@ export default function ContactSection() {
   const containerRef = useRef<HTMLElement>(null);
   const submitBtnRef = useRef<HTMLButtonElement>(null);
   const [formSubmitted, setFormSubmitted] = useState(false);
+  const [formLoading, setFormLoading] = useState(false);
+  const [formError, setFormError] = useState(false);
   const cleanupRef = useRef<(() => void) | null>(null);
 
   const handleMagneticEnter = () => {
@@ -88,8 +90,8 @@ export default function ContactSection() {
       style={{
         background: "transparent",
         backgroundImage: `
-          radial-gradient(ellipse 70% 60% at 50% 0%,  rgba(234,179,8,0.08) 0%, transparent 55%),
-          radial-gradient(ellipse 55% 55% at 10% 75%, rgba(59,130,246,0.05) 0%, transparent 50%)
+          radial-gradient(ellipse 70% 60% at 50% 0%,  rgba(26,58,107,0.12) 0%, transparent 55%),
+          radial-gradient(ellipse 55% 55% at 10% 75%, rgba(26,58,107,0.06) 0%, transparent 50%)
         `,
       }}
     >
@@ -117,8 +119,8 @@ export default function ContactSection() {
       <div className="absolute inset-0 grid-lines-blue opacity-20 pointer-events-none" />
 
       {/* Orbs */}
-      <div className="orb w-80 h-80 -top-20 left-1/2 -translate-x-1/2 opacity-20" style={{ background: "rgba(234,179,8,0.4)" }} />
-      <div className="orb orb-2 w-64 h-64 bottom-0 right-10 opacity-15" style={{ background: "rgba(59,130,246,0.4)" }} />
+      <div className="orb w-80 h-80 -top-20 left-1/2 -translate-x-1/2 opacity-10" style={{ background: "rgba(26,58,107,0.5)" }} />
+      <div className="orb orb-2 w-64 h-64 bottom-0 right-10 opacity-10" style={{ background: "rgba(26,58,107,0.4)" }} />
 
       <div className="relative z-10 max-w-7xl mx-auto px-5 md:px-10">
         {/* Heading */}
@@ -281,6 +283,8 @@ export default function ContactSection() {
                   <form
                     onSubmit={async (e) => {
                       e.preventDefault();
+                      setFormLoading(true);
+                      setFormError(false);
                       const form = e.currentTarget;
                       const data = {
                         name: (form.elements.namedItem("name") as HTMLInputElement).value,
@@ -288,8 +292,15 @@ export default function ContactSection() {
                         website: (form.elements.namedItem("website") as HTMLInputElement).value,
                         message: (form.elements.namedItem("message") as HTMLTextAreaElement).value,
                       };
-                      try { await fetch("/api/contact", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(data) }); } catch {}
-                      setFormSubmitted(true);
+                      try {
+                        const res = await fetch("/api/contact", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(data) });
+                        if (!res.ok) throw new Error("Failed");
+                        setFormSubmitted(true);
+                      } catch {
+                        setFormError(true);
+                      } finally {
+                        setFormLoading(false);
+                      }
                     }}
                     className="flex flex-col gap-4"
                     aria-label="Contact form"
@@ -306,7 +317,8 @@ export default function ContactSection() {
                   <button
                     ref={submitBtnRef}
                     type="submit"
-                    className="flex items-center justify-center gap-2 w-full py-3.5 rounded-xl font-bold text-sm transition-shadow duration-300 hover:shadow-lg"
+                    disabled={formLoading}
+                    className="flex items-center justify-center gap-2 w-full py-3.5 rounded-xl font-bold text-sm transition-shadow duration-300 hover:shadow-lg disabled:opacity-60 disabled:cursor-not-allowed"
                     style={{
                       background: "linear-gradient(135deg, #EAB308, #D97706)",
                       color: "#030510",
@@ -320,9 +332,15 @@ export default function ContactSection() {
                       (e.currentTarget as HTMLElement).style.boxShadow = "0 4px 20px rgba(234,179,8,0.3)";
                     }}
                   >
-                    Send Message
-                    <ArrowUpRight className="w-4 h-4" />
+                    {formLoading ? "Sending..." : "Send Message"}
+                    {!formLoading && <ArrowUpRight className="w-4 h-4" />}
                   </button>
+
+                  {formError && (
+                    <p className="text-center text-xs text-red-400 mt-2">
+                      Something went wrong. Please try again or WhatsApp us directly.
+                    </p>
+                  )}
 
                   <p className="text-center text-[10px] text-white/25 leading-relaxed">
                     No spam. We respond within 24 hours. Your data is safe.

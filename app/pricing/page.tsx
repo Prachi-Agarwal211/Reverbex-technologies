@@ -121,6 +121,15 @@ export default function PricingPage() {
 
   return (
     <main ref={containerRef} className="w-full text-white min-h-screen pt-32 pb-24 selection:bg-[#EAB308]/30 overflow-hidden relative bg-[#050505]">
+      {/* Breadcrumb Schema */}
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify({
+        "@context": "https://schema.org",
+        "@type": "BreadcrumbList",
+        "itemListElement": [
+          { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://reverbex.in" },
+          { "@type": "ListItem", "position": 2, "name": "Pricing", "item": "https://reverbex.in/pricing" }
+        ]
+      })}} />
       
       {/* Subtle Background Glow */}
       <div className="absolute top-1/4 left-1/2 -translate-x-1/2 w-[80%] h-[50%] bg-[#EAB308]/5 blur-[200px] rounded-full pointer-events-none" />

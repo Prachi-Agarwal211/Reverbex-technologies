@@ -15,6 +15,8 @@ export default function CustomCursor() {
   useEffect(() => {
     // Check if we should render - only on fine pointer devices
     if (window.matchMedia("(pointer: coarse)").matches) return;
+    // Disable custom cursor for reduced motion users
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
 
     const cursor = cursorRef.current;
     const dot = dotRef.current;

@@ -2,7 +2,7 @@
 
 import { memo, useCallback, useEffect, useRef } from "react";
 import { cn } from "@/lib/utils";
-import { animate } from "motion/react";
+import gsap from "gsap";
 
 interface GlowingEffectProps {
   blur?: number;
@@ -85,11 +85,13 @@ const GlowingEffect = memo(
           const angleDiff = ((targetAngle - currentAngle + 180) % 360) - 180;
           const newAngle = currentAngle + angleDiff;
 
-          animate(currentAngle, newAngle, {
+          const proxy = { value: currentAngle };
+          gsap.to(proxy, {
+            value: newAngle,
             duration: movementDuration,
-            ease: [0.16, 1, 0.3, 1],
-            onUpdate: (value) => {
-              element.style.setProperty("--start", String(value));
+            ease: "power3.out",
+            onUpdate: () => {
+              element.style.setProperty("--start", String(proxy.value));
             },
           });
         });

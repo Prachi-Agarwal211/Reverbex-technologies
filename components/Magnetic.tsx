@@ -7,6 +7,7 @@ export default function Magnetic({ children }: { children: React.ReactNode }) {
     const ref = useRef<HTMLDivElement>(null);
 
     const handleMouseMove = (e: React.MouseEvent) => {
+        if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
         const { clientX, clientY } = e;
         const boundingRect = ref.current?.getBoundingClientRect();
         if (boundingRect) {

@@ -19,6 +19,8 @@ export default function SmoothScroll({
     // Skip Lenis on mobile — native momentum scrolling is better
     const isMobile = window.matchMedia("(pointer: coarse)").matches || window.innerWidth < 768;
     if (isMobile) return;
+    // Skip Lenis for reduced motion users
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
 
     // Initialize Lenis for desktop only
     const lenis = new Lenis({
