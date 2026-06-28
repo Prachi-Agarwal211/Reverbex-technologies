@@ -12,10 +12,10 @@ import DotGrid from "./DotGrid";
 gsap.registerPlugin(ScrollTrigger);
 
 const inputClass = `
-  w-full bg-[#111111] text-sm text-white placeholder-white/30
-  border border-white/10 rounded-xl px-4 py-3.5
-  focus:outline-none focus:border-yellow-500/50 focus:bg-[#151515]
-  transition-all duration-250
+  w-full bg-white/40 text-sm text-[#050505] placeholder-[#050505]/50
+  border border-white/50 rounded-xl px-4 py-3.5
+  focus:outline-none focus:border-white focus:bg-white/60
+  transition-all duration-250 shadow-inner font-medium
 `;
 
 export default function ContactSection() {
@@ -169,32 +169,31 @@ export default function ContactSection() {
             ].map((item, i) => {
               const sharedClass = "group flex items-center gap-4 p-4 rounded-xl transition-all duration-300";
               const sharedStyle: React.CSSProperties = {
-                background: "#111111",
-                border: `1px solid rgba(255,255,255,0.08)`,
+                background: "linear-gradient(135deg, #EAB308 0%, #FDE68A 60%, #FFFFFF 100%)",
+                border: `1px solid rgba(255,255,255,0.4)`,
+                boxShadow: "0 10px 30px rgba(234,179,8,0.15)"
               };
               const handleEnter = (e: React.MouseEvent<HTMLElement>) => {
-                e.currentTarget.style.borderColor = `${item.color}35`;
-                e.currentTarget.style.background = `${item.color}08`;
                 e.currentTarget.style.transform = "translateX(4px)";
+                e.currentTarget.style.boxShadow = "0 15px 40px rgba(234,179,8,0.25)";
               };
               const handleLeave = (e: React.MouseEvent<HTMLElement>) => {
-                e.currentTarget.style.borderColor = `rgba(255,255,255,0.08)`;
-                e.currentTarget.style.background = "#111111";
                 e.currentTarget.style.transform = "";
+                e.currentTarget.style.boxShadow = "0 10px 30px rgba(234,179,8,0.15)";
               };
               const inner = (
                 <>
                   <div
-                    className="w-9 h-9 rounded-xl flex items-center justify-center shrink-0"
-                    style={{ background: `${item.color}15`, color: item.color }}
+                    className="w-9 h-9 rounded-xl flex items-center justify-center shrink-0 bg-white/40 border border-white/50 shadow-sm"
+                    style={{ color: "#050505" }}
                   >
                     {item.icon}
                   </div>
                   <div>
-                    <div className="text-[10px] font-semibold uppercase tracking-widest text-white/45 mb-0.5">
+                    <div className="text-[10px] font-bold uppercase tracking-widest text-[#050505]/60 mb-0.5">
                       {item.label}
                     </div>
-                    <div className="text-sm font-semibold text-white/90">
+                    <div className="text-sm font-bold text-[#050505]">
                       {item.value}
                     </div>
                   </div>
@@ -233,25 +232,25 @@ export default function ContactSection() {
               href="https://wa.me/919929986743"
               target="_blank"
               rel="noopener noreferrer"
-              className="mt-2 flex items-center justify-between px-5 py-4 rounded-2xl group transition-all duration-300"
+              className="mt-2 flex items-center justify-between px-5 py-4 rounded-2xl group transition-all duration-300 shadow-[0_10px_30px_rgba(234,179,8,0.15)]"
               style={{
-                background: "#111111",
-                border: "1px solid rgba(234,179,8,0.2)",
+                background: "linear-gradient(135deg, #EAB308 0%, #FDE68A 60%, #FFFFFF 100%)",
+                border: "1px solid rgba(255,255,255,0.4)",
               }}
               onMouseEnter={e => {
-                (e.currentTarget as HTMLElement).style.boxShadow = "0 8px 32px rgba(234,179,8,0.2)";
+                (e.currentTarget as HTMLElement).style.boxShadow = "0 15px 40px rgba(234,179,8,0.25)";
                 (e.currentTarget as HTMLElement).style.transform = "translateY(-2px)";
               }}
               onMouseLeave={e => {
-                (e.currentTarget as HTMLElement).style.boxShadow = "";
+                (e.currentTarget as HTMLElement).style.boxShadow = "0 10px 30px rgba(234,179,8,0.15)";
                 (e.currentTarget as HTMLElement).style.transform = "";
               }}
             >
               <div>
-                <div className="text-xs font-semibold text-white/50 mb-0.5">Fastest response</div>
-                <div className="text-sm font-bold text-yellow-400">Chat on WhatsApp →</div>
+                <div className="text-xs font-bold text-[#050505]/60 mb-0.5">Fastest response</div>
+                <div className="text-sm font-black text-[#050505]">Chat on WhatsApp →</div>
               </div>
-              <div className="w-9 h-9 rounded-xl flex items-center justify-center" style={{ background: "rgba(234,179,8,0.12)", color: "#EAB308" }}>
+              <div className="w-9 h-9 rounded-xl flex items-center justify-center bg-white/40 border border-white/50 shadow-sm" style={{ color: "#050505" }}>
                 <ArrowUpRight className="w-4 h-4" />
               </div>
             </a>
@@ -260,24 +259,24 @@ export default function ContactSection() {
           {/* Right: Form */}
           <div className="contact-grid-item lg:col-span-7">
             <div
-              className="p-6 md:p-8 rounded-2xl"
+              className="p-6 md:p-8 rounded-2xl shadow-[0_20px_40px_rgba(234,179,8,0.15)]"
               style={{
-                background: "#111111",
-                border: "1px solid rgba(255,255,255,0.08)",
+                background: "linear-gradient(135deg, #EAB308 0%, #FDE68A 60%, #FFFFFF 100%)",
+                border: "1px solid rgba(255,255,255,0.4)",
               }}
             >
               {formSubmitted ? (
                 <div className="min-h-[340px] flex flex-col items-center justify-center text-center">
                   <div
-                    className="w-14 h-14 rounded-full flex items-center justify-center mb-5"
-                    style={{ background: "rgba(59,130,246,0.15)", color: "#60A5FA" }}
+                    className="w-14 h-14 rounded-full flex items-center justify-center mb-5 bg-white/40 border border-white/50 shadow-sm"
+                    style={{ color: "#050505" }}
                   >
                     <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
                       <path d="M20 6L9 17l-5-5" />
                     </svg>
                   </div>
-                  <h3 className="text-base font-bold text-white mb-2">Message received</h3>
-                  <p className="text-sm text-white/50">A senior engineer will review your request within 24 hours.</p>
+                  <h3 className="text-base font-black text-[#050505] mb-2">Message received</h3>
+                  <p className="text-sm font-medium text-[#050505]/70">A senior engineer will review your request within 24 hours.</p>
                 </div>
               ) : (
                   <form
@@ -318,11 +317,11 @@ export default function ContactSection() {
                     ref={submitBtnRef}
                     type="submit"
                     disabled={formLoading}
-                    className="flex items-center justify-center gap-2 w-full py-3.5 rounded-xl font-bold text-sm transition-shadow duration-300 hover:shadow-lg disabled:opacity-60 disabled:cursor-not-allowed"
+                    className="flex items-center justify-center gap-2 w-full py-3.5 rounded-xl font-black text-sm transition-shadow duration-300 hover:shadow-lg disabled:opacity-60 disabled:cursor-not-allowed"
                     style={{
-                      background: "linear-gradient(135deg, #EAB308, #D97706)",
-                      color: "#030510",
-                      boxShadow: "0 4px 20px rgba(234,179,8,0.3)",
+                      background: "#050505",
+                      color: "#FFFFFF",
+                      boxShadow: "0 4px 20px rgba(5,5,5,0.3)",
                     }}
                     onMouseEnter={(e) => {
                       (e.currentTarget as HTMLElement).style.boxShadow = "0 8px 30px rgba(234,179,8,0.5)";
@@ -337,12 +336,12 @@ export default function ContactSection() {
                   </button>
 
                   {formError && (
-                    <p className="text-center text-xs text-red-400 mt-2">
+                    <p className="text-center text-xs font-bold text-red-600 mt-2">
                       Something went wrong. Please try again or WhatsApp us directly.
                     </p>
                   )}
 
-                  <p className="text-center text-[10px] text-white/25 leading-relaxed">
+                  <p className="text-center text-[10px] font-bold text-[#050505]/40 leading-relaxed">
                     No spam. We respond within 24 hours. Your data is safe.
                   </p>
                 </form>

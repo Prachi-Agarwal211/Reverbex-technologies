@@ -126,43 +126,41 @@ export default function ServicesGallery() {
             return (
               <div
                 key={`${service.title}-${index}`}
-                className="group relative flex-shrink-0 w-72 md:w-96 h-[400px] md:h-[480px] mx-4 md:mx-6 rounded-3xl p-8 md:p-10 flex flex-col justify-between transition-transform duration-700 hover:-translate-y-4"
+                className="group relative flex-shrink-0 w-72 md:w-96 h-[400px] md:h-[480px] mx-4 md:mx-6 rounded-3xl p-8 md:p-10 flex flex-col justify-between transition-transform duration-700 hover:-translate-y-4 shadow-[0_20px_40px_rgba(234,179,8,0.15)]"
                 style={{
-                  background: "linear-gradient(135deg, rgba(255,255,255,0.03) 0%, rgba(255,255,255,0.01) 100%)",
-                  boxShadow: "inset 0 1px 1px rgba(255,255,255,0.1), 0 20px 40px rgba(0,0,0,0.4)",
-                  backdropFilter: "blur(24px)",
-                  WebkitBackdropFilter: "blur(24px)",
-                  border: "1px solid rgba(255,255,255,0.05)",
+                  background: "linear-gradient(135deg, #EAB308 0%, #FDE68A 60%, #FFFFFF 100%)",
+                  boxShadow: "0 20px 40px rgba(234,179,8,0.15), inset 0 1px 0 rgba(255,255,255,0.5)",
+                  border: "1px solid rgba(255,255,255,0.6)",
                 }}
               >
                 {/* Glow Effect behind the card */}
                 <div 
                   className="absolute inset-0 rounded-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-700 pointer-events-none"
                   style={{
-                    background: "radial-gradient(circle at 50% 0%, rgba(234,179,8,0.15) 0%, transparent 70%)"
+                    background: "radial-gradient(circle at 50% 0%, rgba(255,255,255,0.6) 0%, transparent 70%)"
                   }}
                 />
 
                 <div className="relative z-10">
-                  <div className="w-14 h-14 md:w-16 md:h-16 rounded-2xl bg-white/5 border border-white/10 flex items-center justify-center mb-8 group-hover:scale-110 group-hover:bg-[#EAB308]/10 group-hover:border-[#EAB308]/30 transition-all duration-500">
-                    <Icon className="w-6 h-6 md:w-8 md:h-8 text-white/70 group-hover:text-[#EAB308] transition-colors duration-500" strokeWidth={1.5} />
+                  <div className="w-14 h-14 md:w-16 md:h-16 rounded-2xl bg-white/40 border border-white/50 flex items-center justify-center mb-8 group-hover:scale-110 group-hover:bg-white/60 transition-all duration-500 shadow-sm">
+                    <Icon className="w-6 h-6 md:w-8 md:h-8 text-[#050505] transition-colors duration-500" strokeWidth={2} />
                   </div>
                   
                   <h3 
-                    className="text-2xl md:text-3xl text-white font-medium mb-4 tracking-tight leading-tight"
+                    className="text-2xl md:text-3xl text-[#050505] font-black mb-4 tracking-tight leading-tight"
                     style={{ fontFamily: "var(--font-heading)" }}
                   >
                     {service.title}
                   </h3>
                   
-                  <p className="text-white/40 text-sm md:text-base leading-relaxed font-light group-hover:text-white/60 transition-colors duration-500">
+                  <p className="text-[#050505]/70 text-sm md:text-base leading-relaxed font-semibold transition-colors duration-500">
                     {service.desc}
                   </p>
                 </div>
 
                 <div className="relative z-10 flex items-center gap-3">
-                  <div className="w-10 h-[1px] bg-white/20 group-hover:bg-[#EAB308]/50 group-hover:w-16 transition-all duration-500" />
-                  <span className="text-[9px] uppercase tracking-widest font-semibold text-white/30 group-hover:text-[#EAB308] transition-colors duration-500">
+                  <div className="w-10 h-[2px] bg-[#050505]/20 group-hover:bg-[#050505] group-hover:w-16 transition-all duration-500" />
+                  <span className="text-[10px] uppercase tracking-widest font-black text-[#050505]/50 group-hover:text-[#050505] transition-colors duration-500">
                     Explore
                   </span>
                 </div>
