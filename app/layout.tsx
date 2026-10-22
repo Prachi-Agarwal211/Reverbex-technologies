@@ -1,292 +1,57 @@
-import type { Metadata, Viewport } from "next";
-import { Outfit, DM_Sans, Cormorant_Garamond, Geist } from "next/font/google";
-import "./globals.css";
-import ServiceWorkerRegistration from "../components/ServiceWorkerRegistration";
-import SmoothScroll from "../components/SmoothScroll";
-import CustomCursor from "../components/CustomCursor";
-import WhatsAppButton from "../components/shared/WhatsAppButton";
-import MorphingMenu from "../components/MorphingMenu";
-import Footer from "../components/Footer";
-import GrainientBackground from "../components/GrainientBackground";
-import { CONTACT, COMPANY, SOCIALS } from "@/lib/config";
-import { cn } from "@/lib/utils";
+import type { Metadata, Viewport } from 'next';
+import { Sora, Inter } from 'next/font/google';
+import './globals.css';
+import { Header, Footer } from '@/components/Chrome';
+import { JsonLd } from '@/components/JsonLd';
+import Motion from '@/components/Motion';
+import Aurora from '@/components/Aurora';
+import { MobileBar } from '@/components/MobileBar';
+import { SITE, BRAND, EMAIL, PHONE_E164, LINKEDIN, plans } from '@/lib/site';
+import { pageMetadata } from '@/lib/seo';
 
-const geist = Geist({subsets:['latin'],variable:'--font-sans'});
-
-const outfit = Outfit({
-  subsets: ["latin"],
-  variable: "--font-heading",
-  weight: ["300", "400", "600", "800", "900"],
-  display: "swap",
-});
-
-const dmSans = DM_Sans({
-  subsets: ["latin"],
-  variable: "--font-body",
-  weight: ["400", "500", "600", "700"],
-  display: "swap",
-});
-
-const cormorant = Cormorant_Garamond({
-  subsets: ["latin"],
-  variable: "--font-display",
-  weight: ["300", "400", "600"],
-  style: ["normal", "italic"],
-  display: "swap",
-});
+// Avoid a late font swap rewrapping the hero after first paint; Next preloads both fonts.
+const display = Sora({ subsets: ['latin'], weight: ['400', '600', '700'], variable: '--font-display', display: 'optional' });
+const sans = Inter({ subsets: ['latin'], variable: '--font-sans', display: 'optional' });
 
 export const metadata: Metadata = {
-  metadataBase: new URL('https://reverbex.in'),
-  title: {
-    default: "Reverbex Technologies | Websites, Ads & Automation",
-    template: "%s | Reverbex Technologies",
-  },
-  description: "Websites. Ads. Automation. Built To Grow Businesses. We build custom Next.js websites, run performance Meta/Google Ads, and engineer operations automation systems.",
-  keywords: ["custom website development", "nextjs development", "meta ads management", "facebook ads agency", "google ads expert", "lead generation company", "custom erp software", "whatsapp automation", "business automation", "rebranding services"],
-  authors: [{ name: "Reverbex Technologies" }],
-  creator: "Reverbex Technologies",
-  publisher: "Reverbex Technologies",
-  robots: {
-    index: true,
-    follow: true,
-  },
-  alternates: {
-    canonical: 'https://reverbex.in',
-  },
-  openGraph: {
-    type: "website",
-    locale: "en_IN",
-    url: "https://reverbex.in",
-    siteName: "Reverbex Technologies",
-    title: "Reverbex Technologies | Websites, Ads & Automation for Business Growth",
-    description: "Websites. Ads. Automation. Built To Grow Businesses. High-performance custom web systems, advertising campaigns, and operational automations.",
-    images: [
-      {
-        url: "https://reverbex.in/reverbex logo.png",
-        width: 1200,
-        height: 630,
-        alt: "Reverbex Technologies - Websites, Ads & Automation",
-      },
-    ],
-  },
-  twitter: {
-    card: "summary_large_image",
-    title: "Reverbex Technologies | Custom Web Systems, Ads & Automation",
-    description: "Websites. Ads. Automation. Built To Grow Businesses. High-performance custom websites, Meta/Google ads management, and process automation.",
-    images: ["https://reverbex.in/reverbex logo.png"],
-  },
-  icons: {
-    icon: [
-      { url: "/favicon.png", type: "image/png", sizes: "32x32" },
-      { url: "/icon-192.png", type: "image/png", sizes: "192x192" },
-      { url: "/icon-512.png", type: "image/png", sizes: "512x512" },
-    ],
-    shortcut: "/favicon.png",
-    apple: "/apple-touch-icon.png",
-  },
-  manifest: "/site.webmanifest",
-  other: {
-    'geo.region': 'IN',
-    'geo.placename': 'India',
-    'geo.position': '20.5937;78.9629',
-    'ICBM': '20.5937, 78.9629',
-  },
+  ...pageMetadata('AI Systems Studio in Jaipur', 'Reverbex Technology builds AI agents, MCP servers, automations, Next.js websites, Flutter apps and CRMs. Based in Jaipur, India. Plans from Rs 15,000/month.', '/'),
+  metadataBase: new URL(SITE),
+  title: { default: 'AI Systems Studio in Jaipur | Reverbex Technology', template: '%s | Reverbex Technology' },
+  icons: { icon: '/icon.png', apple: '/apple-touch-icon.png' },
+  robots: { index: true, follow: true },
 };
+export const viewport: Viewport = { themeColor: '#07080B', width: 'device-width', initialScale: 1 };
 
-export const viewport: Viewport = {
-  themeColor: "#050505",
-  width: "device-width",
-  initialScale: 1,
-  maximumScale: 5,
-  userScalable: true,
-  viewportFit: "cover",
+const org = {
+  '@type': ['Organization', 'ProfessionalService'], '@id': `${SITE}/#org`,
+  name: BRAND, url: SITE, logo: `${SITE}/logo.png`, image: `${SITE}/og-default.png`,
+  email: EMAIL, telephone: PHONE_E164, priceRange: '₹15,000–₹70,000 per month',
+  address: { '@type': 'PostalAddress', addressLocality: 'Jaipur', addressRegion: 'Rajasthan', addressCountry: 'IN' },
+  areaServed: ['IN', 'Worldwide'],
+  founder: { '@type': 'Person', name: 'Anurag Singh', '@id': `${SITE}/about#anurag` },
+  sameAs: [LINKEDIN],
+  knowsAbout: ['AI agents', 'Model Context Protocol', 'MCP servers', 'n8n automation', 'WhatsApp AI agents', 'RAG chatbots', 'Next.js', 'Flutter', 'Python', 'CRM development'],
+  makesOffer: plans.map((p) => ({
+    '@type': 'Offer', '@id': `${SITE}/pricing#${p.id}-offer`, name: `${p.name} monthly plan`,
+    url: `${SITE}/pricing#${p.id}`, price: p.price, priceCurrency: 'INR',
+    description: `INR ${p.price} per month. ${p.items.join('; ')}. Scope, taxes, setup costs and commitment are agreed in the proposal.`,
+    priceSpecification: { '@type': 'UnitPriceSpecification', price: p.price, priceCurrency: 'INR', billingDuration: 'P1M', unitCode: 'MON', unitText: 'month' },
+    itemOffered: { '@type': 'Service', name: `${p.name} plan`, provider: { '@id': `${SITE}/#org` } },
+  })),
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en" className={cn(outfit.variable, dmSans.variable, cormorant.variable, "font-sans", geist.variable)} suppressHydrationWarning>
-      <head>
-        <link rel="preconnect" href="https://images.unsplash.com" crossOrigin="anonymous" />
-        <link rel="preload" as="video" href="/hero-video-mobile.mp4" type="video/mp4" fetchPriority="high" media="(max-width: 768px)" />
-        <link rel="preload" as="image" href="/hero-poster.jpg" fetchPriority="high" />
-        <link rel="icon" href="/favicon.png" type="image/png" sizes="32x32" />
-        <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
-        <link rel="manifest" href="/site.webmanifest" />
-        {/* JSON-LD Organization Schema */}
-        <script
-          type="application/ld+json"
-          dangerouslySetInnerHTML={{
-            __html: JSON.stringify({
-              "@context": "https://schema.org",
-              "@type": "Organization",
-              "name": COMPANY.name,
-              "url": "https://reverbex.in",
-              "logo": "https://reverbex.in/reverbex logo.png",
-              "description": "Websites. Ads. Automation. Built To Grow Businesses. We build custom Next.js websites, run performance Meta/Google Ads, and engineer operations automation systems.",
-              "foundingDate": String(COMPANY.foundingYear),
-              "founders": [
-                {
-                  "@type": "Person",
-                  "name": "Anurag Singh",
-                  "jobTitle": "Founder & Lead Developer"
-                },
-                {
-                  "@type": "Person",
-                  "name": "Prachi Agarwal",
-                  "jobTitle": "Co-Founder & Strategy Lead"
-                }
-              ],
-              "contactPoint": [
-                {
-                  "@type": "ContactPoint",
-                  "email": CONTACT.email,
-                  "contactType": "customer service",
-                  "availableLanguage": "English"
-                }
-              ],
-              "telephone": CONTACT.phone.replace(/\s/g, ""),
-              "areaServed": {
-                "@type": "Country",
-                "name": "India"
-              },
-              "sameAs": [
-                SOCIALS.linkedin,
-                SOCIALS.twitter
-              ],
-              "knowsAbout": [
-                "Custom Website Development",
-                "E-Commerce Development",
-                "Meta Ads Management",
-                "Google Ads Management",
-                "Lead Generation",
-                "ERP & CRM System Development",
-                "Mobile App Development",
-                "AI Solutions",
-                "WhatsApp Automation",
-                "Logo Design & Branding",
-                "Complete Rebranding",
-                "SEO Services"
-              ]
-            })
-          }}
-        />
-
-        {/* JSON-LD LocalBusiness Schema for local SEO */}
-        <script
-          type="application/ld+json"
-          dangerouslySetInnerHTML={{
-            __html: JSON.stringify({
-              "@context": "https://schema.org",
-              "@type": "LocalBusiness",
-              "name": COMPANY.name,
-              "url": "https://reverbex.in",
-              "telephone": CONTACT.phone.replace(/\s/g, ""),
-              "email": CONTACT.email,
-              "address": {
-                "@type": "PostalAddress",
-                "addressLocality": "Jaipur",
-                "addressRegion": "Rajasthan",
-                "addressCountry": "IN"
-              },
-              "geo": {
-                "@type": "GeoCoordinates",
-                "latitude": 26.9124,
-                "longitude": 75.7873
-              },
-              "priceRange": "$$",
-              "openingHours": "Mo-Su 09:00-21:00",
-              "sameAs": [
-                SOCIALS.linkedin,
-                SOCIALS.twitter
-              ]
-            })
-          }}
-        />
-
-        {/* JSON-LD FAQPage Schema for rich snippets + AEO */}
-        <script
-          type="application/ld+json"
-          dangerouslySetInnerHTML={{
-            __html: JSON.stringify({
-              "@context": "https://schema.org",
-              "@type": "FAQPage",
-              "mainEntity": [
-                {
-                  "@type": "Question",
-                  "name": "What does Reverbex Technologies do?",
-                  "acceptedAnswer": {
-                    "@type": "Answer",
-                    "text": "Reverbex Technologies builds custom Next.js websites, runs Meta and Google Ads campaigns, and engineers business automation systems including ERP/CRM, WhatsApp automation, and AI solutions. Based in Jaipur, serving businesses across India."
-                  }
-                },
-                {
-                  "@type": "Question",
-                  "name": "How much does a custom website cost in India?",
-                  "acceptedAnswer": {
-                    "@type": "Answer",
-                    "text": "Custom website costs vary based on requirements. Reverbex provides free consultations and custom quotes. Unlike template agencies, custom websites from Reverbex load under 1 second, score 100/100 on PageSpeed, and include full code ownership."
-                  }
-                },
-                {
-                  "@type": "Question",
-                  "name": "Why choose Reverbex over a template website agency?",
-                  "acceptedAnswer": {
-                    "@type": "Answer",
-                    "text": "Reverbex builds custom code, not templates. Their websites load 5x faster (under 1 second vs 3-5 seconds for templates), rank higher on Google with AEO/GEO optimization, and include zero platform fees. You own everything — no monthly subscriptions, no vendor lock-in."
-                  }
-                },
-                {
-                  "@type": "Question",
-                  "name": "Does Reverbex work outside Jaipur?",
-                  "acceptedAnswer": {
-                    "@type": "Answer",
-                    "text": "Yes. Reverbex is based in Jaipur but works with businesses across India and globally. They are remote-first and serve clients in education, manufacturing, e-commerce, logistics, retail, and startups."
-                  }
-                },
-                {
-                  "@type": "Question",
-                  "name": "How many leads has Reverbex generated for clients?",
-                  "acceptedAnswer": {
-                    "@type": "Answer",
-                    "text": "Reverbex has generated 500+ qualified leads for MAAC Animation Jaipur and generated ₹3+ lakh revenue for Aarya Clothing. They also manage ₹10 lakh+ in ad spend across Meta and Google Ads campaigns."
-                  }
-                },
-                {
-                  "@type": "Question",
-                  "name": "What is AEO and GEO optimization?",
-                  "acceptedAnswer": {
-                    "@type": "Answer",
-                    "text": "AEO (Answer Engine Optimization) and GEO (Generative Engine Optimization) are techniques that help your business get cited by AI search engines like ChatGPT, Gemini, and Perplexity. Reverbex implements structured data, schema markup, and answer blocks so AI engines can find and cite your business information."
-                  }
-                }
-              ]
-            })
-          }}
-        />
-      </head>
-      <body className={`${dmSans.className} overflow-x-hidden antialiased text-[#F5F5F0]`}>
-        {/* Skip to Content Link for Accessibility */}
-        <a href="#main-content" className="skip-to-content">
-          Skip to main content
-        </a>
-        <GrainientBackground
-          color1="#B8860B"
-          color2="#1A3A6B"
-          color3="#03050F"
-          speed={0.1}
-          grainAmount={0.05}
-          zoom={0.9}
-        />
-        <div className="ambient-veil" aria-hidden="true" />
-        <div className="grain-overlay" aria-hidden="true" />
-        <CustomCursor />
-        <MorphingMenu />
-        <main id="main-content" tabIndex={-1}>
-          <SmoothScroll>{children}</SmoothScroll>
-        </main>
+    <html lang="en-IN" data-mode="night" className={`${display.variable} ${sans.variable}`} suppressHydrationWarning>
+      <body>
+        <a href="#main" className="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-[200] focus:bg-brand focus:p-3 focus:text-eclipse">Skip to content</a>
+        <JsonLd data={{ '@context': 'https://schema.org', '@graph': [org, { '@type': 'WebSite', '@id': `${SITE}/#website`, name: BRAND, url: SITE, inLanguage: 'en-IN', publisher: { '@id': `${SITE}/#org` } }] }} />
+        <Aurora />
+        <Header />
+        <main id="main" className="relative z-[1]">{children}</main>
         <Footer />
-        <WhatsAppButton />
-        <ServiceWorkerRegistration />
+        <MobileBar />
+        <Motion />
       </body>
     </html>
   );

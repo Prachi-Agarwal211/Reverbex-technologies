@@ -1,162 +1,39 @@
-"use client";
-
-import { useRef } from "react";
-import gsap from "gsap";
-import { useGSAP } from "@gsap/react";
-import { ScrollTrigger } from "gsap/ScrollTrigger";
-import SplitType from "split-type";
-import Link from "next/link";
-import ReverbexBond from "../../components/ReverbexBond";
-import PageCTA from "../../components/PageCTA";
-
-gsap.registerPlugin(ScrollTrigger);
-
-export default function AboutPage() {
-  const containerRef = useRef<HTMLElement>(null);
-  
-  useGSAP(() => {
-    if (!containerRef.current) return;
-    
-    const prefersReducedMotion = window.matchMedia(
-      "(prefers-reduced-motion: reduce)"
-    ).matches;
-
-    // Split the text for cinematic reveal
-    const textElements = containerRef.current.querySelectorAll(".reveal-text");
-    
-    if (!prefersReducedMotion) {
-      textElements.forEach((element) => {
-        const split = new SplitType(element as HTMLElement, { types: "words" });
-        
-        gsap.fromTo(
-          split.words,
-          { opacity: 0.1 },
-          {
-            opacity: 1,
-            stagger: 0.1,
-            ease: "none",
-            scrollTrigger: {
-              trigger: element,
-              start: "top 80%",
-              end: "bottom 40%",
-              scrub: true,
-            }
-          }
-        );
-      });
-
-      // Pin the massive 100% block
-      const statBlock = containerRef.current.querySelector(".stat-block");
-      if (statBlock) {
-        gsap.to(statBlock, {
-          scale: 0.95,
-          opacity: 0.5,
-          scrollTrigger: {
-            trigger: statBlock,
-            start: "center center",
-            end: "bottom top",
-            scrub: true,
-            pin: true,
-            pinSpacing: false,
-          }
-        });
-      }
-    }
-
-    return () => {
-      textElements.forEach((el) => {
-        // Clean up SplitType instances if needed
-        (el as any).split?.revert();
-      });
-    };
-  }, { scope: containerRef });
-
-  return (
-    <main ref={containerRef} className="w-full text-white min-h-screen pt-32 pb-24 selection:bg-[#EAB308]/30 overflow-hidden relative bg-[#050505]">
-      {/* Breadcrumb Schema */}
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify({
-        "@context": "https://schema.org",
-        "@type": "BreadcrumbList",
-        "itemListElement": [
-          { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://reverbex.in" },
-          { "@type": "ListItem", "position": 2, "name": "About", "item": "https://reverbex.in/about" }
-        ]
-      })}} />
-      {/* Background gradients */}
-      <div className="absolute top-[-20%] left-[-10%] w-[50%] h-[50%] rounded-full bg-[#EAB308]/10 blur-[200px] pointer-events-none" />
-      
-      <div className="max-w-7xl mx-auto px-6 lg:px-12 relative z-10">
-        
-        {/* Cinematic Header */}
-        <div className="mb-40 pt-16">
-          <span className="text-[#EAB308] text-sm font-semibold tracking-widest uppercase block mb-6">
-            Our Philosophy
-          </span>
-          <h1 className="text-[clamp(3.5rem,8vw,8rem)] font-black tracking-tighter leading-[0.95] mb-12">
-            Engineering Without Compromise.
-          </h1>
-        </div>
-        
-        {/* Text Reveal Section */}
-        <div className="mb-40 max-w-5xl ml-auto border-l border-[#1A1A1A] pl-8 md:pl-16">
-          <p className="reveal-text text-3xl md:text-5xl lg:text-6xl font-black tracking-tight leading-[1.2] mb-16 text-white">
-            The digital agency model is broken. Most agencies function as middlemen—selling you a custom project, but delivering a cheap WordPress template modified by junior developers.
-          </p>
-          <p className="reveal-text text-3xl md:text-5xl lg:text-6xl font-black tracking-tight leading-[1.2] mb-16 text-[#D0D0D0] text-shadow-body">
-            We started Reverbex Technologies to build the exact antithesis of that model.
-          </p>
-        </div>
-
-        {/* Pinned Stat Block */}
-        <div className="stat-block h-screen flex flex-col items-center justify-center mb-40">
-          <div className="relative group">
-            <div className="absolute inset-0 bg-[#EAB308]/20 rounded-full blur-[100px] transition-transform duration-1000 group-hover:scale-150" />
-            <h2 className="text-[clamp(8rem,20vw,20rem)] font-black text-[#EAB308] leading-none tracking-tighter relative z-10 drop-shadow-[0_0_50px_rgba(234,179,8,0.3)]">
-              100%
-            </h2>
-          </div>
-          <p className="text-white text-2xl md:text-4xl font-bold uppercase tracking-widest mt-8 z-10">
-            In-House Engineering
-          </p>
-          <p className="text-[#D0D0D0] text-lg font-medium mt-4 z-10 max-w-md text-center text-shadow-body">
-            Zero templates. Zero outsourcing. Every line of code is written by senior developers.
-          </p>
-        </div>
-
-        {/* The Reverbex Standard Grid */}
-        <div className="mb-40">
-          <h2 className="text-4xl md:text-6xl font-black mb-16 border-b border-[#1A1A1A] pb-8">The Standard</h2>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-x-12 gap-y-16">
-            <div className="group">
-              <div className="text-[#EAB308] font-black text-6xl mb-4 opacity-30 group-hover:opacity-100 transition-opacity duration-300">01</div>
-              <h3 className="text-2xl font-bold mb-4">Direct Senior Access</h3>
-              <p className="text-[#D0D0D0] text-lg leading-relaxed font-medium text-shadow-body">No account managers playing broken telephone. You speak directly with the engineers and strategists building your project.</p>
-            </div>
-            <div className="group">
-              <div className="text-[#EAB308] font-black text-6xl mb-4 opacity-30 group-hover:opacity-100 transition-opacity duration-300">02</div>
-              <h3 className="text-2xl font-bold mb-4">100% Code Ownership</h3>
-              <p className="text-[#D0D0D0] text-lg leading-relaxed font-medium text-shadow-body">You own every line of code we write. No platform lock-in, no mandatory ongoing subscriptions just to keep your site live.</p>
-            </div>
-            <div className="group">
-              <div className="text-[#EAB308] font-black text-6xl mb-4 opacity-30 group-hover:opacity-100 transition-opacity duration-300">03</div>
-              <h3 className="text-2xl font-bold mb-4">Performance Obsession</h3>
-              <p className="text-[#D0D0D0] text-lg leading-relaxed font-medium text-shadow-body">If it doesn't load instantly, we rewrite it. We guarantee 100/100 Core Web Vitals for maximum SEO ranking.</p>
-            </div>
-            <div className="group">
-              <div className="text-[#EAB308] font-black text-6xl mb-4 opacity-30 group-hover:opacity-100 transition-opacity duration-300">04</div>
-              <h3 className="text-2xl font-bold mb-4">Data-Driven Strategy</h3>
-              <p className="text-[#D0D0D0] text-lg leading-relaxed font-medium text-shadow-body">No vanity metrics. We only track what matters: leads generated, costs reduced, and revenue increased.</p>
-            </div>
-          </div>
-        </div>
-
-        <div className="mb-40">
-          <ReverbexBond />
-        </div>
-
-        <PageCTA />
-
+import { pageMetadata } from '@/lib/seo';
+import { PageHead } from '@/components/PageHead';
+import { JsonLd } from '@/components/JsonLd';
+import { WhatsAppButton } from '@/components/ui';
+import { SITE } from '@/lib/site';
+import { LogoMark } from '@/components/LogoMark';
+export const metadata = pageMetadata('About the Studio & Founder', 'Anurag Singh is a bootstrapped founder from Jaipur who learned disciplined problem-solving around scientists at ISRO, taught himself full-stack systems and AI agents, and founded Reverbex Technology.', '/about');
+const chapters = [
+  ['After college', 'No polished roadmap, just uncertainty, curiosity and the urge to build.'],
+  ['ISRO', 'Learned disciplined problem-solving around scientists: structure, patience, review, responsibility. Colleagues encouraged him to try building a company.'],
+  ['Learning to build systems', 'After a short job, went deep: Next.js, backends, databases, APIs, Docker, and built his own internal AI agents, MCP tools and automations.'],
+  ['First real projects', 'A college no-dues system, then a from-scratch e-commerce platform, learning that software matters when it removes a real operational problem.'],
+  ['Reverbex Technology', 'Startup events led to founders and businesses needing websites, lead generation and digital systems. That work became Reverbex.'],
+  ['ShipBridge', 'Co-building ShipBridge with Ashish Joshi, an AI-enabled B2B freight platform with ERP, waybills, manifests and dashboards.'],
+];
+export default function About() {
+  return (<>
+    <JsonLd data={{ '@context': 'https://schema.org', '@type': 'Person', '@id': `${SITE}/about#anurag`, name: 'Anurag Singh', jobTitle: 'Founder', worksFor: { '@id': `${SITE}/#org` }, address: { '@type': 'PostalAddress', addressLocality: 'Jaipur', addressCountry: 'IN' } }} />
+    <PageHead name="About" path="/about" crumb="Founder" title={<>Built by a builder, not a sales team.</>} intro="I'm Anurag Singh. I founded Reverbex Technology to help businesses build software, AI systems and growth infrastructure they own." />
+    <section className="mx-auto grid max-w-6xl gap-12 px-5 py-12 md:grid-cols-[minmax(0,1fr)_minmax(0,1.5fr)] md:gap-16 md:py-20">
+      <div data-reveal className="min-w-0 self-start rounded-3xl border border-cobaltlt/25 bg-gradient-to-br from-navy to-midnight p-8 text-ivory md:sticky md:top-32 md:p-10">
+        <div className="flex min-h-40 items-center justify-center rounded-2xl border border-cobaltlt/15 bg-eclipse/30 py-8 text-brand"><LogoMark size={100} className="drop-shadow-[0_0_24px_rgba(61,139,255,0.6)]" /></div>
+        <p className="mono-label mt-8 text-icelt">Founder</p>
+        <h2 className="mt-3 font-display text-3xl font-semibold tracking-[-0.05em]">Anurag Singh</h2>
+        <p className="mt-3 leading-relaxed text-ivory/70">Reverbex Technology<br />Jaipur, Rajasthan, India</p>
+        <p className="mt-6 border-t border-ivory/10 pt-6 leading-relaxed text-ivory/70">Software, AI agents and practical systems for the people running a business.</p>
       </div>
-    </main>
-  );
+      <div className="min-w-0">
+        <p data-reveal className="text-lg leading-relaxed">&ldquo;Reverbex was not born from a branding exercise. It grew out of repeated problems businesses trusted me to solve.&rdquo;</p>
+        <ol className="mt-10 space-y-10 border-l border-cobaltlt/25 pl-6">
+          {chapters.map(([t, d]) => <li data-reveal key={t} className="relative before:absolute before:-left-[29px] before:top-3 before:h-2 before:w-2 before:rounded-full before:bg-cobaltlt"><h2 className="font-display text-[clamp(1.4rem,2.4vw,2rem)] font-bold tracking-[-0.04em]">{t}</h2><p className="mt-3 leading-relaxed text-paper/70">{d}</p></li>)}
+        </ol>
+        <h2 data-reveal className="mt-12 font-display text-[clamp(1.4rem,2.4vw,2rem)] font-bold tracking-[-0.04em]">How we work</h2>
+        <p data-reveal className="mt-3 leading-relaxed text-paper/70">Build with evidence, systems, review and responsibility. Use open tools, harden them for Indian operations, and hand clients systems they own. We built our own agents and MCP tools before selling them, they are how we deliver fast.</p>
+        <div className="mt-8"><WhatsAppButton text="Hi Anurag, I'd like to talk about a project." label="Talk to Anurag" /></div>
+      </div>
+    </section>
+  </>);
 }

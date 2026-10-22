@@ -1,106 +1,30 @@
-import type { Metadata } from "next";
-import Link from "next/link";
-import CaseStudyClient from "../../../components/CaseStudyClient";
-import { caseStudiesData } from "../../../lib/caseStudiesData";
+import { pageMetadata } from '@/lib/seo';
+import { notFound } from 'next/navigation';
+import Link from 'next/link';
+import { cases, SITE } from '@/lib/site';
+import { PageHead } from '@/components/PageHead';
+import { JsonLd } from '@/components/JsonLd';
+import { WhatsAppButton } from '@/components/ui';
 
-export async function generateMetadata({
-  params,
-}: {
-  params: Promise<{ slug: string }>;
-}): Promise<Metadata> {
-  const resolvedParams = await params;
-  const slug = resolvedParams.slug;
-  const study = caseStudiesData[slug];
-
-  if (!study) {
-    return {
-      title: "Case Study Not Found",
-      description: "The requested case study could not be found.",
-    };
-  }
-
-  return {
-    title: `${study.client} | Case Study | Reverbex Technologies`,
-    description: study.resultTitle,
-    alternates: {
-      canonical: `https://reverbex.in/work/${slug}`,
-    },
-    openGraph: {
-      title: `${study.client} | Case Study | Reverbex Technologies`,
-      description: study.resultTitle,
-      type: "article",
-      url: `https://reverbex.in/work/${slug}`,
-    }
-  };
+// Unknown slugs reach notFound() cleanly instead of Next 15's static fallback error.
+export const dynamicParams = true;
+export function generateStaticParams() { return cases.map((c) => ({ slug: c.slug })); }
+export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }) {
+  const { slug } = await params; const c = cases.find((x) => x.slug === slug); if (!c) notFound();
+  return pageMetadata(`${c.client} Case Study`, c.summary, `/work/${slug}`);
 }
-
-export default async function CaseStudyPage({
-  params,
-}: {
-  params: Promise<{ slug: string }>;
-}) {
-  const resolvedParams = await params;
-  const slug = resolvedParams.slug;
-  
-  const study = caseStudiesData[slug];
-
-  if (!study) {
-    return (
-      <main className="w-full text-white min-h-screen pt-32 pb-24 text-center">
-        <h1 className="text-4xl font-bold mb-4">Case Study Not Found</h1>
-        <Link href="/work" className="text-[#EAB308] hover:underline">Return to Work</Link>
-      </main>
-    );
-  }
-
-  return (
-    <>
-      {/* Schema Markup for AEO / GEO */}
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{
-          __html: JSON.stringify({
-            "@context": "https://schema.org",
-            "@type": "Article",
-            "headline": `${study.client} - ${study.resultTitle}`,
-            "author": {
-              "@type": "Organization",
-              "name": "Reverbex Technologies"
-            },
-            "publisher": {
-              "@type": "Organization",
-              "name": "Reverbex Technologies",
-              "logo": {
-                "@type": "ImageObject",
-                "url": "https://reverbex.in/reverbex logo.png"
-              }
-            },
-            "about": {
-              "@type": "Thing",
-              "name": study.tags.join(", ")
-            },
-            "description": study.problem
-          })
-        }}
-      />
-
-      <main className="w-full text-white min-h-screen pt-32 pb-24 selection:bg-[#EAB308]/30 overflow-hidden">
-        
-        <div className="max-w-5xl mx-auto px-6 lg:px-12">
-          {/* Breadcrumb */}
-          <nav className="mb-12" aria-label="Breadcrumb">
-            <ol className="flex items-center gap-2 text-sm text-[#888] font-mono tracking-wider">
-              <li><Link href="/" className="hover:text-white transition-colors">HOME</Link></li>
-              <li>/</li>
-              <li><Link href="/work" className="hover:text-white transition-colors">WORK</Link></li>
-              <li>/</li>
-              <li className="text-[#EAB308]">{study.client.toUpperCase()}</li>
-            </ol>
-          </nav>
-
-          <CaseStudyClient study={study} />
-        </div>
-      </main>
-    </>
-  );
+export default async function CasePage({ params }: { params: Promise<{ slug: string }> }) {
+  const { slug } = await params; const c = cases.find((x) => x.slug === slug); if (!c) notFound();
+  return (<>
+    <JsonLd data={{ '@context': 'https://schema.org', '@type': 'CreativeWork', name: `${c.client} case study`, about: { '@type': 'Organization', name: c.client }, creator: { '@id': `${SITE}/#org` }, url: `${SITE}/work/${slug}`, description: c.summary }} />
+    <PageHead name={c.client} path={`/work/${slug}`} crumb={c.sector} title={c.headline} intro={c.summary} />
+    <section className="mx-auto grid max-w-6xl gap-10 px-5 py-12 md:grid-cols-[minmax(0,1fr)_minmax(0,1.4fr)] md:gap-14 md:py-20">
+      <div data-reveal className="min-w-0 self-start rounded-3xl border border-cobaltlt/25 bg-gradient-to-br from-navy to-midnight p-7 text-ivory md:p-10"><p className="mono-label text-icelt">Project outcome</p><p className="mt-8 break-words font-display text-[clamp(3rem,7vw,6rem)] font-bold leading-none tracking-[-0.06em] text-brand">{c.metric}</p><p className="mt-3 leading-relaxed text-ivory/80">{c.metricLabel}</p>
+        {c.url && <a href={c.url} rel="noopener noreferrer" target="_blank" className="mt-8 inline-block max-w-full break-words text-sm font-semibold text-icelt underline underline-offset-4">Visit {c.client} <span aria-hidden>↗</span></a>}</div>
+      <div className="min-w-0"><h2 data-reveal className="font-display text-[clamp(1.5rem,2.6vw,2.2rem)] font-bold tracking-[-0.05em]">What we built</h2>
+        <ul className="mt-6 space-y-4">{c.built.map((b) => <li data-reveal key={b} className="flex items-start gap-3 border-b border-paper/10 pb-4 leading-relaxed"><span aria-hidden className="shrink-0 text-cobaltlt">→</span><span>{b}</span></li>)}</ul>
+        <div data-reveal className="mt-10 rounded-3xl border border-paper/10 p-6 md:p-8"><h2 className="font-display text-xl font-semibold">Have a similar challenge?</h2><p className="mt-3 max-w-[45ch] leading-relaxed text-mute">Tell us what your business needs. We&apos;ll help you work out the right system and scope.</p><div className="mt-6 flex flex-wrap gap-x-6 gap-y-4"><WhatsAppButton text={`Hi Reverbex, I saw the ${c.client} case study. I'd like to discuss a similar project.`} label="Discuss your project" /><Link href="/work" className="inline-flex min-h-12 items-center text-sm font-semibold underline underline-offset-4">← All work</Link></div></div>
+      </div>
+    </section>
+  </>);
 }

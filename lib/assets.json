@@ -1,0 +1,21 @@
+{
+ "images": {
+  "A4": "/assets/A4.jpg",
+  "A5": "/assets/A5.jpg",
+  "A6": "/assets/A6.jpg",
+  "A1": "/assets/A1-placeholder.webp",
+  "A10": "/assets/A10-placeholder.webp",
+  "A11": "/assets/A11-placeholder.webp",
+  "A12": "/assets/A12-placeholder.webp",
+  "A13": "/assets/A13-placeholder.webp",
+  "A14": "/assets/A14-placeholder.webp",
+  "A15": "/assets/A15-placeholder.webp",
+  "A16": "/assets/A16-placeholder.webp",
+  "A2": "/assets/A2-placeholder.webp",
+  "A3": "/assets/A3-placeholder.webp",
+  "A7": "/assets/A7-placeholder.webp",
+  "A8": "/assets/A8-placeholder.webp",
+  "A9": "/assets/A9-placeholder.webp"
+ },
+ "videos": {}
+}

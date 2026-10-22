@@ -1,0 +1,17 @@
+{
+  "detector": {
+    "ignoreRules": [],
+    "ignoreFiles": [],
+    "ignoreValues": [
+      {
+        "rule": "gradient-text",
+        "value": "*",
+        "files": [
+          "app/globals.css"
+        ],
+        "createdAt": "2026-10-22T08:00:21.100Z",
+        "reason": "User explicitly requested gradient text on key words (v8 brief)"
+      }
+    ]
+  }
+}

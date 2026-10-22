@@ -1,97 +1,15 @@
-import type { Config } from "tailwindcss";
-
-const config: Config = {
-  content: [
-    "./components/**/*.{js,ts,jsx,tsx,mdx}",
-    "./app/**/*.{js,ts,jsx,tsx,mdx}",
-  ],
-  theme: {
-    extend: {
-      fontFamily: {
-        heading: ["var(--font-heading)", "sans-serif"],
-        body: ["var(--font-body)", "sans-serif"],
-      },
-      colors: {
-        ink: {
-          primary: "#F5F5F0",
-          secondary: "#A0A0A0",
-          muted: "#666666",
-        },
-        surface: {
-          DEFAULT: "#050505",
-          raised: "#0A0A0A",
-          elevated: "#141414",
-        },
-        accent: {
-          DEFAULT: "#EAB308",
-          dim: "rgba(234, 179, 8, 0.15)",
-          hover: "rgba(234, 179, 8, 0.25)",
-        },
-        border: {
-          subtle: "#1A1A1A",
-          DEFAULT: "#222222",
-        },
-      },
-      spacing: {
-        "18": "4.5rem",
-        "22": "5.5rem",
-        "30": "7.5rem",
-        "34": "8.5rem",
-        "38": "9.5rem",
-        "42": "10.5rem",
-      },
-      borderRadius: {
-        "4xl": "2rem",
-      },
-      boxShadow: {
-        "glow": "0 0 40px rgba(234, 179, 8, 0.08)",
-        "glow-lg": "0 0 80px rgba(234, 179, 8, 0.12)",
-        "elevated": "0 8px 32px rgba(0, 0, 0, 0.4)",
-        "glass": "0 8px 32px rgba(0, 0, 0, 0.25)",
-      },
-      backgroundImage: {
-        "ambient-glow":
-          "radial-gradient(ellipse 70% 60% at 18% 12%, rgba(234,179,8,0.06) 0%, transparent 60%), radial-gradient(ellipse 70% 60% at 82% 88%, rgba(234,179,8,0.04) 0%, transparent 60%)",
-      },
-      backdropBlur: {
-        xs: "2px",
-      },
-      transitionTimingFunction: {
-        "out-expo": "cubic-bezier(0.16, 1, 0.3, 1)",
-        "out-quart": "cubic-bezier(0.25, 1, 0.5, 1)",
-        "spring": "cubic-bezier(0.34, 1.56, 0.64, 1)",
-      },
-      transitionDuration: {
-        "250": "250ms",
-        "350": "350ms",
-        "500": "500ms",
-        "700": "700ms",
-        "900": "900ms",
-      },
-      fontSize: {
-        "display": ["clamp(3.5rem, 10vw, 10rem)", { lineHeight: "0.9", letterSpacing: "-0.04em", fontWeight: "900" }],
-        "headline": ["clamp(2.5rem, 6vw, 5.5rem)", { lineHeight: "1.0", letterSpacing: "-0.03em", fontWeight: "800" }],
-        "title": ["clamp(1.5rem, 3vw, 2.5rem)", { lineHeight: "1.15", letterSpacing: "-0.02em", fontWeight: "700" }],
-      },
-      animation: {
-        "marquee": "marquee 40s linear infinite",
-      },
-      keyframes: {
-        "grain": {
-          "0%, 100%": { transform: "translate(0, 0)" },
-          "10%": { transform: "translate(-5%, -10%)" },
-          "30%": { transform: "translate(3%, -15%)" },
-          "50%": { transform: "translate(12%, 9%)" },
-          "70%": { transform: "translate(9%, 4%)" },
-          "90%": { transform: "translate(-1%, 7%)" },
-        },
-        "marquee": {
-          "0%": { transform: "translateX(0%)" },
-          "100%": { transform: "translateX(-50%)" },
-        },
-      },
+import type { Config } from 'tailwindcss';
+/* Reverbex palette v2: Cobalt / Glow / Void / Off-white (see reverbex/brand/palette-v3.md)
+   Theme-aware tokens (bg/fg/mute/accent) flip between NIGHT and DAY via CSS vars on <html data-mode>. */
+const v = (n: string) => `rgb(var(--${n}) / <alpha-value>)`;
+export default {
+  content: ['./app/**/*.{ts,tsx}', './components/**/*.{ts,tsx}'],
+  theme: { extend: {
+    colors: {
+      ink: v('bg'), paper: v('fg'), mute: v('mute'), moss: v('accent'), signal: v('accent'), bone: v('bg2'),
+      eclipse: '#07080B', carbon: '#0A0F2C', surface: '#0A1A4A', ivory: '#F5F7FA', mist: '#FFF6D6', brand: '#FFF3C4', lime: '#FFF3C4', glow: '#FFF3C4', glowlt: '#FFF6D6', glowdk: '#F2D88A', navy: '#0A1A4A', ice: '#5EE7FF', icelt: '#7FD4FF', amber: '#FFB547', gold: '#F2D88A', electric: '#3D8BFF', midnight: '#0A0F2C', nexus: '#2F6BFF', cobalt: '#2F6BFF', cobaltlt: '#5B8CFF', cobaltdk: '#1E4FD6', cobaltdeep: '#0A1A4A', nexuslt: '#5B8CFF', titanium: '#7FD4FF', slate: '#1E4FD6', branddeep: '#1E4FD6',
     },
-  },
+    fontFamily: { sans: ['var(--font-sans)'], mono: ['var(--font-mono)'], display: ['var(--font-display)'] },
+  } },
   plugins: [],
-};
-export default config;
+} satisfies Config;

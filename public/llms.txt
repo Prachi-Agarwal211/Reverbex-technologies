@@ -1,0 +1,33 @@
+# Reverbex Technology
+
+> Reverbex Technology is an AI systems studio based in Jaipur, Rajasthan, India. Founder: Anurag Singh. The studio builds custom software and AI systems for businesses in India and works remotely with clients elsewhere.
+
+Canonical website: https://www.reverbex.in
+
+## Services
+- AI agents: WhatsApp sales/support agents, enquiry qualification and internal operations workflows with human hand-off.
+- Custom MCP servers: Model Context Protocol integrations that expose selected business tools and data to compatible AI applications, with permissions configured for the project.
+- AI automation: n8n workflows, RAG chatbots grounded in business documents, lead routing and follow-ups.
+- Web and app development: Next.js websites and web apps, Flutter Android/iOS apps, Python/FastAPI backends, CRM systems, financial dashboards and commerce integrations.
+
+## Monthly pricing (INR)
+- Launch: Rs 15,000/month. Website or web app, one automation or RAG chatbot, WhatsApp lead capture, SEO/AI visibility setup and monthly improvements.
+- Grow: Rs 30,000/month. Launch scope plus Android app, WhatsApp commerce/AI agent, order and lead workflows, priority support.
+- Scale: Rs 70,000/month. Grow scope plus Android/iOS apps, custom CRM, financial dashboards, AI agents, custom MCP servers, Python backends and monitoring.
+- Scope, taxes, setup costs and commitment are confirmed in a written proposal. Larger custom builds are quoted after a free audit. Delivery dates depend on integrations, data access and testing; milestones are agreed before development.
+
+## Contact
+- Email: hello@reverbex.in
+- WhatsApp / phone: +91 99299 86743
+- Location: Jaipur, India
+- The free AI audit starts with a conversation about current workflows; submitting an enquiry does not create a paid engagement.
+
+## Pages
+- [Services](https://www.reverbex.in/services): Service scope and integrations.
+- [Pricing and FAQs](https://www.reverbex.in/pricing): Plan features, monthly fees and common questions.
+- [Work](https://www.reverbex.in/work): Existing project case studies; individual results are not forecasts.
+- [About](https://www.reverbex.in/about): Founder and company background.
+- [Contact](https://www.reverbex.in/contact): Contact details and optional audit brief form.
+- [Privacy](https://www.reverbex.in/privacy): Enquiry data handling.
+- [Terms](https://www.reverbex.in/terms): Website and project enquiry terms.
+- [Sitemap](https://www.reverbex.in/sitemap.xml): All public pages.
